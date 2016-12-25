@@ -15,11 +15,14 @@ after_success:
   - if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "mkdocs" ]; then echo "Skipping deploy."; exit 0; fi
   - cd site
   - git config user.name "Travis CI"
+  - git config user.email "Sciebo.Learnweb.WWU@gmx.de"
   - if [ -z `git diff --exit-code` ]; then echo "No changes to deploy."; exit 0; fi
   - git add .
   - git commit -m "Depoly ${SHA}"
+  - cd ..
   - openssl aes-256-cbc -K $encrypted_74de9a14edbd_key -iv $encrypted_74de9a14edbd_iv -in deploy_key.enc -out deploy_key -d
   - chmod 600 deploy_key
   - eval `ssh-agent -s`
   - ssh-add deploy_key
+  - cd site
   - git push git@github.com:pssl16/pssl16.github.io.git master
