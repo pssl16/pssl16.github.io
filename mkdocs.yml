@@ -1,0 +1,16 @@
+# Project information
+site_name: 'sciebo@Learnweb'
+site_author: 'Lukas Biermann, Nina Herrmann, Wladislaw Iwanzow, Dennis Meis, Jonathan Neugebauer'
+repo_url: "https://github.com/pssl16"
+
+# Copyright
+copyright: 'Copyright &copy; 2016 PSSL16'
+
+# Documentation and theme
+docs_dir: 'docs'
+theme_dir: 'cinder'
+
+pages:
+- Home: index.md
+- ownCloud: ownCloud.md
+- Moodle: moodle.md
