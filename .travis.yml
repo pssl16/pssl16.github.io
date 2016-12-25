@@ -12,7 +12,7 @@ script:
   - mkdocs build --clean
 
 after_success:
-  - if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "mkdoc" ]; then echo "Skipping deploy."; exit 0; fi
+  - if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "mkdocs" ]; then echo "Skipping deploy."; exit 0; fi
   - cd site
   - git config user.name "Travis CI"
   - if [ -z `git diff --exit-code` ]; then echo "No changes to deploy."; exit 0; fi
