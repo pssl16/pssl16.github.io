@@ -127,8 +127,20 @@
         
             <li class="second-level"><a href="#technische-umsetzung">Technische Umsetzung</a></li>
             
+                <li class="third-level"><a href="#implementierung-der-oauth2-app">Implementierung der oauth2 App</a></li>
+            
+                <li class="third-level"><a href="#anpassung-der-dav-app">Anpassung der dav App</a></li>
+            
         
-            <li class="second-level"><a href="#installation-benutzung">Installation &amp; Benutzung</a></li>
+            <li class="second-level"><a href="#benutzung">Benutzung</a></li>
+            
+                <li class="third-level"><a href="#installation">Installation</a></li>
+            
+                <li class="third-level"><a href="#clientregistrierung">Clientregistrierung</a></li>
+            
+                <li class="third-level"><a href="#authorization-code-flow">Authorization Code Flow</a></li>
+            
+                <li class="third-level"><a href="#angepasste-webdav-schnittstelle">Angepasste WebDAV Schnittstelle</a></li>
             
         
     
@@ -137,8 +149,28 @@
         <div class="col-md-9" role="main">
 
 <h1 id="owncloud">ownCloud</h1>
+<p>Um auf Dateien in ownCloud zuzugreifen, wird standardmäßig <a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">eine WebDAV Schnittstelle angeboten</a>. Da diese jedoch nur über <a href="https://tools.ietf.org/html/rfc7617">Basic Authentication</a> ansprechbar ist, musste zusätzlich das <a href="https://oauth.net/2/">OAuth 2.0 Protokoll</a> implementiert werden.</p>
 <h2 id="technische-umsetzung">Technische Umsetzung</h2>
-<h2 id="installation-benutzung">Installation &amp; Benutzung</h2></div>
+<h3 id="implementierung-der-oauth2-app">Implementierung der <code>oauth2</code> App</h3>
+<h3 id="anpassung-der-dav-app">Anpassung der <code>dav</code> App</h3>
+<h2 id="benutzung">Benutzung</h2>
+<h3 id="installation">Installation</h3>
+<p>Da die Änderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der <code>dav-oauth</code>-Branch des <a href="https://github.com/pssl16/core">geforkten Repositorys</a> geklont werden:</p>
+<pre><code class="nohighlight">$ git clone -b dav-oauth https://github.com/pssl16/core</code></pre>
+
+<p>Danach müssen die Dependencies installiert werden. Dazu genügt es, im Verzeichnis des Repositorys folgenden Befehl auszuführen:</p>
+<pre><code class="nohighlight">$ make</code></pre>
+
+<p>Die restlichen Installationsschritte unterscheiden sich nicht von denen im <a href="https://doc.owncloud.org/server/latest/admin_manual/installation/index.html">ownCloud Handbuch</a>.</p>
+<h3 id="clientregistrierung">Clientregistrierung</h3>
+<h3 id="authorization-code-flow">Authorization Code Flow</h3>
+<p>Die nachfolgende Abbildung stellt den durch die <code>oauth2</code> App implementierten <a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Code Flow</a> dar.</p>
+<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Beschreibung der Schritte einfügen.
+</div>
+
+<h3 id="angepasste-webdav-schnittstelle">Angepasste WebDAV Schnittstelle</h3></div>
         
     </div>
 

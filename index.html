@@ -128,7 +128,16 @@
             <li class="second-level"><a href="#user-stories">User Stories</a></li>
             
         
+            <li class="second-level"><a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a></li>
+            
+                <li class="third-level"><a href="#oauth-20">OAuth 2.0</a></li>
+            
+        
             <li class="second-level"><a href="#komponenten">Komponenten</a></li>
+            
+                <li class="third-level"><a href="#owncloud">ownCloud</a></li>
+            
+                <li class="third-level"><a href="#moodle">Moodle</a></li>
             
         
             <li class="second-level"><a href="#zusammenspiel">Zusammenspiel</a></li>
@@ -141,8 +150,37 @@
 
 <h1 id="sciebolearnweb">sciebo@Learnweb</h1>
 <p>Diese Website dokumentiert das Projektseminar <a href="https://www.wi.uni-muenster.de/de/studierende/lehrangebot/227197">sciebo@Learnweb</a>, das im Wintersemester 2016/17 an der <a href="http://www.uni-muenster.de/">Westfälischen Wilhelms-Universität Münster</a> stattgefunden hat.</p>
+<p>Gegenstand des Projektseminars war die Integration der Systeme <a href="https://www.sciebo.de/">sciebo</a> und <a href="https://www.uni-muenster.de/LearnWeb/learnweb2/">Learnweb</a>. Sciebo ist ein Cloud-Dienst, der gemeinsam von 26 Hochschulen und Forschungseinrichtungen in NRW angeboten wird. Als Grundlage dient die Open-Source-Lösung <a href="https://owncloud.org/">ownCloud</a>. Das Learnweb ist ein auf der Open-Source-Lösung <a href="https://moodle.org/">Moodle</a> basierendes E-Learning System der Westfälischen Wilhelms-Universität Münster.</p>
+<p>Eine mögliche Lösung sollte dabei möglichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universitäten genutzt wird.</p>
 <h2 id="user-stories">User Stories</h2>
+<p>Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt. Als Integrationsrichtung konzentrierte man sich auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.</p>
+<h2 id="authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</h2>
+<p>Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den gängigen Verfahren, die untersucht wurden, befinden sich:</p>
+<ul>
+<li><a href="https://oauth.net/2/">OAuth 2.0</a></li>
+<li><a href="https://jwt.io/">JSON Web Tokens</a></li>
+<li>Federated Single Sign-on mit beispielsweise <a href="https://shibboleth.net/">Shibboleth</a></li>
+</ul>
+<p>Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.</p>
+<h3 id="oauth-20">OAuth 2.0</h3>
+<p>Der allgemeine OAuth 2.0 Protokollablauf ist in der nachfolgenden Abbildung dargestellt.</p>
+<p><img alt="Authorization Code Flow" src="./images/oauth-allgemein.svg" /></p>
+<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte, bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:</p>
+<ol>
+<li>Authorization Request:</li>
+<li>Authorization Response</li>
+<li>Access Token Request</li>
+<li>Access Token Response</li>
+<li>Anfrage mittels Access Token</li>
+<li>Zugriff auf geschützte Ressourcen</li>
+</ol>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Beschreibung der Schritte einfügen.
+</div>
+
 <h2 id="komponenten">Komponenten</h2>
+<h3 id="owncloud">ownCloud</h3>
+<h3 id="moodle">Moodle</h3>
 <h2 id="zusammenspiel">Zusammenspiel</h2></div>
         
     </div>
@@ -198,5 +236,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2016-12-25 13:46:46
+Build Date UTC : 2016-12-25 17:52:48
 -->

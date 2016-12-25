@@ -2,23 +2,43 @@
     "docs": [
         {
             "location": "/", 
-            "text": "sciebo@Learnweb\n\n\nDiese Website dokumentiert das Projektseminar \nsciebo@Learnweb\n, das im Wintersemester 2016/17 an der \nWestf\u00e4lischen Wilhelms-Universit\u00e4t M\u00fcnster\n stattgefunden hat.\n\n\nUser Stories\n\n\nKomponenten\n\n\nZusammenspiel", 
+            "text": "sciebo@Learnweb\n\n\nDiese Website dokumentiert das Projektseminar \nsciebo@Learnweb\n, das im Wintersemester 2016/17 an der \nWestf\u00e4lischen Wilhelms-Universit\u00e4t M\u00fcnster\n stattgefunden hat.\n\n\nGegenstand des Projektseminars war die Integration der Systeme \nsciebo\n und \nLearnweb\n. Sciebo ist ein Cloud-Dienst, der gemeinsam von 26 Hochschulen und Forschungseinrichtungen in NRW angeboten wird. Als Grundlage dient die Open-Source-L\u00f6sung \nownCloud\n. Das Learnweb ist ein auf der Open-Source-L\u00f6sung \nMoodle\n basierendes E-Learning System der Westf\u00e4lischen Wilhelms-Universit\u00e4t M\u00fcnster.\n\n\nEine m\u00f6gliche L\u00f6sung sollte dabei m\u00f6glichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universit\u00e4ten genutzt wird.\n\n\nUser Stories\n\n\nAls Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt. Als Integrationsrichtung konzentrierte man sich auf die Richtung Learnweb \n sciebo.\n\n\nAuthentifizierung und Autorisierung\n\n\nGrundlegend f\u00fcr die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den g\u00e4ngigen Verfahren, die untersucht wurden, befinden sich:\n\n\n\n\nOAuth 2.0\n\n\nJSON Web Tokens\n\n\nFederated Single Sign-on mit beispielsweise \nShibboleth\n\n\n\n\nF\u00fcr das Projekt wurde das OAuth 2.0 Verfahren ausgew\u00e4hlt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einf\u00fcgen l\u00e4sst und damit keine weiteren Anforderungen an die Infrastruktur stellt.\n\n\nOAuth 2.0\n\n\nDer allgemeine OAuth 2.0 Protokollablauf ist in der nachfolgenden Abbildung dargestellt.\n\n\n\n\nZun\u00e4chst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine gesch\u00fctzte Ressource auf dem Resource Server (sciebo) zugreifen m\u00f6chte, bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:\n\n\n\n\nAuthorization Request:\n\n\nAuthorization Response\n\n\nAccess Token Request\n\n\nAccess Token Response\n\n\nAnfrage mittels Access Token\n\n\nZugriff auf gesch\u00fctzte Ressourcen\n\n\n\n\n\n  \nTODO:\n Beschreibung der Schritte einf\u00fcgen.\n\n\n\n\nKomponenten\n\n\nownCloud\n\n\nMoodle\n\n\nZusammenspiel", 
             "title": "Home"
         }, 
         {
             "location": "/#sciebolearnweb", 
-            "text": "Diese Website dokumentiert das Projektseminar  sciebo@Learnweb , das im Wintersemester 2016/17 an der  Westf\u00e4lischen Wilhelms-Universit\u00e4t M\u00fcnster  stattgefunden hat.", 
+            "text": "Diese Website dokumentiert das Projektseminar  sciebo@Learnweb , das im Wintersemester 2016/17 an der  Westf\u00e4lischen Wilhelms-Universit\u00e4t M\u00fcnster  stattgefunden hat.  Gegenstand des Projektseminars war die Integration der Systeme  sciebo  und  Learnweb . Sciebo ist ein Cloud-Dienst, der gemeinsam von 26 Hochschulen und Forschungseinrichtungen in NRW angeboten wird. Als Grundlage dient die Open-Source-L\u00f6sung  ownCloud . Das Learnweb ist ein auf der Open-Source-L\u00f6sung  Moodle  basierendes E-Learning System der Westf\u00e4lischen Wilhelms-Universit\u00e4t M\u00fcnster.  Eine m\u00f6gliche L\u00f6sung sollte dabei m\u00f6glichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universit\u00e4ten genutzt wird.", 
             "title": "sciebo@Learnweb"
         }, 
         {
             "location": "/#user-stories", 
-            "text": "", 
+            "text": "Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt. Als Integrationsrichtung konzentrierte man sich auf die Richtung Learnweb   sciebo.", 
             "title": "User Stories"
+        }, 
+        {
+            "location": "/#authentifizierung-und-autorisierung", 
+            "text": "Grundlegend f\u00fcr die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den g\u00e4ngigen Verfahren, die untersucht wurden, befinden sich:   OAuth 2.0  JSON Web Tokens  Federated Single Sign-on mit beispielsweise  Shibboleth   F\u00fcr das Projekt wurde das OAuth 2.0 Verfahren ausgew\u00e4hlt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einf\u00fcgen l\u00e4sst und damit keine weiteren Anforderungen an die Infrastruktur stellt.", 
+            "title": "Authentifizierung und Autorisierung"
+        }, 
+        {
+            "location": "/#oauth-20", 
+            "text": "Der allgemeine OAuth 2.0 Protokollablauf ist in der nachfolgenden Abbildung dargestellt.   Zun\u00e4chst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine gesch\u00fctzte Ressource auf dem Resource Server (sciebo) zugreifen m\u00f6chte, bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:   Authorization Request:  Authorization Response  Access Token Request  Access Token Response  Anfrage mittels Access Token  Zugriff auf gesch\u00fctzte Ressourcen   \n   TODO:  Beschreibung der Schritte einf\u00fcgen.", 
+            "title": "OAuth 2.0"
         }, 
         {
             "location": "/#komponenten", 
             "text": "", 
             "title": "Komponenten"
+        }, 
+        {
+            "location": "/#owncloud", 
+            "text": "", 
+            "title": "ownCloud"
+        }, 
+        {
+            "location": "/#moodle", 
+            "text": "", 
+            "title": "Moodle"
         }, 
         {
             "location": "/#zusammenspiel", 
@@ -27,12 +47,12 @@
         }, 
         {
             "location": "/owncloud/", 
-            "text": "ownCloud\n\n\nTechnische Umsetzung\n\n\nInstallation \n Benutzung", 
+            "text": "ownCloud\n\n\nUm auf Dateien in ownCloud zuzugreifen, wird standardm\u00e4\u00dfig \neine WebDAV Schnittstelle angeboten\n. Da diese jedoch nur \u00fcber \nBasic Authentication\n ansprechbar ist, musste zus\u00e4tzlich das \nOAuth 2.0 Protokoll\n implementiert werden.\n\n\nTechnische Umsetzung\n\n\nImplementierung der \noauth2\n App\n\n\nAnpassung der \ndav\n App\n\n\nBenutzung\n\n\nInstallation\n\n\nDa die \u00c4nderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der \ndav-oauth\n-Branch des \ngeforkten Repositorys\n geklont werden:\n\n\n$ git clone -b dav-oauth https://github.com/pssl16/core\n\n\n\nDanach m\u00fcssen die Dependencies installiert werden. Dazu gen\u00fcgt es, im Verzeichnis des Repositorys folgenden Befehl auszuf\u00fchren:\n\n\n$ make\n\n\n\nDie restlichen Installationsschritte unterscheiden sich nicht von denen im \nownCloud Handbuch\n.\n\n\nClientregistrierung\n\n\nAuthorization Code Flow\n\n\nDie nachfolgende Abbildung stellt den durch die \noauth2\n App implementierten \nOAuth 2.0 Authorization Code Flow\n dar.\n\n\n\n\n\n  \nTODO:\n Beschreibung der Schritte einf\u00fcgen.\n\n\n\n\nAngepasste WebDAV Schnittstelle", 
             "title": "ownCloud"
         }, 
         {
             "location": "/owncloud/#owncloud", 
-            "text": "", 
+            "text": "Um auf Dateien in ownCloud zuzugreifen, wird standardm\u00e4\u00dfig  eine WebDAV Schnittstelle angeboten . Da diese jedoch nur \u00fcber  Basic Authentication  ansprechbar ist, musste zus\u00e4tzlich das  OAuth 2.0 Protokoll  implementiert werden.", 
             "title": "ownCloud"
         }, 
         {
@@ -41,13 +61,43 @@
             "title": "Technische Umsetzung"
         }, 
         {
-            "location": "/owncloud/#installation-benutzung", 
+            "location": "/owncloud/#implementierung-der-oauth2-app", 
             "text": "", 
-            "title": "Installation &amp; Benutzung"
+            "title": "Implementierung der oauth2 App"
+        }, 
+        {
+            "location": "/owncloud/#anpassung-der-dav-app", 
+            "text": "", 
+            "title": "Anpassung der dav App"
+        }, 
+        {
+            "location": "/owncloud/#benutzung", 
+            "text": "", 
+            "title": "Benutzung"
+        }, 
+        {
+            "location": "/owncloud/#installation", 
+            "text": "Da die \u00c4nderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der  dav-oauth -Branch des  geforkten Repositorys  geklont werden:  $ git clone -b dav-oauth https://github.com/pssl16/core  Danach m\u00fcssen die Dependencies installiert werden. Dazu gen\u00fcgt es, im Verzeichnis des Repositorys folgenden Befehl auszuf\u00fchren:  $ make  Die restlichen Installationsschritte unterscheiden sich nicht von denen im  ownCloud Handbuch .", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/owncloud/#clientregistrierung", 
+            "text": "", 
+            "title": "Clientregistrierung"
+        }, 
+        {
+            "location": "/owncloud/#authorization-code-flow", 
+            "text": "Die nachfolgende Abbildung stellt den durch die  oauth2  App implementierten  OAuth 2.0 Authorization Code Flow  dar.   \n   TODO:  Beschreibung der Schritte einf\u00fcgen.", 
+            "title": "Authorization Code Flow"
+        }, 
+        {
+            "location": "/owncloud/#angepasste-webdav-schnittstelle", 
+            "text": "", 
+            "title": "Angepasste WebDAV Schnittstelle"
         }, 
         {
             "location": "/moodle/", 
-            "text": "Moodle\n\n\nTechnische Umsetzung\n\n\nInstallation \n Benutzung", 
+            "text": "Moodle\n\n\nTechnische Umsetzung\n\n\nBenutzung\n\n\nInstallation", 
             "title": "Moodle"
         }, 
         {
@@ -61,9 +111,14 @@
             "title": "Technische Umsetzung"
         }, 
         {
-            "location": "/moodle/#installation-benutzung", 
+            "location": "/moodle/#benutzung", 
             "text": "", 
-            "title": "Installation &amp; Benutzung"
+            "title": "Benutzung"
+        }, 
+        {
+            "location": "/moodle/#installation", 
+            "text": "", 
+            "title": "Installation"
         }
     ]
 }
