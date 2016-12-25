@@ -26,22 +26,22 @@
             "title": "Zusammenspiel"
         }, 
         {
-            "location": "/ownCloud/", 
+            "location": "/owncloud/", 
             "text": "ownCloud\n\n\nTechnische Umsetzung\n\n\nInstallation \n Benutzung", 
             "title": "ownCloud"
         }, 
         {
-            "location": "/ownCloud/#owncloud", 
+            "location": "/owncloud/#owncloud", 
             "text": "", 
             "title": "ownCloud"
         }, 
         {
-            "location": "/ownCloud/#technische-umsetzung", 
+            "location": "/owncloud/#technische-umsetzung", 
             "text": "", 
             "title": "Technische Umsetzung"
         }, 
         {
-            "location": "/ownCloud/#installation-benutzung", 
+            "location": "/owncloud/#installation-benutzung", 
             "text": "", 
             "title": "Installation &amp; Benutzung"
         }, 
