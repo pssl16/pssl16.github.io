@@ -11,6 +11,6 @@ docs_dir: 'docs'
 theme_dir: 'cinder'
 
 pages:
-- Home: index.md
-- ownCloud: owncloud.md
-- Moodle: moodle.md
+  - Home: index.md
+  - ownCloud: owncloud.md
+  - Moodle: moodle.md

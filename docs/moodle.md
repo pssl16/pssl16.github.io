@@ -2,4 +2,6 @@
 
 ## Technische Umsetzung
 
-## Installation & Benutzung
+## Benutzung
+
+### Installation
