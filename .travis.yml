@@ -6,7 +6,7 @@ install:
 
 before_script:
   - SHA=`git rev-parse --verify HEAD`
-  - git clone https://github.com/pssl16/pssl16.github.io.git site
+  - git clone -b master https://github.com/pssl16/pssl16.github.io.git site
 
 script:
   - mkdocs build --clean
