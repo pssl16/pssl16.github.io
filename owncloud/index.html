@@ -151,8 +151,47 @@
 <h1 id="owncloud">ownCloud</h1>
 <p>Um auf Dateien in ownCloud zuzugreifen, wird standardmäßig <a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">eine WebDAV Schnittstelle angeboten</a>. Da diese jedoch nur über <a href="https://tools.ietf.org/html/rfc7617">Basic Authentication</a> ansprechbar ist, musste sie um das <a href="https://oauth.net/2/">OAuth 2.0 Protokoll</a> erweitert werden.</p>
 <h2 id="technische-umsetzung">Technische Umsetzung</h2>
-<p>Da man möglichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als <a href="https://doc.owncloud.org/server/latest/developer_manual/app/">ownCloud App</a> realisiert worden und nutzt die <a href="http://sabre.io/">sabre/dav</a> Bibliothek. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu können. Dafür wurde eine ownCloud App implementiert.</p>
+<p>Da man möglichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als <a href="https://doc.owncloud.org/server/latest/developer_manual/app/">ownCloud App</a> realisiert worden und nutzt die <a href="http://sabre.io/">sabre/dav</a> Bibliothek. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu können. Dafür wurde eine weitere ownCloud App implementiert.</p>
 <h3 id="implementierung-der-oauth2-app">Implementierung der <code>oauth2</code> App</h3>
+<p>In der App sollte der häufig für Webapplikationen eingesetzte <a href="https://tools.ietf.org/html/rfc6749#section-4.1">Authorization Code Flow</a> implementiert werden. Dazu mussten folgende User Stories umgesetzt werden:</p>
+<ul>
+<li><strong>Clientregistrierung:</strong> Als ownCloud-Administrator möchte ich Clients in den Administrator-Einstellungen hinzufügen und löschen können, um die Kontrolle über erlaubte Clients zu haben.</li>
+<li><strong>Authorization URL:</strong> Als Client-Entwickler möchte ich eine Authorization URL zur Verfügung haben, um Authorization Codes anfordern zu können.</li>
+<li><strong>Access Token URL:</strong> Als Client-Entwickler möchte ich eine Access Token URL zur Verfügung haben, um Access Tokens anfordern zu können.</li>
+<li><strong>Verwaltung autorisierter Applikationen</strong>: Als ownCloud-Nutzer möchte ich in den persönlichen Einstellungen autorisierte Applikationen verwalten können, um einen Überblick zu haben und Autorisierungen widerrufen zu können.</li>
+</ul>
+<h4 id="datenmodell">Datenmodell</h4>
+<p>Zunächst musste ein Datenmodell zur Speicherung der benötigten Daten aufgestellt werden. Gemäß dem Authorization Code Flow wurden folgende Entitäten mit Attributen definiert:</p>
+<ul>
+<li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.1"><code>client</code></a>:</strong> Die Applikation, die für den Zugriff auf die WebDAV Schnittstelle autorisiert werden soll.<ul>
+<li><code>identifier</code>: Zeichenkette, die einen Client eindeutig identifiziert.</li>
+<li><code>secret</code>: Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.</li>
+<li><code>redirect_uri</code>: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.</li>
+</ul>
+</li>
+<li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.3.1"><code>authorization_code</code></a>:</strong> Ein <a href="https://tools.ietf.org/html/rfc6749#section-1.3">Authorization Grant</a>, mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.<ul>
+<li><code>code</code>: Zeichenkette, die als Authorization Code dient.</li>
+<li><code>client_id</code>: Client Identifier des Clients, für den der Authorization Code ausgegeben wird.</li>
+<li><code>user_id</code>: User ID des ownCloud-Nutzers, der den Client autorisiert hat.</li>
+<li><code>expires</code>: Zeitpunkt, zu dem der Authorization Code ungültig wird (optional).</li>
+</ul>
+</li>
+<li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.4"><code>access_token</code></a>:</strong> Eine Zeichenkette, die den Zugriff auf die WebDAV Schnittstelle erlaubt.<ul>
+<li><code>code</code>: Zeichenkette, die als Access Token dient.</li>
+<li><code>client_id</code>: Client Identifier des Clients, für den der Access Token ausgegeben wird.</li>
+<li><code>user_id</code>: User ID des ownCloud-Nutzers, der den Client autorisiert hat.</li>
+<li><code>expires</code>: Zeitpunkt, zu dem der Access Token ungültig wird (optional).</li>
+</ul>
+</li>
+<li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.5"><code>refresh_token</code></a>:</strong> Eine Zeichenkette, mit der ein abgelaufener Access Token gegen einen neuen ausgetauscht werden kann.<ul>
+<li><code>code</code>: Zeichenkette, die als Refresh Token dient.</li>
+<li><code>client_id</code>: Client Identifier des Clients, für den der Access Token ausgegeben wird.</li>
+<li><code>user_id</code>: User ID des ownCloud-Nutzers, der den Client autorisiert hat.</li>
+<li><code>expires</code>: Zeitpunkt, zu dem der Refresh Token ungültig wird (optional).</li>
+</ul>
+</li>
+</ul>
+<p>Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.</p>
 <h3 id="anpassung-der-dav-app">Anpassung der <code>dav</code> App</h3>
 <h2 id="benutzung">Benutzung</h2>
 <h3 id="installation">Installation</h3>
