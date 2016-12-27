@@ -149,8 +149,9 @@
         <div class="col-md-9" role="main">
 
 <h1 id="owncloud">ownCloud</h1>
-<p>Um auf Dateien in ownCloud zuzugreifen, wird standardmäßig <a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">eine WebDAV Schnittstelle angeboten</a>. Da diese jedoch nur über <a href="https://tools.ietf.org/html/rfc7617">Basic Authentication</a> ansprechbar ist, musste zusätzlich das <a href="https://oauth.net/2/">OAuth 2.0 Protokoll</a> implementiert werden.</p>
+<p>Um auf Dateien in ownCloud zuzugreifen, wird standardmäßig <a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">eine WebDAV Schnittstelle angeboten</a>. Da diese jedoch nur über <a href="https://tools.ietf.org/html/rfc7617">Basic Authentication</a> ansprechbar ist, musste sie um das <a href="https://oauth.net/2/">OAuth 2.0 Protokoll</a> erweitert werden.</p>
 <h2 id="technische-umsetzung">Technische Umsetzung</h2>
+<p>Da man möglichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als <a href="https://doc.owncloud.org/server/latest/developer_manual/app/">ownCloud App</a> realisiert worden und nutzt die <a href="http://sabre.io/">sabre/dav</a> Bibliothek. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu können. Dafür wurde eine ownCloud App implementiert.</p>
 <h3 id="implementierung-der-oauth2-app">Implementierung der <code>oauth2</code> App</h3>
 <h3 id="anpassung-der-dav-app">Anpassung der <code>dav</code> App</h3>
 <h2 id="benutzung">Benutzung</h2>
