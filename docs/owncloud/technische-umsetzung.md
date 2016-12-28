@@ -394,7 +394,17 @@ Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren
 
 ### Tests
 
+Zum Testen der PHP-Klassen wurde das Framework [PHPUnit](https://phpunit.de/) verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: [![codecov](https://codecov.io/gh/pssl16/owncloud-app_oauth2/branch/master/graph/badge.svg)](https://codecov.io/gh/pssl16/owncloud-app_oauth2).
+
 ### Continuous Integration
+
+Als Continuous Integration Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im [GitHub Repository](https://github.com/pssl16/owncloud-app_oauth2) wird ein Build angestoßen, in dem die App mithilfe eines Makefiles für den App Store gebaut wird und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:
+
+* **PHP Versionen**: 5.6, 7.0, 7.1, nightly
+* **Datenbanken**: PostgreSQL, MySQL, SQLite
+* **Branches des ownCloud Core**: `stable9.1`, `master`
+
+Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://travis-ci.org/pssl16/owncloud-app_oauth2.svg?branch=master)](https://travis-ci.org/pssl16/owncloud-app_oauth2).
 
 ## Anpassung der `dav` App
 
