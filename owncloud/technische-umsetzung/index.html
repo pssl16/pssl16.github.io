@@ -174,7 +174,7 @@
         
             <li class="second-level"><a href="#anpassung-der-dav-app">Anpassung der dav App</a></li>
             
-                <li class="third-level"><a href="#hinzufugen-eines-authentication-backends">Hinzufügen eines Authentication Backends</a></li>
+                <li class="third-level"><a href="#authentication-backend">Authentication Backend</a></li>
             
                 <li class="third-level"><a href="#tests_1">Tests</a></li>
             
@@ -335,14 +335,14 @@ class ClientMapper extends Mapper {
 }
 </code></pre>
 
-<p>Beim Mapper ist es wichtig, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html"><code>Mapper</code></a> erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen <code>find($id)</code> und <code>findByUser($userId)</code> demonstrieren <code>SELECT</code>-Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an <code>findEntity</code> bzw. <code>findEntities</code> übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. </p>
+<p>Beim Mapper ist es wichtig, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html"><code>Mapper</code></a> erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen <code>find($id)</code> und <code>findByUser($userId)</code> demonstrieren <code>SELECT</code>-Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an <code>findEntity</code> bzw. <code>findEntities</code> übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. Funktionen zum löschen, einfügen und updaten werden von der Oberklasse bereits implementiert und mussten nicht angepasst werden.</p>
 <h3 id="schnittstellen-und-routes">Schnittstellen und Routes</h3>
 <h3 id="controller">Controller</h3>
 <h3 id="templates">Templates</h3>
 <h3 id="tests">Tests</h3>
 <h3 id="continuous-integration">Continuous Integration</h3>
 <h2 id="anpassung-der-dav-app">Anpassung der <code>dav</code> App</h2>
-<h3 id="hinzufugen-eines-authentication-backends">Hinzufügen eines Authentication Backends</h3>
+<h3 id="authentication-backend">Authentication Backend</h3>
 <h3 id="tests_1">Tests</h3>
 <h2 id="protokollablauf-im-detail">Protokollablauf im Detail</h2></div>
         
