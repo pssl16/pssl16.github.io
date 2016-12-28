@@ -150,7 +150,7 @@ class ClientMapper extends Mapper {
 }
 ```
 
-Beim Mapper ist es wichtig, dass die Klasse von [`Mapper`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html) erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen `find($id)` und `findByUser($userId)` demonstrieren `SELECT`-Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an `findEntity` bzw. `findEntities` übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. 
+Beim Mapper ist es wichtig, dass die Klasse von [`Mapper`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html) erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen `find($id)` und `findByUser($userId)` demonstrieren `SELECT`-Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an `findEntity` bzw. `findEntities` übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. Funktionen zum löschen, einfügen und updaten werden von der Oberklasse bereits implementiert und mussten nicht angepasst werden.
 
 ### Schnittstellen und Routes
 
@@ -164,7 +164,7 @@ Beim Mapper ist es wichtig, dass die Klasse von [`Mapper`](https://doc.owncloud.
 
 ## Anpassung der `dav` App
 
-### Hinzufügen eines Authentication Backends
+### Authentication Backend
 
 ### Tests
 
