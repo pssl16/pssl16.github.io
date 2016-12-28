@@ -390,6 +390,8 @@ Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren
 
 ### Templates
 
+### Protokollablauf
+
 ### Tests
 
 ### Continuous Integration
@@ -399,5 +401,3 @@ Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren
 ### Authentication Backend
 
 ### Tests
-
-## Protokollablauf im Detail
