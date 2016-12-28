@@ -335,9 +335,285 @@ class ClientMapper extends Mapper {
 }
 </code></pre>
 
-<p>Beim Mapper ist es wichtig, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html"><code>Mapper</code></a> erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen <code>find($id)</code> und <code>findByUser($userId)</code> demonstrieren <code>SELECT</code>-Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an <code>findEntity</code> bzw. <code>findEntities</code> übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. Funktionen zum löschen, einfügen und updaten werden von der Oberklasse bereits implementiert und mussten nicht angepasst werden.</p>
+<p>Beim Mapper ist es wichtig, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html"><code>Mapper</code></a> erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen <code>find</code> und <code>findByUser</code> demonstrieren <code>SELECT</code>-Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an <code>findEntity</code> bzw. <code>findEntities</code> übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. Funktionen zum löschen, einfügen und updaten werden von der Oberklasse bereits implementiert und mussten nicht angepasst werden.</p>
 <h3 id="schnittstellen-und-routes">Schnittstellen und Routes</h3>
+<p>Um in einer ownCloud App Schnittstellen anzubieten, müssen <a href="https://doc.owncloud.org/server/latest/developer_manual/app/routes.html">Routes</a> registriert werden. Zur Umsetzung der erwähnten User Stories waren folgende Routes notwendig:</p>
+<table>
+<thead>
+<tr>
+<th>Methode</th>
+<th>Endpunkt</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GET</code></td>
+<td><code>authorize</code></td>
+<td>Endpunkt, zu dem der Client den Nutzer weiterleitet, um die Autorisierung anzufragen (Authorization URL).</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>authorize</code></td>
+<td>Endpunkt, der aufgerufen wird, sobald der Nutzer den Client autorisiert hat.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>api/v1/token</code></td>
+<td>Endpunkt, an dem ein Access Token angefordert wird (Access Token URL).</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>clients</code></td>
+<td>Endpunkt, durch den der Administrator einen Client hinzufügen kann.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>clients/{id}/delete</code></td>
+<td>Endpunkt, durch den der Administrator den Client mit der ID <code>id</code> löschen kann.</td>
+</tr>
+<tr>
+<td><code>POST</code></td>
+<td><code>clients/{id}/revoke</code></td>
+<td>Endpunkt, durch den der Nutzer die Autorisierung des Clients mit der ID <code>id</code> widerrufen kann.</td>
+</tr>
+</tbody>
+</table>
+<p>Registriert werden die Routes in der Datei <code>routes.php</code>, indem ein Array mit den Routes zurückgegeben wird. Nachfolgendes Codebeispiel zeigt einige der obigen Routes:</p>
+<pre><code class="php">&lt;?php
+return [
+    'routes' =&gt; [
+        ['name' =&gt; 'page#authorize', 'url' =&gt; '/authorize', 'verb' =&gt; 'GET'],
+        ['name' =&gt; 'o_auth_api#generate_token', 'url' =&gt; '/api/v1/token', 'verb' =&gt; 'POST'],
+        ['name' =&gt; 'settings#deleteClient', 'url' =&gt; '/clients/{id}/delete', 'verb' =&gt; 'POST']
+    ]
+];
+
+</code></pre>
+
+<p>Durch <code>name</code> wird für jede Route der Name des dazugehörigen <a href="#controller">Controllers</a> sowie die aufzurufende Funktion angegeben. Vor dem <code>#</code>-Zeichen steht der Controllername in Snake case und hinter dem <code>#</code>-Zeichen steht der Funktionsname (ebenfalls in Snake case). Mithilfe von <code>url</code> wird der Endpunkt festgelegt und <code>verb</code> definiert die HTTP-Methode.</p>
 <h3 id="controller">Controller</h3>
+<p>Wenn an einem Endpunkt eine HTTP-Anfrage ankommt, so wird der in den Routes definierte <a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html">Controller</a> aufgerufen. Wichtig ist hierbei, dass von der Klasse <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Controller.html"><code>Controller</code></a> oder einer Unterklasse wie <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.ApiController.html"><code>ApiController</code></a> geerbt wird.</p>
+<p>Für den Controller notwendige Parameter wie <a href="#mapper-und-entities">Mapper</a> können im Konstruktor als Parameter angegeben und so durch <a href="https://doc.owncloud.org/server/latest/developer_manual/app/container.html">Dependency Injection</a> erhalten werden. Nachfolgendes Codebeispiel zeigt den Konstruktor vom <code>PageController</code>.</p>
+<pre><code class="php">/**
+ * PageController constructor.
+ * 
+ * @param string $AppName The name of the app.
+ * @param IRequest $request The request.
+ * @param ClientMapper $clientMapper The client mapper.
+ * @param AuthorizationCodeMapper $authorizationCodeMapper The authorization code mapper.
+ * @param string $UserId The user ID.
+ */
+public function __construct($AppName, IRequest $request, ClientMapper $clientMapper,
+    AuthorizationCodeMapper $authorizationCodeMapper, $UserId) {
+    parent::__construct($AppName, $request);
+
+    $this-&gt;clientMapper = $clientMapper;
+    $this-&gt;authorizationCodeMapper = $authorizationCodeMapper;
+    $this-&gt;userId = $UserId;
+}
+</code></pre>
+
+<p>Die hier notwendigen Parameter sind der Name der App, eine <code>ClientMapper</code> Instanz, eine <code>AuthorizationCodeMapper</code> Instanz und die ID des Nutzers, um bei der Autorisierung des Clients speichern zu können, welcher Nutzers dies veranlasst hat.</p>
+<p>Die mit den Routes verknüpften Funktionen können zur Zugriffskontrolle mit <a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#authentication">PHPDoc Annotationen</a> versehen werden. Folgendes Codebeispiel zeigt die Annotationen für die Funktion <code>generateToken</code> im <code>OAuthApiController</code>.</p>
+<pre><code class="php">/**
+ * Implements the OAuth 2.0 Access Token Response.
+ *
+ * @param string $code The authorization code.
+ * @return JSONResponse The Access Token or an empty JSON Object.
+ *
+ * @NoAdminRequired
+ * @NoCSRFRequired
+ * @PublicPage
+ * @CORS
+ */
+public function generateToken($code) { }
+</code></pre>
+
+<p>Die Annotationen haben dabei folgende Bedeutungen.</p>
+<table>
+<thead>
+<tr>
+<th>Annotation</th>
+<th>Bedeutung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>@NoAdminRequired</code></td>
+<td>Aufruf auch von normalen Nutzern möglich.</td>
+</tr>
+<tr>
+<td><code>@NoCSRFRequired</code></td>
+<td>Zeigt an, dass die Überprüfung des CSRF Tokens nicht gewollt ist.</td>
+</tr>
+<tr>
+<td><code>@PublicPage</code></td>
+<td>Zugriff auch ohne Login möglich.</td>
+</tr>
+<tr>
+<td><code>@CORS</code></td>
+<td>Aufruf der API durch andere Web Applikationen von außen möglich.</td>
+</tr>
+</tbody>
+</table>
+<p>In den Controller-Funktionen können verschiedene Inhalte zurückgegeben werden. Hier genutzte Rückgabetypen sind in der folgenden Tabelle zusammengefasst.</p>
+<table>
+<thead>
+<tr>
+<th>Typ</th>
+<th>Beschreibung</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#templates"><code>TemplateResponse</code></a></td>
+<td>Zur Rückgabe eines Templates, das dem Nutzer angezeigt werden soll.</td>
+</tr>
+<tr>
+<td><a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#redirects"><code>RedirectResponse</code></a></td>
+<td>Zur Weiterleitung des Nutzers an eine andere URL.</td>
+</tr>
+<tr>
+<td><a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#json"><code>JSONResponse</code></a></td>
+<td>Zur Rückgabe eines JSON Strings.</td>
+</tr>
+</tbody>
+</table>
+<p>Ein Beispiel für die Rückgabetypen <code>TemplateResponse</code> und <code>RedirectResponse</code> gibt die Funktion <code>authorize</code> im <code>PageController</code>, die im folgenden Codebeispiel zu sehen ist.</p>
+<pre><code class="php">/**
+ * Shows a view for the user to authorize a client.
+ *
+ * @param string $response_type The expected response type.
+ * @param string $client_id The client identifier.
+ * @param string $redirect_uri The redirect URI.
+ * @param string $state The state.
+ * @param string $scope The scope.
+ *
+ * @return TemplateResponse|RedirectResponse The authorize view or a
+ * redirection to the ownCloud main page.
+ *
+ * @NoAdminRequired
+ * @NoCSRFRequired
+ */
+public function authorize($response_type, $client_id, $redirect_uri, $state = null, $scope = null) {
+    if (!is_string($response_type) || !is_string($client_id)
+        || !is_string($redirect_uri) || (isset($state) &amp;&amp; !is_string($state))
+        || (isset($scope) &amp;&amp; !is_string($scope))) {
+        return new RedirectResponse(OC_Util::getDefaultPageUrl());
+    }
+
+    try {
+        /** @var Client $client */
+        $client = $this-&gt;clientMapper-&gt;findByIdentifier($client_id);
+    } catch (DoesNotExistException $exception) {
+        return new RedirectResponse(OC_Util::getDefaultPageUrl());
+    }
+
+    if (strcmp($client-&gt;getRedirectUri(), urldecode($redirect_uri)) !== 0) {
+        return new RedirectResponse(OC_Util::getDefaultPageUrl());
+    }
+    if (strcmp($response_type, 'code') !== 0) {
+        return new RedirectResponse(OC_Util::getDefaultPageUrl());
+    }
+
+    return new TemplateResponse('oauth2', 'authorize', ['client_name' =&gt; $client-&gt;getName()]);
+}
+</code></pre>
+
+<p>Hier werden zunächst die Parameter auf Gültigkeit überprüft. Sollten die Parameter nicht gültig sein (beispielsweise deshalb, weil der angegebene Client nicht existiert oder dessen Redirect URI falsch angegeben wurde) wird mit einem <code>RedirectResponse</code> auf die ownCloud Startseite umgeleitet. Andernfalls wird ein <code>TemplateResponse</code> für das Template <code>authorize</code> zurückgegeben. Für das Rendern des Templates können Parameter wie hier <code>client_name</code> für den Namen des Clients übergeben werden.</p>
+<p>Der Rückgabetyp <code>JSONResponse</code> wird für die Rückgabe des Access Tokens in der Funktion <code>generateToken</code> im <code>OAuthApiController</code> genutzt, wie nachfolgendes Codebeispiel zeigt. Zudem ist das Zusammenspiel mit Entities und Mappern zu sehen.</p>
+<pre><code class="php">/**
+ * Implements the OAuth 2.0 Access Token Response.
+ *
+ * @param string $code The authorization code.
+ * @return JSONResponse The Access Token or an empty JSON Object.
+ *
+ * @NoAdminRequired
+ * @NoCSRFRequired
+ * @PublicPage
+ * @CORS
+ */
+public function generateToken($code) {
+    if (is_null($code) || is_null($_SERVER['PHP_AUTH_USER'])
+        || is_null($_SERVER['PHP_AUTH_PW'])) {
+        return new JSONResponse(['message' =&gt; 'Missing credentials.'], Http::STATUS_BAD_REQUEST);
+    }
+
+    try {
+        /** @var Client $client */
+        $client = $this-&gt;clientMapper-&gt;findByIdentifier($_SERVER['PHP_AUTH_USER']);
+    } catch (DoesNotExistException $exception) {
+        return new JSONResponse(['message' =&gt; 'Unknown credentials.'], Http::STATUS_BAD_REQUEST);
+    }
+
+    if (strcmp($client-&gt;getSecret(), $_SERVER['PHP_AUTH_PW']) !== 0) {
+        return new JSONResponse(['message' =&gt; 'Unknown credentials.'], Http::STATUS_BAD_REQUEST);
+    }
+
+    try {
+        /** @var AuthorizationCode $authorizationCode */
+        $authorizationCode = $this-&gt;authorizationCodeMapper-&gt;findByCode($code);
+    } catch (DoesNotExistException $exception) {
+        return new JSONResponse(['message' =&gt; 'Unknown credentials.'], Http::STATUS_BAD_REQUEST);
+    }
+
+    if (strcmp($authorizationCode-&gt;getClientId(), $client-&gt;getId()) !== 0) {
+        return new JSONResponse(['message' =&gt; 'Unknown credentials.'], Http::STATUS_BAD_REQUEST);
+    }
+
+    $token = Utilities::generateRandom();
+    $userId = $authorizationCode-&gt;getUserId();
+    $accessToken = new AccessToken();
+    $accessToken-&gt;setToken($token);
+    $accessToken-&gt;setClientId($authorizationCode-&gt;getClientId());
+    $accessToken-&gt;setUserId($userId);
+    $this-&gt;accessTokenMapper-&gt;insert($accessToken);
+
+    $this-&gt;authorizationCodeMapper-&gt;delete($authorizationCode);
+
+    return new JSONResponse(
+        [
+            'access_token' =&gt; $token,
+            'token_type' =&gt; 'Bearer',
+            'user_id' =&gt; $userId
+        ]
+    );
+}
+</code></pre>
+
+<p>Nach erfolgreicher Überprüfung des Authorization Codes und der Angaben zur Client Authentication im Authorization Header wird eine neuer Access Token erstellt und in der Datenbank gespeichert. Der verwendete Authorization Code wird zudem gelöscht. Im JSON Response wird dann der Access Token, der Token Typ und die ID des Nutzers zurückgegeben. Nachfolgend ist ein Beispiel dazu angegeben.</p>
+<pre><code class="json">{
+    &quot;access_token&quot; : &quot;1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ&quot;,
+    &quot;token_type&quot; : &quot;Bearer&quot;,
+    &quot;user_id&quot; : &quot;admin&quot;
+}
+</code></pre>
+
+<p>Für die Token-Generierung wurde die Hilfsklasse <code>Utilities</code> mit der statischen Funktion <code>generateRandom</code> geschrieben, die mithilfe einer ownCloud-internen Funktion 64-stellige Zeichenketten erzeugt. Folgendes Codebeispiel zeigt diese Klasse.</p>
+<pre><code class="php">&lt;?php
+namespace OCA\OAuth2;
+
+class Utilities {
+
+    /**
+     * Generates a random string with 64 characters.
+     *
+     * @return string The random string.
+     */
+    public static function generateRandom() {
+        return \OC::$server-&gt;getSecureRandom()-&gt;generate(64,
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
+    }
+
+}
+</code></pre>
+
+<p>Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren Beziehungen zu den Entities und Mappern dargestellt.</p>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Klassendiagramm einfügen.
+</div>
+
 <h3 id="templates">Templates</h3>
 <h3 id="tests">Tests</h3>
 <h3 id="continuous-integration">Continuous Integration</h3>
