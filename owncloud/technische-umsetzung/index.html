@@ -616,7 +616,15 @@ class Utilities {
 <h3 id="templates">Templates</h3>
 <h3 id="protokollablauf">Protokollablauf</h3>
 <h3 id="tests">Tests</h3>
+<p>Zum Testen der PHP-Klassen wurde das Framework <a href="https://phpunit.de/">PHPUnit</a> verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: <a href="https://codecov.io/gh/pssl16/owncloud-app_oauth2"><img alt="codecov" src="https://codecov.io/gh/pssl16/owncloud-app_oauth2/branch/master/graph/badge.svg" /></a>.</p>
 <h3 id="continuous-integration">Continuous Integration</h3>
+<p>Als Continuous Integration Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im <a href="https://github.com/pssl16/owncloud-app_oauth2">GitHub Repository</a> wird ein Build angestoßen, in dem die App mithilfe eines Makefiles für den App Store gebaut wird und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:</p>
+<ul>
+<li><strong>PHP Versionen</strong>: 5.6, 7.0, 7.1, nightly</li>
+<li><strong>Datenbanken</strong>: PostgreSQL, MySQL, SQLite</li>
+<li><strong>Branches des ownCloud Core</strong>: <code>stable9.1</code>, <code>master</code></li>
+</ul>
+<p>Der aktuelle Build-Status ist bei Travis einsehbar: <a href="https://travis-ci.org/pssl16/owncloud-app_oauth2"><img alt="Build Status" src="https://travis-ci.org/pssl16/owncloud-app_oauth2.svg?branch=master" /></a>.</p>
 <h2 id="anpassung-der-dav-app">Anpassung der <code>dav</code> App</h2>
 <h3 id="authentication-backend">Authentication Backend</h3>
 <h3 id="tests_1">Tests</h3></div>
