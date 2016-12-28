@@ -46,82 +46,127 @@
             "title": "Zusammenspiel"
         }, 
         {
-            "location": "/owncloud/", 
-            "text": "ownCloud\n\n\nUm auf Dateien in ownCloud zuzugreifen, wird standardm\u00e4\u00dfig \neine WebDAV Schnittstelle angeboten\n. Da diese jedoch nur \u00fcber \nBasic Authentication\n ansprechbar ist, musste sie um das \nOAuth 2.0 Protokoll\n erweitert werden.\n\n\nTechnische Umsetzung\n\n\nDa man m\u00f6glichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als \nownCloud App\n realisiert worden und nutzt die \nsabre/dav\n Bibliothek. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu k\u00f6nnen. Daf\u00fcr wurde eine weitere ownCloud App implementiert.\n\n\nImplementierung der \noauth2\n App\n\n\nIn der App sollte der h\u00e4ufig f\u00fcr Webapplikationen eingesetzte \nAuthorization Code Flow\n implementiert werden. Dazu mussten folgende User Stories umgesetzt werden:\n\n\n\n\nClientregistrierung:\n Als ownCloud-Administrator m\u00f6chte ich Clients in den Administrator-Einstellungen hinzuf\u00fcgen und l\u00f6schen k\u00f6nnen, um die Kontrolle \u00fcber erlaubte Clients zu haben.\n\n\nAuthorization URL:\n Als Client-Entwickler m\u00f6chte ich eine Authorization URL zur Verf\u00fcgung haben, um Authorization Codes anfordern zu k\u00f6nnen.\n\n\nAccess Token URL:\n Als Client-Entwickler m\u00f6chte ich eine Access Token URL zur Verf\u00fcgung haben, um Access Tokens anfordern zu k\u00f6nnen.\n\n\nVerwaltung autorisierter Applikationen\n: Als ownCloud-Nutzer m\u00f6chte ich in den pers\u00f6nlichen Einstellungen autorisierte Applikationen verwalten k\u00f6nnen, um einen \u00dcberblick zu haben und Autorisierungen widerrufen zu k\u00f6nnen.\n\n\n\n\nDatenmodell\n\n\nZun\u00e4chst musste ein Datenmodell zur Speicherung der ben\u00f6tigten Daten aufgestellt werden. Gem\u00e4\u00df dem Authorization Code Flow wurden folgende Entit\u00e4ten mit Attributen definiert:\n\n\n\n\nclient\n:\n Die Applikation, die f\u00fcr den Zugriff auf die WebDAV Schnittstelle autorisiert werden soll.\n\n\nidentifier\n: Zeichenkette, die einen Client eindeutig identifiziert.\n\n\nsecret\n: Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.\n\n\nredirect_uri\n: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.\n\n\n\n\n\n\nauthorization_code\n:\n Ein \nAuthorization Grant\n, mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.\n\n\ncode\n: Zeichenkette, die als Authorization Code dient.\n\n\nclient_id\n: Client Identifier des Clients, f\u00fcr den der Authorization Code ausgegeben wird.\n\n\nuser_id\n: User ID des ownCloud-Nutzers, der den Client autorisiert hat.\n\n\nexpires\n: Zeitpunkt, zu dem der Authorization Code ung\u00fcltig wird (optional).\n\n\n\n\n\n\naccess_token\n:\n Eine Zeichenkette, die den Zugriff auf die WebDAV Schnittstelle erlaubt.\n\n\ncode\n: Zeichenkette, die als Access Token dient.\n\n\nclient_id\n: Client Identifier des Clients, f\u00fcr den der Access Token ausgegeben wird.\n\n\nuser_id\n: User ID des ownCloud-Nutzers, der den Client autorisiert hat.\n\n\nexpires\n: Zeitpunkt, zu dem der Access Token ung\u00fcltig wird (optional).\n\n\n\n\n\n\nrefresh_token\n:\n Eine Zeichenkette, mit der ein abgelaufener Access Token gegen einen neuen ausgetauscht werden kann.\n\n\ncode\n: Zeichenkette, die als Refresh Token dient.\n\n\nclient_id\n: Client Identifier des Clients, f\u00fcr den der Access Token ausgegeben wird.\n\n\nuser_id\n: User ID des ownCloud-Nutzers, der den Client autorisiert hat.\n\n\nexpires\n: Zeitpunkt, zu dem der Refresh Token ung\u00fcltig wird (optional).\n\n\n\n\n\n\n\n\nFolgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.\n\n\nAnpassung der \ndav\n App\n\n\nBenutzung\n\n\nInstallation\n\n\nDa die \u00c4nderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der \ndav-oauth\n-Branch des \ngeforkten Repositorys\n geklont werden:\n\n\n$ git clone -b dav-oauth https://github.com/pssl16/core\n\n\n\nDanach m\u00fcssen die Dependencies installiert werden. Dazu gen\u00fcgt es, im Verzeichnis des Repositorys folgenden Befehl auszuf\u00fchren:\n\n\n$ make\n\n\n\nDie restlichen Installationsschritte unterscheiden sich nicht von denen im \nownCloud Handbuch\n.\n\n\nClientregistrierung\n\n\nAuthorization Code Flow\n\n\nDie nachfolgende Abbildung stellt den durch die \noauth2\n App implementierten \nOAuth 2.0 Authorization Code Flow\n dar.\n\n\n\n\n\n  \nTODO:\n Beschreibung der Schritte einf\u00fcgen.\n\n\n\n\nAngepasste WebDAV Schnittstelle", 
-            "title": "ownCloud"
+            "location": "/owncloud/technische-umsetzung/", 
+            "text": "Technische Umsetzung\n\n\nDa man m\u00f6glichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als \nownCloud App\n realisiert worden und nutzt die \nsabre/dav\n Bibliothek. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu k\u00f6nnen. Daf\u00fcr wurde eine weitere ownCloud App implementiert.\n\n\nImplementierung der \noauth2\n App\n\n\nIn der App sollte der h\u00e4ufig f\u00fcr Webapplikationen eingesetzte \nAuthorization Code Flow\n implementiert werden. Dazu mussten folgende User Stories umgesetzt werden:\n\n\n\n\nClientregistrierung:\n Als ownCloud-Administrator m\u00f6chte ich Clients in den Administrator-Einstellungen hinzuf\u00fcgen und l\u00f6schen k\u00f6nnen, um die Kontrolle \u00fcber erlaubte Clients zu haben.\n\n\nAuthorization URL:\n Als Client-Entwickler m\u00f6chte ich eine Authorization URL zur Verf\u00fcgung haben, um Authorization Codes anfordern zu k\u00f6nnen.\n\n\nAccess Token URL:\n Als Client-Entwickler m\u00f6chte ich eine Access Token URL zur Verf\u00fcgung haben, um Access Tokens anfordern zu k\u00f6nnen.\n\n\nVerwaltung autorisierter Applikationen\n: Als ownCloud-Nutzer m\u00f6chte ich in den pers\u00f6nlichen Einstellungen autorisierte Applikationen verwalten k\u00f6nnen, um einen \u00dcberblick zu haben und Autorisierungen widerrufen zu k\u00f6nnen.\n\n\n\n\nDatenmodell\n\n\nZun\u00e4chst musste ein Datenmodell zur Speicherung der ben\u00f6tigten Daten aufgestellt werden. Gem\u00e4\u00df dem Authorization Code Flow wurden folgende Entit\u00e4ten mit Attributen definiert:\n\n\n\n\nclient\n:\n Die Applikation, die f\u00fcr den Zugriff auf die WebDAV Schnittstelle autorisiert werden soll.\n\n\nidentifier\n: Zeichenkette, die einen Client eindeutig identifiziert.\n\n\nsecret\n: Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.\n\n\nredirect_uri\n: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.\n\n\n\n\n\n\nauthorization_code\n:\n Ein \nAuthorization Grant\n, mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.\n\n\ncode\n: Zeichenkette, die als Authorization Code dient.\n\n\nclient_id\n: Client Identifier des Clients, f\u00fcr den der Authorization Code ausgegeben wird.\n\n\nuser_id\n: User ID des ownCloud-Nutzers, der den Client autorisiert hat.\n\n\nexpires\n: Zeitpunkt, zu dem der Authorization Code ung\u00fcltig wird (optional).\n\n\n\n\n\n\naccess_token\n:\n Eine Zeichenkette, die den Zugriff auf die WebDAV Schnittstelle erlaubt.\n\n\ncode\n: Zeichenkette, die als Access Token dient.\n\n\nclient_id\n: Client Identifier des Clients, f\u00fcr den der Access Token ausgegeben wird.\n\n\nuser_id\n: User ID des ownCloud-Nutzers, der den Client autorisiert hat.\n\n\nexpires\n: Zeitpunkt, zu dem der Access Token ung\u00fcltig wird (optional).\n\n\n\n\n\n\nrefresh_token\n:\n Eine Zeichenkette, mit der ein abgelaufener Access Token gegen einen neuen ausgetauscht werden kann.\n\n\ncode\n: Zeichenkette, die als Refresh Token dient.\n\n\nclient_id\n: Client Identifier des Clients, f\u00fcr den der Access Token ausgegeben wird.\n\n\nuser_id\n: User ID des ownCloud-Nutzers, der den Client autorisiert hat.\n\n\nexpires\n: Zeitpunkt, zu dem der Refresh Token ung\u00fcltig wird (optional).\n\n\n\n\n\n\n\n\nFolgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.\n\n\n\n  \nTODO:\n ERM einf\u00fcgen.\n\n\n\n\nMapper und Entities\n\n\nF\u00fcr den Datenbank-Zugriff im PHP-Code ist es in ownCloud m\u00f6glich, \nMapper\n und \nEntities\n zu schreiben. Dadurch werden Tupel in einer Datenbank-Tabelle automatisch in ein Objekt umgewandelt.\n\n\nFolgendes Codebeispiel zeigt am Beispiel des Entitys \nClient\n, wie eine PHP-Klasse dazu aussehen muss.\n\n\n?php\nnamespace OCA\\OAuth2\\Db;\n\nuse OCP\\AppFramework\\Db\\Entity;\n\n/**\n * Class Client\n *\n * @method string getIdentifier()\n * @method void setIdentifier(string $identifier)\n * @method string getSecret()\n * @method void setSecret(string $secret)\n * @method string getRedirectUri()\n * @method void setRedirectUri(string $redirectUri)\n * @method string getName()\n * @method void setName(string $name)\n */\nclass Client extends Entity {\n\n    protected $identifier;\n    protected $secret;\n    protected $redirectUri;\n    protected $name;\n\n    public function __construct() {\n        $this-\naddType('id', 'int');\n        $this-\naddType('identifier', 'string');\n        $this-\naddType('secret', 'string');\n        $this-\naddType('redirect_uri', 'string');\n        $this-\naddType('name', 'string');\n    }\n\n}\n\n\n\n\nWichtig ist, dass die Klasse von \nEntity\n erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle \u00fcbereinstimmen. Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case f\u00fcr die Datenbank umgewandelt. Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, in der Entwicklungsumgebung eine automatische Vervollst\u00e4ndigung zu haben. Die Angabe von \nTypen\n im Konstruktor dienen dazu, beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.\n\n\nDas folgende Codebeispiel zeigt einen Ausschnitt aus dem zur \nClient\n Entity geh\u00f6renden Mapper.\n\n\n?php\nnamespace OCA\\OAuth2\\Db;\n\nuse InvalidArgumentException;\nuse OCP\\AppFramework\\Db\\Entity;\nuse OCP\\IDb;\nuse OCP\\AppFramework\\Db\\Mapper;\n\nclass ClientMapper extends Mapper {\n\n    /**\n     * ClientMapper constructor.\n     *\n     * @param IDb $db Database Connection.\n     */\n    public function __construct(IDb $db) {\n        parent::__construct($db, 'oauth2_clients');\n    }\n\n    /**\n     * Selects a client by its ID.\n     *\n     * @param int $id The client's ID.\n     *\n     * @return Entity The client entity.\n     *\n     * @throws \\OCP\\AppFramework\\Db\\DoesNotExistException if not found.\n     * @throws \\OCP\\AppFramework\\Db\\MultipleObjectsReturnedException if more than one result.\n     */\n    public function find($id) {\n        if (!is_int($id)) {\n            throw new InvalidArgumentException('id must not be null');\n        }\n\n        $sql = 'SELECT * FROM `' . $this-\ntableName . '` WHERE `id` = ?';\n        return $this-\nfindEntity($sql, array($id), null, null);\n    }\n\n    /**\n     * Selects clients by the given user ID.\n     *\n     * @param string $userId The user ID.\n     *\n     * @return array The client entities.\n     */\n    public function findByUser($userId) {\n        if (!is_string($userId)) {\n            throw new InvalidArgumentException('userId must not be null');\n        }\n\n        $sql = 'SELECT * FROM `' . $this-\ntableName . '` '\n            . 'WHERE `id` IN ( '\n                . 'SELECT `client_id` FROM `oc_oauth2_authorization_codes` WHERE `user_id` = ? '\n                . 'UNION '\n                . 'SELECT `client_id` FROM `oc_oauth2_access_tokens` WHERE `user_id` = ? '\n            .')';\n        return $this-\nfindEntities($sql, array($userId, $userId), null, null);\n    }\n\n}\n\n\n\n\nBeim Mapper ist es wichtig, dass die Klasse von \nMapper\n erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor \u201eMapper\u201c als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen \nfind($id)\n und \nfindByUser($userId)\n demonstrieren \nSELECT\n-Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit ben\u00f6tigten Parametern an \nfindEntity\n bzw. \nfindEntities\n \u00fcbergeben, abh\u00e4ngig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. \n\n\nSchnittstellen und Routes\n\n\nController\n\n\nTemplates\n\n\nTests\n\n\nContinuous Integration\n\n\nAnpassung der \ndav\n App\n\n\nHinzuf\u00fcgen eines Authentication Backends\n\n\nTests\n\n\nProtokollablauf im Detail", 
+            "title": "Technische Umsetzung"
         }, 
         {
-            "location": "/owncloud/#owncloud", 
-            "text": "Um auf Dateien in ownCloud zuzugreifen, wird standardm\u00e4\u00dfig  eine WebDAV Schnittstelle angeboten . Da diese jedoch nur \u00fcber  Basic Authentication  ansprechbar ist, musste sie um das  OAuth 2.0 Protokoll  erweitert werden.", 
-            "title": "ownCloud"
-        }, 
-        {
-            "location": "/owncloud/#technische-umsetzung", 
+            "location": "/owncloud/technische-umsetzung/#technische-umsetzung", 
             "text": "Da man m\u00f6glichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als  ownCloud App  realisiert worden und nutzt die  sabre/dav  Bibliothek. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu k\u00f6nnen. Daf\u00fcr wurde eine weitere ownCloud App implementiert.", 
             "title": "Technische Umsetzung"
         }, 
         {
-            "location": "/owncloud/#implementierung-der-oauth2-app", 
+            "location": "/owncloud/technische-umsetzung/#implementierung-der-oauth2-app", 
             "text": "In der App sollte der h\u00e4ufig f\u00fcr Webapplikationen eingesetzte  Authorization Code Flow  implementiert werden. Dazu mussten folgende User Stories umgesetzt werden:   Clientregistrierung:  Als ownCloud-Administrator m\u00f6chte ich Clients in den Administrator-Einstellungen hinzuf\u00fcgen und l\u00f6schen k\u00f6nnen, um die Kontrolle \u00fcber erlaubte Clients zu haben.  Authorization URL:  Als Client-Entwickler m\u00f6chte ich eine Authorization URL zur Verf\u00fcgung haben, um Authorization Codes anfordern zu k\u00f6nnen.  Access Token URL:  Als Client-Entwickler m\u00f6chte ich eine Access Token URL zur Verf\u00fcgung haben, um Access Tokens anfordern zu k\u00f6nnen.  Verwaltung autorisierter Applikationen : Als ownCloud-Nutzer m\u00f6chte ich in den pers\u00f6nlichen Einstellungen autorisierte Applikationen verwalten k\u00f6nnen, um einen \u00dcberblick zu haben und Autorisierungen widerrufen zu k\u00f6nnen.", 
             "title": "Implementierung der oauth2 App"
         }, 
         {
-            "location": "/owncloud/#datenmodell", 
-            "text": "Zun\u00e4chst musste ein Datenmodell zur Speicherung der ben\u00f6tigten Daten aufgestellt werden. Gem\u00e4\u00df dem Authorization Code Flow wurden folgende Entit\u00e4ten mit Attributen definiert:   client :  Die Applikation, die f\u00fcr den Zugriff auf die WebDAV Schnittstelle autorisiert werden soll.  identifier : Zeichenkette, die einen Client eindeutig identifiziert.  secret : Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.  redirect_uri : URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.    authorization_code :  Ein  Authorization Grant , mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.  code : Zeichenkette, die als Authorization Code dient.  client_id : Client Identifier des Clients, f\u00fcr den der Authorization Code ausgegeben wird.  user_id : User ID des ownCloud-Nutzers, der den Client autorisiert hat.  expires : Zeitpunkt, zu dem der Authorization Code ung\u00fcltig wird (optional).    access_token :  Eine Zeichenkette, die den Zugriff auf die WebDAV Schnittstelle erlaubt.  code : Zeichenkette, die als Access Token dient.  client_id : Client Identifier des Clients, f\u00fcr den der Access Token ausgegeben wird.  user_id : User ID des ownCloud-Nutzers, der den Client autorisiert hat.  expires : Zeitpunkt, zu dem der Access Token ung\u00fcltig wird (optional).    refresh_token :  Eine Zeichenkette, mit der ein abgelaufener Access Token gegen einen neuen ausgetauscht werden kann.  code : Zeichenkette, die als Refresh Token dient.  client_id : Client Identifier des Clients, f\u00fcr den der Access Token ausgegeben wird.  user_id : User ID des ownCloud-Nutzers, der den Client autorisiert hat.  expires : Zeitpunkt, zu dem der Refresh Token ung\u00fcltig wird (optional).     Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.", 
+            "location": "/owncloud/technische-umsetzung/#datenmodell", 
+            "text": "Zun\u00e4chst musste ein Datenmodell zur Speicherung der ben\u00f6tigten Daten aufgestellt werden. Gem\u00e4\u00df dem Authorization Code Flow wurden folgende Entit\u00e4ten mit Attributen definiert:   client :  Die Applikation, die f\u00fcr den Zugriff auf die WebDAV Schnittstelle autorisiert werden soll.  identifier : Zeichenkette, die einen Client eindeutig identifiziert.  secret : Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.  redirect_uri : URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.    authorization_code :  Ein  Authorization Grant , mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.  code : Zeichenkette, die als Authorization Code dient.  client_id : Client Identifier des Clients, f\u00fcr den der Authorization Code ausgegeben wird.  user_id : User ID des ownCloud-Nutzers, der den Client autorisiert hat.  expires : Zeitpunkt, zu dem der Authorization Code ung\u00fcltig wird (optional).    access_token :  Eine Zeichenkette, die den Zugriff auf die WebDAV Schnittstelle erlaubt.  code : Zeichenkette, die als Access Token dient.  client_id : Client Identifier des Clients, f\u00fcr den der Access Token ausgegeben wird.  user_id : User ID des ownCloud-Nutzers, der den Client autorisiert hat.  expires : Zeitpunkt, zu dem der Access Token ung\u00fcltig wird (optional).    refresh_token :  Eine Zeichenkette, mit der ein abgelaufener Access Token gegen einen neuen ausgetauscht werden kann.  code : Zeichenkette, die als Refresh Token dient.  client_id : Client Identifier des Clients, f\u00fcr den der Access Token ausgegeben wird.  user_id : User ID des ownCloud-Nutzers, der den Client autorisiert hat.  expires : Zeitpunkt, zu dem der Refresh Token ung\u00fcltig wird (optional).     Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.  \n   TODO:  ERM einf\u00fcgen.", 
             "title": "Datenmodell"
         }, 
         {
-            "location": "/owncloud/#anpassung-der-dav-app", 
+            "location": "/owncloud/technische-umsetzung/#mapper-und-entities", 
+            "text": "F\u00fcr den Datenbank-Zugriff im PHP-Code ist es in ownCloud m\u00f6glich,  Mapper  und  Entities  zu schreiben. Dadurch werden Tupel in einer Datenbank-Tabelle automatisch in ein Objekt umgewandelt.  Folgendes Codebeispiel zeigt am Beispiel des Entitys  Client , wie eine PHP-Klasse dazu aussehen muss.  ?php\nnamespace OCA\\OAuth2\\Db;\n\nuse OCP\\AppFramework\\Db\\Entity;\n\n/**\n * Class Client\n *\n * @method string getIdentifier()\n * @method void setIdentifier(string $identifier)\n * @method string getSecret()\n * @method void setSecret(string $secret)\n * @method string getRedirectUri()\n * @method void setRedirectUri(string $redirectUri)\n * @method string getName()\n * @method void setName(string $name)\n */\nclass Client extends Entity {\n\n    protected $identifier;\n    protected $secret;\n    protected $redirectUri;\n    protected $name;\n\n    public function __construct() {\n        $this- addType('id', 'int');\n        $this- addType('identifier', 'string');\n        $this- addType('secret', 'string');\n        $this- addType('redirect_uri', 'string');\n        $this- addType('name', 'string');\n    }\n\n}  Wichtig ist, dass die Klasse von  Entity  erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle \u00fcbereinstimmen. Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case f\u00fcr die Datenbank umgewandelt. Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, in der Entwicklungsumgebung eine automatische Vervollst\u00e4ndigung zu haben. Die Angabe von  Typen  im Konstruktor dienen dazu, beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.  Das folgende Codebeispiel zeigt einen Ausschnitt aus dem zur  Client  Entity geh\u00f6renden Mapper.  ?php\nnamespace OCA\\OAuth2\\Db;\n\nuse InvalidArgumentException;\nuse OCP\\AppFramework\\Db\\Entity;\nuse OCP\\IDb;\nuse OCP\\AppFramework\\Db\\Mapper;\n\nclass ClientMapper extends Mapper {\n\n    /**\n     * ClientMapper constructor.\n     *\n     * @param IDb $db Database Connection.\n     */\n    public function __construct(IDb $db) {\n        parent::__construct($db, 'oauth2_clients');\n    }\n\n    /**\n     * Selects a client by its ID.\n     *\n     * @param int $id The client's ID.\n     *\n     * @return Entity The client entity.\n     *\n     * @throws \\OCP\\AppFramework\\Db\\DoesNotExistException if not found.\n     * @throws \\OCP\\AppFramework\\Db\\MultipleObjectsReturnedException if more than one result.\n     */\n    public function find($id) {\n        if (!is_int($id)) {\n            throw new InvalidArgumentException('id must not be null');\n        }\n\n        $sql = 'SELECT * FROM `' . $this- tableName . '` WHERE `id` = ?';\n        return $this- findEntity($sql, array($id), null, null);\n    }\n\n    /**\n     * Selects clients by the given user ID.\n     *\n     * @param string $userId The user ID.\n     *\n     * @return array The client entities.\n     */\n    public function findByUser($userId) {\n        if (!is_string($userId)) {\n            throw new InvalidArgumentException('userId must not be null');\n        }\n\n        $sql = 'SELECT * FROM `' . $this- tableName . '` '\n            . 'WHERE `id` IN ( '\n                . 'SELECT `client_id` FROM `oc_oauth2_authorization_codes` WHERE `user_id` = ? '\n                . 'UNION '\n                . 'SELECT `client_id` FROM `oc_oauth2_access_tokens` WHERE `user_id` = ? '\n            .')';\n        return $this- findEntities($sql, array($userId, $userId), null, null);\n    }\n\n}  Beim Mapper ist es wichtig, dass die Klasse von  Mapper  erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor \u201eMapper\u201c als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen  find($id)  und  findByUser($userId)  demonstrieren  SELECT -Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit ben\u00f6tigten Parametern an  findEntity  bzw.  findEntities  \u00fcbergeben, abh\u00e4ngig davon, ob mehrere Entities im Ergebnis enthalten sein sollten.", 
+            "title": "Mapper und Entities"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/#schnittstellen-und-routes", 
+            "text": "", 
+            "title": "Schnittstellen und Routes"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/#controller", 
+            "text": "", 
+            "title": "Controller"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/#templates", 
+            "text": "", 
+            "title": "Templates"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/#tests", 
+            "text": "", 
+            "title": "Tests"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/#continuous-integration", 
+            "text": "", 
+            "title": "Continuous Integration"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/#anpassung-der-dav-app", 
             "text": "", 
             "title": "Anpassung der dav App"
         }, 
         {
-            "location": "/owncloud/#benutzung", 
+            "location": "/owncloud/technische-umsetzung/#hinzufugen-eines-authentication-backends", 
+            "text": "", 
+            "title": "Hinzuf\u00fcgen eines Authentication Backends"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/#tests_1", 
+            "text": "", 
+            "title": "Tests"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/#protokollablauf-im-detail", 
+            "text": "", 
+            "title": "Protokollablauf im Detail"
+        }, 
+        {
+            "location": "/owncloud/benutzung/", 
+            "text": "Benutzung\n\n\nInstallation\n\n\n\n\nHinweis:\n Zur Zeit liegen die Anpassungen der \ndav\n App als \nPull Request\n vor. Falls die \u00c4nderungen angenommen werden, sind sie in einer der n\u00e4chsten ownCloud Versionen enthalten.\n\n\n\n\nDa die \u00c4nderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der \ndav-oauth\n-Branch des \ngeforkten Repositorys\n geklont werden:\n\n\n$ git clone -b dav-oauth https://github.com/pssl16/core\n\n\n\n\nDanach m\u00fcssen die Dependencies installiert werden. Dazu gen\u00fcgt es, im Verzeichnis des Repositorys folgenden Befehl auszuf\u00fchren:\n\n\n$ make\n\n\n\n\nDie restlichen Installationsschritte unterscheiden sich nicht von denen im \nownCloud Handbuch\n.\n\n\nClientregistrierung\n\n\nAuthorization Code Flow\n\n\nDie nachfolgende Abbildung stellt den durch die \noauth2\n App implementierten \nOAuth 2.0 Authorization Code Flow\n dar.\n\n\n\n\n\n  \nTODO:\n Beschreibung der Schritte einf\u00fcgen.\n\n\n\n\nAngepasste WebDAV Schnittstelle", 
+            "title": "Benutzung"
+        }, 
+        {
+            "location": "/owncloud/benutzung/#benutzung", 
             "text": "", 
             "title": "Benutzung"
         }, 
         {
-            "location": "/owncloud/#installation", 
-            "text": "Da die \u00c4nderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der  dav-oauth -Branch des  geforkten Repositorys  geklont werden:  $ git clone -b dav-oauth https://github.com/pssl16/core  Danach m\u00fcssen die Dependencies installiert werden. Dazu gen\u00fcgt es, im Verzeichnis des Repositorys folgenden Befehl auszuf\u00fchren:  $ make  Die restlichen Installationsschritte unterscheiden sich nicht von denen im  ownCloud Handbuch .", 
+            "location": "/owncloud/benutzung/#installation", 
+            "text": "Hinweis:  Zur Zeit liegen die Anpassungen der  dav  App als  Pull Request  vor. Falls die \u00c4nderungen angenommen werden, sind sie in einer der n\u00e4chsten ownCloud Versionen enthalten.   Da die \u00c4nderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der  dav-oauth -Branch des  geforkten Repositorys  geklont werden:  $ git clone -b dav-oauth https://github.com/pssl16/core  Danach m\u00fcssen die Dependencies installiert werden. Dazu gen\u00fcgt es, im Verzeichnis des Repositorys folgenden Befehl auszuf\u00fchren:  $ make  Die restlichen Installationsschritte unterscheiden sich nicht von denen im  ownCloud Handbuch .", 
             "title": "Installation"
         }, 
         {
-            "location": "/owncloud/#clientregistrierung", 
+            "location": "/owncloud/benutzung/#clientregistrierung", 
             "text": "", 
             "title": "Clientregistrierung"
         }, 
         {
-            "location": "/owncloud/#authorization-code-flow", 
+            "location": "/owncloud/benutzung/#authorization-code-flow", 
             "text": "Die nachfolgende Abbildung stellt den durch die  oauth2  App implementierten  OAuth 2.0 Authorization Code Flow  dar.   \n   TODO:  Beschreibung der Schritte einf\u00fcgen.", 
             "title": "Authorization Code Flow"
         }, 
         {
-            "location": "/owncloud/#angepasste-webdav-schnittstelle", 
+            "location": "/owncloud/benutzung/#angepasste-webdav-schnittstelle", 
             "text": "", 
             "title": "Angepasste WebDAV Schnittstelle"
         }, 
         {
-            "location": "/moodle/", 
-            "text": "Moodle\n\n\nTechnische Umsetzung\n\n\nBenutzung\n\n\nInstallation", 
-            "title": "Moodle"
+            "location": "/moodle/technische-umsetzung/", 
+            "text": "Technische Umsetzung", 
+            "title": "Technische Umsetzung"
         }, 
         {
-            "location": "/moodle/#moodle", 
-            "text": "", 
-            "title": "Moodle"
-        }, 
-        {
-            "location": "/moodle/#technische-umsetzung", 
+            "location": "/moodle/technische-umsetzung/#technische-umsetzung", 
             "text": "", 
             "title": "Technische Umsetzung"
         }, 
         {
-            "location": "/moodle/#benutzung", 
+            "location": "/moodle/benutzung/", 
+            "text": "Benutzung\n\n\nInstallation", 
+            "title": "Benutzung"
+        }, 
+        {
+            "location": "/moodle/benutzung/#benutzung", 
             "text": "", 
             "title": "Benutzung"
         }, 
         {
-            "location": "/moodle/#installation", 
+            "location": "/moodle/benutzung/#installation", 
             "text": "", 
             "title": "Installation"
         }

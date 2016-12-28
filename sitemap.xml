@@ -4,25 +4,41 @@
     
     <url>
      <loc>/</loc>
-     <lastmod>2016-12-27</lastmod>
+     <lastmod>2016-12-28</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
+        
     <url>
-     <loc>/owncloud/</loc>
-     <lastmod>2016-12-27</lastmod>
+     <loc>/owncloud/technische-umsetzung/</loc>
+     <lastmod>2016-12-28</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
+    <url>
+     <loc>/owncloud/benutzung/</loc>
+     <lastmod>2016-12-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
     
+        
     <url>
-     <loc>/moodle/</loc>
-     <lastmod>2016-12-27</lastmod>
+     <loc>/moodle/technische-umsetzung/</loc>
+     <lastmod>2016-12-28</lastmod>
      <changefreq>daily</changefreq>
     </url>
+        
+    <url>
+     <loc>/moodle/benutzung/</loc>
+     <lastmod>2016-12-28</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+        
     
 
 </urlset>
