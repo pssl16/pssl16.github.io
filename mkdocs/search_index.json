@@ -146,14 +146,109 @@
             "title": "Angepasste WebDAV Schnittstelle"
         }, 
         {
-            "location": "/moodle/technische-umsetzung/", 
-            "text": "Technische Umsetzung", 
-            "title": "Technische Umsetzung"
+            "location": "/moodle/software-architektur/", 
+            "text": "Software Architektur\n\n\nZur Umsetzung des Projektziels, musste moodle um n\u00f6tige Funktionalit\u00e4ten erg\u00e4nzt werden, die weder durch den moodle Core bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugef\u00fcgt werden konnten. Im Folgenden wird beschrieben, wie moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.\n\n\n\u00dcbersicht \u00fcber die Plugin-Struktur", 
+            "title": "Software Architektur"
         }, 
         {
-            "location": "/moodle/technische-umsetzung/#technische-umsetzung", 
+            "location": "/moodle/software-architektur/#software-architektur", 
+            "text": "Zur Umsetzung des Projektziels, musste moodle um n\u00f6tige Funktionalit\u00e4ten erg\u00e4nzt werden, die weder durch den moodle Core bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugef\u00fcgt werden konnten. Im Folgenden wird beschrieben, wie moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.", 
+            "title": "Software Architektur"
+        }, 
+        {
+            "location": "/moodle/software-architektur/#ubersicht-uber-die-plugin-struktur", 
             "text": "", 
-            "title": "Technische Umsetzung"
+            "title": "\u00dcbersicht \u00fcber die Plugin-Struktur"
+        }, 
+        {
+            "location": "/moodle/admin-tool/", 
+            "text": "Admin Tool: \noauth2sciebo\n\n\nZweck des Plugins\n\n\nVorgegebene Schnittstelle\n\n\nImplementierung der vorgegebenen Schnittstelle\n\n\nTests und CI", 
+            "title": "Admin Tool"
+        }, 
+        {
+            "location": "/moodle/admin-tool/#admin-tool-oauth2sciebo", 
+            "text": "", 
+            "title": "Admin Tool: oauth2sciebo"
+        }, 
+        {
+            "location": "/moodle/admin-tool/#zweck-des-plugins", 
+            "text": "", 
+            "title": "Zweck des Plugins"
+        }, 
+        {
+            "location": "/moodle/admin-tool/#vorgegebene-schnittstelle", 
+            "text": "", 
+            "title": "Vorgegebene Schnittstelle"
+        }, 
+        {
+            "location": "/moodle/admin-tool/#implementierung-der-vorgegebenen-schnittstelle", 
+            "text": "", 
+            "title": "Implementierung der vorgegebenen Schnittstelle"
+        }, 
+        {
+            "location": "/moodle/admin-tool/#tests-und-ci", 
+            "text": "", 
+            "title": "Tests und CI"
+        }, 
+        {
+            "location": "/moodle/repository/", 
+            "text": "Repository: \nsciebo\n\n\nZweck des Plugins\n\n\nVorgegebene Schnittstelle\n\n\nImplementierung der vorgegebenen Schnittstelle\n\n\nTests und CI", 
+            "title": "Repository"
+        }, 
+        {
+            "location": "/moodle/repository/#repository-sciebo", 
+            "text": "", 
+            "title": "Repository: sciebo"
+        }, 
+        {
+            "location": "/moodle/repository/#zweck-des-plugins", 
+            "text": "", 
+            "title": "Zweck des Plugins"
+        }, 
+        {
+            "location": "/moodle/repository/#vorgegebene-schnittstelle", 
+            "text": "", 
+            "title": "Vorgegebene Schnittstelle"
+        }, 
+        {
+            "location": "/moodle/repository/#implementierung-der-vorgegebenen-schnittstelle", 
+            "text": "", 
+            "title": "Implementierung der vorgegebenen Schnittstelle"
+        }, 
+        {
+            "location": "/moodle/repository/#tests-und-ci", 
+            "text": "", 
+            "title": "Tests und CI"
+        }, 
+        {
+            "location": "/moodle/activity/", 
+            "text": "Aktivit\u00e4t: \ncollaborative folders\n\n\nZweck des Plugins\n\n\nVorgegebene Schnittstelle\n\n\nImplementierung der vorgegebenen Schnittstelle\n\n\nTests und CI", 
+            "title": "Collaborative Folders"
+        }, 
+        {
+            "location": "/moodle/activity/#aktivitat-collaborative-folders", 
+            "text": "", 
+            "title": "Aktivit\u00e4t: collaborative folders"
+        }, 
+        {
+            "location": "/moodle/activity/#zweck-des-plugins", 
+            "text": "", 
+            "title": "Zweck des Plugins"
+        }, 
+        {
+            "location": "/moodle/activity/#vorgegebene-schnittstelle", 
+            "text": "", 
+            "title": "Vorgegebene Schnittstelle"
+        }, 
+        {
+            "location": "/moodle/activity/#implementierung-der-vorgegebenen-schnittstelle", 
+            "text": "", 
+            "title": "Implementierung der vorgegebenen Schnittstelle"
+        }, 
+        {
+            "location": "/moodle/activity/#tests-und-ci", 
+            "text": "", 
+            "title": "Tests und CI"
         }, 
         {
             "location": "/moodle/benutzung/", 

@@ -8,7 +8,7 @@
     <meta name="author" content="Lukas Biermann, Nina Herrmann, Wladislaw Iwanzow, Dennis Meis, Jonathan Neugebauer">  
     <link rel="shortcut icon" href="../../img/favicon.ico">
 
-    <title>Benutzung - sciebo@Learnweb</title>
+    <title>Repository - sciebo@Learnweb</title>
 
     <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
@@ -71,19 +71,19 @@
                 
                 
                 
-                    <li class="dropdown active">
+                    <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">ownCloud <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
                             
 <li >
-    <a href="../technische-umsetzung/">Technische Umsetzung</a>
+    <a href="../../owncloud/technische-umsetzung/">Technische Umsetzung</a>
 </li>
 
                         
                             
-<li class="active">
-    <a href="./">Benutzung</a>
+<li >
+    <a href="../../owncloud/benutzung/">Benutzung</a>
 </li>
 
                         
@@ -92,7 +92,7 @@
                 
                 
                 
-                    <li class="dropdown">
+                    <li class="dropdown active">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Moodle <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                         
@@ -103,25 +103,25 @@
         
             
 <li >
-    <a href="../../moodle/software-architektur/">Software Architektur</a>
+    <a href="../software-architektur/">Software Architektur</a>
 </li>
 
         
             
 <li >
-    <a href="../../moodle/admin-tool/">Admin Tool</a>
+    <a href="../admin-tool/">Admin Tool</a>
+</li>
+
+        
+            
+<li class="active">
+    <a href="./">Repository</a>
 </li>
 
         
             
 <li >
-    <a href="../../moodle/repository/">Repository</a>
-</li>
-
-        
-            
-<li >
-    <a href="../../moodle/activity/">Collaborative Folders</a>
+    <a href="../activity/">Collaborative Folders</a>
 </li>
 
         
@@ -131,7 +131,7 @@
                         
                             
 <li >
-    <a href="../../moodle/benutzung/">Benutzung</a>
+    <a href="../benutzung/">Benutzung</a>
 </li>
 
                         
@@ -150,12 +150,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../technische-umsetzung/">
+                        <a rel="next" href="../admin-tool/">
                             <i class="fa fa-arrow-left"></i> Zurück
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../../moodle/software-architektur/">
+                        <a rel="prev" href="../activity/">
                             Weiter <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -180,18 +180,18 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="first-level active"><a href="#benutzung">Benutzung</a></li>
+        <li class="first-level active"><a href="#repository-sciebo">Repository: sciebo</a></li>
         
-            <li class="second-level"><a href="#installation">Installation</a></li>
+            <li class="second-level"><a href="#zweck-des-plugins">Zweck des Plugins</a></li>
             
         
-            <li class="second-level"><a href="#clientregistrierung">Clientregistrierung</a></li>
+            <li class="second-level"><a href="#vorgegebene-schnittstelle">Vorgegebene Schnittstelle</a></li>
             
         
-            <li class="second-level"><a href="#authorization-code-flow">Authorization Code Flow</a></li>
+            <li class="second-level"><a href="#implementierung-der-vorgegebenen-schnittstelle">Implementierung der vorgegebenen Schnittstelle</a></li>
             
         
-            <li class="second-level"><a href="#angepasste-webdav-schnittstelle">Angepasste WebDAV Schnittstelle</a></li>
+            <li class="second-level"><a href="#tests-und-ci">Tests und CI</a></li>
             
         
     
@@ -199,29 +199,11 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="benutzung">Benutzung</h1>
-<h2 id="installation">Installation</h2>
-<blockquote>
-<p><strong>Hinweis:</strong> Zur Zeit liegen die Anpassungen der <code>dav</code> App als <a href="https://github.com/owncloud/core/pull/26742">Pull Request</a> vor. Falls die Änderungen angenommen werden, sind sie in einer der nächsten ownCloud Versionen enthalten.</p>
-</blockquote>
-<p>Da die Änderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der <code>dav-oauth</code>-Branch des <a href="https://github.com/pssl16/core">geforkten Repositorys</a> geklont werden:</p>
-<pre><code class="nohighlight">$ git clone -b dav-oauth https://github.com/pssl16/core
-</code></pre>
-
-<p>Danach müssen die Dependencies installiert werden. Dazu genügt es, im Verzeichnis des Repositorys folgenden Befehl auszuführen:</p>
-<pre><code class="nohighlight">$ make
-</code></pre>
-
-<p>Die restlichen Installationsschritte unterscheiden sich nicht von denen im <a href="https://doc.owncloud.org/server/latest/admin_manual/installation/index.html">ownCloud Handbuch</a>.</p>
-<h2 id="clientregistrierung">Clientregistrierung</h2>
-<h2 id="authorization-code-flow">Authorization Code Flow</h2>
-<p>Die nachfolgende Abbildung stellt den durch die <code>oauth2</code> App implementierten <a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Code Flow</a> dar.</p>
-<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Beschreibung der Schritte einfügen.
-</div>
-
-<h2 id="angepasste-webdav-schnittstelle">Angepasste WebDAV Schnittstelle</h2></div>
+<h1 id="repository-sciebo">Repository: <code>sciebo</code></h1>
+<h2 id="zweck-des-plugins">Zweck des Plugins</h2>
+<h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
+<h2 id="implementierung-der-vorgegebenen-schnittstelle">Implementierung der vorgegebenen Schnittstelle</h2>
+<h2 id="tests-und-ci">Tests und CI</h2></div>
         
     </div>
 
