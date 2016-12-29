@@ -191,8 +191,46 @@
         <div class="col-md-9" role="main">
 
 <h1 id="software-architektur">Software Architektur</h1>
-<p>Zur Umsetzung des Projektziels, musste moodle um nötige Funktionalitäten ergänzt werden, die weder durch den moodle Core bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugefügt werden konnten. Im Folgenden wird beschrieben, wie moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.</p>
-<h2 id="ubersicht-uber-die-plugin-struktur">Übersicht über die Plugin-Struktur</h2></div>
+<p>Zur Umsetzung des Projektziels, musste moodle um nötige Funktionalitäten ergänzt werden, die weder durch den moodle Core 
+bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugefügt werden konnten. Im Folgenden wird beschrieben, 
+wie moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.</p>
+<h2 id="ubersicht-uber-die-plugin-struktur">Übersicht über die Plugin-Struktur</h2>
+<p>Moodle Plugins dienen dazu um im Core angebotene Funktionalitäten dahingehend zu erweitern, sodass diese den 
+individuellen Bedürfnissen des Nutzers entsprechen. 
+In moodle wird ein plugin einer Kategorie zugeordnet, welche eine Bestimmte Art von Funktionalität repräsentiert. </p>
+<p>Im Laufe des Projekts hat man sich auf folgende zu implementierende Plugins geeinigt:</p>
+<table>
+<thead>
+<tr>
+<th>Plugintyp</th>
+<th>Beschreibung</th>
+<th>Zweck</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.moodle.org/dev/Activity_modules"><code>admin tool</code></a></td>
+<td>Bietet Dienste zur Site-Administration an</td>
+<td>Verwaltung der Authentifizierung mittels OAuth2</td>
+</tr>
+<tr>
+<td><a href="https://docs.moodle.org/dev/Admin_tools"><code>repository</code></a></td>
+<td>Stellt Verbindung zu einer externen Datenquelle her</td>
+<td>Datenbeschaffung aus Sciebo</td>
+</tr>
+<tr>
+<td><a href="https://docs.moodle.org/dev/Admin_tools"><code>activity</code></a></td>
+<td>Stellt Aktivität in einem Kurs zur Verfügung</td>
+<td>Bereitstellung eines Ordners für kollaborative Arbeit</td>
+</tr>
+</tbody>
+</table>
+<p>Zwar bietet das <a href="https://docs.moodle.org/dev/Admin_tools">Repository Plugin</a> die nötige Funktionalität über die gegebene 
+<a href="../repository/">Schnittstelle</a> um Dateien aus Sciebo nach moodle hochzuladen, jedoch kann über die Schnittstelle 
+hinaus keine weitere Funktionalität darin implementiert werden. Weil daher nur eine beschränkte Anzahl von 
+Integrationsszenarien abgedeckt werden würde, hat man sich für ein ergänzendes <a href="https://docs.moodle.org/dev/Admin_tools">Activity Module</a> 
+enschieden. Basierend auf dieser Entscheidung erschien es als sinnvoll den Authentifizierungsprozess ebenfalls zentral 
+zu implementieren, sodass allen zusätzlichen Plugins der Zugriff auf das Verfahren ermöglicht wird.</p></div>
         
     </div>
 
