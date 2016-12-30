@@ -207,7 +207,39 @@
 
 <h1 id="admin-tool-oauth2sciebo">Admin Tool: <code>oauth2sciebo</code></h1>
 <h2 id="zweck-des-plugins">Zweck des Plugins</h2>
+<p>Wie bereits im Kapitel <a href="../software-architektur/">Software Architektur</a> angeschnitten, ist der Hauptzweck dieses Plugins
+die Schnittstelle zu Sciebo bzw. ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud 
+App <a href="../../owncloud/technische-umsetzung/">OAuth2</a> mit Hilfe eines OAuth 2.0 Clients über die WebDAV Schnittstelle angesprochen.
+Gleichzeitig kann dieses Plugin auch für ähnliche externe Datenquellen verwendet werden, sofern diese über die nötigen
+OAuth 2.0 und WebDAV Schnittstellen verfügen.</p>
+<p>Im Wesentlichen implementiert dieses Plugin folgende <a href="../software-architektur/">Integrationsszenarien</a>:</p>
+<ul>
+<li><strong>Beispiel 1:</strong> ...</li>
+<li><strong>Beispiel 2:</strong> ...</li>
+</ul>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Integrationsszenarien definieren und hier einfügen.
+</div>
+
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
+<p>Für Admin Tools ist in moodle lediglich eine schwach definierte Schnittstelle gegeben. Wie in jedem anderen moodle Plugin 
+auch, müssen zunächst einige Standartdateien implementiert werden: </p>
+<ul>
+<li><strong><code>version.php</code>:</strong> Beschreibt die Versionsnummer des Plugins, die benötigte moodle Version und Abhängigkeiten des Plugins.</li>
+<li><strong><code>access.php</code>:</strong> Legt die Berechtigungen für definierte Aktionen innerhalb des Plugins anhand von Nutzerrollen fest.</li>
+<li><strong><code>tool_oauth2sciebo.php</code>:</strong> Beinhaltet Sprachstrings für unterschiedliche Regionen und Sprachen, sodass definierte Strings,
+abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können.</li>
+</ul>
+<p>Zusätzlich zu den allgemeinen Plugindateien, sollte unser Admin Tool auch mindestens noch eine Datei namens <code>settings.php</code>
+beinhalten. Diese umfasst alle Einstellungen, die für das Admin Tool geltend dem Administrator der moodle Instanz zur 
+Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration moodle-intern in dem sogenannten <a href="https://docs.moodle.org/dev/Admin_settings">Admin Tree</a>
+gespeichert. Aus dieser Baumstruktur können anschließend benötigte Einstellungen beschafft werden.</p>
+<p>Insgesamt ergibt sich folgende Struktur von Ordnern und Dateien, die mindestens für die Implementierung des von uns gebrauchten
+Admin Tools gebraucht wird:</p>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Grafik für Ordnerstruktur einfügen.
+</div>
+
 <h2 id="implementierung-der-vorgegebenen-schnittstelle">Implementierung der vorgegebenen Schnittstelle</h2>
 <h2 id="tests-und-ci">Tests und CI</h2>
 <h1 id="anderungen-an-core-bibliotheken">Änderungen an Core Bibliotheken</h1>
