@@ -4,7 +4,7 @@ site_author: 'Lukas Biermann, Nina Herrmann, Wladislaw Iwanzow, Dennis Meis, Jon
 repo_url: "https://github.com/pssl16"
 
 # Copyright
-copyright: 'Copyright &copy; 2016 PSSL16'
+copyright: 'Copyright &copy; 2017 PSSL16'
 
 # Documentation and theme
 docs_dir: 'docs'
