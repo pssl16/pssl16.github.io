@@ -193,6 +193,9 @@
                 <li class="third-level"><a href="#eingabemaske">Eingabemaske</a></li>
             
         
+            <li class="second-level"><a href="#oauth-20-client">OAuth 2.0 Client</a></li>
+            
+        
             <li class="second-level"><a href="#tests-und-ci">Tests und CI</a></li>
             
         
@@ -270,6 +273,52 @@ und der Anzeigename für die Einstellungsseite übergeben werden. </p>
 </ul>
 <p>Während Server Adresse, Pfad und Port mittels eines Textfeldes abgefragt werden können, sollten die anderen Optionen mit Hilfe
 einer Auswahl aus den angebotenen Möglicheiten erfragt werden können.</p>
+<p>Um nun die Eingabeeinstellungen dem Admin Tree anzuhängen, muss jedes vorgesehene Eingabefeld der <code>admin_settingpage</code> 
+mittels der Methode <code>add</code> hinzugefügt werden. Der dafür notwendige Code sieht wie folgt aus:</p>
+<pre><code class="php">&lt;?php
+
+$temp = new admin_settingpage('oauth2sciebo', new lang_string('pluginname', 'tool_oauth2sciebo'));
+$temp-&gt;add(new admin_setting_heading('coursebank_proxy_head',
+        get_string('configplugin', 'tool_oauth2sciebo'),
+        ''
+        ));
+$temp-&gt;add(new admin_setting_configtext('tool_oauth2sciebo/clientid',
+        get_string('clientid', 'tool_oauth2sciebo'),
+        '', ''
+        ));
+$temp-&gt;add(new admin_setting_configtext('tool_oauth2sciebo/secret',
+        get_string('secret', 'tool_oauth2sciebo'),
+        '', ''
+        ));
+$temp-&gt;add(new admin_setting_configtext('tool_oauth2sciebo/server',
+        get_string('server', 'tool_oauth2sciebo'),
+        '', ''
+    ));
+$temp-&gt;add(new admin_setting_configtext('tool_oauth2sciebo/path',
+        get_string('path', 'tool_oauth2sciebo'),
+        '', ''
+    ));
+$temp-&gt;add(new admin_setting_configtext('tool_oauth2sciebo/port',
+        get_string('port', 'tool_oauth2sciebo'),
+        '', ''
+    ));
+$temp-&gt;add(new admin_setting_configselect('tool_oauth2sciebo/auth',
+        get_string('auth', 'tool_oauth2sciebo'),
+        '', '', array('basic' =&gt; 'Basic', 'bearer' =&gt; 'Bearer')
+    ));
+
+$ADMIN-&gt;add('authsettings', $temp);
+</code></pre>
+
+<p>Hierbei sind die Klassen <code>admin_setting_heading</code>, <code>admin_configtext</code> und <code>admin_configselect</code> ebenfalls Teil der <code>adminlib.php</code>
+und die Überschrift der Einstellungen, eine Eingabetextfeld und eine Eingabeauswahl. Beim Erstellen eines Objektes der Klassen 
+<code>admin_configtext</code> und <code>admin_configselect</code> müssen neben dem einzigartigen Einstellungsnamen Anzeigename, Beschreibung und Standartwert
+übergeben werden, wobei bei letzterem die Auswahlmöglichkeiten angegeben werden müssen.</p>
+<p>Sobald alle nötigen Optionen erstellt worden und der <code>admin_settingpage</code> hinzugefügt worden sind, muss diese dem Globalen
+<code>ADMIN</code> Objekt hinzugefügt werden. Dabei wird auch die Stelle übergeben, an der die Einstellungen in moodle gefunden werden
+können. Im Fall des hier implementierten Admin Tools, werden die Einstellungen unter den Authentifizierungs-Optionen
+gelistet. Damit ist die Erstellung der Eingabemaske abgeschlossen.</p>
+<h2 id="oauth-20-client">OAuth 2.0 Client</h2>
 <h2 id="tests-und-ci">Tests und CI</h2>
 <h1 id="anderungen-an-core-bibliotheken">Änderungen an Core Bibliotheken</h1>
 <h2 id="anpassung-des-webdav-clients">Anpassung des WebDAV Clients</h2></div>
