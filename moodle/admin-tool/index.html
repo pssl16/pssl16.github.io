@@ -190,6 +190,8 @@
         
             <li class="second-level"><a href="#implementierung-der-vorgegebenen-schnittstelle">Implementierung der vorgegebenen Schnittstelle</a></li>
             
+                <li class="third-level"><a href="#eingabemaske">Eingabemaske</a></li>
+            
         
             <li class="second-level"><a href="#tests-und-ci">Tests und CI</a></li>
             
@@ -235,12 +237,39 @@ beinhalten. Diese umfasst alle Einstellungen, die für das Admin Tool geltend de
 Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration moodle-intern in dem sogenannten <a href="https://docs.moodle.org/dev/Admin_settings">Admin Tree</a>
 gespeichert. Aus dieser Baumstruktur können anschließend benötigte Einstellungen beschafft werden.</p>
 <p>Insgesamt ergibt sich folgende Struktur von Ordnern und Dateien, die mindestens für die Implementierung des von uns gebrauchten
-Admin Tools gebraucht wird:</p>
+Admin Tools notwendig ist:</p>
 <div class="alert alert-danger">
   <strong>TODO:</strong> Grafik für Ordnerstruktur einfügen.
 </div>
 
 <h2 id="implementierung-der-vorgegebenen-schnittstelle">Implementierung der vorgegebenen Schnittstelle</h2>
+<h3 id="eingabemaske">Eingabemaske</h3>
+<p>Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende Sciebo bzw. ownCloud Instanz zu befähigen,
+müssen diese zunächst mit Hilfe benötigter Eingabedaten konfiguriert werden. Diese sollen zentral im Admin Tool eingegeben und
+gespeichert werden können, um sie anschließend von anderen Plugins aus nutzen zu können. Dies ist einer der Gegensätze zu
+ähnlichen, vor Allem repository Plugins, welche die benötigte Daten auf Plugin-Ebene abfragen und benutzen.</p>
+<p>Eine solche Eingabemaske kann im Rahmen der <code>settings</code> definiert werden. Zu diesem Zweck muss zunächst ein neues Objekt vom Typ <code>admin_settingpage</code>
+innerhalb der <code>settings.php</code> Datei erstellt werden. Dieses Objekt umfasst eine Gruppe von Einstellungen, welche, sobald hinzugefügt,
+in dem Admin Tree eingeordnet und gespeichert werden. Die zugehörige Klasse befindet sich in Funktionsbibliothek
+<a href="https://github.com/moodle/moodle/blob/master/lib/adminlib.php"><code>adminlib.php</code></a>, welche Teil des moodle Cores ist. Beim 
+Aufruf des Konstruktors müssen Name des Plugins, welcher später dazu verwendet wird die Einstellung im Admin Tree wiederzufinden,
+und der Anzeigename für die Einstellungsseite übergeben werden. </p>
+<p>Um den OAuth 2.0 Protokollablauf zu ermöglichen, müssen folgende Daten im Vorfeld erfasst werden:</p>
+<ul>
+<li><strong><code>Client ID</code>:</strong> wird in ownCloud generiert und dient der Identifizierung eines regstrierten Clients.</li>
+<li><strong><code>Secret</code>:</strong> wird ebenfalls in ownCloud generiert und zur Authentifizierung verwendet.</li>
+</ul>
+<p>Beide Datensätze sind Strings und daher eignet sich für beide ein Textfeld zur Eingabe.</p>
+<p>Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:</p>
+<ul>
+<li><strong><code>Server Addresse</code>:</strong> Url über die der ownCloud Server erreicht werden kann.</li>
+<li><strong><code>Server Pfad</code>:</strong> der angehangene Pfad, über den die WebDAV Schnittstelle erreicht werden kann.</li>
+<li><strong><code>Port</code>:</strong> Port des WebDAV-Servers.</li>
+<li><strong><code>SSL-Verschlüsselung</code>:</strong> Wahl zwischen HTTP und HTTPS.</li>
+<li><strong><code>Authentifizierung</code>:</strong> Wahl zwischen Basic und Bearer Authentifizierung.  </li>
+</ul>
+<p>Während Server Adresse, Pfad und Port mittels eines Textfeldes abgefragt werden können, sollten die anderen Optionen mit Hilfe
+einer Auswahl aus den angebotenen Möglicheiten erfragt werden können.</p>
 <h2 id="tests-und-ci">Tests und CI</h2>
 <h1 id="anderungen-an-core-bibliotheken">Änderungen an Core Bibliotheken</h1>
 <h2 id="anpassung-des-webdav-clients">Anpassung des WebDAV Clients</h2></div>
