@@ -641,6 +641,14 @@ class Utilities {
 </div>
 
 <h3 id="templates">Templates</h3>
+<p>Für die zweckmäßige Nutzung der OAuth2 App sind Templates von Nöten. Relevant sind diese als Darstellung des Authorisierungsfenster, sprich der Hauptfunktionalität der App, für die Einstellungen des Admins und in den persönlichen Einstellungen. 
+    <code>authorize</code> stellt ein umrahmtes Fenster mit entsprechendem Text zur Authorisierung und der Möglichkeit die Authorisierung zu akzeptieren oder abzulehnen dar.
+    <code>settings-admin</code> stellt eine tabellarische Auflistung der registrierten Clients und ihrer jeweiligen redirectURIs, Identifiers und Secrets mit Möglichkeit die entsprechende Registrierung zu löschen dar, oder eine Meldung, dass kein Client registriert sind. Zusätzlich gibt es eine Eingabemaske zur Registrierung von neuen Clients, die einen Namen und eine redirectURI fordert.
+    <code>settings-personal</code> stellt eine tabellarische Auflistung der autorisierten Applikationen mit Möglichkeit die entsprechende Authorisierung zu löschen dar, oder eine Meldung, dass keine Applikationen authorisiert sind.</p>
+<div class="alert alert-danger">
+<strong>TODO:</strong> Screenshots einfügen.
+</div>
+
 <h3 id="protokollablauf">Protokollablauf</h3>
 <h3 id="tests">Tests</h3>
 <p>Zum Testen der PHP-Klassen wurde das Framework <a href="https://phpunit.de/">PHPUnit</a> verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: <a href="https://codecov.io/gh/pssl16/owncloud-app_oauth2"><img alt="codecov" src="https://codecov.io/gh/pssl16/owncloud-app_oauth2/branch/master/graph/badge.svg" /></a>.</p>
