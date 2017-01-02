@@ -73,7 +73,56 @@ Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:
 Während Server Adresse, Pfad und Port mittels eines Textfeldes abgefragt werden können, sollten die anderen Optionen mit Hilfe
 einer Auswahl aus den angebotenen Möglicheiten erfragt werden können.
 
+Um nun die Eingabeeinstellungen dem Admin Tree anzuhängen, muss jedes vorgesehene Eingabefeld der `admin_settingpage` 
+mittels der Methode `add` hinzugefügt werden. Der dafür notwendige Code sieht wie folgt aus:
 
+```php
+<?php
+
+$temp = new admin_settingpage('oauth2sciebo', new lang_string('pluginname', 'tool_oauth2sciebo'));
+$temp->add(new admin_setting_heading('coursebank_proxy_head',
+        get_string('configplugin', 'tool_oauth2sciebo'),
+        ''
+        ));
+$temp->add(new admin_setting_configtext('tool_oauth2sciebo/clientid',
+        get_string('clientid', 'tool_oauth2sciebo'),
+        '', ''
+        ));
+$temp->add(new admin_setting_configtext('tool_oauth2sciebo/secret',
+        get_string('secret', 'tool_oauth2sciebo'),
+        '', ''
+        ));
+$temp->add(new admin_setting_configtext('tool_oauth2sciebo/server',
+        get_string('server', 'tool_oauth2sciebo'),
+        '', ''
+    ));
+$temp->add(new admin_setting_configtext('tool_oauth2sciebo/path',
+        get_string('path', 'tool_oauth2sciebo'),
+        '', ''
+    ));
+$temp->add(new admin_setting_configtext('tool_oauth2sciebo/port',
+        get_string('port', 'tool_oauth2sciebo'),
+        '', ''
+    ));
+$temp->add(new admin_setting_configselect('tool_oauth2sciebo/auth',
+        get_string('auth', 'tool_oauth2sciebo'),
+        '', '', array('basic' => 'Basic', 'bearer' => 'Bearer')
+    ));
+    
+$ADMIN->add('authsettings', $temp);
+```
+
+Hierbei sind die Klassen `admin_setting_heading`, `admin_configtext` und `admin_configselect` ebenfalls Teil der `adminlib.php`
+und die Überschrift der Einstellungen, eine Eingabetextfeld und eine Eingabeauswahl. Beim Erstellen eines Objektes der Klassen 
+`admin_configtext` und `admin_configselect` müssen neben dem einzigartigen Einstellungsnamen Anzeigename, Beschreibung und Standartwert
+übergeben werden, wobei bei letzterem die Auswahlmöglichkeiten angegeben werden müssen.
+
+Sobald alle nötigen Optionen erstellt worden und der `admin_settingpage` hinzugefügt worden sind, muss diese dem Globalen
+`ADMIN` Objekt hinzugefügt werden. Dabei wird auch die Stelle übergeben, an der die Einstellungen in moodle gefunden werden
+können. Im Fall des hier implementierten Admin Tools, werden die Einstellungen unter den Authentifizierungs-Optionen
+gelistet. Damit ist die Erstellung der Eingabemaske abgeschlossen.
+
+## OAuth 2.0 Client
 
 ## Tests und CI
 
