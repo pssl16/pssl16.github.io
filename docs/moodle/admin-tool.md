@@ -33,13 +33,47 @@ Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration mo
 gespeichert. Aus dieser Baumstruktur können anschließend benötigte Einstellungen beschafft werden.
 
 Insgesamt ergibt sich folgende Struktur von Ordnern und Dateien, die mindestens für die Implementierung des von uns gebrauchten
-Admin Tools gebraucht wird:
+Admin Tools notwendig ist:
 
 <div class="alert alert-danger">
   <strong>TODO:</strong> Grafik für Ordnerstruktur einfügen.
 </div>
 
 ## Implementierung der vorgegebenen Schnittstelle
+
+### Eingabemaske
+
+Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende Sciebo bzw. ownCloud Instanz zu befähigen,
+müssen diese zunächst mit Hilfe benötigter Eingabedaten konfiguriert werden. Diese sollen zentral im Admin Tool eingegeben und
+gespeichert werden können, um sie anschließend von anderen Plugins aus nutzen zu können. Dies ist einer der Gegensätze zu
+ähnlichen, vor Allem repository Plugins, welche die benötigte Daten auf Plugin-Ebene abfragen und benutzen.
+
+Eine solche Eingabemaske kann im Rahmen der `settings` definiert werden. Zu diesem Zweck muss zunächst ein neues Objekt vom Typ `admin_settingpage`
+innerhalb der `settings.php` Datei erstellt werden. Dieses Objekt umfasst eine Gruppe von Einstellungen, welche, sobald hinzugefügt,
+in dem Admin Tree eingeordnet und gespeichert werden. Die zugehörige Klasse befindet sich in Funktionsbibliothek
+[`adminlib.php`](https://github.com/moodle/moodle/blob/master/lib/adminlib.php), welche Teil des moodle Cores ist. Beim 
+Aufruf des Konstruktors müssen Name des Plugins, welcher später dazu verwendet wird die Einstellung im Admin Tree wiederzufinden,
+und der Anzeigename für die Einstellungsseite übergeben werden. 
+
+Um den OAuth 2.0 Protokollablauf zu ermöglichen, müssen folgende Daten im Vorfeld erfasst werden:
+
+* **`Client ID`:** wird in ownCloud generiert und dient der Identifizierung eines regstrierten Clients.
+* **`Secret`:** wird ebenfalls in ownCloud generiert und zur Authentifizierung verwendet.
+
+Beide Datensätze sind Strings und daher eignet sich für beide ein Textfeld zur Eingabe.
+
+Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:
+
+* **`Server Addresse`:** Url über die der ownCloud Server erreicht werden kann.
+* **`Server Pfad`:** der angehangene Pfad, über den die WebDAV Schnittstelle erreicht werden kann.
+* **`Port`:** Port des WebDAV-Servers.
+* **`SSL-Verschlüsselung`:** Wahl zwischen HTTP und HTTPS.
+* **`Authentifizierung`:** Wahl zwischen Basic und Bearer Authentifizierung.  
+
+Während Server Adresse, Pfad und Port mittels eines Textfeldes abgefragt werden können, sollten die anderen Optionen mit Hilfe
+einer Auswahl aus den angebotenen Möglicheiten erfragt werden können.
+
+
 
 ## Tests und CI
 
