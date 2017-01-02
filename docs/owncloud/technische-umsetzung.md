@@ -390,6 +390,15 @@ Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren
 
 ### Templates
 
+Für die zweckmäßige Nutzung der OAuth2 App sind Templates von Nöten. Relevant sind diese als Darstellung des Authorisierungsfenster, sprich der Hauptfunktionalität der App, für die Einstellungen des Admins und in den persönlichen Einstellungen. 
+    `authorize` stellt ein umrahmtes Fenster mit entsprechendem Text zur Authorisierung und der Möglichkeit die Authorisierung zu akzeptieren oder abzulehnen dar.
+    `settings-admin` stellt eine tabellarische Auflistung der registrierten Clients und ihrer jeweiligen redirectURIs, Identifiers und Secrets mit Möglichkeit die entsprechende Registrierung zu löschen dar, oder eine Meldung, dass kein Client registriert sind. Zusätzlich gibt es eine Eingabemaske zur Registrierung von neuen Clients, die einen Namen und eine redirectURI fordert.
+    `settings-personal` stellt eine tabellarische Auflistung der autorisierten Applikationen mit Möglichkeit die entsprechende Authorisierung zu löschen dar, oder eine Meldung, dass keine Applikationen authorisiert sind.
+
+<div class="alert alert-danger">
+<strong>TODO:</strong> Screenshots einfügen.
+</div>
+
 ### Protokollablauf
 
 ### Tests
