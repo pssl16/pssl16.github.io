@@ -122,7 +122,77 @@ Sobald alle nötigen Optionen erstellt worden und der `admin_settingpage` hinzug
 können. Im Fall des hier implementierten Admin Tools, werden die Einstellungen unter den Authentifizierungs-Optionen
 gelistet. Damit ist die Erstellung der Eingabemaske abgeschlossen.
 
-## OAuth 2.0 Client
+### OAuth 2.0 Client
+
+Den funktionalen Kern des Plugins stellt der OAuth 2.0 Client dar. Dieser befindet sich in Form der Klasse `sciebo` in der
+Datei `sciebo.php` in dem `classes` Ordner des Plugins. Diese Klasse steuert sowohl den moodle-seitigen Protokollablauf
+von OAuth 2.0, als auch den Verbindungsaufbau zu ownCloud mittels WebDAV. Dadurch, dass `sciebo` von der im moodle Core
+enthaltenen Klasse `oauth2_client` erbt, ist ein Großteil des Protokollablaufs bereits abgedeckt.
+Der Konstruktor der Klasse `oauth2_client` muss mit den `Client ID` und `Secret` Daten aufgerufen werden. 
+Diese werden aus den zuvor angewandten Einstellungen beschafft:
+
+```php
+<?php
+
+namespace tool_oauth2sciebo;
+
+defined('MOODLE_INTERNAL') || die();
+
+require_once($CFG->libdir . '/oauthlib.php');
+
+use tool_oauth2sciebo\sciebo_client;
+
+class sciebo extends \oauth2_client {
+
+    /**
+     * Create the DropBox API Client.
+     *
+     * @param   string      $key        The API key
+     * @param   string      $secret     The API secret
+     * @param   string      $callback   The callback URL
+     */
+    public function __construct($callback) {
+        parent::__construct(get_config('tool_oauth2sciebo', 'clientid'),
+            get_config('tool_oauth2sciebo', 'secret'), $callback, '');
+```
+
+Zu diesem Zweck wird die Methode `get_config` verwendet. Sie gibt den für ein Plugin und einen zuvor einzigartig definierten
+Namen aus dem Admin Tree heraus die dazu gespeicherte Einstellung.
+Darüber hinaus muss eine `callback URL` angefügt werden, die den Pfad angibt, an den nach der Authentifizierung und Autorisierung
+weitergeleitet werden soll. Dieser wird allerdings wird extern in den Plugins erzeugt, die die `sciebo` Klasse benutzen.
+
+Weiterhin müssen die Methoden `auth_url` und `token_url` der Elternklasse zwingend überschrieben werden, um bei der Authentifizierung
+auf die richtigen Pfade zu verweisen:
+
+```php
+    /**
+     * Returns the auth url for OAuth 2.0 request
+     * @return string the auth url
+     */
+    protected function auth_url() {
+        // Dynamically generated from the admin tool settings.
+        return get_config('tool_oauth2sciebo', 'auth_url');
+    }
+
+    /**
+     * Returns the token url for OAuth 2.0 request
+     * @return string the auth url
+     */
+    protected function token_url() {
+        return get_config('tool_oauth2sciebo', 'token_url');
+    }
+```
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Später wird der Pfad aus den gegebenen Daten berechnet.
+</div>
+
+Hierfür werden die beiden Pfade aus der Serveraddresse und dem Serverpfad berechnet, da der Endpunkt für die oauth2 App in
+ownCloud gleich bleibt.
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Überschriebene post Methode.
+</div>
 
 ## Tests und CI
 
