@@ -1,6 +1,6 @@
 # Technische Umsetzung
 
-Da man möglichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als [ownCloud App](https://doc.owncloud.org/server/latest/developer_manual/app/) realisiert worden und nutzt die [sabre/dav](http://sabre.io/) Bibliothek. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu können. Dafür wurde eine weitere ownCloud App implementiert.
+Da man möglichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als [ownCloud App](https://doc.owncloud.org/server/latest/developer_manual/app/) realisiert worden. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu können. Dafür wurde eine weitere ownCloud App implementiert.
 
 ## Implementierung der `oauth2` App
 
@@ -454,6 +454,10 @@ Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Cli
 
 ### Protokollablauf
 
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Protokollablauf beschreiben.
+</div>
+
 ### Tests
 
 Zum Testen der PHP-Klassen wurde das Framework [PHPUnit](https://phpunit.de/) verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: [![codecov](https://codecov.io/gh/pssl16/owncloud-app_oauth2/branch/master/graph/badge.svg)](https://codecov.io/gh/pssl16/owncloud-app_oauth2).
@@ -470,6 +474,120 @@ Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://tra
 
 ## Anpassung der `dav` App
 
+Nachdem das OAuth 2.0 Protokoll durch die `oauth2` App bereitgestellt wurde, musste die [WebDAV Schnittstelle](https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html) in ownCloud um diese Authentifizierungsmethode erweitert werden. Erreichbar ist diese unter dem Endpunkt `remote.php/webdav`.
+
 ### Authentication Backend
 
+Eine Anfrage am Endpunkt `remote.php/webdav` wird durch die Datei `appinfo/v1/webdav.php` entgegengenommen. Hier wird mithilfe der [sabre/dav](http://sabre.io) Bibliothek ein WebDAV-Server gestartet. Nachfolgendes Codebeispiel zeigt die für die Authentifizierung wichtige Stelle.
+
+```php
+$authBackend = new \OCA\DAV\Connector\Sabre\Auth(
+	\OC::$server->getSession(),
+	\OC::$server->getUserSession(),
+	\OC::$server->getRequest(),
+	\OC::$server->getTwoFactorAuthManager(),
+	'principals/'
+);
+```
+
+Die Authentifizierung ist in sabre/dav modularisiert, sodass die nötigen Anpassungen leicht durchzuführen waren. Das im Codebeispiel gezeigte Authentication Backend ist eine von ownCloud implementierte Unterklasse von `AbstractBasic`, einer abstrakten Klasse, die bei der Implementierung von Basic Authentication behilflich ist. Glücklicherweise existiert in sabre/dav mit der Klasse `AbstractBearer` auch ein entsprechendes Gegenstück für Bearer Authentication. Da beide Klassen das `BackendInterface` implementieren, kann ein WebDAV Server mit beiden Authentication Backends gestartet werden.
+
+Die Implementierung von OAuth 2.0 erwies sich damit als ziemlich kurz, wie nachfolgendes Codebeispiel zeigt.
+
+```php
+<?php
+namespace OCA\DAV\Connector\Sabre;
+
+use Sabre\DAV\Auth\Backend\AbstractBearer;
+use OCA\OAuth2\Db\AccessToken;
+use OCA\OAuth2\Db\AccessTokenMapper;
+use OCP\AppFramework\App;
+use OCP\AppFramework\Db\DoesNotExistException;
+
+/**
+ * OAuth 2.0 authentication backend class.
+ */
+class OAuth2 extends AbstractBearer {
+
+	/**
+	 * This is the prefix that will be used to generate principal urls.
+	 *
+	 * @var string
+	 */
+	protected $principalPrefix;
+
+	/**
+	 * OAuth2 constructor.
+	 *
+	 * @param string $principalPrefix
+	 */
+	public function __construct($principalPrefix = 'principals/users/') {
+		$this->principalPrefix = $principalPrefix;
+
+		$defaults = new \OC_Defaults();
+		$this->realm = $defaults->getName();
+	}
+
+	/**
+	 * Validates a Bearer token
+	 *
+	 * This method should return the full principal url, or false if the
+	 * token was incorrect.
+	 *
+	 * @param string $bearerToken
+	 * @return string|false
+	 */
+	protected function validateBearerToken($bearerToken) {
+		if (!is_string($bearerToken)) {
+			return false;
+		}
+
+		$app = new App('oauth2');
+		/** @var AccessTokenMapper $accessTokenMapper */
+		$accessTokenMapper = $app->getContainer()->query('OCA\OAuth2\Db\AccessTokenMapper');
+
+		try {
+			/** @var AccessToken $accessToken */
+			$accessToken = $accessTokenMapper->findByToken($bearerToken);
+			$userId = $accessToken->getUserId();
+
+			\OC_Util::setupFS($userId);
+
+			return $this->principalPrefix . $userId;
+		} catch (DoesNotExistException $exception) {
+			return false;
+		}
+	}
+
+}
+```
+
+Neben dem Konstruktur, in der `principalPrefix` sowie das `realm` analog zum Konstruktor der `Auth`-Klasse gesetzt werden, musste lediglich die Funktion `validateBearerToken` implementiert werden. Hier wird der in der Anfrage mitgesendete Bearer Token mithilfe vom `AccessTokenMapper` überprüft. Falls der Access Token gültig ist, wird die ID des Nutzers abgefragt, um mit `\OC_Util::setupFS($userId)` das Dateisystem für den WebDAV Server vorzubereiten. Es wird dann der `principalPrefix` zusammen mit der `userId` zurückgegeben. Andernfalls wird `false` zurückgegeben, was dazu führt, dass der WebDAV Zugriff verweigert wird.
+
+#### Headerabhängige Authentifizierung
+
+Damit die WebDAV Schnittstelle sowohl über die bisherige Basic Authentication als auch über OAuth 2.0 funktioniert, musste eine Logik hinzugefügt werden, die abhängig vom Authoriaztion Header entscheidet, welches Verfahren anzuwenden ist. Der Ansatzpunkt musste dabei die Datei `appinfo/v1/webdav.php` sein, da hier das Authentication Backend erstellt wird. Folgendes Codebeispiel zeigt, welche Änderungen notwendig waren.
+
+```php
+if (strpos(\OC::$server->getRequest()->getHeader('Authorization'), 'Bearer') !== false) {
+	// OAuth 2.0
+	$authBackend = new \OCA\DAV\Connector\Sabre\OAuth2();
+} else {
+	// Basic Auth
+	$authBackend = new \OCA\DAV\Connector\Sabre\Auth(
+		\OC::$server->getSession(),
+		\OC::$server->getUserSession(),
+		\OC::$server->getRequest(),
+		\OC::$server->getTwoFactorAuthManager(),
+		'principals/'
+	);
+}
+```
+
+Durch die ownCloud-interne Funktion `getHeader` konnte der Authorization Header abgefragt werden. Da für Bearer Authentication das Wort „Bearer“ in diesem enthalten sein muss, konnte mithilfe der Stringfunktion `strpos` die Logik implementiert werden. Abhängig vom Header wird somit entweder die Klasse `OAuth2` für OAuth 2.0 oder `Auth` für Basic Authentication als Authentication Backend genutzt.
+
 ### Tests
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Tests hinzufügen beschreiben.
+</div>
