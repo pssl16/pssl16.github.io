@@ -37,7 +37,7 @@ Zunächst musste ein Datenmodell zur Speicherung der benötigten Daten aufgestel
 
 Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.
 
-![Datenmodell](images/oauth-erm.jpg)
+![Datenmodell](images/datenstruktur.svg)
 
 ### Mapper und Entities
 
