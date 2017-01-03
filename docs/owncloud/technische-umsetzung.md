@@ -37,9 +37,7 @@ Zunächst musste ein Datenmodell zur Speicherung der benötigten Daten aufgestel
 
 Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> ERM einfügen.
-</div>
+![Datenmodell](images/oauth-erm.jpg)
 
 ### Mapper und Entities
 
@@ -454,8 +452,16 @@ Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Cli
 
 ### Protokollablauf
 
+Der Protokollablauf der oauth2 App ist dem regulären OAuth2 Protokollablauf nachempfunden. 
+
+Zunächst wird vom Moodle Plugin die Methode GET authorize mit den Parametern response_type, client_id und redirect_uri ausgeführt, welche die OAuth 2.0 App anspricht und für eine Weiterleitung an ownCloud sorgt. Dann wird von ownCloud eine Authentifizierung erfragt, sprich der reguläre Anmeldebildschirm wird gezeigt, oder die Weiterleitung erfolgt sofort zur Autorisierungsabfrage der OAuth 2.0 App. Nach erfolgter Autorisierung wird zur redirectURI aus der GET authorize Methode weitergeleitet, sprich zurück zum Moodle Plugin. 
+
+Anschließend führt das Moodle Plugin die Methode POST /api/v1/token aus, die den Authorizationcode an die OAuth 2.0 App sendet und als Antwort einen Access Token erhält.
+
+Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der WebDAV Zugriff folgen. Dieser erfolgt mit dem Access Code auf die OAuth WebDAV App. Diese kommuniziert daraufhin mit der OAuth 2.0 App über die Methode GET api/v1/validate und dem Access Token und prüft diesen. Bei erfolgreicher Überprüfung wird dann der WebDAV Zugriff entsprechend ermöglicht.
+
 <div class="alert alert-danger">
-  <strong>TODO:</strong> Protokollablauf beschreiben.
+  <strong>TODO:</strong> Sequenzdiagramm einfügen, Formatierung folgt.
 </div>
 
 ### Tests
