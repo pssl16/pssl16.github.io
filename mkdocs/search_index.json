@@ -122,7 +122,7 @@
         }, 
         {
             "location": "/owncloud/benutzung/", 
-            "text": "Benutzung\n\n\nInstallation\n\n\n\n\nHinweis:\n Zur Zeit liegen die Anpassungen der \ndav\n App als \nPull Request\n vor. Falls die \u00c4nderungen angenommen werden, sind sie in einer der n\u00e4chsten ownCloud Versionen enthalten.\n\n\n\n\nDa die \u00c4nderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der \ndav-oauth\n-Branch des \ngeforkten Repositorys\n geklont werden:\n\n\n$ git clone -b dav-oauth https://github.com/pssl16/core\n\n\n\n\nDanach m\u00fcssen die Dependencies installiert werden. Dazu gen\u00fcgt es, im Verzeichnis des Repositorys folgenden Befehl auszuf\u00fchren:\n\n\n$ make\n\n\n\n\nDie restlichen Installationsschritte unterscheiden sich nicht von denen im \nownCloud Handbuch\n.\n\n\nClientregistrierung\n\n\nAuthorization Code Flow\n\n\nDie nachfolgende Abbildung stellt den durch die \noauth2\n App implementierten \nOAuth 2.0 Authorization Code Flow\n dar.\n\n\n\n\n\n  \nTODO:\n Beschreibung der Schritte einf\u00fcgen.\n\n\n\n\nAngepasste WebDAV Schnittstelle", 
+            "text": "Benutzung\n\n\nInstallation\n\n\n\n\nHinweis:\n Zur Zeit liegen die Anpassungen der \ndav\n App als \nPull Request\n vor. Falls die \u00c4nderungen angenommen werden, sind sie in einer der n\u00e4chsten ownCloud Versionen enthalten.\n\n\n\n\nDa die \u00c4nderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der \ndav-oauth\n-Branch des \ngeforkten Repositorys\n geklont werden:\n\n\n$ git clone -b dav-oauth https://github.com/pssl16/core\n\n\n\n\nDanach m\u00fcssen die Dependencies installiert werden. Dazu gen\u00fcgt es, im Verzeichnis des Repositorys folgenden Befehl auszuf\u00fchren:\n\n\n$ make\n\n\n\n\nDie restlichen Installationsschritte unterscheiden sich nicht von denen im \nownCloud Handbuch\n.\n\n\nClientregistrierung\n\n\nAuthorization Code Flow\n\n\nDie nachfolgende Abbildung stellt den durch die \noauth2\n App implementierten \nOAuth 2.0 Authorization Code Flow\n dar.\n\n\n\n\n\n  \nTODO:\n Beschreibung der Schritte einf\u00fcgen.\n\n\n\n\nAngepasste WebDAV Schnittstelle\n\n\nWiderrufung der Autorisierung", 
             "title": "Benutzung"
         }, 
         {
@@ -149,6 +149,11 @@
             "location": "/owncloud/benutzung/#angepasste-webdav-schnittstelle", 
             "text": "", 
             "title": "Angepasste WebDAV Schnittstelle"
+        }, 
+        {
+            "location": "/owncloud/benutzung/#widerrufung-der-autorisierung", 
+            "text": "", 
+            "title": "Widerrufung der Autorisierung"
         }, 
         {
             "location": "/moodle/software-architektur/", 

@@ -205,6 +205,8 @@
             
                 <li class="third-level"><a href="#authentication-backend">Authentication Backend</a></li>
             
+                <li class="third-level"><a href="#headerabhangige-authentifizierung">Headerabhängige Authentifizierung</a></li>
+            
                 <li class="third-level"><a href="#tests_1">Tests</a></li>
             
         
@@ -796,7 +798,7 @@ class OAuth2 extends AbstractBearer {
 </code></pre>
 
 <p>Neben dem Konstruktur, in der <code>principalPrefix</code> sowie das <code>realm</code> analog zum Konstruktor der <code>Auth</code>-Klasse gesetzt werden, musste lediglich die Funktion <code>validateBearerToken</code> implementiert werden. Hier wird der in der Anfrage mitgesendete Bearer Token mithilfe vom <code>AccessTokenMapper</code> überprüft. Falls der Access Token gültig ist, wird die ID des Nutzers abgefragt, um mit <code>\OC_Util::setupFS($userId)</code> das Dateisystem für den WebDAV Server vorzubereiten. Es wird dann der <code>principalPrefix</code> zusammen mit der <code>userId</code> zurückgegeben. Andernfalls wird <code>false</code> zurückgegeben, was dazu führt, dass der WebDAV Zugriff verweigert wird.</p>
-<h4 id="headerabhangige-authentifizierung">Headerabhängige Authentifizierung</h4>
+<h3 id="headerabhangige-authentifizierung">Headerabhängige Authentifizierung</h3>
 <p>Damit die WebDAV Schnittstelle sowohl über die bisherige Basic Authentication als auch über OAuth 2.0 funktioniert, musste eine Logik hinzugefügt werden, die abhängig vom Authoriaztion Header entscheidet, welches Verfahren anzuwenden ist. Der Ansatzpunkt musste dabei die Datei <code>appinfo/v1/webdav.php</code> sein, da hier das Authentication Backend erstellt wird. Folgendes Codebeispiel zeigt, welche Änderungen notwendig waren.</p>
 <pre><code class="php">if (strpos(\OC::$server-&gt;getRequest()-&gt;getHeader('Authorization'), 'Bearer') !== false) {
     // OAuth 2.0
