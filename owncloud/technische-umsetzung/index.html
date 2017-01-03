@@ -641,14 +641,63 @@ class Utilities {
 </div>
 
 <h3 id="templates">Templates</h3>
-<p>Für die zweckmäßige Nutzung der OAuth2 App sind Templates von Nöten. Relevant sind diese als Darstellung des Authorisierungsfenster, sprich der Hauptfunktionalität der App, für die Einstellungen des Admins und in den persönlichen Einstellungen. 
-    <code>authorize</code> stellt ein umrahmtes Fenster mit entsprechendem Text zur Authorisierung und der Möglichkeit die Authorisierung zu akzeptieren oder abzulehnen dar.
-    <code>settings-admin</code> stellt eine tabellarische Auflistung der registrierten Clients und ihrer jeweiligen redirectURIs, Identifiers und Secrets mit Möglichkeit die entsprechende Registrierung zu löschen dar, oder eine Meldung, dass kein Client registriert sind. Zusätzlich gibt es eine Eingabemaske zur Registrierung von neuen Clients, die einen Namen und eine redirectURI fordert.
-    <code>settings-personal</code> stellt eine tabellarische Auflistung der autorisierten Applikationen mit Möglichkeit die entsprechende Authorisierung zu löschen dar, oder eine Meldung, dass keine Applikationen authorisiert sind.</p>
-<div class="alert alert-danger">
-<strong>TODO:</strong> Screenshots einfügen.
-</div>
+<p>In den <a href="https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html">Templates</a> einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. Es können die vom <a href="#controller">Controller</a> übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen <code>$_</code>. Zur Vermeidung von Cross-Site-Scripting gibt es die ownCloud-interne Funktion <code>p()</code>, mithilfe derer Werte ausgegeben werden können.</p>
+<p>Folgende Templates wurden in der App definiert:</p>
+<ul>
+<li><strong><code>authorize</code></strong>: Zur Darstellung des Authroization Requests, bei dem der Nutzer um Autorisierung eines Clients gebeten wird. Es werden ein Text zur Erklärung sowie Buttons zum Akzeptieren oder Ablehnen angezeigt.</li>
+<li><strong><code>settings-admin</code></strong>: Stellt zur Verwaltung der Clients eine tabellarische Auflistung der Clients sowie ein Formular zum Hinzufügen von Clients dar.</li>
+<li><strong><code>settings-personal</code></strong>: Stellt eine tabellarische Auflistung der vom Nutzer autorisierten Clients dar, mit der Möglichkeit, die Autorisierung zu widerrufen.</li>
+</ul>
+<p>Folgendes Codebeispiel zeigt das Template <code>settings-admin</code>.</p>
+<pre><code class="php">&lt;?php
+&lt;div class=&quot;section&quot; id=&quot;oauth2&quot;&gt;
+    &lt;h2&gt;&lt;?php p($l-&gt;t('OAuth 2.0')); ?&gt;&lt;/h2&gt;
 
+    &lt;h3&gt;&lt;?php p($l-&gt;t('Registered clients')); ?&gt;&lt;/h3&gt;
+    &lt;?php if (empty($_['clients'])) {
+        p($l-&gt;t('No clients registered.'));
+    }
+    else { ?&gt;
+    &lt;table class=&quot;grid&quot;&gt;
+        &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th id=&quot;headerName&quot; scope=&quot;col&quot;&gt;&lt;?php p($l-&gt;t('Name')); ?&gt;&lt;/th&gt;
+            &lt;th id=&quot;headerRedirectUri&quot; scope=&quot;col&quot;&gt;&lt;?php p($l-&gt;t('Redirect URI')); ?&gt;&lt;/th&gt;
+            &lt;th id=&quot;headerClientIdentifier&quot; scope=&quot;col&quot;&gt;&lt;?php p($l-&gt;t('Client Identifier')); ?&gt;&lt;/th&gt;
+            &lt;th id=&quot;headerSecret&quot; scope=&quot;col&quot;&gt;&lt;?php p($l-&gt;t('Secret')); ?&gt;&lt;/th&gt;
+            &lt;th id=&quot;headerRemove&quot;&gt;&amp;nbsp;&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+            &lt;?php foreach ($_['clients'] as $client) { ?&gt;
+                &lt;tr&gt;
+                    &lt;td&gt;&lt;?php p($client-&gt;getName()); ?&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;?php p($client-&gt;getRedirectUri()); ?&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;?php p($client-&gt;getIdentifier()); ?&gt;&lt;/td&gt;
+                    &lt;td&gt;&lt;?php p($client-&gt;getSecret()); ?&gt;&lt;/td&gt;
+                    &lt;td&gt;
+                        &lt;form action=&quot;../apps/oauth2/clients/&lt;?php p($client-&gt;getId()); ?&gt;/delete&quot; method=&quot;post&quot;
+                              style='display:inline;'&gt;
+                            &lt;input type=&quot;submit&quot; class=&quot;button icon-delete&quot; value=&quot;&quot;&gt;
+                        &lt;/form&gt;
+                    &lt;/td&gt;
+                &lt;/tr&gt;
+            &lt;?php } ?&gt;
+        &lt;/tbody&gt;
+    &lt;/table&gt;
+    &lt;?php } ?&gt;
+
+    &lt;h3&gt;&lt;?php p($l-&gt;t('Add client')); ?&gt;&lt;/h3&gt;
+    &lt;form action=&quot;../apps/oauth2/clients&quot; method=&quot;post&quot;&gt;
+        &lt;input id=&quot;name&quot; name=&quot;name&quot; type=&quot;text&quot; placeholder=&quot;&lt;?php p($l-&gt;t('Name')); ?&gt;&quot;&gt;
+        &lt;input id=&quot;redirect_uri&quot; name=&quot;redirect_uri&quot; type=&quot;url&quot; placeholder=&quot;&lt;?php p($l-&gt;t('Redirect URI')); ?&gt;&quot;&gt;
+        &lt;input type=&quot;submit&quot; class=&quot;button&quot; value=&quot;&lt;?php p($l-&gt;t('Add')); ?&gt;&quot;&gt;
+    &lt;/form&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Durch eine <code>for</code>-Schleife wird für jeden Client aus dem Parameter <code>clients</code> ein Tabelleneintrag angezeigt. Sollten noch keine Clients registriert worden sein, sorgt die <code>if</code>-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. Durch Nutzung von <code>$l-&gt;t()</code> können die Strings auch <a href="https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates">in andere Sprachen Übersetzt werden</a>.</p>
+<p>Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion <code>addClient</code> im <code>SettingsController</code> aus. Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion <code>deleteClient</code> im <code>SettingsController</code> auslöst.</p>
 <h3 id="protokollablauf">Protokollablauf</h3>
 <h3 id="tests">Tests</h3>
 <p>Zum Testen der PHP-Klassen wurde das Framework <a href="https://phpunit.de/">PHPUnit</a> verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: <a href="https://codecov.io/gh/pssl16/owncloud-app_oauth2"><img alt="codecov" src="https://codecov.io/gh/pssl16/owncloud-app_oauth2/branch/master/graph/badge.svg" /></a>.</p>
