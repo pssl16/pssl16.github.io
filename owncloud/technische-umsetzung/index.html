@@ -257,10 +257,7 @@
 </li>
 </ul>
 <p>Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.</p>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> ERM einfügen.
-</div>
-
+<p><img alt="Datenmodell" src="../images/oauth-erm.jpg" /></p>
 <h3 id="mapper-und-entities">Mapper und Entities</h3>
 <p>Für den Datenbank-Zugriff im PHP-Code ist es in ownCloud möglich, <a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#mappers">Mapper</a> und <a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#entities">Entities</a> zu schreiben. Dadurch werden Tupel in einer Datenbank-Tabelle automatisch in ein Objekt umgewandelt.</p>
 <p>Folgendes Codebeispiel zeigt am Beispiel des Entitys <code>Client</code>, wie eine PHP-Klasse dazu aussehen muss.</p>
@@ -701,8 +698,12 @@ class Utilities {
 <p>In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Durch eine <code>for</code>-Schleife wird für jeden Client aus dem Parameter <code>clients</code> ein Tabelleneintrag angezeigt. Sollten noch keine Clients registriert worden sein, sorgt die <code>if</code>-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. Durch Nutzung von <code>$l-&gt;t()</code> können die Strings auch <a href="https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates">in andere Sprachen Übersetzt werden</a>.</p>
 <p>Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion <code>addClient</code> im <code>SettingsController</code> aus. Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion <code>deleteClient</code> im <code>SettingsController</code> auslöst.</p>
 <h3 id="protokollablauf">Protokollablauf</h3>
+<p>Der Protokollablauf der oauth2 App ist dem regulären OAuth2 Protokollablauf nachempfunden. </p>
+<p>Zunächst wird vom Moodle Plugin die Methode GET authorize mit den Parametern response_type, client_id und redirect_uri ausgeführt, welche die OAuth 2.0 App anspricht und für eine Weiterleitung an ownCloud sorgt. Dann wird von ownCloud eine Authentifizierung erfragt, sprich der reguläre Anmeldebildschirm wird gezeigt, oder die Weiterleitung erfolgt sofort zur Autorisierungsabfrage der OAuth 2.0 App. Nach erfolgter Autorisierung wird zur redirectURI aus der GET authorize Methode weitergeleitet, sprich zurück zum Moodle Plugin. </p>
+<p>Anschließend führt das Moodle Plugin die Methode POST /api/v1/token aus, die den Authorizationcode an die OAuth 2.0 App sendet und als Antwort einen Access Token erhält.</p>
+<p>Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der WebDAV Zugriff folgen. Dieser erfolgt mit dem Access Code auf die OAuth WebDAV App. Diese kommuniziert daraufhin mit der OAuth 2.0 App über die Methode GET api/v1/validate und dem Access Token und prüft diesen. Bei erfolgreicher Überprüfung wird dann der WebDAV Zugriff entsprechend ermöglicht.</p>
 <div class="alert alert-danger">
-  <strong>TODO:</strong> Protokollablauf beschreiben.
+  <strong>TODO:</strong> Sequenzdiagramm einfügen, Formatierung folgt.
 </div>
 
 <h3 id="tests">Tests</h3>
