@@ -30,3 +30,5 @@ Die nachfolgende Abbildung stellt den durch die `oauth2` App implementierten [OA
 </div>
 
 ## Angepasste WebDAV Schnittstelle
+
+## Widerrufung der Autorisierung

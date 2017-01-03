@@ -564,7 +564,7 @@ class OAuth2 extends AbstractBearer {
 
 Neben dem Konstruktur, in der `principalPrefix` sowie das `realm` analog zum Konstruktor der `Auth`-Klasse gesetzt werden, musste lediglich die Funktion `validateBearerToken` implementiert werden. Hier wird der in der Anfrage mitgesendete Bearer Token mithilfe vom `AccessTokenMapper` überprüft. Falls der Access Token gültig ist, wird die ID des Nutzers abgefragt, um mit `\OC_Util::setupFS($userId)` das Dateisystem für den WebDAV Server vorzubereiten. Es wird dann der `principalPrefix` zusammen mit der `userId` zurückgegeben. Andernfalls wird `false` zurückgegeben, was dazu führt, dass der WebDAV Zugriff verweigert wird.
 
-#### Headerabhängige Authentifizierung
+### Headerabhängige Authentifizierung
 
 Damit die WebDAV Schnittstelle sowohl über die bisherige Basic Authentication als auch über OAuth 2.0 funktioniert, musste eine Logik hinzugefügt werden, die abhängig vom Authoriaztion Header entscheidet, welches Verfahren anzuwenden ist. Der Ansatzpunkt musste dabei die Datei `appinfo/v1/webdav.php` sein, da hier das Authentication Backend erstellt wird. Folgendes Codebeispiel zeigt, welche Änderungen notwendig waren.
 
