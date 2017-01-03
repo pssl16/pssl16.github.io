@@ -390,14 +390,67 @@ Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren
 
 ### Templates
 
-Für die zweckmäßige Nutzung der OAuth2 App sind Templates von Nöten. Relevant sind diese als Darstellung des Authorisierungsfenster, sprich der Hauptfunktionalität der App, für die Einstellungen des Admins und in den persönlichen Einstellungen. 
-    `authorize` stellt ein umrahmtes Fenster mit entsprechendem Text zur Authorisierung und der Möglichkeit die Authorisierung zu akzeptieren oder abzulehnen dar.
-    `settings-admin` stellt eine tabellarische Auflistung der registrierten Clients und ihrer jeweiligen redirectURIs, Identifiers und Secrets mit Möglichkeit die entsprechende Registrierung zu löschen dar, oder eine Meldung, dass kein Client registriert sind. Zusätzlich gibt es eine Eingabemaske zur Registrierung von neuen Clients, die einen Namen und eine redirectURI fordert.
-    `settings-personal` stellt eine tabellarische Auflistung der autorisierten Applikationen mit Möglichkeit die entsprechende Authorisierung zu löschen dar, oder eine Meldung, dass keine Applikationen authorisiert sind.
+In den [Templates](https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html) einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. Es können die vom [Controller](#controller) übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen `$_`. Zur Vermeidung von Cross-Site-Scripting gibt es die ownCloud-interne Funktion `p()`, mithilfe derer Werte ausgegeben werden können.
 
-<div class="alert alert-danger">
-<strong>TODO:</strong> Screenshots einfügen.
+Folgende Templates wurden in der App definiert:
+
+* **`authorize`**: Zur Darstellung des Authroization Requests, bei dem der Nutzer um Autorisierung eines Clients gebeten wird. Es werden ein Text zur Erklärung sowie Buttons zum Akzeptieren oder Ablehnen angezeigt.
+* **`settings-admin`**: Stellt zur Verwaltung der Clients eine tabellarische Auflistung der Clients sowie ein Formular zum Hinzufügen von Clients dar.
+* **`settings-personal`**: Stellt eine tabellarische Auflistung der vom Nutzer autorisierten Clients dar, mit der Möglichkeit, die Autorisierung zu widerrufen.
+
+Folgendes Codebeispiel zeigt das Template `settings-admin`.
+
+```php
+<?php
+<div class="section" id="oauth2">
+    <h2><?php p($l->t('OAuth 2.0')); ?></h2>
+
+    <h3><?php p($l->t('Registered clients')); ?></h3>
+    <?php if (empty($_['clients'])) {
+        p($l->t('No clients registered.'));
+    }
+    else { ?>
+    <table class="grid">
+        <thead>
+        <tr>
+            <th id="headerName" scope="col"><?php p($l->t('Name')); ?></th>
+            <th id="headerRedirectUri" scope="col"><?php p($l->t('Redirect URI')); ?></th>
+            <th id="headerClientIdentifier" scope="col"><?php p($l->t('Client Identifier')); ?></th>
+            <th id="headerSecret" scope="col"><?php p($l->t('Secret')); ?></th>
+            <th id="headerRemove">&nbsp;</th>
+        </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($_['clients'] as $client) { ?>
+                <tr>
+                    <td><?php p($client->getName()); ?></td>
+                    <td><?php p($client->getRedirectUri()); ?></td>
+                    <td><?php p($client->getIdentifier()); ?></td>
+                    <td><?php p($client->getSecret()); ?></td>
+                    <td>
+                        <form action="../apps/oauth2/clients/<?php p($client->getId()); ?>/delete" method="post"
+                              style='display:inline;'>
+                            <input type="submit" class="button icon-delete" value="">
+                        </form>
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+    <?php } ?>
+
+    <h3><?php p($l->t('Add client')); ?></h3>
+    <form action="../apps/oauth2/clients" method="post">
+        <input id="name" name="name" type="text" placeholder="<?php p($l->t('Name')); ?>">
+        <input id="redirect_uri" name="redirect_uri" type="url" placeholder="<?php p($l->t('Redirect URI')); ?>">
+        <input type="submit" class="button" value="<?php p($l->t('Add')); ?>">
+    </form>
 </div>
+```
+
+In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Durch eine `for`-Schleife wird für jeden Client aus dem Parameter `clients` ein Tabelleneintrag angezeigt. Sollten noch keine Clients registriert worden sein, sorgt die `if`-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. Durch Nutzung von `$l->t()` können die Strings auch [in andere Sprachen Übersetzt werden](https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates).
+
+Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion `addClient` im `SettingsController` aus. Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion `deleteClient` im `SettingsController` auslöst.
 
 ### Protokollablauf
 
