@@ -6,7 +6,36 @@ Gegenstand des Projektseminars war die Integration der Systeme [sciebo](https://
 Eine mögliche Lösung sollte dabei möglichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universitäten genutzt wird.
 
 ## User Stories
-Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt. Als Integrationsrichtung konzentrierte man sich auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.
+Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt. Diese haben wir nach Schwere, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert. Als Integrationsrichtung konzentrierte man sich auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo. 
+
+1. Als **Nutzer** möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden.
+ 
+2. Als **Nutzer** möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen. 
+
+3. Als **Nutzer** möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.
+
+4. Als **Lehrender** möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen. 
+
+5. Als **Lehrender** möchte ich auf einen Button klicken, um hochgeladene Dateien zu aktualisieren.
+
+6. Als **Studierender** möchte ich Dateien aus dem Learnweb direkt in meiner sciebo Instanz speichern können.
+
+7. Als **Studierender** möchte ich anderen Studierenden Schreib- und Lese-Rechte geben um kollaborativ zu arbeiten. 
+
+8. Als **Lehrender** möchte ich Nutzern auf Modul-Basis das Recht entziehen eine Datei zu verlinken.
+
+9. Als **Nutzer** möchte ich in der Dateiauswahl im Learnweb einen Ordner aus meiner sciebo Instanz hochladen.
+
+10. Als **Lehrender** möchte ich in der Dateiauswahl im Learnweb einen Ordner aus meiner sciebo Instanz verlinken.
+
+11. Als **Studierender** möchte ich Lehrenden Schreib- oder Lese-Rechte auf mein Dokument geben können um Feedback zu erhalten.
+
+12. Als **Lehrender** möchte ich die Möglichkeit haben, einen Zielordner in Sciebo zur Speicherung auszuwählen, um Abgaben herunterzuladen.
+
+13. Als **Lehrender** möchte ich sciebo als primären Speicher für alle Dateien im Kurs verwenden können.
+
+14. Als **Lehrender** möchte ich in Sciebo die Teilen-Funktion nutzen, um Dateien oder Dokumente für Kursteilnehmer freigeben zu können.
+
 
 ## Authentifizierung und Autorisierung
 Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den gängigen Verfahren, die untersucht wurden, befinden sich:
