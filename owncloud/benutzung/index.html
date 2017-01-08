@@ -217,6 +217,13 @@
 
 <p>Die restlichen Installationsschritte unterscheiden sich nicht von denen im <a href="https://doc.owncloud.org/server/latest/admin_manual/installation/index.html">ownCloud Handbuch</a>.</p>
 <h2 id="clientregistrierung">Clientregistrierung</h2>
+<p>Zur Clientregistrierung muss in der Eingabemaske der OAuth 2 App in den Adminsettings dem Client ein Name gegeben werden und eine gültige URL als <code>redirect URI</code> angegeben werden. Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine <code>ClientID</code> und ein <code>Clientsecret</code> zugewiesen und wird nun in der Tabelle mit den entsprechenden Attributen dargestellt.</p>
+<p><strong>Löschen der Clientregistrierung</strong>
+Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellarische Ansicht der registrierten Clients ausgewählt werden. Nun kann man bei dem zu löschenden Client rechts neben den zugeordneten Attributen auf ein Mülleimer-Symbol klicken, um die entsprechende Clientregistrierung zu löschen.</p>
+<div class="alert alert-danger">
+<strong>TODO:</strong> Screenshots einfügen.
+</div>
+
 <h2 id="authorization-code-flow">Authorization Code Flow</h2>
 <p>Die nachfolgende Abbildung stellt den durch die <code>oauth2</code> App implementierten <a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Code Flow</a> dar.</p>
 <p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
@@ -225,7 +232,11 @@
 </div>
 
 <h2 id="angepasste-webdav-schnittstelle">Angepasste WebDAV Schnittstelle</h2>
-<h2 id="widerrufung-der-autorisierung">Widerrufung der Autorisierung</h2></div>
+<h2 id="widerrufung-der-autorisierung">Widerrufung der Autorisierung</h2>
+<p>Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf den entsprechenden Button widerrufen werden. Dies ist für den Nutzer in den persönlichen Einstellungen möglich, durch Klicken des Mülleimer-Symbols rechts neben dem jeweiligen Eintrag.</p>
+<div class="alert alert-danger">
+<strong>TODO:</strong> Screenshots einfügen.
+</div></div>
         
     </div>
 
