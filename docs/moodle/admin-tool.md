@@ -43,84 +43,112 @@ Admin Tools notwendig ist:
 
 ### Eingabemaske
 
+#### Benötigte Eingaben
+
 Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende Sciebo bzw. ownCloud Instanz zu befähigen,
 müssen diese zunächst mit Hilfe benötigter Eingabedaten konfiguriert werden. Diese sollen zentral im Admin Tool eingegeben und
-gespeichert werden können, um sie anschließend von anderen Plugins aus nutzen zu können. Dies ist einer der Gegensätze zu
-ähnlichen, vor Allem repository Plugins, welche die benötigte Daten auf Plugin-Ebene abfragen und benutzen.
-
-Eine solche Eingabemaske kann im Rahmen der `settings` definiert werden. Zu diesem Zweck muss zunächst ein neues Objekt vom Typ `admin_settingpage`
-innerhalb der `settings.php` Datei erstellt werden. Dieses Objekt umfasst eine Gruppe von Einstellungen, welche, sobald hinzugefügt,
-in dem Admin Tree eingeordnet und gespeichert werden. Die zugehörige Klasse befindet sich in Funktionsbibliothek
-[`adminlib.php`](https://github.com/moodle/moodle/blob/master/lib/adminlib.php), welche Teil des moodle Cores ist. Beim 
-Aufruf des Konstruktors müssen Name des Plugins, welcher später dazu verwendet wird die Einstellung im Admin Tree wiederzufinden,
-und der Anzeigename für die Einstellungsseite übergeben werden. 
+gespeichert werden können, um sie anschließend von anderen Plugins aus nutzen zu können. Zu diesem Zweck werden globale Optionen
+werden, welche instanzübergreifend gelten.
 
 Um den OAuth 2.0 Protokollablauf zu ermöglichen, müssen folgende Daten im Vorfeld erfasst werden:
 
 * **`Client ID`:** wird in ownCloud generiert und dient der Identifizierung eines regstrierten Clients.
 * **`Secret`:** wird ebenfalls in ownCloud generiert und zur Authentifizierung verwendet.
 
-Beide Datensätze sind Strings und daher eignet sich für beide ein Textfeld zur Eingabe.
+Beide Datensätze sind Strings bestehend aus Buchstaben und Zahlen. Daher eignet sich für beide ein Textfeld, welches ausschließlich 
+alphanumerische Werte erwartet zur Eingabe.
 
 Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:
 
 * **`Server Addresse`:** Url über die der ownCloud Server erreicht werden kann.
 * **`Server Pfad`:** der angehangene Pfad, über den die WebDAV Schnittstelle erreicht werden kann.
 * **`Port`:** Port des WebDAV-Servers.
-* **`SSL-Verschlüsselung`:** Wahl zwischen HTTP und HTTPS.
-* **`Authentifizierung`:** Wahl zwischen Basic und Bearer Authentifizierung.  
+* **`SSL-Verschlüsselung`:** Wahl zwischen HTTP und HTTPS. 
 
-Während Server Adresse, Pfad und Port mittels eines Textfeldes abgefragt werden können, sollten die anderen Optionen mit Hilfe
-einer Auswahl aus den angebotenen Möglicheiten erfragt werden können.
+Während die Wahl des Protokolls mittels einer Auswahl aus vorhandenen Optionen abgeboten werden kann, müssen die restlichen Werte
+in einem Textfeld erfragt werden. Auch in diesem Fall werden die Variablen nach den zu erwartenden Werten gesäubert. Darüber hinaus
+werden alle Eingaben, bis auf dem Port, als notwendig angesehen.
 
-Um nun die Eingabeeinstellungen dem Admin Tree anzuhängen, muss jedes vorgesehene Eingabefeld der `admin_settingpage` 
-mittels der Methode `add` hinzugefügt werden. Der dafür notwendige Code sieht wie folgt aus:
+#### External Page 
+
+Eine somit notwendige Eingabemaske kann im Rahmen der [`settings.php`] definiert werden. Da zum Zweck der individuellen Validierung und Säuberung
+der benötigten Parameter die in der [`adminlib.php`](https://github.com/moodle/moodle/blob/master/lib/adminlib.php) definierten 
+Klassen nicht ausreichen, wurde eine [externe Seite](https://docs.moodle.org/dev/Admin_settings#External_pages) speziell zur Darstellung
+des notwendigen Formulars erstellt. Die externe Seite, welche über die [`index.php`]() Datei aufgerufen wird, sorgt dafür, dass
+die Einstellungen aus dem Formular global in den [admin settings]() gespeichert werden. Von dort aus können sie, sobald nötig ausgelesen
+werden. Um die externe Seite nun in die Navigation in der Seitenadministration einzubinden, muss diese in der `settings.php` in den 
+Admin Tree eingebunden werden: 
 
 ```php
 <?php
+defined('MOODLE_INTERNAL') || die('moodle_internal not defined');
 
-$temp = new admin_settingpage('oauth2sciebo', new lang_string('pluginname', 'tool_oauth2sciebo'));
-$temp->add(new admin_setting_heading('coursebank_proxy_head',
-        get_string('configplugin', 'tool_oauth2sciebo'),
-        ''
-        ));
-$temp->add(new admin_setting_configtext('tool_oauth2sciebo/clientid',
-        get_string('clientid', 'tool_oauth2sciebo'),
-        '', ''
-        ));
-$temp->add(new admin_setting_configtext('tool_oauth2sciebo/secret',
-        get_string('secret', 'tool_oauth2sciebo'),
-        '', ''
-        ));
-$temp->add(new admin_setting_configtext('tool_oauth2sciebo/server',
-        get_string('server', 'tool_oauth2sciebo'),
-        '', ''
-    ));
-$temp->add(new admin_setting_configtext('tool_oauth2sciebo/path',
-        get_string('path', 'tool_oauth2sciebo'),
-        '', ''
-    ));
-$temp->add(new admin_setting_configtext('tool_oauth2sciebo/port',
-        get_string('port', 'tool_oauth2sciebo'),
-        '', ''
-    ));
-$temp->add(new admin_setting_configselect('tool_oauth2sciebo/auth',
-        get_string('auth', 'tool_oauth2sciebo'),
-        '', '', array('basic' => 'Basic', 'bearer' => 'Bearer')
-    ));
-    
-$ADMIN->add('authsettings', $temp);
+$ADMIN->add('authsettings', new admin_externalpage('tool_oauth2sciebo/auth',
+        'Sciebo OAuth 2.0 Configuration',
+        "$CFG->wwwroot/$CFG->admin/tool/oauth2sciebo/index.php"));
 ```
 
-Hierbei sind die Klassen `admin_setting_heading`, `admin_configtext` und `admin_configselect` ebenfalls Teil der `adminlib.php`
-und die Überschrift der Einstellungen, eine Eingabetextfeld und eine Eingabeauswahl. Beim Erstellen eines Objektes der Klassen 
-`admin_configtext` und `admin_configselect` müssen neben dem einzigartigen Einstellungsnamen Anzeigename, Beschreibung und Standartwert
-übergeben werden, wobei bei letzterem die Auswahlmöglichkeiten angegeben werden müssen.
+Das `admin_externalpage` Objekt beschreibt eine externe Seite, die im Admin Tree eingeordnet werden soll. Dazu wird die Seite mit einem
+einzigartigen Namen versehen, einem Anzeigenamen und dem Pfad, über den die Seite erreicht werden soll. Neben der externen Seite an
+sich, wird bei der Methode `add` zusätzlich übergeben, an welcher Stelle die Verknüpfung erstellt werden soll. In diesem Fall sind es die
+Authentifizierungseinstellungen (`authsettings`).
 
-Sobald alle nötigen Optionen erstellt worden und der `admin_settingpage` hinzugefügt worden sind, muss diese dem Globalen
-`ADMIN` Objekt hinzugefügt werden. Dabei wird auch die Stelle übergeben, an der die Einstellungen in moodle gefunden werden
-können. Im Fall des hier implementierten Admin Tools, werden die Einstellungen unter den Authentifizierungs-Optionen
-gelistet. Damit ist die Erstellung der Eingabemaske abgeschlossen.
+Neben der Darstellung des Formulars, verwaltet die externe Seite auch die Speicherung der eigegebenen Daten. Diese werden, ähnlich wie die
+externe Seite zuvor, global in den Admin Settings mit Hilfe der Methode `set_config()` gespeichert. Sobald also das Formular erfolgreich validiert
+worden ist, werden die Eingabedaten durch einen Aufruf dieser Methode mit der genauen Bezeichnung der Option und dem Wert, den sie im Fomular
+erhalten hat, global abgelegt. Darüber hinaus wird über die externe Seite auch die Rücksetzung der Daten und der Abbruch der Bearbeitung geregelt.
+Zuletzt ist die Seite auch dafür zuständig das Formular mit zuvor gesetzten Werten zu füllen, die aus den globalen Einstellungen wiederbeschafft werden.
+
+#### Formular
+
+Um ein geeignetes Formular zu definieren musste die moodle-interne Klasse `moodleform` erweitert und innerhalb der Funktion `definition()`
+alle benötigten Eingabefelder definiert werden. Folgende Funktionen wurden dabei verwedet um die Elemente so genau wie möglich zu umreißen:
+
+| Funktion     | Beschreibung                                         | Beispiel                                        |
+|--------------|------------------------------------------------------|-------------------------------------------------|
+| `addElement` | Fügt ein Element zum Formular hinzu                  | Textfeld, Dropdown Menü, Checkbox               |
+| `addRule`    | Versieht ein Element mit einer Regel zur Validierung | erforderlich für die Abgabe, nur alphanumerisch |
+| `setDefault` | Setzt den Standartwert für ein Element               | -                                               |
+| `setType`    | Legt den Parametertypen der Eingabe fest             | Integer, String, Pfad, roh                      |
+
+Im Folgenden wird anhand von zwei Beispielen die Anwendung dieser Funktionen dargestellt:
+
+```php
+<?php
+class tool_oauth2sciebo_client_form extends moodleform {
+
+    public function definition() {
+        global $CFG;
+
+        $mform = $this->_form;
+        // Client ID.
+        $mform->addElement('text', 'clientid', get_string('clientid', 'tool_oauth2sciebo'), 
+            array('size' => '64'));
+        $mform->addRule('clientid', get_string('required'), 'required', null, 'client');
+        $mform->addRule('clientid', get_string('err_alphanumeric'), 'alphanumeric', null, 'client');
+        $mform->setDefault('clientid', $this->_customdata['clientid']);
+        $mform->setType('clientid', PARAM_ALPHANUM);
+```
+Zunächst wird das Client ID Eingabefeld definiert. Hierzu wird zum Formular ein Textfeld hinzugefügt, welches den eindeutigen Namen
+`clientid` trägt und 64 Felder breit ist. Der Anzeigename des Elements wird über ein die Sprachstring-Methode `get_string` beschafft.
+Daraufhin wird das Feld als für die Abgabe benötigt markiert und auf alphanumerische Werte beschränkt. Zuletzt wird der Standartwert
+für das Textfeld gesetzt, welcher zuvor durch die externe Seite bei Aufruf übergeben wird und zur Säuberung der Eingabe der Typ des
+Elements auf alphanumerisch gestellt.
+
+```php
+        // Type of server.
+        $mform->addElement('select', 'type', get_string('type', 'tool_oauth2sciebo'), 
+            array('http' => 'HTTP', 'https' => 'HTTPS'));
+        $mform->addRule('type', get_string('required'), 'required', null, 'client');
+        $mform->setDefault('type', $this->_customdata['type']);
+    }
+}
+```
+Im zweiten Beispiel wird ein `select` Element zum Formular hinzugefügt. Der Unterschied zum Textfeld ist, dass bei einem Dropdown
+Menü auch verfügbare Optionen angegeben werden müssen. Außerdem wird auch dieses Element als benötigt markiert und sein Standartwert
+Aus den Aufrufparametern beschafft und gesetzt.
+
+Am Ende des Formulares werden zu guter Letzt noch Buttons zur Abgabe des Formulars definiert. Damit ist die Eingabemaske vollständig. 
 
 ### OAuth 2.0 Client
 
@@ -166,26 +194,26 @@ auf die richtigen Pfade zu verweisen:
 
 ```php
     /**
-     * Returns the auth url for OAuth 2.0 request
-     * @return string the auth url
-     */
+    * Returns the auth url for OAuth 2.0 request
+    * @return string the auth url
+    */
     protected function auth_url() {
-        // Dynamically generated from the admin tool settings.
-        return get_config('tool_oauth2sciebo', 'auth_url');
+    // Dynamically generated from the admin tool settings.
+        $path = str_replace('remote.php/webdav/', '', get_config('tool_oauth2sciebo', 'path'));
+        return get_config('tool_oauth2sciebo', 'type') . '://' . get_config('tool_oauth2sciebo', 'server') . '/' . $path
+            . 'index.php/apps/oauth2/authorize';
     }
-
+    
     /**
-     * Returns the token url for OAuth 2.0 request
-     * @return string the auth url
-     */
+    * Returns the token url for OAuth 2.0 request
+    * @return string the token url
+    */
     protected function token_url() {
-        return get_config('tool_oauth2sciebo', 'token_url');
+        $path = str_replace('remote.php/webdav/', '', get_config('tool_oauth2sciebo', 'path'));
+        return get_config('tool_oauth2sciebo', 'type') . '://' . get_config('tool_oauth2sciebo', 'server')  . '/' . $path
+            . 'index.php/apps/oauth2/api/v1/token';
     }
 ```
-
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Später wird der Pfad aus den gegebenen Daten berechnet.
-</div>
 
 Hierfür werden die beiden Pfade aus der Serveraddresse und dem Serverpfad berechnet, da der Endpunkt für die oauth2 App in
 ownCloud gleich bleibt.

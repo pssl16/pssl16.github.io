@@ -35,9 +35,7 @@ zu implementieren, sodass allen zusätzlichen Plugins der Zugriff auf das Verfah
 Die aus der Aufteilung der Funktionen in verschiedene Plugins resultierenden Abhängigkeiten werden in folgender Abbildung
 dargestellt:
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Grafik einfügen.
-</div>
+![Plugin-Struktur](images/plugin-struktur.svg)
 
 Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Software Architektur erzielt
 werden sollte. Das führt zwar mit sich, dass funktionale Plugins (also das `repository` und das `activity` Plugin) nicht
