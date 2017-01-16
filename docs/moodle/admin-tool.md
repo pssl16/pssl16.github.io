@@ -8,14 +8,12 @@ App [OAuth2](../owncloud/technische-umsetzung/) mit Hilfe eines OAuth 2.0 Client
 Gleichzeitig kann dieses Plugin auch für ähnliche externe Datenquellen verwendet werden, sofern diese über die nötigen
 OAuth 2.0 und WebDAV Schnittstellen verfügen.
 
-Im Wesentlichen implementiert dieses Plugin folgende [Integrationsszenarien](software-architektur/):
+Im Wesentlichen implementiert dieses Plugin das folgende [Integrationsszenario](../index/):
 
-* **Beispiel 1:** ...
-* **Beispiel 2:** ...
+1. Als **Nutzer** möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden.
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Integrationsszenarien definieren und hier einfügen.
-</div>
+Jedoch betrifft es auch alle anderen Szenarien indirekt, da diese erst durch die Authentifizierung mittels OAuth 2.0 
+ermöglicht werden können.
 
 ## Vorgegebene Schnittstelle
 
