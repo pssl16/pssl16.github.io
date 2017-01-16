@@ -43,12 +43,12 @@ Admin Tools notwendig ist:
 
 ### Eingabemaske
 
-#### Benötigte Eingaben
-
 Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende Sciebo bzw. ownCloud Instanz zu befähigen,
 müssen diese zunächst mit Hilfe benötigter Eingabedaten konfiguriert werden. Diese sollen zentral im Admin Tool eingegeben und
 gespeichert werden können, um sie anschließend von anderen Plugins aus nutzen zu können. Zu diesem Zweck werden globale Optionen
 werden, welche instanzübergreifend gelten.
+
+#### Benötigte Eingaben
 
 Um den OAuth 2.0 Protokollablauf zu ermöglichen, müssen folgende Daten im Vorfeld erfasst werden:
 
@@ -186,10 +186,13 @@ class sciebo extends \oauth2_client {
 
 Zu diesem Zweck wird die Methode `get_config` verwendet. Sie gibt den für ein Plugin und einen zuvor einzigartig definierten
 Namen aus dem Admin Tree heraus die dazu gespeicherte Einstellung.
-Darüber hinaus muss eine `callback URL` angefügt werden, die den Pfad angibt, an den nach der Authentifizierung und Autorisierung
+Darüber hinaus muss eine `callback URL` angefügt werden, die den Pfad angibt, an den nach der Authentifizierung und Authorisierung
 weitergeleitet werden soll. Dieser wird allerdings wird extern in den Plugins erzeugt, die die `sciebo` Klasse benutzen.
 
-Weiterhin müssen die Methoden `auth_url` und `token_url` der Elternklasse zwingend überschrieben werden, um bei der Authentifizierung
+Zu beachten ist, dass für die Klasse `sciebo` ein namespace definiert wird, womit diese effizient in externen Plugins verwendet werden
+kann, die einen OAuth 2.0 Client benötigen.
+
+Weiterhin müssen die Methoden `auth_url` und `token_url` der Elternklasse zwingend implementiert werden, um bei der Authentifizierung
 auf die richtigen Pfade zu verweisen:
 
 ```php
@@ -218,12 +221,34 @@ auf die richtigen Pfade zu verweisen:
 Hierfür werden die beiden Pfade aus der Serveraddresse und dem Serverpfad berechnet, da der Endpunkt für die oauth2 App in
 ownCloud gleich bleibt.
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Überschriebene post Methode.
-</div>
+## Änderungen an Core Bibliotheken
+
+Du zur Umsetzung des Verfahrens Die vorgegebenen Schnittstellen nicht ausreichten, mussten in Anpassungen in moodles Core 
+Bibliotheken vorgenommen werden. Im Folgenden werden diese Änderungen beschrieben.
+
+### Anpassung der `post` Methode
+
+Die moodle-interne Klasse `oauth2client` erbt von einer weiteren Klasse aus dem moodle Core mit dem Namen `curl`, welche mittels
+[Curl]() HTTP Requests erstellen und verschicken kann. Dadurch ist die Klasse fähig eigenständig einen Access Token mit einem 
+Authorization Code mittels der HTTP POST Methode über die `token` Schnittstelle in ownCloud zu beschaffen. Allerdings
+bietet die dafür zuständige Methode `post` nicht die Möglichkeit einen Basic Authorization Header zur Anfrage hinzuzufügen,
+welcher Client ID und Secret zur Autorisierung in der `oauth2` ownCloud App mit verschickt. Daher musste die `post` Methode
+in der `sciebo` Klasse so überschrieben werden, dass der Header vor dem Aufruf der geerbten Methode gesetzt wird.
+In dem zugehörigen Skipt wurde folende Methode ergänzt:
+
+```php
+public function post($url, $params = '', $options = array()) {
+    
+    $this->setHeader(array(
+        'Authorization: Basic ' . base64_encode($this->get_clientid() . ':' . $this->get_clientsecret())
+        ));
+        
+    return parent::post($url, $params, $options);
+}
+```
+
+### Anpassung des WebDAV Clients
+
+### Weiterleitungen
 
 ## Tests und CI
-
-# Änderungen an Core Bibliotheken
-
-## Anpassung des WebDAV Clients
