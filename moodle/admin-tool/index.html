@@ -219,15 +219,12 @@ die Schnittstelle zu Sciebo bzw. ownCloud bereitzustellen. Zu diesem Zweck wird 
 App <a href="../../owncloud/technische-umsetzung/">OAuth2</a> mit Hilfe eines OAuth 2.0 Clients über die WebDAV Schnittstelle angesprochen.
 Gleichzeitig kann dieses Plugin auch für ähnliche externe Datenquellen verwendet werden, sofern diese über die nötigen
 OAuth 2.0 und WebDAV Schnittstellen verfügen.</p>
-<p>Im Wesentlichen implementiert dieses Plugin folgende <a href="../software-architektur/">Integrationsszenarien</a>:</p>
-<ul>
-<li><strong>Beispiel 1:</strong> ...</li>
-<li><strong>Beispiel 2:</strong> ...</li>
-</ul>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Integrationsszenarien definieren und hier einfügen.
-</div>
-
+<p>Im Wesentlichen implementiert dieses Plugin das folgende <a href="../../index/">Integrationsszenario</a>:</p>
+<ol>
+<li>Als <strong>Nutzer</strong> möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden.</li>
+</ol>
+<p>Jedoch betrifft es auch alle anderen Szenarien indirekt, da diese erst durch die Authentifizierung mittels OAuth 2.0 
+ermöglicht werden können.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
 <p>Für Admin Tools ist in moodle lediglich eine schwach definierte Schnittstelle gegeben. Wie in jedem anderen moodle Plugin 
 auch, müssen zunächst einige Standartdateien implementiert werden: </p>
