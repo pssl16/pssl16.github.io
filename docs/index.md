@@ -19,7 +19,7 @@ Dieser Use Case implementiert die grundlegende Authentifizierung mit dem [OAuth 
 Im Rahmen unserer Vorbereiungsphase auf das Projektseminar haben wir verschiedene Authentifizierungsmethoden evaluiert. Im Abschnitt
  [Authentifizierung und Autorisierung](##Authentifizierung und Autorisierung) finden sie hierfür genauere Informationen. Hierfür ist in Moodle das
  [Admin Tool](moodle/admin-tool.md) implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
- In OwnCloud wurde hierfür eine [App](owncloud/technische-umsetzung.md) entwickelt.
+ In OwnCloud wurde hierfür eine [App](/owncloud/technische-umsetzung.md) entwickelt.
  
 2. Als **Nutzer** möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen. 
 
@@ -40,7 +40,7 @@ jedoch nur in der Aktivität URL verfügbar.
 4. Als **Lehrender** möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen. 
 
 Die letzte User Story die wir implementiert haben, wurde vermehrt von Lehrenden der Universität Münster nachgefragt. Ein Lehrender kann mir Hilfe der
-Aktivität [collaborativefolders](moodle/activity.md) in einem Kurs Ordner erstellen auf den Studierende Zugriff haben und den sie ihrem sciebo account hinzufügen können.
+Aktivität [collaborativefolders](/moodle/activity.md) in einem Kurs Ordner erstellen auf den Studierende Zugriff haben und den sie ihrem sciebo account hinzufügen können.
 
 Weitere User Storys die jedoch nicht im Rahmen diese Projektseminars implementiert werden konnten finden sie unter dem Abschnitt 
 [Weitere Anwendungsszenarien](##Weitere Anwendungsszenarien).
