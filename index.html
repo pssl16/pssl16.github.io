@@ -199,6 +199,8 @@
         
             <li class="second-level"><a href="#zusammenspiel">Zusammenspiel</a></li>
             
+                <li class="third-level"><a href="#vorschlage-fur-weitere-anwendungsszenarien">Vorschläge für weitere Anwendungsszenarien</a></li>
+            
         
     
     </ul>
@@ -224,6 +226,42 @@
 <li>
 <p>Als <strong>Lehrender</strong> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen. </p>
 </li>
+</ol>
+<h2 id="authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</h2>
+<p>Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den gängigen Verfahren, die untersucht wurden, befinden sich:</p>
+<ul>
+<li><a href="https://oauth.net/2/">OAuth 2.0</a></li>
+<li><a href="https://jwt.io/">JSON Web Tokens</a></li>
+<li>Federated Single Sign-on mit beispielsweise <a href="https://shibboleth.net/">Shibboleth</a></li>
+</ul>
+<p>Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.</p>
+<h3 id="oauth-20">OAuth 2.0</h3>
+<p>Der allgemeine OAuth 2.0 Protokollablauf ist in der nachfolgenden Abbildung dargestellt.</p>
+<p><img alt="Authorization Code Flow" src="./images/oauth-allgemein.svg" /></p>
+<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte, bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:</p>
+<ol>
+<li>Authorization Request:</li>
+<li>Authorization Response</li>
+<li>Access Token Request</li>
+<li>Access Token Response</li>
+<li>Anfrage mittels Access Token</li>
+<li>Zugriff auf geschützte Ressourcen</li>
+</ol>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Beschreibung der Schritte einfügen.
+</div>
+
+<h2 id="komponenten">Komponenten</h2>
+<p><div class="alert alert-danger">
+  <strong>TODO:</strong> Würde ich nicht in die Index packen, sondern einzelne Komponenten nur in dem Moodle und ownCloud Unterpunkt beschreiben.
+</div></p>
+<h3 id="owncloud">ownCloud</h3>
+<h3 id="moodle">Moodle</h3>
+<h2 id="zusammenspiel">Zusammenspiel</h2>
+<h3 id="vorschlage-fur-weitere-anwendungsszenarien">Vorschläge für weitere Anwendungsszenarien</h3>
+<p>Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten UseCases konzentriert. Im Folgenden werden weitere Use Cases erläutert
+über deren Implementierung wir nachgedacht haben und die eine Erweiterung zu den bestehenden Use Cases bilden könnten.</p>
+<ol>
 <li>
 <p>Als <strong>Lehrender</strong> möchte ich auf einen Button klicken, um hochgeladene Dateien zu aktualisieren.</p>
 </li>
@@ -254,35 +292,7 @@
 <li>
 <p>Als <strong>Lehrender</strong> möchte ich in Sciebo die Teilen-Funktion nutzen, um Dateien oder Dokumente für Kursteilnehmer freigeben zu können.</p>
 </li>
-</ol>
-<h2 id="authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</h2>
-<p>Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den gängigen Verfahren, die untersucht wurden, befinden sich:</p>
-<ul>
-<li><a href="https://oauth.net/2/">OAuth 2.0</a></li>
-<li><a href="https://jwt.io/">JSON Web Tokens</a></li>
-<li>Federated Single Sign-on mit beispielsweise <a href="https://shibboleth.net/">Shibboleth</a></li>
-</ul>
-<p>Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.</p>
-<h3 id="oauth-20">OAuth 2.0</h3>
-<p>Der allgemeine OAuth 2.0 Protokollablauf ist in der nachfolgenden Abbildung dargestellt.</p>
-<p><img alt="Authorization Code Flow" src="./images/oauth-allgemein.svg" /></p>
-<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte, bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:</p>
-<ol>
-<li>Authorization Request:</li>
-<li>Authorization Response</li>
-<li>Access Token Request</li>
-<li>Access Token Response</li>
-<li>Anfrage mittels Access Token</li>
-<li>Zugriff auf geschützte Ressourcen</li>
-</ol>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Beschreibung der Schritte einfügen.
-</div>
-
-<h2 id="komponenten">Komponenten</h2>
-<h3 id="owncloud">ownCloud</h3>
-<h3 id="moodle">Moodle</h3>
-<h2 id="zusammenspiel">Zusammenspiel</h2></div>
+</ol></div>
         
     </div>
 
@@ -337,5 +347,5 @@
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-01-16 15:45:12
+Build Date UTC : 2017-03-02 12:53:50
 -->
