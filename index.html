@@ -225,13 +225,13 @@ Während des Projektseminars konnten wir folgende Use Cases implementieren:</p>
 <p>Dieser Use Case implementiert die grundlegende Authentifizierung mit dem <a href="https://oauth.net/2/">OAuth 2.0</a> Verfahren.
 Im Rahmen unserer Vorbereiungsphase auf das Projektseminar haben wir verschiedene Authentifizierungsmethoden evaluiert. Im Abschnitt
  <a href="##Authentifizierung und Autorisierung">Authentifizierung und Autorisierung</a> finden sie hierfür genauere Informationen. Hierfür ist in Moodle das
- <a href="admin-tool.md">Admin Tool</a> implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
- In OwnCloud wurde hierfür eine <a href="technische-umsetzung.md">App</a> entwickelt.</p>
+ <a href="moodle/admin-tool/">Admin Tool</a> implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
+ In OwnCloud wurde hierfür eine <a href="owncloud/technische-umsetzung/">App</a> entwickelt.</p>
 <ol>
 <li>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen. </li>
 </ol>
 <p>Der vorherige Use Case war für den Benutzer der Moodle Instanz noch nicht sichtbar. Das wichtigste Anwendungsszenario ist das Nutzer im Learnweb Dateien aus ihrer 
-Sciebo Account hochladen können. Hierfür haben wir in Moodle ein <a href="repository.md">Repository-Plugins</a> entwickelt. Sobald das Reposiotory einer Moodle 
+Sciebo Account hochladen können. Hierfür haben wir in Moodle ein <a href="moodle/repository/">Repository-Plugins</a> entwickelt. Sobald das Reposiotory einer Moodle 
 Instanz hinzugefügt wurde kann der Nutzer über einen anmelde Button Moodle autorisieren Dateien aus dem privaten sciebo account anzuzeigen 
 und mit Hilfe des File Pickers können nun Dateien ausgewählt werden.
 <div class="alert alert-danger">
@@ -241,16 +241,13 @@ und mit Hilfe des File Pickers können nun Dateien ausgewählt werden.
 <li>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.</li>
 </ol>
 <p>Eine Erweiterung des vorherigen Szenarios ist die Verlinkung von Dateien. Hier wird zu der bestehenden Datei ein public-link erstellt.
-Dieser kann nun von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des <a href="repository.md">Repository-Plugins</a>. Das Verlinken ist 
+Dieser kann nun von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des <a href="moodle/repository/">Repository-Plugins</a>. Das Verlinken ist 
 jedoch nur in der Aktivität URL verfügbar.</p>
 <ol>
 <li>Als <strong>Lehrender</strong> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen. </li>
 </ol>
 <p>Die letzte User Story die wir implementiert haben, wurde vermehrt von Lehrenden der Universität Münster nachgefragt. Ein Lehrender kann mir Hilfe der
-Aktivität collaborativefolders in einem Kurs Ordner erstellen auf den Studierende Zugriff haben und den sie ihrem sciebo account hinzufügen können.
-<div class="alert alert-danger">
-     <strong>TODO:</strong> Ganze Seite erstellen
-</div></p>
+Aktivität <a href="moodle/activity/">collaborativefolders</a> in einem Kurs Ordner erstellen auf den Studierende Zugriff haben und den sie ihrem sciebo account hinzufügen können.</p>
 <p>Weitere User Storys die jedoch nicht im Rahmen diese Projektseminars implementiert werden konnten finden sie unter dem Abschnitt 
 <a href="##Weitere Anwendungsszenarien">Weitere Anwendungsszenarien</a>.</p>
 <h2 id="authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</h2>
@@ -375,5 +372,5 @@ bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Proto
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-03-02 14:30:23
+Build Date UTC : 2017-03-02 14:35:12
 -->
