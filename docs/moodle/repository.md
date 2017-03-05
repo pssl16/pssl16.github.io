@@ -27,7 +27,7 @@ Für Repository-Plugins müssen außerdem folgende Dateien implementiert werden:
 ## Implementierung der vorgegebenen Schnittstelle
 ### Implementierung der `lib.php`:
 In der lib.php wird eine Klasse definiert die von der abstrakten Klasse `repository` erbt.
-#### `function __construct()`
+#### Implementierung der construct() Funktion
 Diese Funktion wird jedes mal aufgerufen, wenn eine Instanz des Plugins erstellt wird. Hier wird ein Objekt der sciebo Klasse des Admin tools erzeugt, das als Parameter eine returnurl übergeben bekommt.
 ``` php
 $returnurl = new moodle_url('/repository/repository_callback.php', [
@@ -40,10 +40,10 @@ $this->sciebo = new sciebo($returnurl);
 Der callback url werden als Parameter noch zusätzlich die id und der sesskey übergeben, um einen callback zu ermöglichen.
 
 Desweiteren wird die Parent Methode aufgerufen, die die nötigen Datenbankeinträge tätigt.
-#### `function get_file()`:
+#### Implementierung der get_file() Funktion
 Diese Funktion stellt eine Schnittstelle zum oauht2 Objekt des admin tools bereit. Die Funktion überprüft ob schon eine offene Verbindung besteht mit Hilfe der Methode `sciebo->dav->open()`. Falls keine Verbindung besteht wird die Funktion `$this->sciebo->get_file();` aufgerufen. Die Funktion ähnelt sehr der Funktion des `WebDAV Repository`, statt Basic Authentication wird jedoch das OAuth2 Protokoll benutzt. Danach wird der Nutzer  mit Hilfe der `logout()` Funktion ausgeloggt. Diese ruft die `logout()` Funktion der Sciebo Klasse auf.
 
-#### `function get_listing()`
+#### Implementierung der get_listing() Funktion
 Diese Funktion wird aufgerufen um im File Picker die verfügbaren Dateien anzuzeigen. Als Rückgabe wird ein Array aller verfügbaren Dateien mit spezifischen Informationen über diese Dateien erwartet. Bis auf die Authentifizierung funktioniert diese Methode genauso wie die Methode des WebDAV Repository. Am Anfang werden noch grundlegende Einstellungen für die Ansicht definiert:
 ``` php
 $ret['dynload'] = true;
@@ -89,7 +89,7 @@ Falls es sich um einen Ordner handelt wird der Titel, ein Ordner als Bild, der P
 Falls es sich um eine Datei handelt wird zusätzlich zu den oben genannten Informationen noch die Datei Größe gespeichert.
 
 Mit Hilfe einer `foreach()` Schleife wird dies für jede Datei durchgeführt. Anschließend werden zuerst Ordner und danach alphabetisch sortiert die Dateien in einem Array sortiert. Diese Array wird von der Funktion wiedergegeben, Moodle platziert nun die
-#### `function get_link()`
+#### Implementierung der get_link() Funktion
 Anstelle einer Datei soll es auch möglich sein, einen Downloadlink zu einer existierenden Datei bereitzustellen. Diese wird von dem Modul URL genutzt. Zusätzlich dazu kann auch erlaubt werden im File Picker Dateien zu verlinken. Die zweite Option erlauben wir in unserem Plugin nicht, da uns die Zeit fehlte die zusätzliche Funktionalität zu implementieren. Dies haben wir in der Methode [`supported_returntypes()`](#repository-spezifische-einstellungen)
 ausgeschlossen.
 Die Implementierung der `get_link()` Methode ist nicht trivial da sich der Link abhängig von den Einstellungen im Admin Tool ändert.
@@ -111,7 +111,7 @@ public function get_link($url) {
             'public.php?service=files&t=' . $fileid . '&download';
 }
 ```
-#### `function print_login()`
+#### Implementierung der print_login() Funktion
 Um einen Benutzer zum ersten mal mit dem OAuth2 Protokoll anmelden zu können, muss er einmalig seinen Benutzer Namen und sein Passwort angeben. Sobald der Nutzer auf den Login Button klickt erscheint ein Pop-up Window oder es öffnet sich ein neuer Tab im Browser, indem der Nutzer aufgefordert wird seinen Namen und sein Passwort anzugeben.
 ``` php
 
