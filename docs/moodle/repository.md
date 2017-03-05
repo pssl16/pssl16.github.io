@@ -133,9 +133,9 @@ Um einen Benutzer zum ersten mal mit dem OAuth2 Protokoll anmelden zu können, m
 
 Für Repository Plugins gibt es einige Einstellungen die hard gecodet sind und sich nicht auf der Webside anpassen lassen. Hierzu gehören folgende Funktionen:
 * **`supported_returntypes()`**  mögliche Rückgabetypen sind:
-  * FILE_INTERNAL - Dateien dürfen im Moodle Dateien System hoch und runtergeladen werden.
-  * FILE_EXTERNAL - Dateien bleiben im externen Repository und werden von dort bezogen.
-  * FILE_REFERENCE - Dateien werden lokal erstellt, aber werden extern synchronisiert wenn notwendig.
+    * FILE_INTERNAL - Dateien dürfen im Moodle Dateien System hoch und runtergeladen werden.
+    * FILE_EXTERNAL - Dateien bleiben im externen Repository und werden von dort bezogen.
+    * FILE_REFERENCE - Dateien werden lokal erstellt, aber werden extern synchronisiert wenn notwendig.
 Wir haben FILE_INTERNAL und FILE_EXTERNAL erlaubt, da die Synchronisation von Dateien einen zu großen Implementationsaufwand für unser Projektseminar darstellte.
 * **`supported_filetypes()`**  hier wird spezifiziert welche Arten von Dateitypen unterstützt werden. Wir haben alle Dateitypen erlaubt.
 
