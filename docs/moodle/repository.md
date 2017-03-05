@@ -25,7 +25,7 @@ Für Repository-Plugins müssen außerdem folgende Dateien implementiert werden:
 * **`lib.php`:** Hier wird eine Klasse `repository_sciebo extends repository` deklariert, die als Hauptaufgabe die Integration in den File Picker verwaltet.
 
 ## Implementierung der vorgegebenen Schnittstelle
-### Implementierung der `lib.php`:
+### Implementierung der `lib.php`
 In der lib.php wird eine Klasse definiert die von der abstrakten Klasse `repository` erbt.
 #### Implementierung der construct() Funktion
 Diese Funktion wird jedes mal aufgerufen, wenn eine Instanz des Plugins erstellt wird. Hier wird ein Objekt der sciebo Klasse des Admin tools erzeugt, das als Parameter eine returnurl übergeben bekommt.
@@ -139,7 +139,7 @@ Für Repository Plugins gibt es einige Einstellungen die hard gecodet sind und s
 Wir haben FILE_INTERNAL und FILE_EXTERNAL erlaubt, da die Synchronisation von Dateien einen zu großen Implementationsaufwand für unser Projektseminar darstellte.
 * **`supported_filetypes()`**  hier wird spezifiziert welche Arten von Dateitypen unterstützt werden. Wir haben alle Dateitypen erlaubt.
 
-### Implementierung der `db/access.php`:
+### Implementierung der `db/access.php`
 Standardmäßig muss nur eine `capability` in einem Repository-Plugin definiert werden. Diese heißt view capability und beschreibt wer das Repository sehen darf, sobald es vom Site Admin freigegeben und aktiviert wurde.
 ``` php
 $capabilities = array(
@@ -154,7 +154,7 @@ $capabilities = array(
 ```
 In unserem Fall darf jeder Nutzer das Repository sehen.
 
-### Besonderheiten der `version.php`:
+### Besonderheiten der `version.php`
 
 Um sicherzustellen, dass die Authentifizierung korrekt abläuft muss das admin-tool oauth2sciebo installiert sein. Dies wird sichergestellt indem in der `version.php` eine Abhängigkeit gesetzt wird:
 ``` php
