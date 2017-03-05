@@ -11,7 +11,7 @@ Eine mögliche Lösung sollte dabei möglichst allgemein einsetzbar sein, da die
 Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
 Diese haben wir nach Schwere, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
 Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.
-Während des Projektseminars konnten wir folgende Use Cases implementieren:
+### Realisierte Szenarien
 
 #### 1. Als **Nutzer** möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden.
 
