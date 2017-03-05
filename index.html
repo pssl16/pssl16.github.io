@@ -184,6 +184,14 @@
         
             <li class="second-level"><a href="#user-stories">User Stories</a></li>
             
+                <li class="third-level"><a href="#1-als-nutzer-mochte-ich-oauth2-benutzen-konnen-um-mich-im-learnweb-als-sciebo-nutzer-anzumelden">1. Als Nutzer möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden.</a></li>
+            
+                <li class="third-level"><a href="#2-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-sciebo-instanz-hochladen">2. Als Nutzer möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.</a></li>
+            
+                <li class="third-level"><a href="#3-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-sciebo-instanz-verlinken">3. Als Nutzer möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.</a></li>
+            
+                <li class="third-level"><a href="#4-als-lehrender-mochte-ich-studierenden-oder-gruppen-von-studierenden-ordner-fur-kollaboratives-arbeiten-bereitstellen">4. Als Lehrender möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</a></li>
+            
         
             <li class="second-level"><a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a></li>
             
@@ -209,38 +217,38 @@
         <div class="col-md-9" role="main">
 
 <h1 id="sciebolearnweb">sciebo@Learnweb</h1>
-<p>Diese Website dokumentiert die Integration von <a href="https://www.sciebo.de/">sciebo</a> in das <a href="https://www.uni-muenster.de/LearnWeb/learnweb2/">Learnweb</a> 
+<p>Diese Website dokumentiert die Integration von <a href="https://www.sciebo.de/">sciebo</a> in das <a href="https://www.uni-muenster.de/LearnWeb/learnweb2/">Learnweb</a>
 von dem Projektseminar <a href="https://www.wi.uni-muenster.de/de/studierende/lehrangebot/227197">sciebo@Learnweb</a>, das im Wintersemester 2016/17 an der <a href="http://www.uni-muenster.de/">Westfälischen Wilhelms-Universität Münster</a> stattgefunden hat.</p>
-<p>Sciebo ist ein Cloud-Dienst, der gemeinsam von 26 Hochschulen und Forschungseinrichtungen in NRW angeboten wird. Als Grundlage dient die Enterprise-Edition von <a href="https://owncloud.org/">ownCloud</a>. 
+<p>Sciebo ist ein Cloud-Dienst, der gemeinsam von 26 Hochschulen und Forschungseinrichtungen in NRW angeboten wird. Als Grundlage dient die Enterprise-Edition von <a href="https://owncloud.org/">ownCloud</a>.
 Das Learnweb ist ein auf der Open-Source-Lösung <a href="https://moodle.org/">Moodle</a> basierendes E-Learning System der Westfälischen Wilhelms-Universität Münster.</p>
 <p>Eine mögliche Lösung sollte dabei möglichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universitäten genutzt wird.</p>
 <h2 id="user-stories">User Stories</h2>
-<p>Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt. 
-Diese haben wir nach Schwere, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert. 
-Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo. 
+<p>Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
+Diese haben wir nach Schwere, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
+Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.
 Während des Projektseminars konnten wir folgende Use Cases implementieren:</p>
-<p><font size="5"> 1. Als <b>Nutzer</b> möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden. </font></p>
+<h4 id="1-als-nutzer-mochte-ich-oauth2-benutzen-konnen-um-mich-im-learnweb-als-sciebo-nutzer-anzumelden">1. Als <strong>Nutzer</strong> möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden.</h4>
 <p>Dieser Use Case implementiert die grundlegende Authentifizierung mit dem <a href="https://oauth.net/2/">OAuth 2.0</a> Verfahren.
 Im Rahmen unserer Vorbereiungsphase auf das Projektseminar haben wir verschiedene Authentifizierungsmethoden evaluiert. Im Abschnitt
  <a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a> finden sie hierfür genauere Informationen. Hierfür ist in Moodle das
  <a href="moodle/admin-tool/">Admin Tool</a> implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
  In OwnCloud wurde hierfür eine <a href="owncloud/technische-umsetzung/">App</a> entwickelt.</p>
-<p><font size="5"> 2. Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen. </font></p>
-<p>Der vorherige Use Case war für den Benutzer der Moodle Instanz noch nicht sichtbar. Das wichtigste Anwendungsszenario ist das Nutzer im Learnweb Dateien aus ihrer 
-Sciebo Account hochladen können. Hierfür haben wir in Moodle ein <a href="moodle/repository/">Repository-Plugins</a> entwickelt. Sobald das Reposiotory einer Moodle 
-Instanz hinzugefügt wurde kann der Nutzer über einen anmelde Button Moodle autorisieren Dateien aus dem privaten sciebo account anzuzeigen 
+<h4 id="2-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-sciebo-instanz-hochladen">2. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.</h4>
+<p>Der vorherige Use Case war für den Benutzer der Moodle Instanz noch nicht sichtbar. Das wichtigste Anwendungsszenario ist das Nutzer im Learnweb Dateien aus ihrer
+Sciebo Account hochladen können. Hierfür haben wir in Moodle ein <a href="moodle/repository/">Repository-Plugins</a> entwickelt. Sobald das Reposiotory einer Moodle
+Instanz hinzugefügt wurde kann der Nutzer über einen anmelde Button Moodle autorisieren Dateien aus dem privaten sciebo account anzuzeigen
 und mit Hilfe des File Pickers können nun Dateien ausgewählt werden.
 <div class="alert alert-danger">
   <strong>TODO:</strong> BILDER! (Wenn get_listing wieder funktioniert)
 </div></p>
-<p><font size="5"> 3. Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.</font></p>
+<h4 id="3-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-sciebo-instanz-verlinken">3. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.</h4>
 <p>Eine Erweiterung des vorherigen Szenarios ist die Verlinkung von Dateien. Hier wird zu der bestehenden Datei ein public-link erstellt.
-Dieser kann nun von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des <a href="moodle/repository/">Repository-Plugins</a>. Das Verlinken ist 
+Dieser kann nun von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des <a href="moodle/repository/">Repository-Plugins</a>. Das Verlinken ist
 jedoch nur in der Aktivität URL verfügbar.</p>
-<p><font size="5"> 4. Als <b>Lehrender</b> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen. </font></p>
+<h4 id="4-als-lehrender-mochte-ich-studierenden-oder-gruppen-von-studierenden-ordner-fur-kollaboratives-arbeiten-bereitstellen">4. Als <strong>Lehrender</strong> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</h4>
 <p>Die letzte User Story die wir implementiert haben, wurde vermehrt von Lehrenden der Universität Münster nachgefragt. Ein Lehrender kann mir Hilfe der
 Aktivität <a href="moodle/activity/">collaborativefolders</a> in einem Kurs Ordner erstellen auf den Studierende Zugriff haben und den sie ihrem sciebo account hinzufügen können.</p>
-<p>Weitere User Storys die jedoch nicht im Rahmen diese Projektseminars implementiert werden konnten finden sie unter dem Abschnitt 
+<p>Weitere User Storys die jedoch nicht im Rahmen diese Projektseminars implementiert werden konnten finden sie unter dem Abschnitt
 <a href="#weitere-anwendungsszenarien">Weitere Anwendungsszenarien</a>.</p>
 <h2 id="authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</h2>
 <p>Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den gängigen Verfahren, die untersucht wurden, befinden sich:</p>
@@ -249,12 +257,12 @@ Aktivität <a href="moodle/activity/">collaborativefolders</a> in einem Kurs Ord
 <li><a href="https://jwt.io/">JSON Web Tokens</a></li>
 <li>Federated Single Sign-on mit beispielsweise <a href="https://shibboleth.net/">Shibboleth</a></li>
 </ul>
-<p>Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und 
+<p>Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und
 Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.</p>
 <h3 id="oauth-20">OAuth 2.0</h3>
 <p>Der allgemeine OAuth 2.0 Protokollablauf ist in der nachfolgenden Abbildung dargestellt.</p>
 <p><img alt="Authorization Code Flow" src="./images/oauth-allgemein.svg" /></p>
-<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte, 
+<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte,
 bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:</p>
 <ol>
 <li>Authorization Request:</li>
@@ -286,7 +294,7 @@ bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Proto
 <p>Als <strong>Studierender</strong> möchte ich Dateien aus dem Learnweb direkt in meiner sciebo Instanz speichern können.</p>
 </li>
 <li>
-<p>Als <strong>Studierender</strong> möchte ich anderen Studierenden Schreib- und Lese-Rechte geben um kollaborativ zu arbeiten. </p>
+<p>Als <strong>Studierender</strong> möchte ich anderen Studierenden Schreib- und Lese-Rechte geben um kollaborativ zu arbeiten.</p>
 </li>
 <li>
 <p>Als <strong>Lehrender</strong> möchte ich Nutzern auf Modul-Basis das Recht entziehen eine Datei zu verlinken.</p>
@@ -364,5 +372,5 @@ bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Proto
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-03-05 15:40:43
+Build Date UTC : 2017-03-05 15:51:01
 -->
