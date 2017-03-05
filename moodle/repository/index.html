@@ -190,11 +190,11 @@
         
             <li class="second-level"><a href="#implementierung-der-vorgegebenen-schnittstelle">Implementierung der vorgegebenen Schnittstelle</a></li>
             
-                <li class="third-level"><a href="#implementierung-der-libphp">Implementierung der lib.php:</a></li>
+                <li class="third-level"><a href="#implementierung-der-libphp">Implementierung der lib.php</a></li>
             
-                <li class="third-level"><a href="#implementierung-der-dbaccessphp">Implementierung der db/access.php:</a></li>
+                <li class="third-level"><a href="#implementierung-der-dbaccessphp">Implementierung der db/access.php</a></li>
             
-                <li class="third-level"><a href="#besonderheiten-der-versionphp">Besonderheiten der version.php:</a></li>
+                <li class="third-level"><a href="#besonderheiten-der-versionphp">Besonderheiten der version.php</a></li>
             
         
             <li class="second-level"><a href="#tests-und-ci">Tests und CI</a></li>
@@ -227,7 +227,7 @@ abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können. Als St
 <em> <strong><code>pix/icon.png</code>:</strong> Hier wird ein 16x16 icon platziert, welches für das Plugin genutzt wird.
 </em> <strong><code>lib.php</code>:</strong> Hier wird eine Klasse <code>repository_sciebo extends repository</code> deklariert, die als Hauptaufgabe die Integration in den File Picker verwaltet.</p>
 <h2 id="implementierung-der-vorgegebenen-schnittstelle">Implementierung der vorgegebenen Schnittstelle</h2>
-<h3 id="implementierung-der-libphp">Implementierung der <code>lib.php</code>:</h3>
+<h3 id="implementierung-der-libphp">Implementierung der <code>lib.php</code></h3>
 <p>In der lib.php wird eine Klasse definiert die von der abstrakten Klasse <code>repository</code> erbt.</p>
 <h4 id="implementierung-der-construct-funktion">Implementierung der construct() Funktion</h4>
 <p>Diese Funktion wird jedes mal aufgerufen, wenn eine Instanz des Plugins erstellt wird. Hier wird ein Objekt der sciebo Klasse des Admin tools erzeugt, das als Parameter eine returnurl übergeben bekommt.</p>
@@ -334,7 +334,7 @@ public function get_link($url) {
     * FILE_REFERENCE - Dateien werden lokal erstellt, aber werden extern synchronisiert wenn notwendig.
 Wir haben FILE_INTERNAL und FILE_EXTERNAL erlaubt, da die Synchronisation von Dateien einen zu großen Implementationsaufwand für unser Projektseminar darstellte.
 </em> <strong><code>supported_filetypes()</code></strong>  hier wird spezifiziert welche Arten von Dateitypen unterstützt werden. Wir haben alle Dateitypen erlaubt.</p>
-<h3 id="implementierung-der-dbaccessphp">Implementierung der <code>db/access.php</code>:</h3>
+<h3 id="implementierung-der-dbaccessphp">Implementierung der <code>db/access.php</code></h3>
 <p>Standardmäßig muss nur eine <code>capability</code> in einem Repository-Plugin definiert werden. Diese heißt view capability und beschreibt wer das Repository sehen darf, sobald es vom Site Admin freigegeben und aktiviert wurde.</p>
 <pre><code class="php">$capabilities = array(
     'repository/sciebo:view' =&gt; array(
@@ -348,7 +348,7 @@ Wir haben FILE_INTERNAL und FILE_EXTERNAL erlaubt, da die Synchronisation von Da
 </code></pre>
 
 <p>In unserem Fall darf jeder Nutzer das Repository sehen.</p>
-<h3 id="besonderheiten-der-versionphp">Besonderheiten der <code>version.php</code>:</h3>
+<h3 id="besonderheiten-der-versionphp">Besonderheiten der <code>version.php</code></h3>
 <p>Um sicherzustellen, dass die Authentifizierung korrekt abläuft muss das admin-tool oauth2sciebo installiert sein. Dies wird sichergestellt indem in der <code>version.php</code> eine Abhängigkeit gesetzt wird:</p>
 <pre><code class="php">$plugin-&gt;dependencies = array(
     'tool_oauth2sciebo' =&gt; ANY_VERSION);
