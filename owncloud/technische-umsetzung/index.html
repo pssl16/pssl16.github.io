@@ -653,7 +653,7 @@ class Utilities {
 Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. Diese Hooks müssen in den <code>routes</code> registriert werden und die zugehörige Logik im <code>Container</code> gespeichert werden.</p>
 <p>In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. Zuerst wird eine Konstruktorfunktion aufgerufen, welche den <code>userManager</code>, den <code>authorizationCodeMApper</code>, den <code>accessTokenMapper</code> und den <code>refreshTokenMapper</code> aufruft. 
 Dann wird der pre-delete Hook registriert und ein <code>callback</code> für den Hook definiert. Dieser <code>callback</code> löscht jegliche, dem Nutzer zugehörige, <code>authorizationCodes</code>, <code>accessTokens</code> und <code>refreshTokens.</code> Dazu wird in den jeweiligen Konstruktoren die Methode <code>deleteByUID</code> aufgerufen.</p>
-<p>Folgendes Codebeispiel zeigt den genannten Fall der <code>userHooks</code>.</p>
+<p>Folgendes Codebeispiel zeigt den genannten Fall der <strong><code>UserHooks</code></strong>.</p>
 <pre><code class="php">class UserHooks {
 
     /**
