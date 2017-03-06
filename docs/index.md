@@ -119,4 +119,7 @@ Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten Use
 10. Als **Lehrender** möchte ich in Sciebo die Teilen-Funktion nutzen, um Dateien oder Dokumente für Kursteilnehmer freigeben zu können.
 
 ## Zusammenfassung
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Ausführung.
+</div>
 Erfüllungsgrad der User Stories, Geschaffene Funktionalitäten, (bekannte, ggf. bewusst gewählte) Einschränkungen, Ausblick auf weitere Entwicklungsmöglichkeiten. Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben
