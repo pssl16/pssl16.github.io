@@ -7,9 +7,14 @@ Das Learnweb ist ein auf der Open-Source-Lösung [Moodle](https://moodle.org/) b
 
 Eine mögliche Lösung sollte dabei möglichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universitäten genutzt wird.
 
-## User Stories
+## Allgemeine Motivation für die Arbeit
+Die grundsätzliche Motivation für das Projektseminar war es, die beiden Systeme [sciebo](https://www.sciebo.de/) und [Learnweb](https://www.uni-muenster.de/LearnWeb/learnweb2/) passwortlos miteinander kommunizieren zu lassen. 
+Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht im Klartext auf dem jeweils anderen System gespeichert wird. Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen. 
+Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im Learnweb abgerufen werden können und kollaborative Ordner in sciebo vom Learnweb aus erstellt werden können.
+
+## Integrationsszenarien (User Stories)
 Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
-Diese haben wir nach Schwere, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
+Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
 Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.
 ### Realisierte Szenarien
 
@@ -55,23 +60,20 @@ Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein stand
 Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.
 
 ### OAuth 2.0
-Der allgemeine OAuth 2.0 Protokollablauf ist in der nachfolgenden Abbildung dargestellt.
+Der allgemeine [OAuth 2.0 Protokollablauf](https://tools.ietf.org/html/rfc6749#section-1.2) ist in der nachfolgenden Abbildung dargestellt.
 
 ![Authorization Code Flow](images/oauth-allgemein.svg)
 
 Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte,
 bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:
 
-1. Authorization Request:
-2. Authorization Response
-3. Access Token Request
-4. Access Token Response
-5. Anfrage mittels Access Token
-6. Zugriff auf geschützte Ressourcen
-
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Beschreibung der Schritte einfügen.
-</div>
+1. Authorization Request: Der Client fordert eine Autorisierung vom Resource Owner an.
+2. Authorization Response: Der Client erhält eine Autorisierungsgenehmigung vom Resource Owner. Die Autorisierung kann über eine
+der vier Autorisierungsgenehmigungen (authorization grant type) erfolgen, oder es wird ein erweiterer Genehmigungsprozess verwendet.
+3. Access Token Request: Der Client fordert ein Access Token vom Authorization Server an. Hierfür nutzt er die Autorisierungsgenehmigung vom Resource Owner.
+4. Access Token Response: Der Authorization Server authentifiziert den Client und prüft die Autorisierungsgenehmigung. Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.
+5. Anfrage mittels Access Token: Der Client fragt die geschützten Daten beim Resource Server an. Zur Authentifizierung benutzt er den Access Token.
+6. Zugriff auf geschützte Ressourcen: Der Resource Server prüft den Access Token und stellt, wenn gültig, die gewünschten Daten zur Verfügung.
 
 ## Komponenten
 <div class="alert alert-danger">
@@ -80,9 +82,16 @@ bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Proto
 
 ### ownCloud
 
+Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte oauth2 App und der ownCloud Core mit Änderungen aus unserem Pull request, damit die oauth2 App die volle Funktionalität bereitstellen kann.
+
 ### Moodle
 
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Bestandteile der Lösung in moodle auflisten und kurz die Funktion anschneiden.
+</div>
+
 ## Zusammenspiel
+
 
 ## Weitere Anwendungsszenarien
 
@@ -108,3 +117,6 @@ Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten Use
 9. Als **Lehrender** möchte ich sciebo als primären Speicher für alle Dateien im Kurs verwenden können.
 
 10. Als **Lehrender** möchte ich in Sciebo die Teilen-Funktion nutzen, um Dateien oder Dokumente für Kursteilnehmer freigeben zu können.
+
+## Zusammenfassung
+Erfüllungsgrad der User Stories, Geschaffene Funktionalitäten, (bekannte, ggf. bewusst gewählte) Einschränkungen, Ausblick auf weitere Entwicklungsmöglichkeiten. Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben

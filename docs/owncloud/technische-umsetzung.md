@@ -1,5 +1,7 @@
 # Technische Umsetzung
 
+## Motivation
+
 Da man möglichst keine neue Schnittstelle implementieren wollte, war es das Ziel, die bestehende WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als [ownCloud App](https://doc.owncloud.org/server/latest/developer_manual/app/) realisiert worden. Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu können. Dafür wurde eine weitere ownCloud App implementiert.
 
 ## Implementierung der `oauth2` App
@@ -386,9 +388,60 @@ Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren
   <strong>TODO:</strong> Klassendiagramm einfügen.
 </div>
 
+### Hooks
+
+In den [Hooks](https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook) einer ownCloud App wird Code gespeichert, der vor oder nach einem bestimmten Ereignis ausgeführt werden soll. 
+Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. Diese Hooks müssen in den `routes` registriert werden und die zugehörige Logik im `Container` gespeichert werden.
+
+In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. Zuerst wird eine Konstruktorfunktion aufgerufen, welche den `userManager`, den `authorizationCodeMApper`, den `accessTokenMapper` und den `refreshTokenMapper` aufruft. 
+Dann wird der pre-delete Hook registriert und ein `callback` für den Hook definiert. Dieser `callback` löscht jegliche, dem Nutzer zugehörige, `authorizationCodes`, `accessTokens` und `refreshTokens.` Dazu wird in den jeweiligen Konstruktoren die Methode `deleteByUID` aufgerufen.
+
+Folgendes Codebeispiel zeigt den genannten Fall der `userHooks`.
+
+```php
+class UserHooks {
+
+	/**
+	 * UserHooks constructor.
+	 *
+	 * @param IUserManager $userManager The user manager
+	 * @param AuthorizationCodeMapper $authorizationCodeMapper The authorization code mapper
+	 * @param AccessTokenMapper $accessTokenMapper The access token mapper
+	 * @param RefreshTokenMapper $refreshTokenMapper The refresh token mapper
+	 */
+	public function __construct(IUserManager $userManager,
+								AuthorizationCodeMapper $authorizationCodeMapper,
+								AccessTokenMapper $accessTokenMapper,
+								RefreshTokenMapper $refreshTokenMapper) {
+		$this->userManager = $userManager;
+		$this->authorizationCodeMapper = $authorizationCodeMapper;
+		$this->accessTokenMapper = $accessTokenMapper;
+		$this->refreshTokenMapper = $refreshTokenMapper;
+	}
+	/**
+	 * Registers a pre-delete hook for users to delete authorization codes,
+	 * access tokens and refresh tokens that reference the user.
+	 */
+	public function register() {
+		/**
+		 * @param User $user
+		 */
+		$callback = function ($user) {
+			if (!is_null($user->getUID())) {
+				$this->authorizationCodeMapper->deleteByUser($user->getUID());
+				$this->accessTokenMapper->deleteByUser($user->getUID());
+				$this->refreshTokenMapper->deleteByUser($user->getUID());
+			}
+		};
+		$this->userManager->listen('\OC\User', 'preDelete', $callback);
+	}
+}
+```
+
 ### Templates
 
-In den [Templates](https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html) einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. Es können die vom [Controller](#controller) übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen `$_`. Zur Vermeidung von Cross-Site-Scripting gibt es die ownCloud-interne Funktion `p()`, mithilfe derer Werte ausgegeben werden können.
+In den [Templates](https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html) einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. Es können die vom [Controller](#controller) übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen `$_`. 
+Zur Vermeidung von Cross-Site-Scripting gibt es die ownCloud-interne Funktion `p()`, mithilfe derer Werte ausgegeben werden können.
 
 Folgende Templates wurden in der App definiert:
 
@@ -466,20 +519,22 @@ Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der 
 
 ### Tests
 
-Zum Testen der PHP-Klassen wurde das Framework [PHPUnit](https://phpunit.de/) verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: [![codecov](https://codecov.io/gh/pssl16/owncloud-app_oauth2/branch/master/graph/badge.svg)](https://codecov.io/gh/pssl16/owncloud-app_oauth2).
+Zum Testen der PHP-Klassen wurde das Framework [PHPUnit](https://phpunit.de/) verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: [![codecov](https://codecov.io/gh/owncloud/oauth2/branch/master/graph/badge.svg)](https://codecov.io/gh/owncloud/oauth2).
 
 ### Continuous Integration
 
-Als Continuous Integration Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im [GitHub Repository](https://github.com/pssl16/owncloud-app_oauth2) wird ein Build angestoßen, in dem die App mithilfe eines Makefiles für den App Store gebaut wird und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:
+Als Continuous Integration Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im [GitHub Repository](https://github.com/owncloud/oauth2) wird ein Build angestoßen, in dem die App mithilfe eines Makefiles für den App Store gebaut wird und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:
 
 * **PHP Versionen**: 5.6, 7.0, 7.1, nightly
 * **Datenbanken**: PostgreSQL, MySQL, SQLite
-* **Branches des ownCloud Core**: `stable9.1`, `master`
+* **Branches des ownCloud Core**: `master`
 
-Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://travis-ci.org/pssl16/owncloud-app_oauth2.svg?branch=master)](https://travis-ci.org/pssl16/owncloud-app_oauth2).
+Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://travis-ci.org/owncloud/oauth2.svg?branch=master)](https://travis-ci.org/owncloud/oauth2).
 
 ## Anpassung der `dav` App
-
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Aktualisieren, überführen in "Anpassung des ownCloud Cores" (s.u.).
+</div>
 Nachdem das OAuth 2.0 Protokoll durch die `oauth2` App bereitgestellt wurde, musste die [WebDAV Schnittstelle](https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html) in ownCloud um diese Authentifizierungsmethode erweitert werden. Erreichbar ist diese unter dem Endpunkt `remote.php/webdav`.
 
 ### Authentication Backend
@@ -597,3 +652,7 @@ Durch die ownCloud-interne Funktion `getHeader` konnte der Authorization Header 
 <div class="alert alert-danger">
   <strong>TODO:</strong> Tests hinzufügen beschreiben.
 </div>
+
+## Anpassung des ownCloud Cores
+Um die Funktionalitäten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu können, mussten die [WebDAV Schnittstelle](https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html) und auch die [OCS Schnittstelle](https://doc.owncloud.org/server/latest/developer_manual/core/ocs-share-api.html) um die Authentifizierungsmethode OAuth 2.0 erweitert werden.
+Dazu wurde ein [Pull request](https://github.com/owncloud/core/pull/26742) gestellt, um entsprechende Änderungen durchzuführen.
