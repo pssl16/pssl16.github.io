@@ -82,7 +82,11 @@ der vier Autorisierungsgenehmigungen (authorization grant type) erfolgen, oder e
 
 ### ownCloud
 
-Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte oauth2 App und der ownCloud Core mit Änderungen aus unserem Pull request, damit die oauth2 App die volle Funktionalität bereitstellen kann.
+Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte oauth2 App und der ownCloud Core mit Änderungen aus unserem Pull request, 
+damit die oauth2 App die volle Funktionalität bereitstellen kann. Die oauth2 App implementiert den OAuth 2.0 Prozessfluss. Sie agiert als Endpunkt für die Authorisierung und die Bereitstellung von Access Tokens und Refresh Tokens. 
+Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Server und auch Resource Server mit dem Client.
+
+
 
 ### Moodle
 
@@ -92,6 +96,10 @@ Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns
 
 ## Zusammenspiel
 
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Wie arbeiten die einzelnen Komponenten zusammen, um das Problem zu lösen? (WebDAV: Wie wird der
+  komplette OAuth Protokollablauf erfüllt?).
+</div>
 
 ## Weitere Anwendungsszenarien
 
