@@ -29,7 +29,9 @@ Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellaris
 Nun kann man bei dem zu löschenden Client rechts neben den zugeordneten Attributen auf ein Mülleimer-Symbol klicken, um die entsprechende Clientregistrierung zu löschen.
 Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, in der man die Löschung bestätigen muss.
 
-![Clientdarstellung](images/darstellung-app.png)
+<img src="images/darstellung-app.png" width="200">
+
+![Clientdarstellung](images/darstellung-app.png){:height="36px" width="36px"}
 
 ![Abfrage bei Löschung](images/abfrage-app.png)
 
