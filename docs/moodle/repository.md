@@ -2,14 +2,14 @@
 
 ## Zweck des Plugins
 Der Plugin Typ *Repository* wird in Moodle unter anderem verwendet um Nutzer die Möglichkeit zu schaffen Zugang zu
-Dateien aus externen Quellen zu bekommen. Das Repository Plugin Sciebo kann somit die User Stories [Zwei](/index.md, "2. Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.") und [Drei](/index.md, "Als Nutzer möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.") realisieren. Sobald der Admin das Plugin unter Site administration `> Plugins > Repositories > Manage repositories` aktiviert hat, sieht der Nutzer im File Picker folgende Optionen:
+Dateien aus externen Quellen zu bekommen. Das Repository Plugin Sciebo kann somit die User Stories [Zwei](/index.md, "2. Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.") und [Drei](/index.md, "Als Nutzer möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.") realisieren. Sobald der Admin das Plugin unter `Site administration>Plugins >Repositories>Manage repositories` aktiviert hat, sieht der Nutzer im File Picker folgende Optionen:
 
 *(Mehr Informationen zum File Picker finden sie in der [Moodle Dokumentation](https://docs.moodle.org/32/en/File_picker))*
 <div class="alert alert-danger">
   <strong>TODO:</strong> BILD nach richtiger Benennung.
 </div>
 Wenn der Nutzer auf den anmelde Button klickt, wird er zu einem Pop-up Window weitergeleitet, dass ihn auffordert sich in der zugehörigen ownCloud Istanz zu authentifizieren. Sobald der Nutzer sich hier einmalig authentifiziert hat, werden ihm im File Picker seine Dateien angezeigt. Das Plugin bietet dem Benutzer zusätzliche Vorteile
-dadruch, dass die Authentifizierung nur einmalig erfolgt. Durch den OAuth2 Protokollablauf werden danach Refresh Tokens angefordert ohne dass der Nutzer dies im Front-End zu sehen bekommt. Somit kann der Nutzer angemeldet bleiben während verschiedenen Sessions.
+dadurch, dass die Authentifizierung nur einmalig erfolgt. Durch den OAuth2 Protokollablauf werden danach Refresh Tokens angefordert ohne dass der Nutzer dies im Front-End zu sehen bekommt. Somit kann der Nutzer angemeldet bleiben während verschiedenen Sessions.
 
 ## Vorgegebene Schnittstelle
 
@@ -21,12 +21,13 @@ Wie auch im [Admin Tool](/moodle/admin-tool.md) müssen zunächst einige Standar
 abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können. Als Standard wird eine englische Sprachdatei erwartet.
 
 Für Repository-Plugins müssen außerdem folgende Dateien implementiert werden:
+
 * **`pix/icon.png`:** Hier wird ein 16x16 icon platziert, welches für das Plugin genutzt wird.
 * **`lib.php`:** Hier wird eine Klasse `repository_sciebo extends repository` deklariert, die als Hauptaufgabe die Integration in den File Picker verwaltet.
 
 ## Implementierung der vorgegebenen Schnittstelle
 ### Implementierung der `lib.php`
-In der lib.php wird eine Klasse definiert die von der abstrakten Klasse `repository` erbt.
+In der lib.php wird eine Klasse definiert die von der abstrakten Klasse `repository` erbt. Im Folgenden wird darauf eingegangen wie die vorgegebenen Funktionen implementiert wurden.
 #### `__construct()`
 Diese Funktion wird jedes mal aufgerufen, wenn eine Instanz des Plugins erstellt wird. Hier wird ein Objekt der sciebo Klasse des Admin tools erzeugt, das als Parameter eine returnurl übergeben bekommt.
 ``` php
@@ -37,18 +38,19 @@ $returnurl = new moodle_url('/repository/repository_callback.php', [
 ]);
 $this->sciebo = new sciebo($returnurl);
 ```
-Der callback url werden als Parameter noch zusätzlich die id und der sesskey übergeben, um einen callback zu ermöglichen.
+Der `callback url` werden als Parameter noch zusätzlich die id und der sesskey übergeben, damit die Sitzung nach der Authentifizierung in ownCloud wieder hergestellt werden kann.
 
-Desweiteren wird die Parent Methode aufgerufen, die die nötigen Datenbankeinträge tätigt.
+Des weiteren wird die Parent Methode aufgerufen, die die nötigen Datenbankeinträge tätigt.
+
 #### `get_file()`
-Diese Funktion stellt eine Schnittstelle zum oauht2 Objekt des admin tools bereit. Die Funktion überprüft ob schon eine offene Verbindung besteht mit Hilfe der Methode `sciebo->dav->open()`. Falls keine Verbindung besteht wird die Funktion `$this->sciebo->get_file();` aufgerufen. Die Funktion ähnelt sehr der Funktion des `WebDAV Repository`, statt Basic Authentication wird jedoch das OAuth2 Protokoll benutzt. Danach wird der Nutzer  mit Hilfe der `logout()` Funktion ausgeloggt. Diese ruft die `logout()` Funktion der Sciebo Klasse auf.
+Diese Funktion stellt eine Schnittstelle zum oauht2 Objekt des Admin tools bereit. Die Funktion überprüft ob schon eine offene Verbindung besteht mit Hilfe der Methode `sciebo->dav->open()`. Falls keine Verbindung besteht wird die Funktion `$this->sciebo->get_file();` aufgerufen. Die Funktion ähnelt sehr der Funktion des `WebDAV Repository`, statt Basic Authentication wird jedoch das OAuth2 Protokoll benutzt. Danach wird der Nutzer  mit Hilfe der `logout()` Funktion ausgeloggt. Dies erfolgt auch über das Admin tool.
 
 #### `get_listing()`
 Diese Funktion wird aufgerufen um im File Picker die verfügbaren Dateien anzuzeigen. Als Rückgabe wird ein Array aller verfügbaren Dateien mit spezifischen Informationen über diese Dateien erwartet. Bis auf die Authentifizierung funktioniert diese Methode genauso wie die Methode des WebDAV Repository. Am Anfang werden noch grundlegende Einstellungen für die Ansicht definiert:
 ``` php
 $ret['dynload'] = true;
 ```
-Dies bestätigt dem File Picker das er Inhalte dynamisch lädt. Das heißt das wenn z.B. ein Ordner angeklickt wird der File Picker einen Ajax-Request versendet um den Inhalt des Ordners anzeigen zu können.
+Dies bestätigt dem File Picker, dass Inhalte dynamisch geladen werden. Das heißt das wenn z.B. ein Ordner angeklickt wird der File Picker einen Ajax-Request versendet um den Inhalt des Ordners anzeigen zu können.
 ``` php
 $ret['nosearch'] = true;
 ```
@@ -56,9 +58,9 @@ Dieser Parameter verbietet die Suche in den Dateien.
 ``` php
 $ret['nologin'] = false;
 ```
- Dieser Parameter sorgt dafür, dass der Login für jede Instanz notwendig ist. Zusätzlich wird dadurch automatisch auch ein Logout-Button generiert.
+ Dieser Parameter sorgt dafür, dass der Login für jede Instanz notwendig ist. Zusätzlich wird dadurch automatisch ein Logout-Button im File Picker generiert.
 
-Mit Hilfe der sciebo Klasse wird überprüft ob die Datei vorhanden ist und ob es sich um einen Ordner handelt.
+Mit Hilfe der sciebo Klasse wird überprüft ob es sich um eine Datei oder einen Ordner handelt.
 ``` php
 if (!empty($v['resourcetype']) && $v['resourcetype'] == 'collection') {
     // A folder.
@@ -88,10 +90,10 @@ Falls es sich um einen Ordner handelt wird der Titel, ein Ordner als Bild, der P
 ```
 Falls es sich um eine Datei handelt wird zusätzlich zu den oben genannten Informationen noch die Datei Größe gespeichert.
 
-Mit Hilfe einer `foreach()` Schleife wird dies für jede Datei durchgeführt. Anschließend werden zuerst Ordner und danach alphabetisch sortiert die Dateien in einem Array sortiert. Diese Array wird von der Funktion wiedergegeben, Moodle platziert nun die
+Mit Hilfe einer `foreach()` Schleife wird dies für jede Datei durchgeführt. Anschließend werden zuerst Ordner und danach alphabetisch sortiert die Dateien in einem Array gespeichert. Diese Array wird von der Funktion wiedergegeben, Moodle platziert nun die entsprechenden Einträge im File Picker.
+
 #### `get_link()`
-Anstelle einer Datei soll es auch möglich sein, einen Downloadlink zu einer existierenden Datei bereitzustellen. Diese wird von dem Modul URL genutzt. Zusätzlich dazu kann auch erlaubt werden im File Picker Dateien zu verlinken. Die zweite Option erlauben wir in unserem Plugin nicht, da uns die Zeit fehlte die zusätzliche Funktionalität zu implementieren. Dies haben wir in der Methode [`supported_returntypes()`](#repository-spezifische-einstellungen)
-ausgeschlossen.
+Anstelle einer Datei soll es auch möglich sein, einen Downloadlink zu einer existierenden Datei bereitzustellen. Diese wird von dem Modul URL genutzt. Zusätzlich besteht die Möglichkeit im File Picker Dateien zu verlinken. Die zweite Option erlauben wir in unserem Plugin nicht, da uns die Zeit fehlte die zusätzliche Funktionalität zu implementieren. Dies haben wir in der Methode [`supported_returntypes()`](#repository-spezifische-einstellungen) ausgeschlossen.
 Die Implementierung der `get_link()` Methode ist nicht trivial da sich der Link abhängig von den Einstellungen im Admin Tool ändert.
 Mit Hilfe der Funktion `get_config()`können in Moodle Einstellungen spezifischer Plugins ausgelesen werden. In der Methode wird wiederum die Methode `get_link()` des Objektes `sciebo` aufgerufen. Um den funktionierenden Downloadlink zurück zu geben muss nun noch der Präfix und die Serveraddresse vor den zurückgegebenen Pfad gesetzt werden. Desweiteren wird hinter den Pfad noch `'public.php?service=files&t=' . $fileid . '&download'` angefügt. Dies ist eine ownCloud spezifische Implementation einen Downloadlink zu generieren. Hier finden sie genauere Informationen zur [ownCloud external API](https://doc.owncloud.org/server/8.2/developer_manual/core/ocs-share-api.html).
 ``` php
@@ -114,7 +116,6 @@ public function get_link($url) {
 #### `print_login()`
 Um einen Benutzer zum ersten mal mit dem OAuth2 Protokoll anmelden zu können, muss er einmalig seinen Benutzer Namen und sein Passwort angeben. Sobald der Nutzer auf den Login Button klickt erscheint ein Pop-up Window oder es öffnet sich ein neuer Tab im Browser, indem der Nutzer aufgefordert wird seinen Namen und sein Passwort anzugeben.
 ``` php
-
     $url = $this->sciebo->get_login_url();
     if ($this->options['ajax']) {
         $ret = array();
@@ -131,7 +132,7 @@ Um einen Benutzer zum ersten mal mit dem OAuth2 Protokoll anmelden zu können, m
 
 #### Repository spezifische Einstellungen
 
-Für Repository Plugins gibt es einige Einstellungen die hard gecodet sind und sich nicht auf der Webside anpassen lassen. Hierzu gehören folgende Funktionen:
+Für Repository Plugins gibt es einige Einstellungen die hart kodiert sind und sich nicht auf der Website anpassen lassen. Hierzu gehören folgende Funktionen:
 * **`supported_returntypes()`**  mögliche Rückgabetypen sind:
     * FILE_INTERNAL - Dateien dürfen im Moodle Dateien System hoch und runtergeladen werden.
     * FILE_EXTERNAL - Dateien bleiben im externen Repository und werden von dort bezogen.
@@ -140,7 +141,7 @@ Wir haben FILE_INTERNAL und FILE_EXTERNAL erlaubt, da die Synchronisation von Da
 * **`supported_filetypes()`**  hier wird spezifiziert welche Arten von Dateitypen unterstützt werden. Wir haben alle Dateitypen erlaubt.
 
 ### Implementierung der `db/access.php`
-Standardmäßig muss nur eine `capability` in einem Repository-Plugin definiert werden. Diese heißt view capability und beschreibt wer das Repository sehen darf, sobald es vom Site Admin freigegeben und aktiviert wurde.
+Standardmäßig muss nur eine `capability` in einem Repository-Plugin definiert werden. Diese heißt `view capability` und beschreibt wer das Repository sehen darf, sobald es vom Site Admin freigegeben und aktiviert wurde.
 ``` php
 $capabilities = array(
     'repository/sciebo:view' => array(
