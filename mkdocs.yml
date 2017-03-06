@@ -16,7 +16,7 @@ pages:
     - Technische Umsetzung: 'owncloud/technische-umsetzung.md'
     - Benutzung: 'owncloud/benutzung.md'
   - Moodle:
-    - Technische Umsetzung:
+    - Technische Umsetzung: 'moodle/software-architektur.md'
       - Software Architektur: 'moodle/software-architektur.md'
       - Admin Tool: 'moodle/admin-tool.md'
       - Repository: 'moodle/repository.md'

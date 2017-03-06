@@ -1,34 +1,28 @@
 # Software Architektur
 
-[Moodle](https://moodle.de/) ist eine Open Source Online Lehr- und Lernplattform in Form einer Webapplikation, welche an zahlreichen 
-Universitäten und diversen anderen Institutionen im Bildungssektor weltweit als Kommunikationswerkzeug eingesetzt wird. 
+In Vorbereitung auf unser Projektseminar haben wir verschiedene bestehende Plugins evaluiert. Hauptsächlich haben wir uns hier an dem [WebDAV](https://docs.moodle.org/32/en/WebDAV_repository) und dem [Dropbox](https://docs.moodle.org/32/en/Dropbox_repository) Plugin orientiert.
 
-Zur Umsetzung des Projektziels, musste moodle um nötige Funktionalitäten ergänzt werden, die weder durch den [moodle Core](https://github.com/moodle/moodle)
-bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugefügt werden konnten. Im Folgenden wird beschrieben, 
-wie moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.
+Zur Umsetzung des Projektziels, musste Moodle um nötige Funktionalitäten ergänzt werden, die weder durch den [moodle Core](https://github.com/moodle/moodle)
+bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugefügt werden konnten. Im Folgenden wird beschrieben,
+wie Moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.
 
+
+Moodle stellt verschiedene Typen von Plugins
 ## Übersicht über die Plugin-Struktur
 
-Moodle [Plugins](https://moodle.org/plugins/) dienen dazu um im Core angebotene Funktionalitäten dahingehend zu erweitern, sodass diese den 
-individuellen Bedürfnissen des Nutzers entsprechen. Daher eignete sich die Implementierung solcher Plugins ideal zur 
-Umsetzung der definierten Integrationsszenarien.
-In moodle wird ein plugin einer Kategorie zugeordnet, welche eine Bestimmte Art von Funktionalität repräsentiert. 
+Moodle [Plugins](https://moodle.org/plugins/) dienen dazu um im Core angebotene Funktionalitäten dahingehend zu erweitern, sodass diese den
+individuellen Bedürfnissen des Nutzers entsprechen. Daher eignete sich die Implementierung solcher Plugins ideal zur Umsetzung der definierten Integrationsszenarien.
+In Moodle wird ein Plugin einer [Kategorie](https://docs.moodle.org/dev/Plugin_types) zugeordnet, welche eine bestimmte Art von Funktionalität repräsentiert.
 
-Im Laufe des Projekts hat man sich auf folgende zu implementierende Plugins geeinigt:
+Das [Repository Plugin](https://github.com/pssl16/moodle-repository_sciebo) bietet die nötigen Schnittstellen um Dateien aus Sciebo nach Moodle hochzuladen. Um weitere Integrationszenarien zu realisieren, haben wir uns für ein ergänzendes [Activity Module](https://github.com/pssl16/moodle-mod_collaborativefolders)
+entschieden. Basierend auf dieser Entscheidung haben wir den [Authentifizierungsprozess](https://github.com/pssl16/moodle-tool_oauth2sciebo) in einem eigenen Plugin implementiert, sodass allen zusätzlichen Plugins der Zugriff auf das Verfahren ermöglicht wird.
+
 
 | Plugintyp                                                   | Beschreibung                                        | Zweck für das Projekt                                 |
 |-------------------------------------------------------------|-----------------------------------------------------|-------------------------------------------------------|
-| [`admin tool`](https://docs.moodle.org/dev/Activity_modules)| Bietet Dienste zur Site-Administration an           | Verwaltung der Authentifizierung mittels OAuth 2.0    |
-| [`repository`](https://docs.moodle.org/dev/Admin_tools)     | Stellt Verbindung zu einer externen Datenquelle her | Datenbeschaffung aus Sciebo                           |
-| [`activity`](https://docs.moodle.org/dev/Admin_tools)       | Stellt Aktivität in einem Kurs zur Verfügung        | Bereitstellung eines Ordners für kollaborative Arbeit |
-
-
-Zwar bietet das [Repository Plugin](https://github.com/pssl16/moodle-repository_sciebo) die nötige Funktionalität über die gegebene 
-[Schnittstelle](repository/) um Dateien aus Sciebo nach moodle hochzuladen, jedoch kann über die Schnittstelle 
-hinaus keine weitere Funktionalität darin implementiert werden. Weil daher nur eine beschränkte Anzahl von 
-Integrationsszenarien abgedeckt werden würde, hat man sich für ein ergänzendes [Activity Module](https://github.com/pssl16/moodle-mod_collaborativefolders) 
-enschieden. Basierend auf dieser Entscheidung erschien es als sinnvoll den [Authentifizierungsprozess](https://github.com/pssl16/moodle-tool_oauth2sciebo) ebenfalls zentral 
-zu implementieren, sodass allen zusätzlichen Plugins der Zugriff auf das Verfahren ermöglicht wird.
+| [`admin tool`](https://docs.moodle.org/dev/Admin_tools) oauth2sciebo| Bietet Dienste zur Site-Administration an           | Verwaltung der Authentifizierung mittels OAuth 2.0    |
+| [`repository`](https://docs.moodle.org/dev/Repository_plugins) sciebo| Stellt Verbindung zu einer externen Datenquelle her | Datenbeschaffung aus Sciebo                           |
+| [`activity`](https://docs.moodle.org/dev/Activity_modules) collaborativefolders| Stellt Aktivität in einem Kurs zur Verfügung        | Bereitstellung eines Ordners für kollaborative Arbeit |
 
 ## Abhängigkeiten
 
@@ -52,12 +46,8 @@ Die in den verschiedenen Plugins angebotenen Funktionalitäten können wie folgt
     * Steuert Protokollablauf von OAuth 2.0 und verwaltet alle dazu nötigen Informationen.
     * Stellt das Verbindungsstück von moodle zu Sciebo bzw. ownCloud
 * **`Repository`:** [`sciebo`](repository/)
-    * Bewerkstelligt die Datenbeschaffung aus Sciebo bzw. ownCloud nach moodle.
+    * Bewerkstelligt die Datenbeschaffung aus Sciebo bzw. ownCloud nach Moodle.
     * Ermöglicht den Upload von Dateien aus einer persönlichen Sciebo Instanz.
-    * Ermöglicht die Verlinkung von Dateien aus Sciebo in moodle.
+    * Ermöglicht die Verlinkung von Dateien aus Sciebo in Moodle.
 * **`Activity Module`:** [`collaborative folders`](activity/)
-    * Ermöglicht die Erstellung und Freigabe von Ordern in Sciebo für bestimmte Gruppen in moodle.
-    
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Liste im Laufe weiterer Sprints erweitern.
-</div>
+    * Ermöglicht die Erstellung und Freigabe von Ordern in Sciebo für bestimmte Gruppen in Moodle.
