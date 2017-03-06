@@ -184,6 +184,8 @@
         
             <li class="second-level"><a href="#zweck-des-plugins">Zweck des Plugins</a></li>
             
+                <li class="third-level"><a href="#4-als-lehrender-mochte-ich-studierenden-oder-gruppen-von-studierenden-ordner-fur-kollaboratives-arbeiten-bereitstellen">4. Als Lehrender möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</a></li>
+            
         
             <li class="second-level"><a href="#vorgegebene-schnittstelle">Vorgegebene Schnittstelle</a></li>
             
@@ -202,25 +204,23 @@
 <h1 id="aktivitat-collaborative-folders">Aktivität: <code>collaborative folders</code></h1>
 <h2 id="zweck-des-plugins">Zweck des Plugins</h2>
 <p>Das Aktivitäts Modul <em>Collaborative Folders</em> soll Lehrenden die Möglichkeit geben, für Studierende oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten zu erstellen.
-Die Autorisierung erfolgt über das <em>oauth2sciebo</em> admin tool. Diese Aktivität implmentiert die User Story 4:</p>
-<ol>
-<li>Als <strong>Lehrender</strong> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen. </li>
-</ol>
+Die Autorisierung und Authentifizierung erfolgt über das <em>oauth2sciebo</em> admin tool. Diese Aktivität implementiert die User Story 4:</p>
+<h4 id="4-als-lehrender-mochte-ich-studierenden-oder-gruppen-von-studierenden-ordner-fur-kollaboratives-arbeiten-bereitstellen">4. Als <strong>Lehrender</strong> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</h4>
 <p>Der Lehrende kann einem Kurs beliebig viele Instanzen der Aktivität <em>Collaborative Folders</em> hinzufügen. In den Einstellungen kann der Lehrende
 nun festlegen wie der Ordner im Moodle Kurs benannt werden soll und wie der Ordner in der Sciebo Instanz benannt werden soll.</p>
 <p><img alt="Settings for the activity collaborativefolders" src="../activity_settings/settings.svg" title="Settings for the activity collaborativefolders" /></p>
 <p>Desweiteren hat der Lehrende die Möglichkeit Ordner nur für einzelne Gruppen zu erstellen. In den Einstellungen werden unter dem Menüpunkt
-<em>Create Shares for single groups</em> alle Gruppen des Kurses aufgelistet. Mit einer Checkbox können die Gruppen makiert werden, für die pro Gruppe jeweils 
-ein Ordner erstellt werden soll. </p>
+<em>Create Shares for single groups</em> alle Gruppen des Kurses aufgelistet. Mit einer Checkbox können die Gruppen makiert werden, für die pro Gruppe jeweils
+ein Ordner erstellt werden soll.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
 <p>Um sich grundlegend mit der Struktur von <a href="https://docs.moodle.org/dev/Activity_modules" title="Activity Modules">Aktivity modules</a> auseinander zu setzen, benutzen sie die Moodle Dokumentation.
-Um das hinzufügen von Ordnern zu ermöglichen muss ein neutraler Speicherplatz für die Ordner gewählt werden. Es bietet sich an einen hypothetischen Nutzer zu erstellen unter dessen Adresse alle 
+Um das hinzufügen von Ordnern zu ermöglichen muss ein neutraler Speicherplatz für die Ordner gewählt werden. Es bietet sich an einen hypothetischen Nutzer zu erstellen unter dessen Adresse alle
 Ordner gespeichert werden. Der Admin der Moodle Seite kann in den Admin Einstellungen einmalig einen Nutzer hinzufügen. Spätere Änderungen sind nicht mehr möglich, da
-dies zu Kompilierungsproblemen mit bestehenden Instanzen des Moduls führen würde. </p>
-<p>Die User Story erfordert, zwei Szenarien zu betrachten. Im ersten Szenario wird ein Ordner für alle Studierenden eines Kurses erstellt. 
+dies zu Kompilierungsproblemen mit bestehenden Instanzen des Moduls führen würde.</p>
+<p>Die User Story erfordert, zwei Szenarien zu betrachten. Im ersten Szenario wird ein Ordner für alle Studierenden eines Kurses erstellt.
 Die Anforderung an das Modul ist also einen Ordner in dem gespeicherten Account zu erstellender eindeutig Identifizierbar ist.
-Damit keine Synchronisationskonflikte entstehen, erstellt das Modul eine Ordner Struktur. Der jeweils erforderliche Ordner wird in einem 
-Ordner erstellt der nach der collaborativefolders_id benannt ist. Dies ist eine Id die jeder Instanz individuell gegeben wird. So kann es soweit manuell 
+Damit keine Synchronisationskonflikte entstehen, erstellt das Modul eine Ordner Struktur. Der jeweils erforderliche Ordner wird in einem
+Ordner erstellt der nach der collaborativefolders_id benannt ist. Dies ist eine Id die jeder Instanz individuell gegeben wird. So kann es soweit manuell
 keine Ordner erstellt werden zu keinen Synchronisationskonflikten kommen.</p>
 <pre><code class="php">$directory = $webdavpath . $id;
             $name = $webdavpath . $id . '/' . $foldername;
@@ -234,8 +234,8 @@ keine Ordner erstellt werden zu keinen Synchronisationskonflikten kommen.</p>
             }
 </code></pre>
 
-<p>Im zweiten Szenario sollen Ordner nur für Gruppen innerhalb eines Kurses erstellt werden. Zu diesem Zweck gibt es den Menüpunkt <em>Create Shares for single groups</em>. 
-Hier wird für jede Gruppe ein einzelnes Checkbox Element erstellt. </p>
+<p>Im zweiten Szenario sollen Ordner nur für Gruppen innerhalb eines Kurses erstellt werden. Zu diesem Zweck gibt es den Menüpunkt <em>Create Shares for single groups</em>.
+Hier wird für jede Gruppe ein einzelnes Checkbox Element erstellt.</p>
 <pre><code class="php">foreach ($arrayofgroups as $id =&gt; $group){
             $mform-&gt;addElement('advcheckbox', $group['id'] , $group['name'], ' Number of participants: ' . $group['numberofparticipants'], array(), array(0, 1));
         }
