@@ -396,7 +396,7 @@ Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktio
 In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. Zuerst wird eine Konstruktorfunktion aufgerufen, welche den `userManager`, den `authorizationCodeMApper`, den `accessTokenMapper` und den `refreshTokenMapper` aufruft. 
 Dann wird der pre-delete Hook registriert und ein `callback` für den Hook definiert. Dieser `callback` löscht jegliche, dem Nutzer zugehörige, `authorizationCodes`, `accessTokens` und `refreshTokens.` Dazu wird in den jeweiligen Konstruktoren die Methode `deleteByUID` aufgerufen.
 
-Folgendes Codebeispiel zeigt den genannten Fall der `userHooks`.
+Folgendes Codebeispiel zeigt den genannten Fall der **`UserHooks`**.
 
 ```php
 class UserHooks {
