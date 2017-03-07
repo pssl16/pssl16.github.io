@@ -49,8 +49,11 @@ Die nachfolgende Abbildung stellt den durch die `oauth2` App implementierten [OA
 ## Angepasste WebDAV Schnittstelle
 
 ## Widerrufung der Autorisierung
-Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf den entsprechenden Button widerrufen werden. Dies ist für den Nutzer in den persönlichen Einstellungen möglich, durch Klicken des Mülleimer-Symbols rechts neben dem jeweiligen Eintrag.
+Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf den entsprechenden Button widerrufen werden. 
+Dies ist für den Nutzer in den persönlichen Einstellungen möglich, durch Klicken des Mülleimer-Symbols rechts neben dem jeweiligen Eintrag.
+Nachdem auf das Symbol geklickt wurde, erscheint auch hier eine Sicherheitsabfrage, in der man die Löschung bestätigen muss.
 
-<div class="alert alert-danger">
-<strong>TODO:</strong> Screenshots einfügen.
-</div>
+![Clientdarstellung](images/personal-app.png)
+
+![Abfrage bei Löschung](images/abfrage-app.png)
+
