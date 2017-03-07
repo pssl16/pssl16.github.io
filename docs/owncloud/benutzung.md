@@ -60,7 +60,10 @@ zur Verifizierung an.
 prüft, dass die empfangene Redirection URI mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
 Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem Access Token und optional mit einem Refresh Token.
 
-## Angepasste WebDAV Schnittstelle
+## Angepasste WebDAV und OCS Schnittstelle
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Ausführung entsprechend dem Abschnitt in technische-umsetzung.md
+</div>
 
 ## Widerrufung der Autorisierung
 Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf den entsprechenden Button widerrufen werden. 
