@@ -224,21 +224,32 @@ Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine <code>C
 Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellarische Ansicht der registrierten Clients ausgewählt werden. 
 Nun kann man bei dem zu löschenden Client rechts neben den zugeordneten Attributen auf ein Mülleimer-Symbol klicken, um die entsprechende Clientregistrierung zu löschen.
 Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, in der man die Löschung bestätigen muss.</p>
-<div class="alert alert-danger">
-<strong>TODO:</strong> max width einfügen - wahrscheinlich zusätzlich in css einfügen
-</div>
-
 <p>Screenshot zur Darstellung der Clients:</p>
 <p><img alt="Clientdarstellung" src="../images/darstellung-app.svg" /></p>
 <p>Screenshot zur Sicherheitsabfrage bei Löschung des Clients:
 <img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" /></p>
 <h2 id="authorization-code-flow">Authorization Code Flow</h2>
 <p>Die nachfolgende Abbildung stellt den durch die <code>oauth2</code> App implementierten <a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Code Flow</a> dar.</p>
-<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Beschreibung der Schritte einfügen.
-</div>
-
+<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" />
+Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.</p>
+<p>Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:</p>
+<ol>
+<li>Client Identifier &amp; Redirection URI: Der Client (Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
+zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine Redirection URI an, zu welcher der
+User-Agent vom Authorization Server (sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.</li>
+<li>Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
+ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.</li>
+<li>Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,
+wozu die vorher (in der Anfrage oder während der Clientregistrierung) bereitgestellte Redirection URI genutzt wird. Die 
+Redirection URI beinhaltet einen Authorization Code und jeglichen vom Client im Vorhinein bereitgestellten Status.</li>
+<li>Authorization Code &amp; Redirection URI: Der Client fragt ein Access Token vom Endpunkt des Authorization Servers an, indem
+der Authorization Code aus dem vorherigen Schritt angefügt wird. Wenn die Anfrage durchgeführt wird, authentifiziert sich der Client
+automatisch mit dem Authorization Server. Der Client fügt die für den Erhalt des Authorization Codes genutzte Redirection URI
+zur Verifizierung an.</li>
+<li>Access Token (&amp; optional: Refresh Token): Der Authorization Server authentifiziert den Client, validiert den Authorization Code, und
+prüft, dass die empfangene Redirection URI mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
+Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem Access Token und optional mit einem Refresh Token.</li>
+</ol>
 <h2 id="angepasste-webdav-schnittstelle">Angepasste WebDAV Schnittstelle</h2>
 <h2 id="widerrufung-der-autorisierung">Widerrufung der Autorisierung</h2>
 <p>Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf den entsprechenden Button widerrufen werden. 
