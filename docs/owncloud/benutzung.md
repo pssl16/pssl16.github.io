@@ -33,8 +33,11 @@ Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, i
 <strong>TODO:</strong> max width einfügen - wahrscheinlich zusätzlich in css einfügen
 </div>
 
-![Clientdarstellung](images/darstellung-app.png)
+Screenshot zur Darstellung der Clients:
 
+![Clientdarstellung](images/darstellung-app.svg)
+
+Screenshot zur Sicherheitsabfrage bei Löschung des Clients:
 ![Abfrage bei Löschung](images/abfrage-app.png)
 
 ## Authorization Code Flow
@@ -53,7 +56,9 @@ Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf 
 Dies ist für den Nutzer in den persönlichen Einstellungen möglich, durch Klicken des Mülleimer-Symbols rechts neben dem jeweiligen Eintrag.
 Nachdem auf das Symbol geklickt wurde, erscheint auch hier eine Sicherheitsabfrage, in der man die Löschung bestätigen muss.
 
+Screenshot zur Darstellung der autorisierten Anwendungen:
 ![Clientdarstellung](images/personal-app.png)
 
+Screenshot zur Sicherheitsabfrage bei Löschung einer autorisierten Anwendung:
 ![Abfrage bei Löschung](images/abfrage-app.png)
 

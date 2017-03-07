@@ -554,9 +554,7 @@ Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der 
 Diese kommuniziert daraufhin mit der OAuth 2.0 App über die Methode `GET api/v1/validate` und dem Access Token und prüft diesen. 
 Bei erfolgreicher Überprüfung wird dann der WebDAV Zugriff entsprechend ermöglicht.
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Sequenzdiagramm einfügen.
-</div>
+![Protokollablauf](images/protokollablauf.svg)
 
 ### Tests
 
@@ -711,4 +709,4 @@ Abhängig vom Header wird somit entweder die Klasse `OAuth2` für OAuth 2.0 oder
 Um die Funktionalitäten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu können, mussten die 
 [WebDAV Schnittstelle](https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html) und auch die 
 [OCS Schnittstelle](https://doc.owncloud.org/server/latest/developer_manual/core/ocs-share-api.html) um die Authentifizierungsmethode OAuth 2.0 erweitert werden.
-Dazu wurde ein [Pull request](https://github.com/owncloud/core/pull/26742) gestellt, um entsprechende Änderungen durchzuführen.
+Dazu wurde ein [Pull Request](https://github.com/owncloud/core/pull/26742) gestellt, um entsprechende Änderungen durchzuführen.
