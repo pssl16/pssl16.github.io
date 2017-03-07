@@ -243,7 +243,8 @@
 <li><code>redirect_uri</code>: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.</li>
 </ul>
 </li>
-<li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.3.1"><code>authorization_code</code></a>:</strong> Ein <a href="https://tools.ietf.org/html/rfc6749#section-1.3">Authorization Grant</a>, mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.<ul>
+<li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.3.1"><code>authorization_code</code></a>:</strong> Ein <a href="https://tools.ietf.org/html/rfc6749#section-1.3">Authorization Grant</a>, 
+mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.<ul>
 <li><code>code</code>: Zeichenkette, die als Authorization Code dient.</li>
 <li><code>client_id</code>: Client Identifier des Clients, für den der Authorization Code ausgegeben wird.</li>
 <li><code>user_id</code>: User ID des ownCloud-Nutzers, der den Client autorisiert hat.</li>
@@ -268,7 +269,9 @@
 <p>Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.</p>
 <p><img alt="Datenmodell" src="../images/datenmodell.svg" /></p>
 <h3 id="mapper-und-entities">Mapper und Entities</h3>
-<p>Für den Datenbank-Zugriff im PHP-Code ist es in ownCloud möglich, <a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#mappers">Mapper</a> und <a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#entities">Entities</a> zu schreiben. Dadurch werden Tupel in einer Datenbank-Tabelle automatisch in ein Objekt umgewandelt.</p>
+<p>Für den Datenbank-Zugriff im PHP-Code ist es in ownCloud möglich, <a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#mappers">Mapper</a> und 
+<a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#entities">Entities</a> zu schreiben. 
+Dadurch werden Tupel in einer Datenbank-Tabelle automatisch in ein Objekt umgewandelt.</p>
 <p>Folgendes Codebeispiel zeigt am Beispiel des Entitys <code>Client</code>, wie eine PHP-Klasse dazu aussehen muss.</p>
 <pre><code class="php">&lt;?php
 namespace OCA\OAuth2\Db;
@@ -305,7 +308,10 @@ class Client extends Entity {
 }
 </code></pre>
 
-<p>Wichtig ist, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Entity.html"><code>Entity</code></a> erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle übereinstimmen. Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case für die Datenbank umgewandelt. Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, in der Entwicklungsumgebung eine automatische Vervollständigung zu haben. Die Angabe von <a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#types">Typen</a> im Konstruktor dienen dazu, beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.</p>
+<p>Wichtig ist, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Entity.html"><code>Entity</code></a> erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle übereinstimmen. 
+Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case für die Datenbank umgewandelt. 
+Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, in der Entwicklungsumgebung eine automatische Vervollständigung zu haben. 
+Die Angabe von <a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#types">Typen</a> im Konstruktor dienen dazu, beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.</p>
 <p>Das folgende Codebeispiel zeigt einen Ausschnitt aus dem zur <code>Client</code> Entity gehörenden Mapper.</p>
 <pre><code class="php">&lt;?php
 namespace OCA\OAuth2\Db;
@@ -369,9 +375,14 @@ class ClientMapper extends Mapper {
 }
 </code></pre>
 
-<p>Beim Mapper ist es wichtig, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html"><code>Mapper</code></a> erbt und eine Entity-Klasse zu ihm existiert. Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. Die beiden Funktionen <code>find</code> und <code>findByUser</code> demonstrieren <code>SELECT</code>-Anweisungen. Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an <code>findEntity</code> bzw. <code>findEntities</code> übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. Funktionen zum löschen, einfügen und updaten werden von der Oberklasse bereits implementiert und mussten nicht angepasst werden.</p>
+<p>Beim Mapper ist es wichtig, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html"><code>Mapper</code></a> erbt und eine Entity-Klasse zu ihm existiert. 
+Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. 
+Die beiden Funktionen <code>find</code> und <code>findByUser</code> demonstrieren <code>SELECT</code>-Anweisungen. 
+Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an <code>findEntity</code> bzw. <code>findEntities</code> übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. 
+Funktionen zum löschen, einfügen und updaten werden von der Oberklasse bereits implementiert und mussten nicht angepasst werden.</p>
 <h3 id="schnittstellen-und-routes">Schnittstellen und Routes</h3>
-<p>Um in einer ownCloud App Schnittstellen anzubieten, müssen <a href="https://doc.owncloud.org/server/latest/developer_manual/app/routes.html">Routes</a> registriert werden. Zur Umsetzung der erwähnten User Stories waren folgende Routes notwendig:</p>
+<p>Um in einer ownCloud App Schnittstellen anzubieten, müssen <a href="https://doc.owncloud.org/server/latest/developer_manual/app/routes.html">Routes</a> registriert werden. 
+Zur Umsetzung der erwähnten User Stories waren folgende Routes notwendig:</p>
 <table>
 <thead>
 <tr>
@@ -425,10 +436,16 @@ return [
 
 </code></pre>
 
-<p>Durch <code>name</code> wird für jede Route der Name des dazugehörigen <a href="#controller">Controllers</a> sowie die aufzurufende Funktion angegeben. Vor dem <code>#</code>-Zeichen steht der Controllername in Snake case und hinter dem <code>#</code>-Zeichen steht der Funktionsname (ebenfalls in Snake case). Mithilfe von <code>url</code> wird der Endpunkt festgelegt und <code>verb</code> definiert die HTTP-Methode.</p>
+<p>Durch <code>name</code> wird für jede Route der Name des dazugehörigen <a href="#controller">Controllers</a> sowie die aufzurufende Funktion angegeben. 
+Vor dem <code>#</code>-Zeichen steht der Controllername in Snake case und hinter dem <code>#</code>-Zeichen steht der Funktionsname (ebenfalls in Snake case). 
+Mithilfe von <code>url</code> wird der Endpunkt festgelegt und <code>verb</code> definiert die HTTP-Methode.</p>
 <h3 id="controller">Controller</h3>
-<p>Wenn an einem Endpunkt eine HTTP-Anfrage ankommt, so wird der in den Routes definierte <a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html">Controller</a> aufgerufen. Wichtig ist hierbei, dass von der Klasse <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Controller.html"><code>Controller</code></a> oder einer Unterklasse wie <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.ApiController.html"><code>ApiController</code></a> geerbt wird.</p>
-<p>Für den Controller notwendige Parameter wie <a href="#mapper-und-entities">Mapper</a> können im Konstruktor als Parameter angegeben und so durch <a href="https://doc.owncloud.org/server/latest/developer_manual/app/container.html">Dependency Injection</a> erhalten werden. Nachfolgendes Codebeispiel zeigt den Konstruktor vom <code>PageController</code>.</p>
+<p>Wenn an einem Endpunkt eine HTTP-Anfrage ankommt, so wird der in den Routes definierte <a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html">Controller</a> aufgerufen. 
+Wichtig ist hierbei, dass von der Klasse <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Controller.html"><code>Controller</code></a> oder 
+einer Unterklasse wie <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.ApiController.html"><code>ApiController</code></a> geerbt wird.</p>
+<p>Für den Controller notwendige Parameter wie <a href="#mapper-und-entities">Mapper</a> können im Konstruktor als Parameter angegeben und so durch 
+<a href="https://doc.owncloud.org/server/latest/developer_manual/app/container.html">Dependency Injection</a> erhalten werden. 
+Nachfolgendes Codebeispiel zeigt den Konstruktor vom <code>PageController</code>.</p>
 <pre><code class="php">/**
  * PageController constructor.
  * 
@@ -448,8 +465,10 @@ public function __construct($AppName, IRequest $request, ClientMapper $clientMap
 }
 </code></pre>
 
-<p>Die hier notwendigen Parameter sind der Name der App, eine <code>ClientMapper</code> Instanz, eine <code>AuthorizationCodeMapper</code> Instanz und die ID des Nutzers, um bei der Autorisierung des Clients speichern zu können, welcher Nutzers dies veranlasst hat.</p>
-<p>Die mit den Routes verknüpften Funktionen können zur Zugriffskontrolle mit <a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#authentication">PHPDoc Annotationen</a> versehen werden. Folgendes Codebeispiel zeigt die Annotationen für die Funktion <code>generateToken</code> im <code>OAuthApiController</code>.</p>
+<p>Die hier notwendigen Parameter sind der Name der App, eine <code>ClientMapper</code> Instanz, eine <code>AuthorizationCodeMapper</code> Instanz und die ID des Nutzers, 
+um bei der Autorisierung des Clients speichern zu können, welcher Nutzers dies veranlasst hat.</p>
+<p>Die mit den Routes verknüpften Funktionen können zur Zugriffskontrolle mit <a href="https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#authentication">PHPDoc Annotationen</a> 
+versehen werden. Folgendes Codebeispiel zeigt die Annotationen für die Funktion <code>generateToken</code> im <code>OAuthApiController</code>.</p>
 <pre><code class="php">/**
  * Implements the OAuth 2.0 Access Token Response.
  *
@@ -555,8 +574,12 @@ public function authorize($response_type, $client_id, $redirect_uri, $state = nu
 }
 </code></pre>
 
-<p>Hier werden zunächst die Parameter auf Gültigkeit überprüft. Sollten die Parameter nicht gültig sein (beispielsweise deshalb, weil der angegebene Client nicht existiert oder dessen Redirect URI falsch angegeben wurde) wird mit einem <code>RedirectResponse</code> auf die ownCloud Startseite umgeleitet. Andernfalls wird ein <code>TemplateResponse</code> für das Template <code>authorize</code> zurückgegeben. Für das Rendern des Templates können Parameter wie hier <code>client_name</code> für den Namen des Clients übergeben werden.</p>
-<p>Der Rückgabetyp <code>JSONResponse</code> wird für die Rückgabe des Access Tokens in der Funktion <code>generateToken</code> im <code>OAuthApiController</code> genutzt, wie nachfolgendes Codebeispiel zeigt. Zudem ist das Zusammenspiel mit Entities und Mappern zu sehen.</p>
+<p>Hier werden zunächst die Parameter auf Gültigkeit überprüft. Sollten die Parameter nicht gültig sein (beispielsweise deshalb, 
+weil der angegebene Client nicht existiert oder dessen Redirect URI falsch angegeben wurde) wird mit einem <code>RedirectResponse</code> auf die ownCloud Startseite umgeleitet. 
+Andernfalls wird ein <code>TemplateResponse</code> für das Template <code>authorize</code> zurückgegeben. 
+Für das Rendern des Templates können Parameter wie hier <code>client_name</code> für den Namen des Clients übergeben werden.</p>
+<p>Der Rückgabetyp <code>JSONResponse</code> wird für die Rückgabe des Access Tokens in der Funktion <code>generateToken</code> im <code>OAuthApiController</code> genutzt, 
+wie nachfolgendes Codebeispiel zeigt. Zudem ist das Zusammenspiel mit Entities und Mappern zu sehen.</p>
 <pre><code class="php">/**
  * Implements the OAuth 2.0 Access Token Response.
  *
@@ -616,7 +639,9 @@ public function generateToken($code) {
 }
 </code></pre>
 
-<p>Nach erfolgreicher Überprüfung des Authorization Codes und der Angaben zur Client Authentication im Authorization Header wird eine neuer Access Token erstellt und in der Datenbank gespeichert. Der verwendete Authorization Code wird zudem gelöscht. Im JSON Response wird dann der Access Token, der Token Typ und die ID des Nutzers zurückgegeben. Nachfolgend ist ein Beispiel dazu angegeben.</p>
+<p>Nach erfolgreicher Überprüfung des Authorization Codes und der Angaben zur Client Authentication im Authorization Header wird eine neuer Access Token erstellt und in der Datenbank gespeichert. 
+Der verwendete Authorization Code wird zudem gelöscht. Im JSON Response wird dann der Access Token, der Token Typ und die ID des Nutzers zurückgegeben. 
+Nachfolgend ist ein Beispiel dazu angegeben.</p>
 <pre><code class="json">{
     &quot;access_token&quot; : &quot;1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ&quot;,
     &quot;token_type&quot; : &quot;Bearer&quot;,
@@ -624,7 +649,9 @@ public function generateToken($code) {
 }
 </code></pre>
 
-<p>Für die Token-Generierung wurde die Hilfsklasse <code>Utilities</code> mit der statischen Funktion <code>generateRandom</code> geschrieben, die mithilfe einer ownCloud-internen Funktion 64-stellige Zeichenketten erzeugt. Folgendes Codebeispiel zeigt diese Klasse.</p>
+<p>Für die Token-Generierung wurde die Hilfsklasse <code>Utilities</code> mit der statischen Funktion <code>generateRandom</code> geschrieben, 
+die mithilfe einer ownCloud-internen Funktion 64-stellige Zeichenketten erzeugt. 
+Folgendes Codebeispiel zeigt diese Klasse.</p>
 <pre><code class="php">&lt;?php
 namespace OCA\OAuth2;
 
@@ -649,10 +676,15 @@ class Utilities {
 </div>
 
 <h3 id="hooks">Hooks</h3>
-<p>In den <a href="https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook">Hooks</a> einer ownCloud App wird Code gespeichert, der vor oder nach einem bestimmten Ereignis ausgeführt werden soll. 
-Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. Diese Hooks müssen in den <code>routes</code> registriert werden und die zugehörige Logik im <code>Container</code> gespeichert werden.</p>
-<p>In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. Zuerst wird eine Konstruktorfunktion aufgerufen, welche den <code>userManager</code>, den <code>authorizationCodeMApper</code>, den <code>accessTokenMapper</code> und den <code>refreshTokenMapper</code> aufruft. 
-Dann wird der pre-delete Hook registriert und ein <code>callback</code> für den Hook definiert. Dieser <code>callback</code> löscht jegliche, dem Nutzer zugehörige, <code>authorizationCodes</code>, <code>accessTokens</code> und <code>refreshTokens.</code> Dazu wird in den jeweiligen Konstruktoren die Methode <code>deleteByUID</code> aufgerufen.</p>
+<p>In den <a href="https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook">Hooks</a> einer ownCloud App wird Code gespeichert, 
+der vor oder nach einem bestimmten Ereignis ausgeführt werden soll. 
+Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. 
+Diese Hooks müssen in den <code>routes</code> registriert werden und die zugehörige Logik im <code>Container</code> gespeichert werden.</p>
+<p>In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. 
+Zuerst wird eine Konstruktorfunktion aufgerufen, welche den <code>userManager</code>, den <code>authorizationCodeMApper</code>, den <code>accessTokenMapper</code> und den <code>refreshTokenMapper</code> aufruft. 
+Dann wird der pre-delete Hook registriert und ein <code>callback</code> für den Hook definiert. 
+Dieser <code>callback</code> löscht jegliche, dem Nutzer zugehörige, <code>authorizationCodes</code>, <code>accessTokens</code> und <code>refreshTokens</code>. 
+Dazu wird in den jeweiligen Konstruktoren die Methode <code>deleteByUID</code> aufgerufen.</p>
 <p>Folgendes Codebeispiel zeigt den genannten Fall der <strong><code>UserHooks</code></strong>.</p>
 <pre><code class="php">class UserHooks {
 
@@ -694,11 +726,13 @@ Dann wird der pre-delete Hook registriert und ein <code>callback</code> für den
 </code></pre>
 
 <h3 id="templates">Templates</h3>
-<p>In den <a href="https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html">Templates</a> einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. Es können die vom <a href="#controller">Controller</a> übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen <code>$_</code>. 
+<p>In den <a href="https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html">Templates</a> einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. 
+Es können die vom <a href="#controller">Controller</a> übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen <code>$_</code>. 
 Zur Vermeidung von Cross-Site-Scripting gibt es die ownCloud-interne Funktion <code>p()</code>, mithilfe derer Werte ausgegeben werden können.</p>
 <p>Folgende Templates wurden in der App definiert:</p>
 <ul>
-<li><strong><code>authorize</code></strong>: Zur Darstellung des Authroization Requests, bei dem der Nutzer um Autorisierung eines Clients gebeten wird. Es werden ein Text zur Erklärung sowie Buttons zum Akzeptieren oder Ablehnen angezeigt.</li>
+<li><strong><code>authorize</code></strong>: Zur Darstellung des Authroization Requests, bei dem der Nutzer um Autorisierung eines Clients gebeten wird. 
+Es werden ein Text zur Erklärung sowie Buttons zum Akzeptieren oder Ablehnen angezeigt.</li>
 <li><strong><code>settings-admin</code></strong>: Stellt zur Verwaltung der Clients eine tabellarische Auflistung der Clients sowie ein Formular zum Hinzufügen von Clients dar.</li>
 <li><strong><code>settings-personal</code></strong>: Stellt eine tabellarische Auflistung der vom Nutzer autorisierten Clients dar, mit der Möglichkeit, die Autorisierung zu widerrufen.</li>
 </ul>
@@ -750,13 +784,20 @@ Zur Vermeidung von Cross-Site-Scripting gibt es die ownCloud-interne Funktion <c
 &lt;/div&gt;
 </code></pre>
 
-<p>In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Durch eine <code>for</code>-Schleife wird für jeden Client aus dem Parameter <code>clients</code> ein Tabelleneintrag angezeigt. Sollten noch keine Clients registriert worden sein, sorgt die <code>if</code>-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. Durch Nutzung von <code>$l-&gt;t()</code> können die Strings auch <a href="https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates">in andere Sprachen Übersetzt werden</a>.</p>
-<p>Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion <code>addClient</code> im <code>SettingsController</code> aus. Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion <code>deleteClient</code> im <code>SettingsController</code> auslöst.</p>
+<p>In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Durch eine <code>for</code>-Schleife wird für jeden Client aus dem Parameter <code>clients</code> ein Tabelleneintrag angezeigt. 
+Sollten noch keine Clients registriert worden sein, sorgt die <code>if</code>-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. 
+Durch Nutzung von <code>$l-&gt;t()</code> können die Strings auch <a href="https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates">in andere Sprachen Übersetzt werden</a>.</p>
+<p>Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion <code>addClient</code> im <code>SettingsController</code> aus. 
+Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion <code>deleteClient</code> im <code>SettingsController</code> auslöst.</p>
 <h3 id="protokollablauf">Protokollablauf</h3>
 <p>Der Protokollablauf der oauth2 App ist dem regulären OAuth2 Protokollablauf nachempfunden. </p>
-<p>Zunächst wird vom Moodle Plugin die Methode <code>GET authorize</code> mit den Parametern <code>response_type</code>, <code>client_id</code> und <code>redirect_uri</code> ausgeführt, welche die OAuth 2.0 App anspricht und für eine Weiterleitung an ownCloud sorgt. Dann wird von ownCloud eine Authentifizierung erfragt, sprich der reguläre Anmeldebildschirm wird gezeigt, oder die Weiterleitung erfolgt sofort zur Autorisierungsabfrage der OAuth 2.0 App. Nach erfolgter Autorisierung wird zur <code>redirectURI</code> aus der <code>GET authorize</code> Methode weitergeleitet, sprich zurück zum Moodle Plugin. </p>
+<p>Zunächst wird vom Moodle Plugin die Methode <code>GET authorize</code> mit den Parametern <code>response_type</code>, <code>client_id</code> und <code>redirect_uri</code> ausgeführt, welche die OAuth 2.0 App anspricht und für eine Weiterleitung an ownCloud sorgt. 
+Dann wird von ownCloud eine Authentifizierung erfragt, sprich der reguläre Anmeldebildschirm wird gezeigt, oder die Weiterleitung erfolgt sofort zur Autorisierungsabfrage der OAuth 2.0 App. 
+Nach erfolgter Autorisierung wird zur <code>redirectURI</code> aus der <code>GET authorize</code> Methode weitergeleitet, sprich zurück zum Moodle Plugin. </p>
 <p>Anschließend führt das Moodle Plugin die Methode <code>POST /api/v1/token</code> aus, die den Authorizationcode an die OAuth 2.0 App sendet und als Antwort einen Access Token erhält.</p>
-<p>Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der WebDAV Zugriff folgen. Dieser erfolgt mit dem Access Code auf die OAuth WebDAV App. Diese kommuniziert daraufhin mit der OAuth 2.0 App über die Methode <code>GET api/v1/validate</code> und dem Access Token und prüft diesen. Bei erfolgreicher Überprüfung wird dann der WebDAV Zugriff entsprechend ermöglicht.</p>
+<p>Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der WebDAV Zugriff folgen. Dieser erfolgt mit dem Access Code auf die OAuth WebDAV App. 
+Diese kommuniziert daraufhin mit der OAuth 2.0 App über die Methode <code>GET api/v1/validate</code> und dem Access Token und prüft diesen. 
+Bei erfolgreicher Überprüfung wird dann der WebDAV Zugriff entsprechend ermöglicht.</p>
 <div class="alert alert-danger">
   <strong>TODO:</strong> Sequenzdiagramm einfügen.
 </div>
@@ -775,9 +816,11 @@ Zur Vermeidung von Cross-Site-Scripting gibt es die ownCloud-interne Funktion <c
 <p><div class="alert alert-danger">
   <strong>TODO:</strong> Aktualisieren, überführen in "Anpassung des ownCloud Cores" (s.u.).
 </div>
-Nachdem das OAuth 2.0 Protokoll durch die <code>oauth2</code> App bereitgestellt wurde, musste die <a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> in ownCloud um diese Authentifizierungsmethode erweitert werden. Erreichbar ist diese unter dem Endpunkt <code>remote.php/webdav</code>.</p>
+Nachdem das OAuth 2.0 Protokoll durch die <code>oauth2</code> App bereitgestellt wurde, musste die <a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> in ownCloud um diese Authentifizierungsmethode erweitert werden. 
+Erreichbar ist diese unter dem Endpunkt <code>remote.php/webdav</code>.</p>
 <h3 id="authentication-backend">Authentication Backend</h3>
-<p>Eine Anfrage am Endpunkt <code>remote.php/webdav</code> wird durch die Datei <code>appinfo/v1/webdav.php</code> entgegengenommen. Hier wird mithilfe der <a href="http://sabre.io">sabre/dav</a> Bibliothek ein WebDAV-Server gestartet. Nachfolgendes Codebeispiel zeigt die für die Authentifizierung wichtige Stelle.</p>
+<p>Eine Anfrage am Endpunkt <code>remote.php/webdav</code> wird durch die Datei <code>appinfo/v1/webdav.php</code> entgegengenommen. Hier wird mithilfe der <a href="http://sabre.io">sabre/dav</a> Bibliothek ein WebDAV-Server gestartet. 
+Nachfolgendes Codebeispiel zeigt die für die Authentifizierung wichtige Stelle.</p>
 <pre><code class="php">$authBackend = new \OCA\DAV\Connector\Sabre\Auth(
     \OC::$server-&gt;getSession(),
     \OC::$server-&gt;getUserSession(),
@@ -787,7 +830,11 @@ Nachdem das OAuth 2.0 Protokoll durch die <code>oauth2</code> App bereitgestellt
 );
 </code></pre>
 
-<p>Die Authentifizierung ist in sabre/dav modularisiert, sodass die nötigen Anpassungen leicht durchzuführen waren. Das im Codebeispiel gezeigte Authentication Backend ist eine von ownCloud implementierte Unterklasse von <code>AbstractBasic</code>, einer abstrakten Klasse, die bei der Implementierung von Basic Authentication behilflich ist. Glücklicherweise existiert in sabre/dav mit der Klasse <code>AbstractBearer</code> auch ein entsprechendes Gegenstück für Bearer Authentication. Da beide Klassen das <code>BackendInterface</code> implementieren, kann ein WebDAV Server mit beiden Authentication Backends gestartet werden.</p>
+<p>Die Authentifizierung ist in sabre/dav modularisiert, sodass die nötigen Anpassungen leicht durchzuführen waren. 
+Das im Codebeispiel gezeigte Authentication Backend ist eine von ownCloud implementierte Unterklasse von <code>AbstractBasic</code>, 
+einer abstrakten Klasse, die bei der Implementierung von Basic Authentication behilflich ist. 
+Glücklicherweise existiert in sabre/dav mit der Klasse <code>AbstractBearer</code> auch ein entsprechendes Gegenstück für Bearer Authentication. 
+Da beide Klassen das <code>BackendInterface</code> implementieren, kann ein WebDAV Server mit beiden Authentication Backends gestartet werden.</p>
 <p>Die Implementierung von OAuth 2.0 erwies sich damit als ziemlich kurz, wie nachfolgendes Codebeispiel zeigt.</p>
 <pre><code class="php">&lt;?php
 namespace OCA\DAV\Connector\Sabre;
@@ -856,9 +903,14 @@ class OAuth2 extends AbstractBearer {
 }
 </code></pre>
 
-<p>Neben dem Konstruktur, in der <code>principalPrefix</code> sowie das <code>realm</code> analog zum Konstruktor der <code>Auth</code>-Klasse gesetzt werden, musste lediglich die Funktion <code>validateBearerToken</code> implementiert werden. Hier wird der in der Anfrage mitgesendete Bearer Token mithilfe vom <code>AccessTokenMapper</code> überprüft. Falls der Access Token gültig ist, wird die ID des Nutzers abgefragt, um mit <code>\OC_Util::setupFS($userId)</code> das Dateisystem für den WebDAV Server vorzubereiten. Es wird dann der <code>principalPrefix</code> zusammen mit der <code>userId</code> zurückgegeben. Andernfalls wird <code>false</code> zurückgegeben, was dazu führt, dass der WebDAV Zugriff verweigert wird.</p>
+<p>Neben dem Konstruktur, in der <code>principalPrefix</code> sowie das <code>realm</code> analog zum Konstruktor der <code>Auth</code>-Klasse gesetzt werden, 
+musste lediglich die Funktion <code>validateBearerToken</code> implementiert werden. Hier wird der in der Anfrage mitgesendete Bearer Token mithilfe vom <code>AccessTokenMapper</code> überprüft. 
+Falls der Access Token gültig ist, wird die ID des Nutzers abgefragt, um mit <code>\OC_Util::setupFS($userId)</code> das Dateisystem für den WebDAV Server vorzubereiten. 
+Es wird dann der <code>principalPrefix</code> zusammen mit der <code>userId</code> zurückgegeben. Andernfalls wird <code>false</code> zurückgegeben, was dazu führt, dass der WebDAV Zugriff verweigert wird.</p>
 <h3 id="headerabhangige-authentifizierung">Headerabhängige Authentifizierung</h3>
-<p>Damit die WebDAV Schnittstelle sowohl über die bisherige Basic Authentication als auch über OAuth 2.0 funktioniert, musste eine Logik hinzugefügt werden, die abhängig vom Authoriaztion Header entscheidet, welches Verfahren anzuwenden ist. Der Ansatzpunkt musste dabei die Datei <code>appinfo/v1/webdav.php</code> sein, da hier das Authentication Backend erstellt wird. Folgendes Codebeispiel zeigt, welche Änderungen notwendig waren.</p>
+<p>Damit die WebDAV Schnittstelle sowohl über die bisherige Basic Authentication als auch über OAuth 2.0 funktioniert, musste eine Logik hinzugefügt werden, 
+die abhängig vom Authoriaztion Header entscheidet, welches Verfahren anzuwenden ist. Der Ansatzpunkt musste dabei die Datei <code>appinfo/v1/webdav.php</code> sein, 
+da hier das Authentication Backend erstellt wird. Folgendes Codebeispiel zeigt, welche Änderungen notwendig waren.</p>
 <pre><code class="php">if (strpos(\OC::$server-&gt;getRequest()-&gt;getHeader('Authorization'), 'Bearer') !== false) {
     // OAuth 2.0
     $authBackend = new \OCA\DAV\Connector\Sabre\OAuth2();
@@ -874,14 +926,18 @@ class OAuth2 extends AbstractBearer {
 }
 </code></pre>
 
-<p>Durch die ownCloud-interne Funktion <code>getHeader</code> konnte der Authorization Header abgefragt werden. Da für Bearer Authentication das Wort „Bearer“ in diesem enthalten sein muss, konnte mithilfe der Stringfunktion <code>strpos</code> die Logik implementiert werden. Abhängig vom Header wird somit entweder die Klasse <code>OAuth2</code> für OAuth 2.0 oder <code>Auth</code> für Basic Authentication als Authentication Backend genutzt.</p>
+<p>Durch die ownCloud-interne Funktion <code>getHeader</code> konnte der Authorization Header abgefragt werden. 
+Da für Bearer Authentication das Wort „Bearer“ in diesem enthalten sein muss, konnte mithilfe der Stringfunktion <code>strpos</code> die Logik implementiert werden. 
+Abhängig vom Header wird somit entweder die Klasse <code>OAuth2</code> für OAuth 2.0 oder <code>Auth</code> für Basic Authentication als Authentication Backend genutzt.</p>
 <h3 id="tests_1">Tests</h3>
 <div class="alert alert-danger">
   <strong>TODO:</strong> Tests hinzufügen beschreiben.
 </div>
 
 <h2 id="anpassung-des-owncloud-cores">Anpassung des ownCloud Cores</h2>
-<p>Um die Funktionalitäten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu können, mussten die <a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> und auch die <a href="https://doc.owncloud.org/server/latest/developer_manual/core/ocs-share-api.html">OCS Schnittstelle</a> um die Authentifizierungsmethode OAuth 2.0 erweitert werden.
+<p>Um die Funktionalitäten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu können, mussten die 
+<a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> und auch die 
+<a href="https://doc.owncloud.org/server/latest/developer_manual/core/ocs-share-api.html">OCS Schnittstelle</a> um die Authentifizierungsmethode OAuth 2.0 erweitert werden.
 Dazu wurde ein <a href="https://github.com/owncloud/core/pull/26742">Pull request</a> gestellt, um entsprechende Änderungen durchzuführen.</p></div>
         
     </div>
