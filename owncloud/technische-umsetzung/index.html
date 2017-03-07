@@ -798,10 +798,7 @@ Nach erfolgter Autorisierung wird zur <code>redirectURI</code> aus der <code>GET
 <p>Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der WebDAV Zugriff folgen. Dieser erfolgt mit dem Access Code auf die OAuth WebDAV App. 
 Diese kommuniziert daraufhin mit der OAuth 2.0 App über die Methode <code>GET api/v1/validate</code> und dem Access Token und prüft diesen. 
 Bei erfolgreicher Überprüfung wird dann der WebDAV Zugriff entsprechend ermöglicht.</p>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Sequenzdiagramm einfügen.
-</div>
-
+<p><img alt="Protokollablauf" src="../images/protokollablauf.svg" /></p>
 <h3 id="tests">Tests</h3>
 <p>Zum Testen der PHP-Klassen wurde das Framework <a href="https://phpunit.de/">PHPUnit</a> verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: <a href="https://codecov.io/gh/owncloud/oauth2"><img alt="codecov" src="https://codecov.io/gh/owncloud/oauth2/branch/master/graph/badge.svg" /></a>.</p>
 <h3 id="continuous-integration">Continuous Integration</h3>
@@ -938,7 +935,7 @@ Abhängig vom Header wird somit entweder die Klasse <code>OAuth2</code> für OAu
 <p>Um die Funktionalitäten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu können, mussten die 
 <a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> und auch die 
 <a href="https://doc.owncloud.org/server/latest/developer_manual/core/ocs-share-api.html">OCS Schnittstelle</a> um die Authentifizierungsmethode OAuth 2.0 erweitert werden.
-Dazu wurde ein <a href="https://github.com/owncloud/core/pull/26742">Pull request</a> gestellt, um entsprechende Änderungen durchzuführen.</p></div>
+Dazu wurde ein <a href="https://github.com/owncloud/core/pull/26742">Pull Request</a> gestellt, um entsprechende Änderungen durchzuführen.</p></div>
         
     </div>
 
