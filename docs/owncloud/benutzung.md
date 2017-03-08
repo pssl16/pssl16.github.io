@@ -2,7 +2,7 @@
 
 ## Installation
 
-> **Hinweis:** Zur Zeit liegen die Anpassungen der `dav` App als [Pull Request](https://github.com/owncloud/core/pull/26742) vor. Falls die Änderungen angenommen werden, sind sie in einer der nächsten ownCloud Versionen enthalten.
+> **Hinweis:** Zur Zeit liegen die Anpassungen des ownCloud Cores als [Pull Request](https://github.com/owncloud/core/pull/26742) vor. Falls die Änderungen angenommen werden, sind sie in einer der nächsten ownCloud Versionen enthalten.
 
 Da die Änderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der `dav-oauth`-Branch des [geforkten Repositorys](https://github.com/pssl16/core) geklont werden:
 
@@ -10,7 +10,7 @@ Da die Änderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wu
 $ git clone -b dav-oauth https://github.com/pssl16/core
 ```
 
-Danach müssen die Dependencies installiert werden. Dazu genügt es, im Verzeichnis des Repositorys folgenden Befehl auszuführen:
+Danach müssen die Abhängigkeiten aufgelöst werden. Dazu genügt es, im Verzeichnis des Repositorys folgenden Befehl auszuführen:
 
 ```nohighlight
 $ make
