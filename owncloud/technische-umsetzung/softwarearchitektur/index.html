@@ -203,15 +203,45 @@
     
         <li class="first-level active"><a href="#softwarearchitektur">Softwarearchitektur</a></li>
         
+            <li class="second-level"><a href="#bestandteile">Bestandteile</a></li>
+            
+                <li class="third-level"><a href="#oauth-20-app">OAuth 2.0 App</a></li>
+            
+                <li class="third-level"><a href="#core-anpassungen">Core Anpassungen</a></li>
+            
+        
     
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
 <h1 id="softwarearchitektur">Softwarearchitektur</h1>
-<p>Da wir möglichst keine neue Schnittstelle implementieren wollten, war es das Ziel, die bestehenden Schnittstellen in ownCloud um OAuth 2.0 zu erweitern. Zur Umsetzung der Integrationsszenarien </p>
-<p>WebDAV Schnittstelle um OAuth 2.0 zu erweitern. Die WebDAV Schnittstelle ist als <a href="https://doc.owncloud.org/server/latest/developer_manual/app/">ownCloud App</a> realisiert worden. Zusätzlich sollte die OCS S</p>
-<p>Auf der anderen Seite musste das OAuth 2.0 Protokoll mit seinen Schnittstellen bereitgestellt werden, um die Authentifizierung in der WebDAV App um OAuth 2.0 zu erweitern zu können. Dafür wurde eine weitere ownCloud App implementiert.</p></div>
+<p>Da wir möglichst keine neue Schnittstelle implementieren wollten, war es das Ziel, die bestehenden Schnittstellen in ownCloud um OAuth 2.0 zu erweitern. Zunächst war dafür die Implementierung des OAuth 2.0 Protokolls mit seinen Schnittstellen notwendig. Außerdem musste zur Umsetzung der <a href="../../..">Integrationsszenarien</a> der Zugriff auf <a href="https://doc.owncloud.org/server/9.1/user_manual/files/access_webdav.html">WebDAV</a> und die <a href="https://doc.owncloud.org/server/9.1/developer_manual/core/ocs-share-api.html">OCS Share API</a> über OAuth 2.0 bereitgestellt werden.</p>
+<h2 id="bestandteile">Bestandteile</h2>
+<h3 id="oauth-20-app">OAuth 2.0 App</h3>
+<p>Zur Implementierung von OAuth 2.0 entschieden wir uns in Absprache mit einem ownCloud Entwickler, eine <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/">ownCloud App</a> namens <code>oauth2</code> zu erstellen. Der Vorteil einer solchen Lösung ist, dass OAuth 2.0 zu einer bestehenden ownCloud Installation einfach hinzugefügt und auch wieder entfernt werden kann. Die Möglichkeit, <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/api.html">RESTful APIs</a> und eigene <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/schema.html">Datenmodelle</a> in Apps zu definieren, stellten alle notwendigen Werkzeuge für die Umsetzung des OAuth 2.0 Protokolls bereit.</p>
+<h3 id="core-anpassungen">Core Anpassungen</h3>
+<p>Zur Erweiterung der WebDAV Schnittstelle um OAuth 2.0 wurde die Implementierung von WebDAV im <a href="https://github.com/owncloud/core">ownCloud Core</a> untersucht. Es stellte sich heraus, dass hierfür auch eine ownCloud App namens <code>dav</code> verwendet wurde, die die <a href="http://sabre.io">sabre/dav</a> Bibliothek zur Implementierung des WebDAV-Serves nutzt. Da die Bibliothek den Austausch der Authentifizierung über eigene Authentication Backends unterstützt, entschieden wir uns für die Implementierung eines Backends für OAuth 2.0, das wir ebenfalls über die <code>oauth2</code> App bereitstellen wollten. Um eigene Authentication Backends für die <code>dav</code> App bekannt zu machen und gleichzeitig keine Abhängigkeit zwischen den Apps zu schaffen, nutzten wir Event Listener. Notwendig dafür war die Registrierung des OAuth 2.0 Backends durch die <code>oauth2</code> App. Außerdem musste die <code>dav</code> App dahingehend angepasst werden, zusätzliche Authentication Backends zu laden. Hierfür wurde der Pull Request <a href="https://github.com/owncloud/core/pull/26742">owncloud/core#26742</a> erstellt.</p>
+<p>Schließlich musste noch die OCS Share API um OAuth 2.0 erweitert werden. Die Implementierung dieser API wird größtenteils durch die ownCloud App <code>files_sharing</code> bereitgestellt. Daher mussten Änderungen in der Authentifizierung auf Ebene von ownCloud Apps durchgeführt werden. Das bedeutete, dass auch hierfür Änderungen am ownCloud Core notwendig waren. Gleichzeitig sollten aber keine Abhängigkeiten zwischen dem Core und der <code>oauth2</code> App geschaffen werden. Da keine entsprechende Lösung im Core existierte, folgten wir dem Vorschlag eines ownCloud Entwicklers für die Implementierung eines Plugin Mechanismus. Auch diese Änderungen sind im Pull Request <a href="https://github.com/owncloud/core/pull/26742">owncloud/core#26742</a> zu finden.</p>
+<p>Folgende Tabelle fasst die Funktionen der einzelnen Bestandteile zusammen.</p>
+<table>
+<thead>
+<tr>
+<th>Bestandteil</th>
+<th>Funktion</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../oauth2-app">OAuth 2.0 App</a></td>
+<td>Implementierung des OAuth 2.0 Protokolls mit der notwendigen Authentifizierungslogik für die WebDAV Schnittstelle und die OCS Share API</td>
+</tr>
+<tr>
+<td><a href="../core-anpassungen">Core Anpassungen</a></td>
+<td>Erweiterung der <code>dav</code> App und der Authentifizierung für ownCloud Apps um das Laden benutzerdefinierter Authentifizierungsmethoden</td>
+</tr>
+</tbody>
+</table></div>
         
     </div>
 
