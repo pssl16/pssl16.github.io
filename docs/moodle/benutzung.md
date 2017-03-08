@@ -9,7 +9,7 @@ Sie benötigen in jedem Fall das oauth2_admin_tool, alle anderen Plugins sind vo
 
 ## Admin Tool oauth2sciebo
 
-### Einstellungen
+### Admin Einstellungen
 
 Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.
 
@@ -24,9 +24,10 @@ Als letztes kann der Port angegeben werden was meistens nicht notwendig ist.
 
 ## Repository sciebo
 
-### Einstellungen
+### Admin Einstellungen
 Sobald das Admin tool installiert wurde kann das Repository installiert werden. Bitte beachten Sie, dass die oben genannten Einträge getätigt wurden, ansonsten funktioniert die Authentifizierung des Repositorys nicht. Repositorys Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt `Website-Administration>PluginsRepositories>Übersicht` aktiviert werden. Der Administrator kann dem Repository zusätzlich unter `Einstellungen` einen globalen Namen geben.
 
+### Nutzer Sicht
 Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter `Speicherorte` löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken.
 
 ## collaborative_folders
