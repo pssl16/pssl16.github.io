@@ -34,10 +34,12 @@ Sobald das Admin tool installiert wurde kann das Repository installiert werden. 
 
 ### Nutzer Sicht
 Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter `Speicherorte` löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden:
-<img style="max-width:50%;">
-![Plugin-Struktur](images/filepickerlogin.png)
-</img>
- sieht man nach der Anmeldung eine tabellarische Auflistung der vorhandenen Dateien:
+
+<div align="center">
+	<img alt="FilePickerlogin" src="../images/filepickerlogin.png" width=50%>
+</div>
+
+ Danach sieht man nach der Anmeldung eine tabellarische Auflistung der vorhandenen Dateien:
 
 ![Plugin-Struktur](images/FilePickerredblock.png)
 
