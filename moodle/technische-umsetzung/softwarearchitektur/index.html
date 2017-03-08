@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <meta name="author" content="Lukas Biermann, Nina Herrmann, Wladislaw Iwanzow, Dennis Meis, Jonathan Neugebauer">  
+    <link rel="shortcut icon" href="../../../img/favicon.ico">
+
+    <title>Softwarearchitektur - sciebo@Learnweb</title>
+
+    <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/font-hack/2.018/css/hack.min.css">
+    <link href='//fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../../../css/base.css" rel="stylesheet">
+    <link href="../../../css/cinder.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../../css/highlight.css">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.5.18/webfont.js"></script>
+    <script>
+    WebFont.load({
+        google: {
+            families: ['Open Sans', 'PT Sans']
+        }
+    });
+    </script>
+
+    
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../../..">sciebo@Learnweb</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="../../..">Home</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ownCloud <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Technische Umsetzung</a>
+    <ul class="dropdown-menu">
+        
+            
+<li >
+    <a href="../../../owncloud/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../owncloud/technische-umsetzung/oauth2-app/">OAuth 2.0 App</a>
+</li>
+
+        
+            
+<li >
+    <a href="../../../owncloud/technische-umsetzung/core-anpassungen/">Core Anpassungen</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+<li >
+    <a href="../../../owncloud/benutzung/">Benutzung</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Moodle <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+  <li class="dropdown-submenu">
+    <a tabindex="-1" href="">Technische Umsetzung</a>
+    <ul class="dropdown-menu">
+        
+            
+<li class="active">
+    <a href="./">Softwarearchitektur</a>
+</li>
+
+        
+            
+<li >
+    <a href="../admin-tool/">Admin Tool</a>
+</li>
+
+        
+            
+<li >
+    <a href="../repository/">Repository</a>
+</li>
+
+        
+            
+<li >
+    <a href="../activity/">Collaborative Folders</a>
+</li>
+
+        
+    </ul>
+  </li>
+
+                        
+                            
+<li >
+    <a href="../../benutzung/">Benutzung</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+            
+
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Suchen
+                    </a>
+                </li>
+                
+                    <li >
+                        <a rel="next" href="../../../owncloud/benutzung/">
+                            <i class="fa fa-arrow-left"></i> Zurück
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="prev" href="../admin-tool/">
+                            Weiter <i class="fa fa-arrow-right"></i>
+                        </a>
+                    </li>
+                
+                
+                    <li>
+                        <a href="https://github.com/pssl16">
+                            
+                                <i class="fa fa-github"></i>
+                            
+                            GitHub
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="first-level active"><a href="#software-architektur">Software Architektur</a></li>
+        
+            <li class="second-level"><a href="#ubersicht-uber-die-plugin-struktur">Übersicht über die Plugin-Struktur</a></li>
+            
+        
+            <li class="second-level"><a href="#abhangigkeiten">Abhängigkeiten</a></li>
+            
+        
+            <li class="second-level"><a href="#funktionsubersicht">Funktionsübersicht</a></li>
+            
+        
+    
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<h1 id="software-architektur">Software Architektur</h1>
+<p>In Vorbereitung auf unser Projektseminar haben wir verschiedene bestehende Plugins evaluiert. Hauptsächlich haben wir uns hier an dem <a href="https://docs.moodle.org/32/en/WebDAV_repository">WebDAV</a> und dem <a href="https://docs.moodle.org/32/en/Dropbox_repository">Dropbox</a> Plugin orientiert.</p>
+<p>Zur Umsetzung des Projektziels, musste Moodle um nötige Funktionalitäten ergänzt werden, die weder durch den <a href="https://github.com/moodle/moodle">moodle Core</a>
+bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugefügt werden konnten. Im Folgenden wird beschrieben,
+wie Moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.</p>
+<p>Moodle stellt verschiedene Typen von Plugins</p>
+<h2 id="ubersicht-uber-die-plugin-struktur">Übersicht über die Plugin-Struktur</h2>
+<p>Moodle <a href="https://moodle.org/plugins/">Plugins</a> dienen dazu um im Core angebotene Funktionalitäten dahingehend zu erweitern, sodass diese den
+individuellen Bedürfnissen des Nutzers entsprechen. Daher eignete sich die Implementierung solcher Plugins ideal zur Umsetzung der definierten Integrationsszenarien.
+In Moodle wird ein Plugin einer <a href="https://docs.moodle.org/dev/Plugin_types">Kategorie</a> zugeordnet, welche eine bestimmte Art von Funktionalität repräsentiert.</p>
+<p>Das <a href="https://github.com/pssl16/moodle-repository_sciebo">Repository Plugin</a> bietet die nötigen Schnittstellen um Dateien aus Sciebo nach Moodle hochzuladen. Um weitere Integrationszenarien zu realisieren, haben wir uns für ein ergänzendes <a href="https://github.com/pssl16/moodle-mod_collaborativefolders">Activity Module</a>
+entschieden. Basierend auf dieser Entscheidung haben wir den <a href="https://github.com/pssl16/moodle-tool_oauth2sciebo">Authentifizierungsprozess</a> in einem eigenen Plugin implementiert, sodass allen zusätzlichen Plugins der Zugriff auf das Verfahren ermöglicht wird.</p>
+<table>
+<thead>
+<tr>
+<th>Plugintyp</th>
+<th>Beschreibung</th>
+<th>Zweck für das Projekt</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://docs.moodle.org/dev/Admin_tools"><code>admin tool</code></a> oauth2sciebo</td>
+<td>Bietet Dienste zur Site-Administration an</td>
+<td>Verwaltung der Authentifizierung mittels OAuth 2.0</td>
+</tr>
+<tr>
+<td><a href="https://docs.moodle.org/dev/Repository_plugins"><code>repository</code></a> sciebo</td>
+<td>Stellt Verbindung zu einer externen Datenquelle her</td>
+<td>Datenbeschaffung aus Sciebo</td>
+</tr>
+<tr>
+<td><a href="https://docs.moodle.org/dev/Activity_modules"><code>activity</code></a> collaborativefolders</td>
+<td>Stellt Aktivität in einem Kurs zur Verfügung</td>
+<td>Bereitstellung eines Ordners für kollaborative Arbeit</td>
+</tr>
+</tbody>
+</table>
+<h2 id="abhangigkeiten">Abhängigkeiten</h2>
+<p>Die aus der Aufteilung der Funktionen in verschiedene Plugins resultierenden Abhängigkeiten werden in folgender Abbildung
+dargestellt:</p>
+<p><img alt="Plugin-Struktur" src="../images/plugin-struktur.svg" /></p>
+<p>Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Software Architektur erzielt
+werden sollte. Das führt zwar mit sich, dass funktionale Plugins (also das <code>repository</code> und das <code>activity</code> Plugin) nicht
+eigenständig ohne das <code>admin tool</code> existieren können, allerdings wird weiteren, in Zukunft entwickelten Plugins ebenfalls
+Zugriff auf die OAuth 2.0 Schnittstelle in <a href="https://www.sciebo.de/">Sciebo</a> bzw. <a href="https://owncloud.org/">ownCloud</a> ermöglicht,
+wodurch sich das Projektergebnis zu einer guten Wiederverwendbarkeit qualifiziert.</p>
+<h2 id="funktionsubersicht">Funktionsübersicht</h2>
+<p>Die in den verschiedenen Plugins angebotenen Funktionalitäten können wie folgt zusammengefasst werden:</p>
+<ul>
+<li><strong><code>Admin Tool</code>:</strong> <a href="../admin-tool/"><code>oauth2sciebo</code></a><ul>
+<li>Umfasst sowohl OAuth 2.0, als auch WebDAV Client.</li>
+<li>Steuert Protokollablauf von OAuth 2.0 und verwaltet alle dazu nötigen Informationen.</li>
+<li>Stellt das Verbindungsstück von moodle zu Sciebo bzw. ownCloud</li>
+</ul>
+</li>
+<li><strong><code>Repository</code>:</strong> <a href="../repository/"><code>sciebo</code></a><ul>
+<li>Bewerkstelligt die Datenbeschaffung aus Sciebo bzw. ownCloud nach Moodle.</li>
+<li>Ermöglicht den Upload von Dateien aus einer persönlichen Sciebo Instanz.</li>
+<li>Ermöglicht die Verlinkung von Dateien aus Sciebo in Moodle.</li>
+</ul>
+</li>
+<li><strong><code>Activity Module</code>:</strong> <a href="../activity/"><code>collaborative folders</code></a><ul>
+<li>Ermöglicht die Erstellung und Freigabe von Ordern in Sciebo für bestimmte Gruppen in Moodle.</li>
+</ul>
+</li>
+</ul></div>
+        
+    </div>
+
+    <footer class="col-md-12 text-center">
+        <hr>
+        <p>
+        <small>Copyright &copy; 2017 PSSL16<br></small>
+        
+        <small>Dokumentation erzeugt mit <a href="http://www.mkdocs.org/">MkDocs</a>.</small></p>
+    </footer>
+
+    <script src="../../../js/jquery-1.10.2.min.js"></script>
+    <script src="../../../js/bootstrap-3.0.3.min.js"></script>
+    <script src="../../../js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+    var base_url = '../../..';
+    </script>
+    <script data-main="../../../mkdocs/js/search.js" src="../../../mkdocs/js/require.js"></script>
+    <script src="../../../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                        <span class="sr-only">Schließen</span>
+                    </button>
+                    <h4 class="modal-title" id="exampleModalLabel">Suchen</h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Hier können Sie die Dokumentation durchsuchen. Geben Sie Ihre Suchbegriffe unten ein.
+                    </p>
+                    <form role="form">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Suchen..." id="mkdocs-search-query">
+                        </div>
+                    </form>
+                    <div id="mkdocs-search-results"></div>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    </body>
+
+</html>
