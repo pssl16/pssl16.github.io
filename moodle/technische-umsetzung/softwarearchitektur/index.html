@@ -201,7 +201,7 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="first-level active"><a href="#software-architektur">Software Architektur</a></li>
+        <li class="first-level active"><a href="#softwarearchitektur">Softwarearchitektur</a></li>
         
             <li class="second-level"><a href="#ubersicht-uber-die-plugin-struktur">Übersicht über die Plugin-Struktur</a></li>
             
@@ -217,7 +217,7 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="software-architektur">Software Architektur</h1>
+<h1 id="softwarearchitektur">Softwarearchitektur</h1>
 <p>Zur Umsetzung des Projektziels, musste Moodle um nötige Funktionalitäten ergänzt werden, die weder durch den <a href="https://github.com/moodle/moodle">Moodle Core</a>
 bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugefügt werden konnten. Im Folgenden wird beschrieben,
 wie Moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.</p>
@@ -279,7 +279,7 @@ Da unsere Use Cases verschiedene Arten von Funktionalitäten benötigen haben wi
 <p>Die aus der Aufteilung der Funktionen in verschiedene Plugins resultierenden Abhängigkeiten werden in folgender Abbildung
 dargestellt:</p>
 <p><img alt="Plugin-Struktur" src="../images/plugin-struktur.svg" /></p>
-<p>Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Software Architektur erzielt
+<p>Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Softwarearchitektur erzielt
 werden sollte. Das führt zwar mit sich, dass funktionale Plugins (also das <code>repository</code> und das <code>activity</code> Plugin) nicht
 eigenständig ohne das <code>admin tool</code> existieren können, allerdings wird weiteren, in Zukunft entwickelten Plugins ebenfalls
 Zugriff auf die OAuth 2.0 Schnittstelle in <a href="https://www.sciebo.de/">Sciebo</a> bzw. <a href="https://owncloud.org/">ownCloud</a> ermöglicht,
