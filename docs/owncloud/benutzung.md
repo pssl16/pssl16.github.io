@@ -22,7 +22,9 @@ Die restlichen Installationsschritte unterscheiden sich nicht von denen im [ownC
 Zur Clientregistrierung muss in der Eingabemaske der OAuth 2 App in den Adminsettings dem Client ein Name gegeben werden und eine gültige URL als `redirect URI` angegeben werden. 
 Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine `ClientID` und ein `Clientsecret` zugewiesen und wird nun in der Tabelle mit den entsprechenden Attributen dargestellt.
 
-![Eingabemaske](images/eingabe-app.png)
+<div align="center">
+	<img alt="Eingabemaske" src="../images/eingabe-app.png" width=50%>
+</div>
 
 **Löschen der Clientregistrierung**
 Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellarische Ansicht der registrierten Clients ausgewählt werden. 
@@ -31,10 +33,13 @@ Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, i
 
 Screenshot zur Darstellung der Clients:
 
-![Clientdarstellung](images/darstellung-app.svg)
+<img alt="Clientdarstellung" src="../images/darstellung-app.svg" width=100%>
 
 Screenshot zur Sicherheitsabfrage bei Löschung des Clients:
-![Abfrage bei Löschung](images/abfrage-app.png)
+
+<div align="center">
+	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=50%>
+</div>
 
 ## Authorization Code Flow
 Die nachfolgende Abbildung stellt den durch die `oauth2` App implementierten [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-4.1) dar.
@@ -71,8 +76,13 @@ Dies ist für den Nutzer in den persönlichen Einstellungen möglich, durch Klic
 Nachdem auf das Symbol geklickt wurde, erscheint auch hier eine Sicherheitsabfrage, in der man die Löschung bestätigen muss.
 
 Screenshot zur Darstellung der autorisierten Anwendungen:
-![Clientdarstellung](images/personal-app.png)
+
+<div align="center">
+	<img alt="Clientdarstellung" src="../images/personal-app.png" width=50%>
+</div>
 
 Screenshot zur Sicherheitsabfrage bei Löschung einer autorisierten Anwendung:
-![Abfrage bei Löschung](images/abfrage-app.png)
 
+<div align="center">
+	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=50%>
+</div>
