@@ -1,4 +1,4 @@
-# Software Architektur
+# Softwarearchitektur
 
 Zur Umsetzung des Projektziels, musste Moodle um nötige Funktionalitäten ergänzt werden, die weder durch den [Moodle Core](https://github.com/moodle/moodle)
 bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugefügt werden konnten. Im Folgenden wird beschrieben,
@@ -43,7 +43,7 @@ dargestellt:
 
 ![Plugin-Struktur](images/plugin-struktur.svg)
 
-Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Software Architektur erzielt
+Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Softwarearchitektur erzielt
 werden sollte. Das führt zwar mit sich, dass funktionale Plugins (also das `repository` und das `activity` Plugin) nicht
 eigenständig ohne das `admin tool` existieren können, allerdings wird weiteren, in Zukunft entwickelten Plugins ebenfalls
 Zugriff auf die OAuth 2.0 Schnittstelle in [Sciebo](https://www.sciebo.de/) bzw. [ownCloud](https://owncloud.org/) ermöglicht,
