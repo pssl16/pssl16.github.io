@@ -162,13 +162,33 @@
         }, 
         {
             "location": "/owncloud/technische-umsetzung/core-anpassungen/", 
-            "text": "Core Anpassungen\n\n\nUm die Funktionalit\u00e4ten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu k\u00f6nnen, mussten die \n\nWebDAV Schnittstelle\n und auch die \n\nOCS Schnittstelle\n um die Authentifizierungsmethode OAuth 2.0 erweitert werden.\nDazu wurde ein \nPull Request\n gestellt, um entsprechende \u00c4nderungen durchzuf\u00fchren.", 
+            "text": "Core Anpassungen\n\n\nZweck\n\n\nUm die Funktionalit\u00e4ten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu k\u00f6nnen, mussten die \n\nWebDAV Schnittstelle\n und auch die \n\nOCS Schnittstelle\n um die Authentifizierungsmethode OAuth 2.0 erweitert werden.\nDazu wurde ein \nPull Request\n gestellt, um entsprechende \u00c4nderungen durchzuf\u00fchren.\n\n\nVorgegebene Schnittstelle\n\n\nImplementierung\n\n\nTests und Continuous Integration", 
             "title": "Core Anpassungen"
         }, 
         {
             "location": "/owncloud/technische-umsetzung/core-anpassungen/#core-anpassungen", 
-            "text": "Um die Funktionalit\u00e4ten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu k\u00f6nnen, mussten die  WebDAV Schnittstelle  und auch die  OCS Schnittstelle  um die Authentifizierungsmethode OAuth 2.0 erweitert werden.\nDazu wurde ein  Pull Request  gestellt, um entsprechende \u00c4nderungen durchzuf\u00fchren.", 
+            "text": "", 
             "title": "Core Anpassungen"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/core-anpassungen/#zweck", 
+            "text": "Um die Funktionalit\u00e4ten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu k\u00f6nnen, mussten die  WebDAV Schnittstelle  und auch die  OCS Schnittstelle  um die Authentifizierungsmethode OAuth 2.0 erweitert werden.\nDazu wurde ein  Pull Request  gestellt, um entsprechende \u00c4nderungen durchzuf\u00fchren.", 
+            "title": "Zweck"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/core-anpassungen/#vorgegebene-schnittstelle", 
+            "text": "", 
+            "title": "Vorgegebene Schnittstelle"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/core-anpassungen/#implementierung", 
+            "text": "", 
+            "title": "Implementierung"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/core-anpassungen/#tests-und-continuous-integration", 
+            "text": "", 
+            "title": "Tests und Continuous Integration"
         }, 
         {
             "location": "/owncloud/benutzung/", 
