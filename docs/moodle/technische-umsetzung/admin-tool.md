@@ -1,6 +1,6 @@
 # Admin Tool: `oauth2sciebo`
 
-## Zweck des Plugins
+## Zweck
 
 Wie bereits im Kapitel [Software Architektur](software-architektur/) angeschnitten, ist der Hauptzweck dieses Plugins
 die Schnittstelle zu Sciebo bzw. ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud 
@@ -37,7 +37,7 @@ Admin Tools notwendig ist:
   <strong>TODO:</strong> Grafik für Ordnerstruktur einfügen.
 </div>
 
-## Implementierung der vorgegebenen Schnittstelle
+## Implementierung
 
 ### Eingabemaske
 
@@ -249,4 +249,4 @@ public function post($url, $params = '', $options = array()) {
 
 ### Weiterleitungen
 
-## Tests und CI
+## Tests und Continuous Integration

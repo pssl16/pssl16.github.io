@@ -13,12 +13,15 @@ theme_dir: 'cinder'
 pages:
   - Home: 'index.md'
   - ownCloud:
-    - Technische Umsetzung: 'owncloud/technische-umsetzung.md'
+    - Technische Umsetzung:
+      - Softwarearchitektur: 'owncloud/technische-umsetzung/softwarearchitektur.md'
+      - OAuth 2.0 App: 'owncloud/technische-umsetzung/oauth2-app.md'
+      - Core Anpassungen: 'owncloud/technische-umsetzung/core-anpassungen.md'
     - Benutzung: 'owncloud/benutzung.md'
   - Moodle:
     - Technische Umsetzung:
-      - Software Architektur: 'moodle/software-architektur.md'
-      - Admin Tool: 'moodle/admin-tool.md'
-      - Repository: 'moodle/repository.md'
-      - Collaborative Folders: 'moodle/activity.md'
+      - Softwarearchitektur: 'moodle/technische-umsetzung/softwarearchitektur.md'
+      - Admin Tool: 'moodle/technische-umsetzung/admin-tool.md'
+      - Repository: 'moodle/technische-umsetzung/repository.md'
+      - Collaborative Folders: 'moodle/technische-umsetzung/activity.md'
     - Benutzung: 'moodle/benutzung.md'
