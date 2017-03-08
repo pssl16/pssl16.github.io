@@ -238,13 +238,15 @@ Sie benötigen in jedem Fall das oauth2_admin_tool, alle anderen Plugins sind vo
 <h2 id="admin-tool-oauth2sciebo">Admin Tool oauth2sciebo</h2>
 <h3 id="admin-einstellungen">Admin Einstellungen</h3>
 <p>Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.</p>
-<p>Hierfür muss der Administrator das Formular des Plugins, das unter <code>Website-Administration&gt;Plugins&gt;Authentifizierung&gt;Sciebo OAuth 2.0 Configuration</code> zu finden ist, ausfüllen.
-Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld, hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.</p>
+<p>Hierfür muss der Administrator das Formular des Plugins, das unter <code>Website-Administration&gt;Plugins&gt;Authentifizierung&gt;Sciebo OAuth 2.0 Configuration</code> zu finden ist, ausfüllen.</p>
+<p><img alt="Plugin-Struktur" src="../images/OAuth2Form.png" /></p>
+<p>Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld, hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.</p>
+<p><img alt="Plugin-Struktur" src="../images/WebDAVForm.png" /></p>
 <p>Nun werden die Einstellungen für den WebDAV Zugriff festgelegt.
 Als erstes wird die Adresse des ownCloud Servers angegeben.
 Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben in ownCloud endet diese typischerweise mit <code>remote.php/webdav/</code>.
-Als Protokolltyp kann http oder https angegeben werden. Wenn keine Angabe gemacht wird, wird von http ausgegangen.
-Als letztes kann der Port angegeben werden was meistens nicht notwendig ist.</p>
+Als Protokolltyp kann http oder https angegeben werden. Wenn keine Angabe gemacht wird, wird von https ausgegangen.
+Als letztes kann der Port angegeben werden.</p>
 <h2 id="repository-sciebo">Repository sciebo</h2>
 <h3 id="admin-einstellungen_1">Admin Einstellungen</h3>
 <p>Sobald das Admin tool installiert wurde kann das Repository installiert werden. Bitte beachten Sie, dass die oben genannten Einträge getätigt wurden, ansonsten funktioniert die Authentifizierung des Repositorys nicht. Repositorys Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt <code>Website-Administration&gt;PluginsRepositories&gt;Übersicht</code> aktiviert werden. Der Administrator kann dem Repository zusätzlich unter <code>Einstellungen</code> einen globalen Namen geben.</p>
