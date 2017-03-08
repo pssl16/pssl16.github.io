@@ -14,13 +14,18 @@ Sie benötigen in jedem Fall das oauth2_admin_tool, alle anderen Plugins sind vo
 Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.
 
 Hierfür muss der Administrator das Formular des Plugins, das unter `Website-Administration>Plugins>Authentifizierung>Sciebo OAuth 2.0 Configuration` zu finden ist, ausfüllen.
+
+![Plugin-Struktur](images/OAuth2Form.png)
+
 Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld, hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.
+
+![Plugin-Struktur](images/WebDAVForm.png)
 
 Nun werden die Einstellungen für den WebDAV Zugriff festgelegt.
 Als erstes wird die Adresse des ownCloud Servers angegeben.
 Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben in ownCloud endet diese typischerweise mit `remote.php/webdav/`.
-Als Protokolltyp kann http oder https angegeben werden. Wenn keine Angabe gemacht wird, wird von http ausgegangen.
-Als letztes kann der Port angegeben werden was meistens nicht notwendig ist.
+Als Protokolltyp kann http oder https angegeben werden. Wenn keine Angabe gemacht wird, wird von https ausgegangen.
+Als letztes kann der Port angegeben werden.
 
 ## Repository sciebo
 
