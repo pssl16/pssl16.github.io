@@ -239,9 +239,9 @@ Sie benötigen in jedem Fall das oauth2_admin_tool, alle anderen Plugins sind vo
 <h3 id="admin-einstellungen">Admin Einstellungen</h3>
 <p>Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.</p>
 <p>Hierfür muss der Administrator das Formular des Plugins, das unter <code>Website-Administration&gt;Plugins&gt;Authentifizierung&gt;Sciebo OAuth 2.0 Configuration</code> zu finden ist, ausfüllen.</p>
-<p><img alt="Plugin-Struktur" src="../images/OAuth2Form.png" /></p>
+<p><img alt="OAuth 2.0 Formular" src="../images/OAuth2Form.png" width=100%></p>
 <p>Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld, hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.</p>
-<p><img alt="Plugin-Struktur" src="../images/WebDAVForm.png" /></p>
+<p><img alt="WebDAV Formular" src="../images/WebDAVForm.png" width=100%></p>
 <p>Nun werden die Einstellungen für den WebDAV Zugriff festgelegt.
 Als erstes wird die Adresse des ownCloud Servers angegeben.
 Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben in ownCloud endet diese typischerweise mit <code>remote.php/webdav/</code>.
@@ -252,11 +252,8 @@ Als letztes kann der Port angegeben werden.</p>
 <p>Sobald das Admin tool installiert wurde kann das Repository installiert werden. Bitte beachten Sie, dass die oben genannten Einträge getätigt wurden, ansonsten funktioniert die Authentifizierung des Repositorys nicht. Repositorys Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt <code>Website-Administration&gt;PluginsRepositories&gt;Übersicht</code> aktiviert werden. Der Administrator kann dem Repository zusätzlich unter <code>Einstellungen</code> einen globalen Namen geben.</p>
 <h3 id="nutzer-sicht">Nutzer Sicht</h3>
 <p>Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter <code>Speicherorte</code> löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden.
- Danach sieht man nach der Anmeldung eine tabellarische Auflistung der vorhandenen Dateien:</p>
-<div align="center">
-    <img alt="FilePicker" src="../images/FilePickerredblock.png" width=100%>
-</div>
-
+Danach sieht man nach der Anmeldung eine tabellarische Auflistung der vorhandenen Dateien:</p>
+<p><img alt="FilePicker" src="../images/FilePickerredblock.png" width=100%></p>
 <p>Im roten Kasten sehen sie Buttons um den Inhalt neu zu laden, sich auszuloggen und nur als Admin sieht man den letzten Button in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.</p>
 <h2 id="collaborative_folders">collaborative_folders</h2>
 <h3 id="einstellungen">Einstellungen</h3>
