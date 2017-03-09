@@ -415,61 +415,6 @@ Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren
   <strong>TODO:</strong> Klassendiagramm einfügen.
 </div>
 
-### Hooks
-
-In den [Hooks](https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook) einer ownCloud App wird Code gespeichert, 
-der vor oder nach einem bestimmten Ereignis ausgeführt werden soll. 
-Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. 
-Diese Hooks müssen in den `routes` registriert werden und die zugehörige Logik im `Container` gespeichert werden.
-
-In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. 
-Zuerst wird eine Konstruktorfunktion aufgerufen, welche den `userManager`, den `authorizationCodeMApper`, den `accessTokenMapper` und den `refreshTokenMapper` aufruft. 
-Dann wird der pre-delete Hook registriert und ein `callback` für den Hook definiert. 
-Dieser `callback` löscht jegliche, dem Nutzer zugehörige, `authorizationCodes`, `accessTokens` und `refreshTokens`. 
-Dazu wird in den jeweiligen Konstruktoren die Methode `deleteByUID` aufgerufen.
-
-Folgendes Codebeispiel zeigt den genannten Fall der **`UserHooks`**.
-
-```php
-class UserHooks {
-
-	/**
-	 * UserHooks constructor.
-	 *
-	 * @param IUserManager $userManager The user manager
-	 * @param AuthorizationCodeMapper $authorizationCodeMapper The authorization code mapper
-	 * @param AccessTokenMapper $accessTokenMapper The access token mapper
-	 * @param RefreshTokenMapper $refreshTokenMapper The refresh token mapper
-	 */
-	public function __construct(IUserManager $userManager,
-								AuthorizationCodeMapper $authorizationCodeMapper,
-								AccessTokenMapper $accessTokenMapper,
-								RefreshTokenMapper $refreshTokenMapper) {
-		$this->userManager = $userManager;
-		$this->authorizationCodeMapper = $authorizationCodeMapper;
-		$this->accessTokenMapper = $accessTokenMapper;
-		$this->refreshTokenMapper = $refreshTokenMapper;
-	}
-	/**
-	 * Registers a pre-delete hook for users to delete authorization codes,
-	 * access tokens and refresh tokens that reference the user.
-	 */
-	public function register() {
-		/**
-		 * @param User $user
-		 */
-		$callback = function ($user) {
-			if (!is_null($user->getUID())) {
-				$this->authorizationCodeMapper->deleteByUser($user->getUID());
-				$this->accessTokenMapper->deleteByUser($user->getUID());
-				$this->refreshTokenMapper->deleteByUser($user->getUID());
-			}
-		};
-		$this->userManager->listen('\OC\User', 'preDelete', $callback);
-	}
-}
-```
-
 ### Templates
 
 In den [Templates](https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html) einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. 
@@ -537,8 +482,89 @@ In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Du
 Sollten noch keine Clients registriert worden sein, sorgt die `if`-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. 
 Durch Nutzung von `$l->t()` können die Strings auch [in andere Sprachen Übersetzt werden](https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates).
 
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Auf die Integration mit Transifex als Übersetzungsplattform eingehen.
+</div>
+
 Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion `addClient` im `SettingsController` aus. 
 Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion `deleteClient` im `SettingsController` auslöst.
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Einbindung eigener CSS und JavaScript Dateien erwähnen.
+</div>
+
+### Hooks
+
+In den [Hooks](https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook) einer ownCloud App wird Code gespeichert, 
+der vor oder nach einem bestimmten Ereignis ausgeführt werden soll. 
+Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. 
+Diese Hooks müssen in den `routes` registriert werden und die zugehörige Logik im `Container` gespeichert werden.
+
+In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. 
+Zuerst wird eine Konstruktorfunktion aufgerufen, welche den `userManager`, den `authorizationCodeMapper`, den `accessTokenMapper` und den `refreshTokenMapper` aufruft. 
+Dann wird der pre-delete Hook registriert und ein `callback` für den Hook definiert. 
+Dieser `callback` löscht jegliche, dem Nutzer zugehörige, `authorizationCodes`, `accessTokens` und `refreshTokens`. 
+Dazu wird in den jeweiligen Konstruktoren die Methode `deleteByUID` aufgerufen.
+
+Folgendes Codebeispiel zeigt den genannten Fall der **`UserHooks`**.
+
+```php
+class UserHooks {
+
+	/**
+	 * UserHooks constructor.
+	 *
+	 * @param IUserManager $userManager The user manager
+	 * @param AuthorizationCodeMapper $authorizationCodeMapper The authorization code mapper
+	 * @param AccessTokenMapper $accessTokenMapper The access token mapper
+	 * @param RefreshTokenMapper $refreshTokenMapper The refresh token mapper
+	 */
+	public function __construct(IUserManager $userManager,
+								AuthorizationCodeMapper $authorizationCodeMapper,
+								AccessTokenMapper $accessTokenMapper,
+								RefreshTokenMapper $refreshTokenMapper) {
+		$this->userManager = $userManager;
+		$this->authorizationCodeMapper = $authorizationCodeMapper;
+		$this->accessTokenMapper = $accessTokenMapper;
+		$this->refreshTokenMapper = $refreshTokenMapper;
+	}
+	/**
+	 * Registers a pre-delete hook for users to delete authorization codes,
+	 * access tokens and refresh tokens that reference the user.
+	 */
+	public function register() {
+		/**
+		 * @param User $user
+		 */
+		$callback = function ($user) {
+			if (!is_null($user->getUID())) {
+				$this->authorizationCodeMapper->deleteByUser($user->getUID());
+				$this->accessTokenMapper->deleteByUser($user->getUID());
+				$this->refreshTokenMapper->deleteByUser($user->getUID());
+			}
+		};
+		$this->userManager->listen('\OC\User', 'preDelete', $callback);
+	}
+}
+```
+
+### Authentifizierungslogik
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Implementierung der Authentifizierungslogik für WebDAV und die OCS Share API beschreiben. Registrierung in <code>info.xml</code> (<code>types</code> und <code>auth-modules</code>) und durch Event Listener beschreiben.
+</div>
+
+### Background Job
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Background Job, der abgelaufene Authorization Codes und Access Tokens löscht, beschreiben.
+</div>
+
+### Logging
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Logging beschreiben.
+</div>
 
 ## Protokollablauf
 
