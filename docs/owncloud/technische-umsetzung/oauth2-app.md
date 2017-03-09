@@ -40,6 +40,10 @@ Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusa
 
 ## Vorgegebene Schnittstelle
 
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Die durch ownCloud Apps vorgegebene Schnittstelle beschreiben.
+</div>
+
 ## Implementierung
 
 ### Mapper und Entities
