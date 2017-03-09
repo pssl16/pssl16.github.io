@@ -225,18 +225,21 @@
 
 <h1 id="benutzung">Benutzung</h1>
 <h2 id="installation">Installation</h2>
-<blockquote>
-<p><strong>Hinweis:</strong> Zur Zeit liegen die Anpassungen des ownCloud Cores als <a href="https://github.com/owncloud/core/pull/26742">Pull Request</a> vor. Falls die Änderungen angenommen werden, sind sie in einer der nächsten ownCloud Versionen enthalten.</p>
-</blockquote>
-<p>Da die Änderungen zum aktuellen Zeitpunkt noch nicht in den Core aufgenommen wurden, muss der <code>dav-oauth</code>-Branch des <a href="https://github.com/pssl16/core">geforkten Repositorys</a> geklont werden:</p>
-<pre><code class="nohighlight">$ git clone -b dav-oauth https://github.com/pssl16/core
+<p>Da die Anpassungen durch den Pull Request <a href="https://github.com/owncloud/core/pull/26742">owncloud/core#26742</a> erst kürzlich in den ownCloud Core aufgenommen wurden, sind sie noch in keiner Hauptversion enthalten. Es muss daher der aktuelle Stand aus dem <a href="https://github.com/owncloud/core">Repository</a> heruntergeladen werden:</p>
+<pre><code class="nohighlight">$ git clone https://github.com/owncloud/core.git
 </code></pre>
 
 <p>Danach müssen die Abhängigkeiten aufgelöst werden. Dazu genügt es, im Verzeichnis des Repositorys folgenden Befehl auszuführen:</p>
 <pre><code class="nohighlight">$ make
 </code></pre>
 
-<p>Die restlichen Installationsschritte unterscheiden sich nicht von denen im <a href="https://doc.owncloud.org/server/latest/admin_manual/installation/index.html">ownCloud Handbuch</a>.</p>
+<p>Die restlichen Installationsschritte von ownCloud unterscheiden sich nicht von denen im <a href="https://doc.owncloud.org/server/latest/admin_manual/installation/index.html">ownCloud Handbuch</a>.</p>
+<p>Die <code>oauth2</code> App wird dadurch installiert, dass der Inhalt des <a href="https://github.com/owncloud/oauth2">Repositorys</a> in das Verzeichnis <code>apps</code> kopiert wird:</p>
+<pre><code class="nohighlight">$ cd apps
+$ git clone https://github.com/owncloud/oauth2.git
+</code></pre>
+
+<p>Danach lässt sie sich wie jede andere ownCloud App in der Administrator-Ansicht aktivieren.</p>
 <h2 id="clientregistrierung">Clientregistrierung</h2>
 <p>Zur Clientregistrierung muss in der Eingabemaske der OAuth 2 App in den Adminsettings dem Client ein Name gegeben werden und eine gültige URL als <code>redirect URI</code> angegeben werden. 
 Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine <code>ClientID</code> und ein <code>Clientsecret</code> zugewiesen und wird nun in der Tabelle mit den entsprechenden Attributen dargestellt.</p>
@@ -257,8 +260,8 @@ Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, i
 
 <h2 id="authorization-code-flow">Authorization Code Flow</h2>
 <p>Die nachfolgende Abbildung stellt den durch die <code>oauth2</code> App implementierten <a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Code Flow</a> dar.</p>
-<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" />
-Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.</p>
+<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
+<p>Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.</p>
 <p>Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:</p>
 <ol>
 <li>Client Identifier &amp; Redirection URI: Der Client (Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
@@ -278,9 +281,10 @@ prüft, dass die empfangene Redirection URI mit der zur Weiterleitung im dritten
 Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem Access Token und optional mit einem Refresh Token.</li>
 </ol>
 <h2 id="angepasste-webdav-und-ocs-schnittstelle">Angepasste WebDAV und OCS Schnittstelle</h2>
-<p><div class="alert alert-danger">
+<div class="alert alert-danger">
   <strong>TODO:</strong> Ausführung entsprechend dem Abschnitt in technische-umsetzung.md
-</div></p>
+</div>
+
 <h2 id="widerrufung-der-autorisierung">Widerrufung der Autorisierung</h2>
 <p>Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf den entsprechenden Button widerrufen werden. 
 Dies ist für den Nutzer in den persönlichen Einstellungen möglich, durch Klicken des Mülleimer-Symbols rechts neben dem jeweiligen Eintrag.
