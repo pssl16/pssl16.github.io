@@ -220,9 +220,15 @@
             
                 <li class="third-level"><a href="#controller">Controller</a></li>
             
+                <li class="third-level"><a href="#templates">Templates</a></li>
+            
                 <li class="third-level"><a href="#hooks">Hooks</a></li>
             
-                <li class="third-level"><a href="#templates">Templates</a></li>
+                <li class="third-level"><a href="#authentifizierungslogik">Authentifizierungslogik</a></li>
+            
+                <li class="third-level"><a href="#background-job">Background Job</a></li>
+            
+                <li class="third-level"><a href="#logging">Logging</a></li>
             
         
             <li class="second-level"><a href="#protokollablauf">Protokollablauf</a></li>
@@ -688,56 +694,6 @@ class Utilities {
   <strong>TODO:</strong> Klassendiagramm einfügen.
 </div>
 
-<h3 id="hooks">Hooks</h3>
-<p>In den <a href="https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook">Hooks</a> einer ownCloud App wird Code gespeichert, 
-der vor oder nach einem bestimmten Ereignis ausgeführt werden soll. 
-Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. 
-Diese Hooks müssen in den <code>routes</code> registriert werden und die zugehörige Logik im <code>Container</code> gespeichert werden.</p>
-<p>In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. 
-Zuerst wird eine Konstruktorfunktion aufgerufen, welche den <code>userManager</code>, den <code>authorizationCodeMApper</code>, den <code>accessTokenMapper</code> und den <code>refreshTokenMapper</code> aufruft. 
-Dann wird der pre-delete Hook registriert und ein <code>callback</code> für den Hook definiert. 
-Dieser <code>callback</code> löscht jegliche, dem Nutzer zugehörige, <code>authorizationCodes</code>, <code>accessTokens</code> und <code>refreshTokens</code>. 
-Dazu wird in den jeweiligen Konstruktoren die Methode <code>deleteByUID</code> aufgerufen.</p>
-<p>Folgendes Codebeispiel zeigt den genannten Fall der <strong><code>UserHooks</code></strong>.</p>
-<pre><code class="php">class UserHooks {
-
-    /**
-     * UserHooks constructor.
-     *
-     * @param IUserManager $userManager The user manager
-     * @param AuthorizationCodeMapper $authorizationCodeMapper The authorization code mapper
-     * @param AccessTokenMapper $accessTokenMapper The access token mapper
-     * @param RefreshTokenMapper $refreshTokenMapper The refresh token mapper
-     */
-    public function __construct(IUserManager $userManager,
-                                AuthorizationCodeMapper $authorizationCodeMapper,
-                                AccessTokenMapper $accessTokenMapper,
-                                RefreshTokenMapper $refreshTokenMapper) {
-        $this-&gt;userManager = $userManager;
-        $this-&gt;authorizationCodeMapper = $authorizationCodeMapper;
-        $this-&gt;accessTokenMapper = $accessTokenMapper;
-        $this-&gt;refreshTokenMapper = $refreshTokenMapper;
-    }
-    /**
-     * Registers a pre-delete hook for users to delete authorization codes,
-     * access tokens and refresh tokens that reference the user.
-     */
-    public function register() {
-        /**
-         * @param User $user
-         */
-        $callback = function ($user) {
-            if (!is_null($user-&gt;getUID())) {
-                $this-&gt;authorizationCodeMapper-&gt;deleteByUser($user-&gt;getUID());
-                $this-&gt;accessTokenMapper-&gt;deleteByUser($user-&gt;getUID());
-                $this-&gt;refreshTokenMapper-&gt;deleteByUser($user-&gt;getUID());
-            }
-        };
-        $this-&gt;userManager-&gt;listen('\OC\User', 'preDelete', $callback);
-    }
-}
-</code></pre>
-
 <h3 id="templates">Templates</h3>
 <p>In den <a href="https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html">Templates</a> einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. 
 Es können die vom <a href="#controller">Controller</a> übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen <code>$_</code>. 
@@ -800,8 +756,81 @@ Es werden ein Text zur Erklärung sowie Buttons zum Akzeptieren oder Ablehnen an
 <p>In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Durch eine <code>for</code>-Schleife wird für jeden Client aus dem Parameter <code>clients</code> ein Tabelleneintrag angezeigt. 
 Sollten noch keine Clients registriert worden sein, sorgt die <code>if</code>-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. 
 Durch Nutzung von <code>$l-&gt;t()</code> können die Strings auch <a href="https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates">in andere Sprachen Übersetzt werden</a>.</p>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Auf die Integration mit Transifex als Übersetzungsplattform eingehen.
+</div>
+
 <p>Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion <code>addClient</code> im <code>SettingsController</code> aus. 
 Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion <code>deleteClient</code> im <code>SettingsController</code> auslöst.</p>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Einbindung eigener CSS und JavaScript Dateien erwähnen.
+</div>
+
+<h3 id="hooks">Hooks</h3>
+<p>In den <a href="https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook">Hooks</a> einer ownCloud App wird Code gespeichert, 
+der vor oder nach einem bestimmten Ereignis ausgeführt werden soll. 
+Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. 
+Diese Hooks müssen in den <code>routes</code> registriert werden und die zugehörige Logik im <code>Container</code> gespeichert werden.</p>
+<p>In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. 
+Zuerst wird eine Konstruktorfunktion aufgerufen, welche den <code>userManager</code>, den <code>authorizationCodeMapper</code>, den <code>accessTokenMapper</code> und den <code>refreshTokenMapper</code> aufruft. 
+Dann wird der pre-delete Hook registriert und ein <code>callback</code> für den Hook definiert. 
+Dieser <code>callback</code> löscht jegliche, dem Nutzer zugehörige, <code>authorizationCodes</code>, <code>accessTokens</code> und <code>refreshTokens</code>. 
+Dazu wird in den jeweiligen Konstruktoren die Methode <code>deleteByUID</code> aufgerufen.</p>
+<p>Folgendes Codebeispiel zeigt den genannten Fall der <strong><code>UserHooks</code></strong>.</p>
+<pre><code class="php">class UserHooks {
+
+    /**
+     * UserHooks constructor.
+     *
+     * @param IUserManager $userManager The user manager
+     * @param AuthorizationCodeMapper $authorizationCodeMapper The authorization code mapper
+     * @param AccessTokenMapper $accessTokenMapper The access token mapper
+     * @param RefreshTokenMapper $refreshTokenMapper The refresh token mapper
+     */
+    public function __construct(IUserManager $userManager,
+                                AuthorizationCodeMapper $authorizationCodeMapper,
+                                AccessTokenMapper $accessTokenMapper,
+                                RefreshTokenMapper $refreshTokenMapper) {
+        $this-&gt;userManager = $userManager;
+        $this-&gt;authorizationCodeMapper = $authorizationCodeMapper;
+        $this-&gt;accessTokenMapper = $accessTokenMapper;
+        $this-&gt;refreshTokenMapper = $refreshTokenMapper;
+    }
+    /**
+     * Registers a pre-delete hook for users to delete authorization codes,
+     * access tokens and refresh tokens that reference the user.
+     */
+    public function register() {
+        /**
+         * @param User $user
+         */
+        $callback = function ($user) {
+            if (!is_null($user-&gt;getUID())) {
+                $this-&gt;authorizationCodeMapper-&gt;deleteByUser($user-&gt;getUID());
+                $this-&gt;accessTokenMapper-&gt;deleteByUser($user-&gt;getUID());
+                $this-&gt;refreshTokenMapper-&gt;deleteByUser($user-&gt;getUID());
+            }
+        };
+        $this-&gt;userManager-&gt;listen('\OC\User', 'preDelete', $callback);
+    }
+}
+</code></pre>
+
+<h3 id="authentifizierungslogik">Authentifizierungslogik</h3>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Implementierung der Authentifizierungslogik für WebDAV und die OCS Share API beschreiben. Registrierung in <code>info.xml</code> (<code>types</code> und <code>auth-modules</code>) und durch Event Listener beschreiben.
+</div>
+
+<h3 id="background-job">Background Job</h3>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Background Job, der abgelaufene Authorization Codes und Access Tokens löscht, beschreiben.
+</div>
+
+<h3 id="logging">Logging</h3>
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Logging beschreiben.
+</div>
+
 <h2 id="protokollablauf">Protokollablauf</h2>
 <p>Der Protokollablauf der oauth2 App ist dem regulären OAuth2 Protokollablauf nachempfunden. </p>
 <p>Zunächst wird vom Moodle Plugin die Methode <code>GET authorize</code> mit den Parametern <code>response_type</code>, <code>client_id</code> und <code>redirect_uri</code> ausgeführt, welche die OAuth 2.0 App anspricht und für eine Weiterleitung an ownCloud sorgt. 
