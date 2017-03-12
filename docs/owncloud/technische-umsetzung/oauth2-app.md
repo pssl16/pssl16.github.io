@@ -598,7 +598,7 @@ Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung i
 
 Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://travis-ci.org/owncloud/oauth2.svg?branch=master)](https://travis-ci.org/owncloud/oauth2).
 
-# Einschränkungen
+## Einschränkungen
 
 <div class="alert alert-danger">
   <strong>TODO:</strong> Einschränkungen mit der <code>encryption</code> App beschreiben.
