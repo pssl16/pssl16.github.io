@@ -416,7 +416,7 @@ class Utilities {
 Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren Beziehungen zu den Entities und Mappern dargestellt.
 
 <div class="alert alert-danger">
-  <strong>TODO:</strong> Klassendiagramm einfügen. (Mache ich! [Lukas])
+  <strong>TODO:</strong> Klassendiagramm einfügen bzw. vervollständigen (siehe /images).
 </div>
 
 ### Templates
