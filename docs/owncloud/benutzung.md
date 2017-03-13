@@ -28,6 +28,7 @@ Danach lässt sie sich wie jede andere ownCloud App in der Administrator-Ansicht
 ## Clientregistrierung
 
 Zur Clientregistrierung muss in der Eingabemaske der OAuth 2 App in den Adminsettings dem Client ein Name gegeben werden und eine gültige URL als `redirect URI` angegeben werden. 
+Eine `redirect URI` bezeichnet eine Adresse, zu der der jeweilige Client nach der erfolgreichen Autorisierung weitergeleitet wird.
 Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine `ClientID` und ein `Clientsecret` zugewiesen und wird nun in der Tabelle mit den entsprechenden Attributen dargestellt.
 
 <div align="center">
@@ -59,9 +60,9 @@ Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent
 
 Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:
 
-1. Client Identifier & Redirection URI: Der Client (Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
+1. Client Identifier & Redirection URI: Der Client (hier Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
 zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine Redirection URI an, zu welcher der
-User-Agent vom Authorization Server (sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.
+User-Agent vom Authorization Server (hier sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.
 2. Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
 ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.
 3. Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,

@@ -506,7 +506,7 @@ Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Ein
 ### Hooks
 
 Wenn ein Nutzer gelöscht wird, sollen dementsprechend auch alle seine Daten gelöscht werden, wozu auch jegliche Art von 
-Authorization Codes und Tokens aus dem OAuth 2.0 Protokollablauf gehören. Hooks sollen also implementiert werden, um die 
+Authorization Codes und Tokens aus dem OAuth 2.0 Protokollablauf gehören. Hooks müssen also implementiert werden, um die 
 Säuberung von Datenbankeinträgen durchzuführen. 
 
 In den [Hooks](https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook) einer ownCloud App wird Code gespeichert, 

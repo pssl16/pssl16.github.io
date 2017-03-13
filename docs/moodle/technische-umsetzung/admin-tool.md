@@ -10,7 +10,7 @@ OAuth 2.0 und WebDAV Schnittstellen verfügen.
 
 Im Wesentlichen implementiert dieses Plugin das folgende [Integrationsszenario](../index/):
 
-1. Als **Nutzer** möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden.
+1. Als **Nutzer** möchte ich OAuth2 benutzen können, um mich im Learnweb als ownCloud Nutzer anzumelden.
 
 Jedoch betrifft es auch alle anderen Szenarien indirekt, da diese erst durch die Authentifizierung mittels OAuth 2.0 
 ermöglicht werden können.
