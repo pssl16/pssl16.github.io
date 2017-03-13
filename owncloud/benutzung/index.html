@@ -242,6 +242,7 @@ $ git clone https://github.com/owncloud/oauth2.git
 <p>Danach lässt sie sich wie jede andere ownCloud App in der Administrator-Ansicht aktivieren.</p>
 <h2 id="clientregistrierung">Clientregistrierung</h2>
 <p>Zur Clientregistrierung muss in der Eingabemaske der OAuth 2 App in den Adminsettings dem Client ein Name gegeben werden und eine gültige URL als <code>redirect URI</code> angegeben werden. 
+Eine <code>redirect URI</code> bezeichnet eine Adresse, zu der der jeweilige Client nach der erfolgreichen Autorisierung weitergeleitet wird.
 Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine <code>ClientID</code> und ein <code>Clientsecret</code> zugewiesen und wird nun in der Tabelle mit den entsprechenden Attributen dargestellt.</p>
 <div align="center">
     <img alt="Eingabemaske" src="../images/eingabe-app.png" width=50%>
@@ -264,9 +265,9 @@ Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, i
 <p>Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.</p>
 <p>Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:</p>
 <ol>
-<li>Client Identifier &amp; Redirection URI: Der Client (Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
+<li>Client Identifier &amp; Redirection URI: Der Client (hier Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
 zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine Redirection URI an, zu welcher der
-User-Agent vom Authorization Server (sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.</li>
+User-Agent vom Authorization Server (hier sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.</li>
 <li>Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
 ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.</li>
 <li>Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,
