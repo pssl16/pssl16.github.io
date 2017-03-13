@@ -253,21 +253,21 @@ Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im L
 Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
 Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.</p>
 <h3 id="realisierte-szenarien">Realisierte Szenarien</h3>
-<h4 id="1-als-nutzer-mochte-ich-oauth2-benutzen-konnen-um-mich-im-learnweb-als-sciebo-nutzer-anzumelden">1. Als <strong>Nutzer</strong> möchte ich OAuth2 benutzen können, um mich im Learnweb als Sciebo Nutzer anzumelden.</h4>
+<h4 id="1-als-nutzer-mochte-ich-oauth2-benutzen-konnen-um-mich-im-learnweb-als-owncloud-nutzer-anzumelden">1. Als <strong>Nutzer</strong> möchte ich OAuth2 benutzen können, um mich im Learnweb als ownCloud Nutzer anzumelden.</h4>
 <p>Dieser Use Case implementiert die grundlegende Authentifizierung mit dem <a href="https://oauth.net/2/">OAuth 2.0</a> Verfahren.
 Im Rahmen unserer Vorbereiungsphase auf das Projektseminar haben wir verschiedene Authentifizierungsmethoden evaluiert. Im Abschnitt
  <a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a> finden sie hierfür genauere Informationen. Hierfür ist in Moodle das
  <a href="/moodle/admin-tool.md">Admin Tool</a> implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
  In OwnCloud wurde hierfür eine <a href="/owncloud/technische-umsetzung.md">App</a> entwickelt.</p>
-<h4 id="2-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-sciebo-instanz-hochladen">2. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.</h4>
+<h4 id="2-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-owncloud-instanz-hochladen">2. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner ownCloud Instanz hochladen.</h4>
 <p>Der vorherige Use Case war für den Benutzer der Moodle Instanz noch nicht sichtbar. Das wichtigste Anwendungsszenario ist das Nutzer im Learnweb Dateien aus ihrer
-Sciebo Account hochladen können. Hierfür haben wir in Moodle ein <a href="/moodle/repository.md">Repository-Plugins</a> entwickelt. Sobald das Reposiotory einer Moodle
-Instanz hinzugefügt wurde kann der Nutzer über einen anmelde Button Moodle autorisieren Dateien aus dem privaten sciebo account anzuzeigen
+ownCloud Account hochladen können. Hierfür haben wir in Moodle ein <a href="/moodle/repository.md">Repository-Plugins</a> entwickelt. Sobald das Reposiotory einer Moodle
+Instanz hinzugefügt wurde kann der Nutzer über einen anmelde Button Moodle autorisieren Dateien aus dem privaten ownCloud account anzuzeigen
 und mit Hilfe des File Pickers können nun Dateien ausgewählt werden.
 <div class="alert alert-danger">
   <strong>TODO:</strong> BILDER! (Wenn get_listing wieder funktioniert)
 </div></p>
-<h4 id="3-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-sciebo-instanz-verlinken">3. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.</h4>
+<h4 id="3-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-owncloud-instanz-verlinken">3. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner ownCloud Instanz verlinken.</h4>
 <p>Eine Erweiterung des vorherigen Szenarios ist die Verlinkung von Dateien. Hier wird zu der bestehenden Datei ein public-link erstellt.
 Dieser kann nun von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des <a href="/moodle/repository.md">Repository-Plugins</a>. Das Verlinken ist
 jedoch nur in der Aktivität URL verfügbar.</p>
@@ -288,8 +288,8 @@ Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis viele
 <h3 id="oauth-20">OAuth 2.0</h3>
 <p>Der allgemeine <a href="https://tools.ietf.org/html/rfc6749#section-1.2">OAuth 2.0 Protokollablauf</a> ist in der nachfolgenden Abbildung dargestellt.</p>
 <p><img alt="Authorization Code Flow" src="./images/oauth-allgemein.svg" /></p>
-<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (sciebo Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte,
-bei dem Authorization Server (sciebo) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:</p>
+<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (ownCloud Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte,
+bei dem Authorization Server (ownCloud) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:</p>
 <ol>
 <li>Authorization Request: Der Client fordert eine Autorisierung vom Resource Owner an.</li>
 <li>Authorization Response: Der Client erhält eine Autorisierungsgenehmigung vom Resource Owner. Die Autorisierung kann über eine
@@ -329,7 +329,7 @@ zu den bestehenden Use Cases bilden könnten.</p>
 <p>Als <strong>Lehrender</strong> möchte ich auf einen Button klicken, um hochgeladene Dateien zu aktualisieren.</p>
 </li>
 <li>
-<p>Als <strong>Studierender</strong> möchte ich Dateien aus dem Learnweb direkt in meiner sciebo Instanz speichern können.</p>
+<p>Als <strong>Studierender</strong> möchte ich Dateien aus dem Learnweb direkt in meiner ownCloud Instanz speichern können.</p>
 </li>
 <li>
 <p>Als <strong>Studierender</strong> möchte ich anderen Studierenden Schreib- und Lese-Rechte geben um kollaborativ zu arbeiten.</p>
@@ -338,22 +338,22 @@ zu den bestehenden Use Cases bilden könnten.</p>
 <p>Als <strong>Lehrender</strong> möchte ich Nutzern auf Modul-Basis das Recht entziehen eine Datei zu verlinken.</p>
 </li>
 <li>
-<p>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb einen Ordner aus meiner sciebo Instanz hochladen.</p>
+<p>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb einen Ordner aus meiner ownCloud Instanz hochladen.</p>
 </li>
 <li>
-<p>Als <strong>Lehrender</strong> möchte ich in der Dateiauswahl im Learnweb einen Ordner aus meiner sciebo Instanz verlinken.</p>
+<p>Als <strong>Lehrender</strong> möchte ich in der Dateiauswahl im Learnweb einen Ordner aus meiner ownCloud Instanz verlinken.</p>
 </li>
 <li>
 <p>Als <strong>Studierender</strong> möchte ich Lehrenden Schreib- oder Lese-Rechte auf mein Dokument geben können um Feedback zu erhalten.</p>
 </li>
 <li>
-<p>Als <strong>Lehrender</strong> möchte ich die Möglichkeit haben, einen Zielordner in Sciebo zur Speicherung auszuwählen, um Abgaben herunterzuladen.</p>
+<p>Als <strong>Lehrender</strong> möchte ich die Möglichkeit haben, einen Zielordner in ownCloud zur Speicherung auszuwählen, um Abgaben herunterzuladen.</p>
 </li>
 <li>
-<p>Als <strong>Lehrender</strong> möchte ich sciebo als primären Speicher für alle Dateien im Kurs verwenden können.</p>
+<p>Als <strong>Lehrender</strong> möchte ich ownCloud als primären Speicher für alle Dateien im Kurs verwenden können.</p>
 </li>
 <li>
-<p>Als <strong>Lehrender</strong> möchte ich in Sciebo die Teilen-Funktion nutzen, um Dateien oder Dokumente für Kursteilnehmer freigeben zu können.</p>
+<p>Als <strong>Lehrender</strong> möchte ich in ownCloud die Teilen-Funktion nutzen, um Dateien oder Dokumente für Kursteilnehmer freigeben zu können.</p>
 </li>
 </ol>
 <h2 id="zusammenfassung">Zusammenfassung</h2>
@@ -416,5 +416,5 @@ Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben</p></d
 
 <!--
 MkDocs version : 0.16.1
-Build Date UTC : 2017-03-13 14:32:28
+Build Date UTC : 2017-03-13 14:44:16
 -->
