@@ -206,6 +206,9 @@
             <li class="second-level"><a href="#allgemeine-motivation-fur-die-arbeit">Allgemeine Motivation für die Arbeit</a></li>
             
         
+            <li class="second-level"><a href="#struktur-der-dokumentation">Struktur der Dokumentation</a></li>
+            
+        
             <li class="second-level"><a href="#integrationsszenarien-user-stories">Integrationsszenarien (User Stories)</a></li>
             
                 <li class="third-level"><a href="#realisierte-szenarien">Realisierte Szenarien</a></li>
@@ -248,6 +251,13 @@ Das Learnweb ist ein auf der Open-Source-Lösung <a href="https://moodle.org/">M
 Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht im Klartext auf dem jeweils anderen System gespeichert wird. 
 Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen. 
 Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im Learnweb abgerufen werden können und kollaborative Ordner in sciebo vom Learnweb aus erstellt werden können.</p>
+<h2 id="struktur-der-dokumentation">Struktur der Dokumentation</h2>
+<p>Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zu erst die Aufteilung in <strong>Home</strong>, <strong>ownCloud</strong> und <strong>Moodle</strong>. Sie befinden sich gerade im Abschnitt <strong>Home</strong>, 
+welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte <strong>ownCloud</strong> und <strong>Moodle</strong> dokumentieren 
+jeweils die spezifische <strong>Benutzung</strong> (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige <strong>Technische Umsetzung</strong>, welche die Dokumentation für Entwickler bereitstellt. Der Punkt <strong>Technische Umsetzung</strong> im Abschnitt 
+<strong>ownCloud</strong> enthält die Themen <a href="owncloud/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>, <a href="owncloud/technische-umsetzung/oauth2-app/">OAuth 2.0 App</a> 
+und <a href="owncloud/technische-umsetzung/core-anpassungen/">Core Anpassungen</a>. Der gleiche Unterpunkt im Abschnitt <strong>Moodle</strong> behandelt die Themen <a href="moodle/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>, 
+<a href="moodle/technische-umsetzung/admin-tool/">Admin Tool</a>, <a href="moodle/technische-umsetzung/repository/">Repository</a> und <a href="/moodle/technische-umsetzung/acitivity.md">Collaborative Folders</a>.</p>
 <h2 id="integrationsszenarien-user-stories">Integrationsszenarien (User Stories)</h2>
 <p>Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
 Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
@@ -257,7 +267,7 @@ Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i clas
 <p>Dieser Use Case implementiert die grundlegende Authentifizierung mit dem <a href="https://oauth.net/2/">OAuth 2.0</a> Verfahren.
 Im Rahmen unserer Vorbereiungsphase auf das Projektseminar haben wir verschiedene Authentifizierungsmethoden evaluiert. Im Abschnitt
  <a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a> finden sie hierfür genauere Informationen. Hierfür ist in Moodle das
- <a href="/moodle/admin-tool.md">Admin Tool</a> implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
+ <a href="moodle/technische-umsetzung/admin-tool/">Admin Tool</a> implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
  In OwnCloud wurde hierfür eine <a href="/owncloud/technische-umsetzung.md">App</a> entwickelt.</p>
 <h4 id="2-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-owncloud-instanz-hochladen">2. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner ownCloud Instanz hochladen.</h4>
 <p>Der vorherige Use Case war für den Benutzer der Moodle Instanz noch nicht sichtbar. Das wichtigste Anwendungsszenario ist das Nutzer im Learnweb Dateien aus ihrer
@@ -415,6 +425,6 @@ Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben</p></d
 </html>
 
 <!--
-MkDocs version : 0.16.1
-Build Date UTC : 2017-03-13 15:22:21
+MkDocs version : 0.16.2
+Build Date UTC : 2017-03-14 10:59:48
 -->
