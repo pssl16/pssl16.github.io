@@ -35,20 +35,10 @@ Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine `Client
 	<img alt="Eingabemaske" src="../images/eingabe-app.png" width=50%>
 </div>
 
-**Löschen der Clientregistrierung**
-Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellarische Ansicht der registrierten Clients ausgewählt werden. 
-Nun kann man bei dem zu löschenden Client rechts neben den zugeordneten Attributen auf ein Mülleimer-Symbol klicken, um die entsprechende Clientregistrierung zu löschen.
-Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, in der man die Löschung bestätigen muss.
 
 Screenshot zur Darstellung der Clients:
 
 <img alt="Clientdarstellung" src="../images/darstellung-app.svg" width=100%>
-
-Screenshot zur Sicherheitsabfrage bei Löschung des Clients:
-
-<div align="center">
-	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=50%>
-</div>
 
 ## Authorization Code Flow
 
@@ -95,6 +85,22 @@ Screenshot zur Darstellung der autorisierten Anwendungen:
 </div>
 
 Screenshot zur Sicherheitsabfrage bei Löschung einer autorisierten Anwendung:
+
+<div align="center">
+	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=50%>
+</div>
+
+##Löschen der Clientregistrierung
+Bei Bedarf kann ein Client beziehungsweise eine Clientregistrierung gelöscht werden. Dies kann notwendig sein, wenn sich
+beim Client die Redirect URI geändert hat, oder man dem Client einfach nicht mehr den Zugriff gewähren möchte. Dadurch, dass
+ein Client gelöscht wird, kann dieser nun nicht mehr auf Dateien aus der ownCloud-Instanz zugreifen und die ausgestellten Authorization
+Codes, Access und Refresh Tokens sind ungültig. Durch irrtümliche Löschung des Clients muss bei Wiedereintragung des Clients jeder
+Nutzer des Clients erneut das Authentifizierungsverfahren durchlaufen.
+Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellarische Ansicht der registrierten Clients ausgewählt werden. 
+Nun kann man bei dem zu löschenden Client rechts neben den zugeordneten Attributen auf ein Mülleimer-Symbol klicken, um die entsprechende Clientregistrierung zu löschen.
+Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, in der man die Löschung bestätigen muss.
+
+Screenshot zur Sicherheitsabfrage bei Löschung des Clients:
 
 <div align="center">
 	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=50%>
