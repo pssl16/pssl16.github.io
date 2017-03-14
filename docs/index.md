@@ -13,6 +13,14 @@ Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht 
 Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen. 
 Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im Learnweb abgerufen werden können und kollaborative Ordner in sciebo vom Learnweb aus erstellt werden können.
 
+## Struktur der Dokumentation
+Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zu erst die Aufteilung in **Home**, **ownCloud** und **Moodle**. Sie befinden sich gerade im Abschnitt **Home**, 
+welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte **ownCloud** und **Moodle** dokumentieren 
+jeweils die spezifische **Benutzung** (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige **Technische Umsetzung**, welche die Dokumentation für Entwickler bereitstellt. Der Punkt **Technische Umsetzung** im Abschnitt 
+**ownCloud** enthält die Themen [Softwarearchitektur](/owncloud/technische-umsetzung/softwarearchitektur.md), [OAuth 2.0 App](/owncloud/technische-umsetzung/oauth2-app.md) 
+und [Core Anpassungen](/owncloud/technische-umsetzung/core-anpassungen.md). Der gleiche Unterpunkt im Abschnitt **Moodle** behandelt die Themen [Softwarearchitektur](/moodle/technische-umsetzung/softwarearchitektur.md), 
+[Admin Tool](/moodle/technische-umsetzung/admin-tool.md), [Repository](/moodle/technische-umsetzung/repository.md) und [Collaborative Folders](/moodle/technische-umsetzung/acitivity.md).
+
 ## Integrationsszenarien (User Stories)
 Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
 Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
@@ -24,7 +32,7 @@ Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i clas
 Dieser Use Case implementiert die grundlegende Authentifizierung mit dem [OAuth 2.0](https://oauth.net/2/) Verfahren.
 Im Rahmen unserer Vorbereiungsphase auf das Projektseminar haben wir verschiedene Authentifizierungsmethoden evaluiert. Im Abschnitt
  [Authentifizierung und Autorisierung](#authentifizierung-und-autorisierung) finden sie hierfür genauere Informationen. Hierfür ist in Moodle das
- [Admin Tool](/moodle/admin-tool.md) implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
+ [Admin Tool](/moodle/technische-umsetzung/admin-tool.md) implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
  In OwnCloud wurde hierfür eine [App](/owncloud/technische-umsetzung.md) entwickelt.
 
 #### 2. Als **Nutzer** möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner ownCloud Instanz hochladen.
