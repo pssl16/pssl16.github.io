@@ -245,7 +245,9 @@ $ git clone https://github.com/owncloud/oauth2.git
 <p>Danach lässt sie sich wie jede andere ownCloud App in der Administrator-Ansicht aktivieren.</p>
 <h2 id="clientregistrierung">Clientregistrierung</h2>
 <p>Zur Clientregistrierung muss in der Eingabemaske der OAuth 2 App in den Adminsettings dem Client ein Name gegeben werden und eine gültige URL als <code>redirect URI</code> angegeben werden. 
-Eine <code>redirect URI</code> bezeichnet eine Adresse, zu der der jeweilige Client nach der erfolgreichen Autorisierung weitergeleitet wird.
+Eine <code>redirect URI</code> bezeichnet eine Adresse, zu der der jeweilige Client nach der erfolgreichen Autorisierung weitergeleitet wird. Setzt man einen Haken im Feld <em>Erlaube Subdomains</em>, so 
+können auch Subdomains der eingegebenen <code>redirect URI</code> angesprochen werden. So lange also der Haken gesetzt wurde und die entsprechende Adresse für die
+"Hauptdomain" angegeben wurde, funktioniert der Authentifizierungsmechanismus auch mit den Subdomains
 Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine <code>ClientID</code> und ein <code>Clientsecret</code> zugewiesen und wird nun in der Tabelle mit den entsprechenden Attributen dargestellt.</p>
 <div align="center">
     <img alt="Eingabemaske" src="../images/eingabe-app.png" width=50%>
@@ -260,20 +262,20 @@ Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine <code>C
 <p>Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:</p>
 <ol>
 <li>Client Identifier &amp; Redirection URI: Der Client (hier Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
-zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine Redirection URI an, zu welcher der
+zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine <code>redirection URI</code> an, zu welcher der
 User-Agent vom Authorization Server (hier sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.</li>
 <li>Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
 ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.</li>
 <li>Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,
-wozu die vorher (in der Anfrage oder während der Clientregistrierung) bereitgestellte Redirection URI genutzt wird. Die 
-Redirection URI beinhaltet einen Authorization Code und jeglichen vom Client im Vorhinein bereitgestellten Status.</li>
+wozu die vorher (in der Anfrage oder während der Clientregistrierung) bereitgestellte <code>redirection URI</code> genutzt wird. Die 
+<code>redirection URI</code> beinhaltet einen <code>authorization code</code> und jeglichen vom Client im Vorhinein bereitgestellten Status.</li>
 <li>Authorization Code &amp; Redirection URI: Der Client fragt ein Access Token vom Endpunkt des Authorization Servers an, indem
 der Authorization Code aus dem vorherigen Schritt angefügt wird. Wenn die Anfrage durchgeführt wird, authentifiziert sich der Client
-automatisch mit dem Authorization Server. Der Client fügt die für den Erhalt des Authorization Codes genutzte Redirection URI
+automatisch mit dem Authorization Server. Der Client fügt die für den Erhalt des <code>authorization codes</code> genutzte <code>redirection URI</code>
 zur Verifizierung an.</li>
-<li>Access Token (&amp; optional: Refresh Token): Der Authorization Server authentifiziert den Client, validiert den Authorization Code, und
-prüft, dass die empfangene Redirection URI mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
-Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem Access Token und optional mit einem Refresh Token.</li>
+<li>Access Token (&amp; optional: Refresh Token): Der Authorization Server authentifiziert den Client, validiert den <code>authorization code</code>, und
+prüft, dass die empfangene <code>redirection URI</code> mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
+Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem <code>access token</code> und optional mit einem <code>refresh token</code>.</li>
 </ol>
 <h2 id="angepasste-webdav-und-ocs-schnittstelle">Angepasste WebDAV und OCS Schnittstelle</h2>
 <div class="alert alert-danger">
@@ -296,7 +298,7 @@ Nachdem auf das Symbol geklickt wurde, erscheint auch hier eine Sicherheitsabfra
 
 <h2 id="loschen-der-clientregistrierung">Löschen der Clientregistrierung</h2>
 <p>Bei Bedarf kann ein Client beziehungsweise eine Clientregistrierung gelöscht werden. Dies kann notwendig sein, wenn sich
-beim Client die Redirect URI geändert hat, oder man dem Client einfach nicht mehr den Zugriff gewähren möchte. Dadurch, dass
+beim Client die <code>redirect URI</code> geändert hat, oder man dem Client einfach nicht mehr den Zugriff gewähren möchte. Dadurch, dass
 ein Client gelöscht wird, kann dieser nun nicht mehr auf Dateien aus der ownCloud-Instanz zugreifen und die ausgestellten Authorization
 Codes, Access und Refresh Tokens sind ungültig. Durch irrtümliche Löschung des Clients muss bei Wiedereintragung des Clients jeder
 Nutzer des Clients erneut das Authentifizierungsverfahren durchlaufen.
