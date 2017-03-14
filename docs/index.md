@@ -33,12 +33,12 @@ Dieser Use Case implementiert die grundlegende Authentifizierung mit dem [OAuth 
 Im Rahmen unserer Vorbereiungsphase auf das Projektseminar haben wir verschiedene Authentifizierungsmethoden evaluiert. Im Abschnitt
  [Authentifizierung und Autorisierung](#authentifizierung-und-autorisierung) finden sie hierfür genauere Informationen. Hierfür ist in Moodle das
  [Admin Tool](/moodle/technische-umsetzung/admin-tool.md) implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
- In OwnCloud wurde hierfür eine [App](/owncloud/technische-umsetzung.md) entwickelt.
+ In OwnCloud wurde hierfür eine [App](/owncloud/technische-umsetzung/oauth2-app.md) entwickelt.
 
 #### 2. Als **Nutzer** möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner ownCloud Instanz hochladen.
 
 Der vorherige Use Case war für den Benutzer der Moodle Instanz noch nicht sichtbar. Das wichtigste Anwendungsszenario ist das Nutzer im Learnweb Dateien aus ihrer
-ownCloud Account hochladen können. Hierfür haben wir in Moodle ein [Repository-Plugins](/moodle/repository.md) entwickelt. Sobald das Reposiotory einer Moodle
+ownCloud Account hochladen können. Hierfür haben wir in Moodle ein [Repository-Plugins](/moodle/technische-umsetzung/repository.md) entwickelt. Sobald das Reposiotory einer Moodle
 Instanz hinzugefügt wurde kann der Nutzer über einen anmelde Button Moodle autorisieren Dateien aus dem privaten ownCloud account anzuzeigen
 und mit Hilfe des File Pickers können nun Dateien ausgewählt werden.
 <div class="alert alert-danger">
@@ -48,13 +48,13 @@ und mit Hilfe des File Pickers können nun Dateien ausgewählt werden.
 #### 3. Als **Nutzer** möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner ownCloud Instanz verlinken.
 
 Eine Erweiterung des vorherigen Szenarios ist die Verlinkung von Dateien. Hier wird zu der bestehenden Datei ein public-link erstellt.
-Dieser kann nun von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des [Repository-Plugins](/moodle/repository.md). Das Verlinken ist
+Dieser kann nun von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des [Repository-Plugins](/moodle/technische-umsetzung/repository.md). Das Verlinken ist
 jedoch nur in der Aktivität URL verfügbar.
 
 #### 4. Als **Lehrender** möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.
 
 Die letzte User Story die wir implementiert haben, wurde vermehrt von Lehrenden der Universität Münster nachgefragt. Ein Lehrender kann mir Hilfe der
-Aktivität [collaborativefolders](/moodle/activity.md) in einem Kurs Ordner erstellen auf den Studierende Zugriff haben und den sie ihrem sciebo account hinzufügen können.
+Aktivität [collaborativefolders](/moodle/technische-umsetzung/acitivity.md) in einem Kurs Ordner erstellen auf den Studierende Zugriff haben und den sie ihrem sciebo account hinzufügen können.
 
 Weitere User Storys die jedoch nicht im Rahmen diese Projektseminars implementiert werden konnten finden sie unter dem Abschnitt
 [Weitere Anwendungsszenarien](#weitere-anwendungsszenarien).
