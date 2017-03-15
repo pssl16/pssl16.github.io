@@ -8,20 +8,20 @@ Das Learnweb ist ein auf der Open-Source-Lösung [Moodle](https://moodle.org/) b
 Eine mögliche Lösung sollte dabei möglichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universitäten genutzt wird.
 
 ## Allgemeine Motivation für die Arbeit
-Die grundsätzliche Motivation für das Projektseminar war es, die beiden Systeme [sciebo](https://www.sciebo.de/) und [Learnweb](https://www.uni-muenster.de/LearnWeb/learnweb2/) passwortlos miteinander kommunizieren zu lassen. 
-Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht im Klartext auf dem jeweils anderen System gespeichert wird. 
-Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen. 
+Die grundsätzliche Motivation für das Projektseminar war es, die beiden Systeme [sciebo](https://www.sciebo.de/) und [Learnweb](https://www.uni-muenster.de/LearnWeb/learnweb2/) passwortlos miteinander kommunizieren zu lassen.
+Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht im Klartext auf dem jeweils anderen System gespeichert wird.
+Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen.
 Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im Learnweb abgerufen werden können und kollaborative Ordner in sciebo vom Learnweb aus erstellt werden können.
 
 ## Struktur der Dokumentation
-Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zu erst die Aufteilung in **Home**, **ownCloud** und **Moodle**. Sie befinden sich gerade im Abschnitt **Home**, 
-welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte **ownCloud** und **Moodle** dokumentieren 
-jeweils die spezifische **Benutzung** (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige **Technische Umsetzung**, welche die Dokumentation für Entwickler bereitstellt. Der Punkt **Technische Umsetzung** im Abschnitt 
-**ownCloud** enthält die Themen [Softwarearchitektur](/owncloud/technische-umsetzung/softwarearchitektur.md), [OAuth 2.0 App](/owncloud/technische-umsetzung/oauth2-app.md) 
-und [Core Anpassungen](/owncloud/technische-umsetzung/core-anpassungen.md). Der gleiche Unterpunkt im Abschnitt **Moodle** behandelt die Themen [Softwarearchitektur](/moodle/technische-umsetzung/softwarearchitektur.md), 
+Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zu erst die Aufteilung in **Home**, **ownCloud** und **Moodle**. Sie befinden sich gerade im Abschnitt **Home**,
+welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte **ownCloud** und **Moodle** dokumentieren
+jeweils die spezifische **Benutzung** (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige **Technische Umsetzung**, welche die Dokumentation für Entwickler bereitstellt. Der Punkt **Technische Umsetzung** im Abschnitt
+**ownCloud** enthält die Themen [Softwarearchitektur](/owncloud/technische-umsetzung/softwarearchitektur.md), [OAuth 2.0 App](/owncloud/technische-umsetzung/oauth2-app.md)
+und [Core Anpassungen](/owncloud/technische-umsetzung/core-anpassungen.md). Der gleiche Unterpunkt im Abschnitt **Moodle** behandelt die Themen [Softwarearchitektur](/moodle/technische-umsetzung/softwarearchitektur.md),
 [Admin Tool](/moodle/technische-umsetzung/admin-tool.md), [Repository](/moodle/technische-umsetzung/repository.md) und [Collaborative Folders](/moodle/technische-umsetzung/acitivity.md).
 
-## Integrationsszenarien (User Stories)
+## Integrationsszenarien
 Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
 Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
 Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.
@@ -80,7 +80,7 @@ bei dem Authorization Server (ownCloud) registrieren. Danach werden nach dem Pro
 2. Authorization Response: Der Client erhält eine Autorisierungsgenehmigung vom Resource Owner. Die Autorisierung kann über eine
 der vier Autorisierungsgenehmigungen (authorization grant type) erfolgen, oder es wird ein erweiterer Genehmigungsprozess verwendet.
 3. Access Token Request: Der Client fordert ein Access Token vom Authorization Server an. Hierfür nutzt er die Autorisierungsgenehmigung vom Resource Owner.
-4. Access Token Response: Der Authorization Server authentifiziert den Client und prüft die Autorisierungsgenehmigung. 
+4. Access Token Response: Der Authorization Server authentifiziert den Client und prüft die Autorisierungsgenehmigung.
 Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.
 5. Anfrage mittels Access Token: Der Client fragt die geschützten Daten beim Resource Server an. Zur Authentifizierung benutzt er den Access Token.
 6. Zugriff auf geschützte Ressourcen: Der Resource Server prüft den Access Token und stellt, wenn gültig, die gewünschten Daten zur Verfügung.
@@ -92,9 +92,9 @@ Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.
 
 ### ownCloud
 
-Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte oauth2 App und der ownCloud Core mit Änderungen aus unserem Pull request, 
-damit die oauth2 App die volle Funktionalität bereitstellen kann. Die oauth2 App implementiert den OAuth 2.0 Prozessfluss. 
-Sie agiert als Endpunkt für die Authorisierung und die Bereitstellung von Access Tokens und Refresh Tokens. 
+Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte oauth2 App und der ownCloud Core mit Änderungen aus unserem Pull request,
+damit die oauth2 App die volle Funktionalität bereitstellen kann. Die oauth2 App implementiert den OAuth 2.0 Prozessfluss.
+Sie agiert als Endpunkt für die Authorisierung und die Bereitstellung von Access Tokens und Refresh Tokens.
 Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Server und auch Resource Server mit dem Client.
 
 
@@ -112,11 +112,10 @@ Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Ser
   komplette OAuth Protokollablauf erfüllt?).
 </div>
 
-## Weitere Anwendungsszenarien
+## Weitere Integrationsszenarien
 
-Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten UseCases konzentriert. 
-Im Folgenden werden weitere Use Cases erläutert über deren Implementierung wir nachgedacht haben und die eine Erweiterung 
-zu den bestehenden Use Cases bilden könnten.
+Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten Integrationsszenarien konzentriert. Im Folgenden werden weitere Szenarien erläutert, über deren Implementierung wir nachgedacht haben und die eine Erweiterung
+zu den bestehenden Szenarien bilden könnten.
 
 1. Als **Lehrender** möchte ich auf einen Button klicken, um hochgeladene Dateien zu aktualisieren.
 
@@ -142,5 +141,5 @@ zu den bestehenden Use Cases bilden könnten.
 <div class="alert alert-danger">
   <strong>TODO:</strong> Ausführung.
 </div>
-Erfüllungsgrad der User Stories, Geschaffene Funktionalitäten, (bekannte, ggf. bewusst gewählte) Einschränkungen, Ausblick auf weitere Entwicklungsmöglichkeiten. 
+Erfüllungsgrad der User Stories, Geschaffene Funktionalitäten, (bekannte, ggf. bewusst gewählte) Einschränkungen, Ausblick auf weitere Entwicklungsmöglichkeiten.
 Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben
