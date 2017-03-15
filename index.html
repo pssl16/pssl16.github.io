@@ -209,7 +209,7 @@
             <li class="second-level"><a href="#struktur-der-dokumentation">Struktur der Dokumentation</a></li>
             
         
-            <li class="second-level"><a href="#integrationsszenarien-user-stories">Integrationsszenarien (User Stories)</a></li>
+            <li class="second-level"><a href="#integrationsszenarien">Integrationsszenarien</a></li>
             
                 <li class="third-level"><a href="#realisierte-szenarien">Realisierte Szenarien</a></li>
             
@@ -229,7 +229,7 @@
             <li class="second-level"><a href="#zusammenspiel">Zusammenspiel</a></li>
             
         
-            <li class="second-level"><a href="#weitere-anwendungsszenarien">Weitere Anwendungsszenarien</a></li>
+            <li class="second-level"><a href="#weitere-integrationsszenarien">Weitere Integrationsszenarien</a></li>
             
         
             <li class="second-level"><a href="#zusammenfassung">Zusammenfassung</a></li>
@@ -247,18 +247,18 @@ von dem Projektseminar <a href="https://www.wi.uni-muenster.de/de/studierende/le
 Das Learnweb ist ein auf der Open-Source-Lösung <a href="https://moodle.org/">Moodle</a> basierendes E-Learning System der Westfälischen Wilhelms-Universität Münster.</p>
 <p>Eine mögliche Lösung sollte dabei möglichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universitäten genutzt wird.</p>
 <h2 id="allgemeine-motivation-fur-die-arbeit">Allgemeine Motivation für die Arbeit</h2>
-<p>Die grundsätzliche Motivation für das Projektseminar war es, die beiden Systeme <a href="https://www.sciebo.de/">sciebo</a> und <a href="https://www.uni-muenster.de/LearnWeb/learnweb2/">Learnweb</a> passwortlos miteinander kommunizieren zu lassen. 
-Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht im Klartext auf dem jeweils anderen System gespeichert wird. 
-Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen. 
+<p>Die grundsätzliche Motivation für das Projektseminar war es, die beiden Systeme <a href="https://www.sciebo.de/">sciebo</a> und <a href="https://www.uni-muenster.de/LearnWeb/learnweb2/">Learnweb</a> passwortlos miteinander kommunizieren zu lassen.
+Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht im Klartext auf dem jeweils anderen System gespeichert wird.
+Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen.
 Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im Learnweb abgerufen werden können und kollaborative Ordner in sciebo vom Learnweb aus erstellt werden können.</p>
 <h2 id="struktur-der-dokumentation">Struktur der Dokumentation</h2>
-<p>Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zu erst die Aufteilung in <strong>Home</strong>, <strong>ownCloud</strong> und <strong>Moodle</strong>. Sie befinden sich gerade im Abschnitt <strong>Home</strong>, 
-welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte <strong>ownCloud</strong> und <strong>Moodle</strong> dokumentieren 
-jeweils die spezifische <strong>Benutzung</strong> (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige <strong>Technische Umsetzung</strong>, welche die Dokumentation für Entwickler bereitstellt. Der Punkt <strong>Technische Umsetzung</strong> im Abschnitt 
-<strong>ownCloud</strong> enthält die Themen <a href="owncloud/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>, <a href="owncloud/technische-umsetzung/oauth2-app/">OAuth 2.0 App</a> 
-und <a href="owncloud/technische-umsetzung/core-anpassungen/">Core Anpassungen</a>. Der gleiche Unterpunkt im Abschnitt <strong>Moodle</strong> behandelt die Themen <a href="moodle/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>, 
+<p>Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zu erst die Aufteilung in <strong>Home</strong>, <strong>ownCloud</strong> und <strong>Moodle</strong>. Sie befinden sich gerade im Abschnitt <strong>Home</strong>,
+welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte <strong>ownCloud</strong> und <strong>Moodle</strong> dokumentieren
+jeweils die spezifische <strong>Benutzung</strong> (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige <strong>Technische Umsetzung</strong>, welche die Dokumentation für Entwickler bereitstellt. Der Punkt <strong>Technische Umsetzung</strong> im Abschnitt
+<strong>ownCloud</strong> enthält die Themen <a href="owncloud/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>, <a href="owncloud/technische-umsetzung/oauth2-app/">OAuth 2.0 App</a>
+und <a href="owncloud/technische-umsetzung/core-anpassungen/">Core Anpassungen</a>. Der gleiche Unterpunkt im Abschnitt <strong>Moodle</strong> behandelt die Themen <a href="moodle/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>,
 <a href="moodle/technische-umsetzung/admin-tool/">Admin Tool</a>, <a href="moodle/technische-umsetzung/repository/">Repository</a> und <a href="/moodle/technische-umsetzung/acitivity.md">Collaborative Folders</a>.</p>
-<h2 id="integrationsszenarien-user-stories">Integrationsszenarien (User Stories)</h2>
+<h2 id="integrationsszenarien">Integrationsszenarien</h2>
 <p>Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
 Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
 Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.</p>
@@ -305,7 +305,7 @@ bei dem Authorization Server (ownCloud) registrieren. Danach werden nach dem Pro
 <li>Authorization Response: Der Client erhält eine Autorisierungsgenehmigung vom Resource Owner. Die Autorisierung kann über eine
 der vier Autorisierungsgenehmigungen (authorization grant type) erfolgen, oder es wird ein erweiterer Genehmigungsprozess verwendet.</li>
 <li>Access Token Request: Der Client fordert ein Access Token vom Authorization Server an. Hierfür nutzt er die Autorisierungsgenehmigung vom Resource Owner.</li>
-<li>Access Token Response: Der Authorization Server authentifiziert den Client und prüft die Autorisierungsgenehmigung. 
+<li>Access Token Response: Der Authorization Server authentifiziert den Client und prüft die Autorisierungsgenehmigung.
 Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.</li>
 <li>Anfrage mittels Access Token: Der Client fragt die geschützten Daten beim Resource Server an. Zur Authentifizierung benutzt er den Access Token.</li>
 <li>Zugriff auf geschützte Ressourcen: Der Resource Server prüft den Access Token und stellt, wenn gültig, die gewünschten Daten zur Verfügung.</li>
@@ -315,9 +315,9 @@ Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.</li>
   <strong>TODO:</strong> Würde ich nicht in den Index packen, sondern einzelne Komponenten nur in dem Moodle und ownCloud Unterpunkt beschreiben.
 </div></p>
 <h3 id="owncloud">ownCloud</h3>
-<p>Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte oauth2 App und der ownCloud Core mit Änderungen aus unserem Pull request, 
-damit die oauth2 App die volle Funktionalität bereitstellen kann. Die oauth2 App implementiert den OAuth 2.0 Prozessfluss. 
-Sie agiert als Endpunkt für die Authorisierung und die Bereitstellung von Access Tokens und Refresh Tokens. 
+<p>Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte oauth2 App und der ownCloud Core mit Änderungen aus unserem Pull request,
+damit die oauth2 App die volle Funktionalität bereitstellen kann. Die oauth2 App implementiert den OAuth 2.0 Prozessfluss.
+Sie agiert als Endpunkt für die Authorisierung und die Bereitstellung von Access Tokens und Refresh Tokens.
 Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Server und auch Resource Server mit dem Client.</p>
 <h3 id="moodle">Moodle</h3>
 <div class="alert alert-danger">
@@ -330,10 +330,9 @@ Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Ser
   komplette OAuth Protokollablauf erfüllt?).
 </div>
 
-<h2 id="weitere-anwendungsszenarien">Weitere Anwendungsszenarien</h2>
-<p>Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten UseCases konzentriert. 
-Im Folgenden werden weitere Use Cases erläutert über deren Implementierung wir nachgedacht haben und die eine Erweiterung 
-zu den bestehenden Use Cases bilden könnten.</p>
+<h2 id="weitere-integrationsszenarien">Weitere Integrationsszenarien</h2>
+<p>Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten Integrationsszenarien konzentriert. Im Folgenden werden weitere Szenarien erläutert, über deren Implementierung wir nachgedacht haben und die eine Erweiterung
+zu den bestehenden Szenarien bilden könnten.</p>
 <ol>
 <li>
 <p>Als <strong>Lehrender</strong> möchte ich auf einen Button klicken, um hochgeladene Dateien zu aktualisieren.</p>
@@ -370,7 +369,7 @@ zu den bestehenden Use Cases bilden könnten.</p>
 <p><div class="alert alert-danger">
   <strong>TODO:</strong> Ausführung.
 </div>
-Erfüllungsgrad der User Stories, Geschaffene Funktionalitäten, (bekannte, ggf. bewusst gewählte) Einschränkungen, Ausblick auf weitere Entwicklungsmöglichkeiten. 
+Erfüllungsgrad der User Stories, Geschaffene Funktionalitäten, (bekannte, ggf. bewusst gewählte) Einschränkungen, Ausblick auf weitere Entwicklungsmöglichkeiten.
 Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben</p></div>
         
     </div>
@@ -426,5 +425,5 @@ Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben</p></d
 
 <!--
 MkDocs version : 0.16.2
-Build Date UTC : 2017-03-14 20:28:51
+Build Date UTC : 2017-03-15 19:26:57
 -->
