@@ -38,6 +38,10 @@ Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusa
 
 ![Datenmodell](images/datenmodell.svg)
 
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Datenmodell updaten.
+</div>
+
 ## Vorgegebene Schnittstelle
 
 <div class="alert alert-danger">
@@ -562,12 +566,6 @@ class UserHooks {
 }
 ```
 
-### Authentifizierungslogik
-
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Implementierung der Authentifizierungslogik für WebDAV und die OCS Share API beschreiben. Registrierung in <code>info.xml</code> (<code>types</code> und <code>auth-modules</code>) und durch Event Listener beschreiben.
-</div>
-
 ### Background Job
 
 <div class="alert alert-danger">
@@ -579,6 +577,63 @@ class UserHooks {
 <div class="alert alert-danger">
   <strong>TODO:</strong> Logging beschreiben.
 </div>
+
+### Authentifizierungslogik
+
+Nach der Implementierung des OAuth 2.0 Protokolls musste die Authentifizierung von WebDAV und von ownCloud APIs (für die Nutzung der OCS Share API) Erweitert werden. Diese Erweiterung basiert auf den durchgeführten [Core Anpassungen](core-anpassungen).
+
+Zunächst schauten wir uns die Umsetzung der bestehenden Basic Authentication in der `dav` App an. Dabei stellten wir fest, dass sabre den [Austausch des Authentifizierungsmechanismus](http://sabre.io/dav/authentication/) durch Implementierung eines Interfaces bietet. Für unser Szenario war das Interface `AbstractBearer` relevant, da die Access Tokens aus dem Authorization Code Flow des OAuth 2.0 Protokolls für Bearer Authentication genutzt werden. Dazu mussten wir die Funktion `validateBearerToken` implementieren. Die Logik und das Session-Management lehnen sich stark an die bestehende Implementierung der Basic Authentication an. Für die Authentifizierung einer Anfrage wird hier jedoch auf `AuthModule`s zurückgegriffen.
+
+Ein `AuthModule` kann von ownCloud Apps implementiert und registriert werden. Es wird auch bei der Authentifizierung von API Zugriffen eingesetzt. Eine App muss dazu die Funktionen `auth` und `getUserPassword` implementieren. Erstere authentifiziert eine Anfrage, während letztere das Passwort des Nutzers zu einer Anfrage ermittelt. Da die App `encryption` in bestimmten Nutzungsszenarien auf das Passwort des Nutzers angewiesen ist, existiert die Funktion `getUserPassword`. Sie gibt jedoch in unserer Implementierung eine leere Zeichenkette zurück, da wir an keiner Stelle mit Passwörtern umgehen (siehe [Einschränkungen](#einschrankungen)). `getUserPassword` gibt bei erfolgreicher Authentifizierung ein `User`-Objekt zurück, wie in folgendem Codebeispiel zu sehen ist. Nach Extraktion des Bearer Tokens aus den Authorization Header, wird durch Rückgriff auf den `AccessTokenMapper` die `user_id` ermittelt. Mithilfe des ownCloud-internen `UserManagers` kann daraufhin das `User`-Objekt abgefragt werden.
+
+```php
+/**
+ * Authenticates a request.
+ *
+ * @param IRequest $request The request.
+ *
+ * @return null|IUser The user if the request is authenticated, null otherwise.
+ */
+public function auth(IRequest $request) {
+	$authHeader = $request->getHeader('Authorization');
+	if (strpos($authHeader, 'Bearer ') === false) {
+		return null;
+	} else {
+		$bearerToken = substr($authHeader, 7);
+	}
+	$app = new Application();
+	$container = $app->getContainer();
+	/** @var AccessTokenMapper $accessTokenMapper */
+	$accessTokenMapper = $container->query('OCA\OAuth2\Db\AccessTokenMapper');
+	try {
+		/** @var AccessToken $accessToken */
+		$accessToken = $accessTokenMapper->findByToken($bearerToken);
+		if ($accessToken->hasExpired()) {
+			return null;
+		}
+	} catch (DoesNotExistException $exception) {
+		return null;
+	}
+	/** @var IUserManager $userManager */
+	$userManager = $container->query('UserManager');
+	$user = $userManager->get($accessToken->getUserId());
+	return $user;
+}
+``` 
+
+Zur Registrierung eines `AuthModules` muss dessen Namespace in der [`info.xml`](https://doc.owncloud.org/server/9.1/developer_manual/app/info.html) angegeben werden, wie im folgenden Codebeispiel gezeigt wird:
+
+```xml
+<auth-modules>
+  <module>OCA\OAuth2\AuthModule</module>
+</auth-modules>
+```
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Registrierung für WebDAV beschreiben (<code>types</code> in <code>info.xml</code> und durch Event Listener).
+</div>
+
+WebDAV wurde in einer [ownCloud App](https://doc.owncloud.org/server/9.1/developer_manual/app/) namens `dav` mit Unterstützung der Bibliothek [sabre/dav](http://sabre.io/) implementiert. Bei der Untersuchung des bestehenden Authentifizierungsmechanismus stellten wir fest,
 
 ## Protokollablauf
 
@@ -593,6 +648,10 @@ Anschließend führt das Moodle Plugin die Methode `POST /api/v1/token` aus, die
 Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der WebDAV Zugriff folgen. Dieser erfolgt mit dem Access Code auf die OAuth WebDAV App. 
 Diese kommuniziert daraufhin mit der OAuth 2.0 App über die Methode `GET api/v1/validate` und dem Access Token und prüft diesen. 
 Bei erfolgreicher Überprüfung wird dann der WebDAV Zugriff entsprechend ermöglicht.
+
+div class="alert alert-danger">
+  <strong>TODO:</strong> An endgültigen Ablauf anpassen.
+</div>
 
 ![Protokollablauf](images/protokollablauf.svg)
 
