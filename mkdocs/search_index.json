@@ -202,7 +202,7 @@
         }, 
         {
             "location": "/owncloud/technische-umsetzung/core-anpassungen/", 
-            "text": "Core Anpassungen\n\n\nZweck\n\n\nUm die Funktionalit\u00e4ten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu k\u00f6nnen, mussten die \n\nWebDAV Schnittstelle\n und auch die \n\nOCS Schnittstelle\n um die Authentifizierungsmethode OAuth 2.0 erweitert werden.\nDazu wurde ein \nPull Request\n gestellt, um entsprechende \u00c4nderungen durchzuf\u00fchren.\n\n\nVorgegebene Schnittstelle\n\n\nImplementierung\n\n\nTests und Continuous Integration", 
+            "text": "Core Anpassungen\n\n\nZweck\n\n\nUm das durch die \noauth2\n App implementierte OAuth 2.0 Protokoll f\u00fcr den Zugriff auf die \nWebDAV Schnittstelle\n und die \nOCS Share API\n nutzen zu k\u00f6nnen, mussten Anpassungen am \nownCloud Core\n durchgef\u00fchrt werden. Diese \u00c4nderungen liegen im Pull Request \nowncloud/core#26742\n vor. Ein Backport f\u00fcr ownCloud 9.1 ist im Pull Request \nowncloud/core#27370\n zu finden.\n\n\nVorgegebene Schnittstelle\n\n\nBevor wir um OAuth 2.0 erweitern konnten, mussten wir die vorgegebene Schnittstelle untersuchen. Dazu schauten wir uns die Implementierungen von WebDAV und der OCS Share API an.\n\n\nWebDAV\n\n\nownCloud APIs\n\n\nImplementierung\n\n\nWebDAV\n\n\nownCloud APIs\n\n\nTests und Continuous Integration", 
             "title": "Core Anpassungen"
         }, 
         {
@@ -212,18 +212,38 @@
         }, 
         {
             "location": "/owncloud/technische-umsetzung/core-anpassungen/#zweck", 
-            "text": "Um die Funktionalit\u00e4ten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu k\u00f6nnen, mussten die  WebDAV Schnittstelle  und auch die  OCS Schnittstelle  um die Authentifizierungsmethode OAuth 2.0 erweitert werden.\nDazu wurde ein  Pull Request  gestellt, um entsprechende \u00c4nderungen durchzuf\u00fchren.", 
+            "text": "Um das durch die  oauth2  App implementierte OAuth 2.0 Protokoll f\u00fcr den Zugriff auf die  WebDAV Schnittstelle  und die  OCS Share API  nutzen zu k\u00f6nnen, mussten Anpassungen am  ownCloud Core  durchgef\u00fchrt werden. Diese \u00c4nderungen liegen im Pull Request  owncloud/core#26742  vor. Ein Backport f\u00fcr ownCloud 9.1 ist im Pull Request  owncloud/core#27370  zu finden.", 
             "title": "Zweck"
         }, 
         {
             "location": "/owncloud/technische-umsetzung/core-anpassungen/#vorgegebene-schnittstelle", 
-            "text": "", 
+            "text": "Bevor wir um OAuth 2.0 erweitern konnten, mussten wir die vorgegebene Schnittstelle untersuchen. Dazu schauten wir uns die Implementierungen von WebDAV und der OCS Share API an.", 
             "title": "Vorgegebene Schnittstelle"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/core-anpassungen/#webdav", 
+            "text": "", 
+            "title": "WebDAV"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/core-anpassungen/#owncloud-apis", 
+            "text": "", 
+            "title": "ownCloud APIs"
         }, 
         {
             "location": "/owncloud/technische-umsetzung/core-anpassungen/#implementierung", 
             "text": "", 
             "title": "Implementierung"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/core-anpassungen/#webdav_1", 
+            "text": "", 
+            "title": "WebDAV"
+        }, 
+        {
+            "location": "/owncloud/technische-umsetzung/core-anpassungen/#owncloud-apis_1", 
+            "text": "", 
+            "title": "ownCloud APIs"
         }, 
         {
             "location": "/owncloud/technische-umsetzung/core-anpassungen/#tests-und-continuous-integration", 

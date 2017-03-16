@@ -208,8 +208,16 @@
         
             <li class="second-level"><a href="#vorgegebene-schnittstelle">Vorgegebene Schnittstelle</a></li>
             
+                <li class="third-level"><a href="#webdav">WebDAV</a></li>
+            
+                <li class="third-level"><a href="#owncloud-apis">ownCloud APIs</a></li>
+            
         
             <li class="second-level"><a href="#implementierung">Implementierung</a></li>
+            
+                <li class="third-level"><a href="#webdav_1">WebDAV</a></li>
+            
+                <li class="third-level"><a href="#owncloud-apis_1">ownCloud APIs</a></li>
             
         
             <li class="second-level"><a href="#tests-und-continuous-integration">Tests und Continuous Integration</a></li>
@@ -222,12 +230,14 @@
 
 <h1 id="core-anpassungen">Core Anpassungen</h1>
 <h2 id="zweck">Zweck</h2>
-<p>Um die Funktionalitäten des OAuth 2.0 Protokolls mit Hilfe der App nutzen zu können, mussten die 
-<a href="https://doc.owncloud.org/server/latest/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> und auch die 
-<a href="https://doc.owncloud.org/server/latest/developer_manual/core/ocs-share-api.html">OCS Schnittstelle</a> um die Authentifizierungsmethode OAuth 2.0 erweitert werden.
-Dazu wurde ein <a href="https://github.com/owncloud/core/pull/26742">Pull Request</a> gestellt, um entsprechende Änderungen durchzuführen.</p>
+<p>Um das durch die <code>oauth2</code> App implementierte OAuth 2.0 Protokoll für den Zugriff auf die <a href="https://doc.owncloud.org/server/9.1/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> und die <a href="https://doc.owncloud.org/server/9.1/developer_manual/core/ocs-share-api.html">OCS Share API</a> nutzen zu können, mussten Anpassungen am <a href="https://github.com/owncloud/core">ownCloud Core</a> durchgeführt werden. Diese Änderungen liegen im Pull Request <a href="https://github.com/owncloud/core/pull/26742">owncloud/core#26742</a> vor. Ein Backport für ownCloud 9.1 ist im Pull Request <a href="https://github.com/owncloud/core/pull/27370">owncloud/core#27370</a> zu finden.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
+<p>Bevor wir um OAuth 2.0 erweitern konnten, mussten wir die vorgegebene Schnittstelle untersuchen. Dazu schauten wir uns die Implementierungen von WebDAV und der OCS Share API an.</p>
+<h3 id="webdav">WebDAV</h3>
+<h3 id="owncloud-apis">ownCloud APIs</h3>
 <h2 id="implementierung">Implementierung</h2>
+<h3 id="webdav_1">WebDAV</h3>
+<h3 id="owncloud-apis_1">ownCloud APIs</h3>
 <h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
         
     </div>
