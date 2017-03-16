@@ -232,21 +232,25 @@ Die Autorisierung und Authentifizierung erfolgt über das <code>oauth2sciebo adm
   <li>Als <b>Lehrender</b> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</li>
 </ol>
 
-<p>Der Administrator muss zunächst einen Speicherort für die Ordner festlegen. Hierfür authentifiziert er sich mit einem technischen Nutzer.
-Der Lehrende kann nun einem Kurs beliebig viele Instanzen der Aktivität <em>Collaborative Folders</em> hinzufügen. In den Einstellungen kann der Lehrende
-nun festlegen wie der Ordner im Moodle Kurs benannt werden soll und wie der Ordner in der ownCloud Instanz benannt werden soll.</p>
-<p><img alt="Settings for the activity collaborativefolders" src="../activity_settings/settings.svg" title="Settings for the activity collaborativefolders" /></p>
-<p>Desweiteren hat der Lehrende die Möglichkeit Ordner nur für einzelne Gruppen zu erstellen. Dies erfolgt über den Moodle <code>group_mode</code>. Wenn der Lehrende diesen auswäht wird für jede Gruppe ein eigener Ordner erstellt. Der Lehrende hat entweder Zugriff auf alle oder auf keinen Ordner, selbst wenn er in den Gruppen eingeschrieben ist.</p>
+<p>Im Folgenden wird erklärt wozu einzelne Beteiligte des Integrationszenarioin der Lage sein müssen.
+Dafür ist es erforderlich einen neutralen Speicherort für die geteilten Ordner bereitzustellen. Falls der Lehrende keinen Zugriff auf die Ordner haben soll, dürfen sie nicht in seiner Instanz gespeichert sein. Um die Privatsphäre der Kursteilnehmer zu sichern darf ein Lehrender nicht unter ihrem Namen Ordner erstellen. Aus diesem Grund haben wir unsere Lösung so implementiert, dass der Moodle Administrator einen technischen Nutzer festlegen kann. In dessen Namen werden alle Ordner erstellt.
+Der Lehrende wird in der Lage sein einem Kurs beliebig viele Instanzen der Aktivität <em>Collaborative Folders</em> hinzufügen. In den Einstellungen kann der Lehrende
+nun festlegen wie der Ordner im Moodle Kurs benannt werden soll und wie der Ordner in der ownCloud Instanz benannt werden soll. Mit dieser Aktivität kann er Kursteilnehmer ermutigen kollaborativ zu arbeiten. Zusätzlich hat die Option die laufende Arbeit zu betreuen, indem er sich selbst Zugriff auf die Ordner gewährt. In diesem Fall werden die Kursteilnehmer darüber in Kenntniss gesetzt, dass der Ordner Lehrenden zugänglich ist.
+Kursteilnehmer haben weniger Organisationsaufwand und werden bei ihrer Gruppenarbeit unterstützt. Zusätzlich muss kein Kursteilnehmer eigenen Speicherplatz zur Verfügung stellen.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
-<p>Zur Implementierung des Integrationszenario benutzen wir die <code>mod_form.php</code> um die Einstellungen für einzelne Instanzen des Plugins festzulegen.
-In der <code>settings.php</code> kann der Administrator den technischen Nutzer des Modules festlegen. Die <code>lib.php</code> bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
+<p>Um die User Story zu realisieren haben wir ein Aktivity Plugin für Moodle entwickelt. Instanzen von Aktivity Plugins können Kursen beliebig oft hinzugefügt werden.
+Für genauere Informationen besuchen sie die Moodle Dokumentation von <a href="https://docs.moodle.org/dev/Activity_modules" title="Activity Modules">Aktivity modules</a>
+In der <code>mod_form.php</code> fragen wir alle Einstellungen ab, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beeinhaltet Name des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen seperate Ordner erzeugt werden sollen.
+In der <code>settings.php</code> kann der Administrator den technischen Nutzer des Plugins festlegen. Dieser gilt für alle Instanzen, also global für das gesammte Plugin.
+Die <code>lib.php</code> bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
 <div class="alert alert-danger">
   <strong>TODO:</strong> nicht zu genau beschreiben die moodle Dokumentationist sehr gut lieber auf die Implementation mehr eingehen.
-</div>
-Für genauere Informationen besuchen sie die Moodle Dokumentation von <a href="https://docs.moodle.org/dev/Activity_modules" title="Activity Modules">Aktivity modules</a></p>
+</div></p>
 <h2 id="implementierung">Implementierung</h2>
 <h3 id="anmelden-des-technischen-nutzers">Anmelden des technischen Nutzers</h3>
-<p>Der Admin der Moodle Seite kann in der Seiten Administration einen technischen Nutzer hinzufügen. Spätere Änderungen sind möglich, aber nicht empfohlen und mit einer Warnmeldung versehen, da dies zu Kompilierungs-Problemen mit bestehenden Instanzen des Moduls führen würde.</p>
+<p>Der Admin der Moodle Seite kann in der Seiten Administration einen technischen Nutzer hinzufügen. Über <code>Site administration ► Plugins ► Activity modules ► collaborativefolders</code> kommt er zu den passenden Einstellungen. Dort wird er durch einen Login-Button auf die ownCloud Seite zum autorisieren der App weitergeleitet. Spätere Änderungen des technischen Nutzers sind durch ein Logout Button möglich. Dies ist nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Problemen mit bestehenden Instanzen entstehen würden. Wir haben uns dafür entschieden den Logout trotzdem bereitzustellen, für den Fall das ein falscher Account authentifiziert wird. Hierbei sind wir insbesondere über folgendes Szenario gestoßen:</p>
+<p>Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator account der ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen. </p>
+<p>Der Administrator kommt</p>
 <h3 id="erstellen-von-ordnern">Erstellen von Ordnern</h3>
 <p>Wir haben einen Observer implementiert der darauf reagiert wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
 Dieser muss zwei Szenarien betrachten.
