@@ -240,33 +240,45 @@ Kursteilnehmer haben weniger Organisationsaufwand und werden bei ihrer Gruppenar
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
 <p>Um die User Story zu realisieren haben wir ein Aktivity Plugin für Moodle entwickelt. Instanzen von Aktivity Plugins können Kursen beliebig oft hinzugefügt werden.
 Für genauere Informationen besuchen sie die Moodle Dokumentation von <a href="https://docs.moodle.org/dev/Activity_modules" title="Activity Modules">Aktivity modules</a>
-In der <code>mod_form.php</code> fragen wir alle Einstellungen ab, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beeinhaltet Name des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen seperate Ordner erzeugt werden sollen.
-In der <code>settings.php</code> kann der Administrator den technischen Nutzer des Plugins festlegen. Dieser gilt für alle Instanzen, also global für das gesammte Plugin.
-Die <code>lib.php</code> bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
+In der <code>collaborativefolders/mod_form.php</code> fragen wir alle Einstellungen ab, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beeinhaltet Name des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen seperate Ordner erzeugt werden sollen.
+In der <code>collaborativefolders/settings.php</code> kann der Administrator den technischen Nutzer des Plugins festlegen. Dieser gilt für alle Instanzen, also global für das gesammte Plugin.
+Die <code>collaborativefolders/lib.php</code> bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
 <div class="alert alert-danger">
   <strong>TODO:</strong> nicht zu genau beschreiben die moodle Dokumentationist sehr gut lieber auf die Implementation mehr eingehen.
 </div></p>
 <h2 id="implementierung">Implementierung</h2>
 <h3 id="anmelden-des-technischen-nutzers">Anmelden des technischen Nutzers</h3>
 <p>Der Admin der Moodle Seite kann in der Seiten Administration einen technischen Nutzer hinzufügen. Über <code>Site administration ► Plugins ► Activity modules ► collaborativefolders</code> kommt er zu den passenden Einstellungen. Dort wird er durch einen Login-Button auf die ownCloud Seite zum autorisieren der App weitergeleitet. Spätere Änderungen des technischen Nutzers sind durch ein Logout Button möglich. Dies ist nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Problemen mit bestehenden Instanzen entstehen würden. Wir haben uns dafür entschieden den Logout trotzdem bereitzustellen, für den Fall das ein falscher Account authentifiziert wird. Hierbei sind wir insbesondere über folgendes Szenario gestoßen:</p>
-<p>Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator account der ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen. </p>
-<p>Der Administrator kommt</p>
+<p>Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator account der ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen.</p>
 <h3 id="erstellen-von-ordnern">Erstellen von Ordnern</h3>
-<p>Wir haben einen Observer implementiert der darauf reagiert wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
-Dieser muss zwei Szenarien betrachten.
-Im ersten Szenario wird ein Ordner für alle Studierenden eines Kurses erstellt.
-Die Anforderung an das Modul ist also einen Ordner in dem gespeicherten Account zu erstellender der eindeutig Identifizierbar ist.
-Damit keine Synchronisationskonflikte entstehen, erstellt das Modul eine Ordner Struktur. Der jeweils erforderliche Ordner wird in einem
-Ordner erstellt der nach der <code>course_module_id</code> benannt ist, diese ist einzigartig für jede Aktivität die in Moodle in einem Kurs erzeugt wird. So kann es soweit manuell
-keine Ordner erstellt werden zu keinen Synchronisationskonflikten kommen.</p>
+<p>Zum Erstellen von Ordnern haben einen Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
+In <code>collaborativefolders/db/events.php</code> können in einem array alle Observer registriert werden und werden von Moodle verwaltet.</p>
+<pre><code class="php">$observers = array(
+        array(
+                // Zuerst wird das Event, dass beobachtet werden soll festgelegt.
+                'eventname'   =&gt; '\core\event\course_module_created',
+                // Als nächstes wird der Observer festgelegt.
+                'callback'    =&gt; 'mod_collaborativefolders\observer::collaborativefolders_created',
+                'internal'  =&gt; false,
+                'priority'  =&gt; 1000
+        )
+
+);
+</code></pre>
+
+<p>Somit wird sobald das Event <code>course_module_created</code> erzeugt wird, der Observer aufgerufen. Es gibt zwei Hauptgründe warum dies erforderlich war. Zunächst brauchten wir für das Erstellen der Ordner die <code>course_module_id</code>. Diese ist nur verfügbar wenn die Instanz schon erstellt wurde, somit kann nicht die Schnittstelle der <code>collaborativefolders/lib.php</code> <code>add_instance()</code> genutzt werden. Desweiteren ruft unser Observer einen CronJob auf. Dieser sorgt dafür, dass Ordner zeitlich verzögert erstellt werden, somit wird der Server nicht überlastet. Falls Ordner für große Kurse mit über 50 Gruppen erstellt werden sollen könnte es hier sonst zu Schwierigkeiten kommen.
+Beim Erstellen müssen zwei unterschiedliche Szenarien betrachtet werden:</p>
+<p>Im ersten Szenario wird ein Ordner für alle Studierenden eines Kurses erstellt.
+Die Anforderung an das Modul ist also einen Ordner in dem gespeicherten Account zu erstellender der eindeutig Identifizierbar ist. Dies ist gesichert indem wir die Ordner nach der <code>course_module_id</code> benennen. Diese ist einzigartig für jede Aktivität, die in Moodle erzeugt wird. So kann es, soweit manuell
+keine Ordner erstellt werden, zu keinen Synchronisationskonflikten kommen.</p>
 <pre><code class="php">$paths = array();
             $paths['cmid'] = $cmid;
 
             list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'collaborativefolders');
 </code></pre>
 
-<p>Im zweiten Szenario sollen Ordner nur für Gruppen innerhalb eines Kurses erstellt werden.
-Auch hier muss erst ein eindeutig identifizierbarer Ordner erstellt werden. Deswegen wird ein Überordner erstellt mit der <code>course_module_id</code>. In diesem Ordner sollen nun zu jeder Gruppe Unterordner erstellt werden.</p>
+<p>Im zweiten Szenario sollen Ordner für Gruppen innerhalb eines Kurses erstellt werden.
+Auch hier müssen eindeutig identifizierbare Ordner erstellt werden. Deswegen wird ein Überordner erstellt mit der <code>course_module_id</code>. In diesem Ordner wird nun zu jeder Gruppe ein Unterordner erstellt.</p>
 <pre><code class="php">if (groups_get_activity_groupmode($cm) != 0) {
     $grid = $cm-&gt;groupingid;
     $groups = groups_get_all_groups($course-&gt;id, 0, $grid);
@@ -278,9 +290,23 @@ Auch hier muss erst ein eindeutig identifizierbarer Ordner erstellt werden. Desw
 }
 </code></pre>
 
-<p>Zu diesem Zweck wird in der Variable <code>$path</code> die einem Cronjob übergeben wird nicht nur die <code>course_module_id</code> gespeichert sondern auch für jede <code>$groupid</code> ein Feld.
-Der Cronjob der nun die Ordner erstellt kann anhand der Einträge im Array erkennen wie viele und welche Ordner er erstellen muss.
-Wir haben uns für einen Cronjob entschieden um eine Überlastung der Server zu vermeiden.</p>
+<p>Zu diesem Zweck wird in der Variable <code>$path</code> die einem Cronjob übergeben wird nicht nur die <code>course_module_id</code> gespeichert, sondern auch für jede <code>$groupid</code> ein Feld.
+Der Cronjob, der nun die Ordner erstellt, kann anhand der Einträge im Array erkennen wie viele und welche Ordner er erstellen muss.</p>
+<p>Der Cronjob findet sich in <code>collaborativefolders/classes/task/collaborativefolders_create.php</code>. Er erbt von der abstrakten Klasse <code>\core\task\adhoc_task</code>.
+Dieser ließt aus den Daten die er übergeben bekommt alle Ordner aus die erstellt werden müssen.</p>
+<pre><code class="php">foreach ($data as $key =&gt; $value) {
+            $code = $oc-&gt;handle_folder('make', $value);
+            if ($code == false) {
+                throw new \coding_exception('Folder ' . $value . ' not created.');
+            } else {
+                mtrace('Folder: ' . $value . ', Code: ' . $code);
+                if (($code != 201) &amp;&amp; ($code != 405)) {
+                    throw new \coding_exception('Folder ' . $value . ' not created.');
+                }
+            }
+        }
+</code></pre>
+
 <h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
         
     </div>
