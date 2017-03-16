@@ -16,7 +16,7 @@ dadurch, dass die Authentifizierung nur einmalig erfolgt. Durch den OAuth2 Proto
 
 ## Vorgegebene Schnittstelle
 
-Wie auch im [Admin Tool](/moodle/admin-tool.md) müssen zunächst einige Standartschnittstellen implementiert werden:
+Wie auch im [Admin Tool](/moodle/technische-umsetzung/admin-tool.md) müssen zunächst einige Standartschnittstellen implementiert werden:
 
 * **`version.php`:** Beschreibt die Versionsnummer des Plugins, die benötigte moodle Version und Abhängigkeiten des Plugins.
 * **`db/access.php`:** Legt die Berechtigungen für definierte Aktionen innerhalb des Plugins anhand von Nutzerrollen fest.

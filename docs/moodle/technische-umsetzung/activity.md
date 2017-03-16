@@ -11,7 +11,7 @@ Die Autorisierung und Authentifizierung erfolgt über das `oauth2sciebo admin_to
 
 Der Administrator muss zunächst einen Speicherort für die Ordner festlegen. Hierfür authentifiziert er sich mit einem technischen Nutzer.
 Der Lehrende kann nun einem Kurs beliebig viele Instanzen der Aktivität *Collaborative Folders* hinzufügen. In den Einstellungen kann der Lehrende
-nun festlegen wie der Ordner im Moodle Kurs benannt werden soll und wie der Ordner in der Sciebo Instanz benannt werden soll.
+nun festlegen wie der Ordner im Moodle Kurs benannt werden soll und wie der Ordner in der ownCloud Instanz benannt werden soll.
 
 ![Settings for the activity collaborativefolders](activity_settings/settings.svg "Settings for the activity collaborativefolders")
 
