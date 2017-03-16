@@ -8,26 +8,31 @@ Die Autorisierung und Authentifizierung erfolgt über das `oauth2sciebo admin_to
 <ol start="4">
   <li>Als <b>Lehrender</b> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</li>
 </ol>
+Im Folgenden wird erklärt wozu einzelne Beteiligte des Integrationszenarioin der Lage sein müssen.
+Dafür ist es erforderlich einen neutralen Speicherort für die geteilten Ordner bereitzustellen. Falls der Lehrende keinen Zugriff auf die Ordner haben soll, dürfen sie nicht in seiner Instanz gespeichert sein. Um die Privatsphäre der Kursteilnehmer zu sichern darf ein Lehrender nicht unter ihrem Namen Ordner erstellen. Aus diesem Grund haben wir unsere Lösung so implementiert, dass der Moodle Administrator einen technischen Nutzer festlegen kann. In dessen Namen werden alle Ordner erstellt.
+Der Lehrende wird in der Lage sein einem Kurs beliebig viele Instanzen der Aktivität *Collaborative Folders* hinzufügen. In den Einstellungen kann der Lehrende
+nun festlegen wie der Ordner im Moodle Kurs benannt werden soll und wie der Ordner in der ownCloud Instanz benannt werden soll. Mit dieser Aktivität kann er Kursteilnehmer ermutigen kollaborativ zu arbeiten. Zusätzlich hat die Option die laufende Arbeit zu betreuen, indem er sich selbst Zugriff auf die Ordner gewährt. In diesem Fall werden die Kursteilnehmer darüber in Kenntniss gesetzt, dass der Ordner Lehrenden zugänglich ist.
+Kursteilnehmer haben weniger Organisationsaufwand und werden bei ihrer Gruppenarbeit unterstützt. Zusätzlich muss kein Kursteilnehmer eigenen Speicherplatz zur Verfügung stellen.
 
-Der Administrator muss zunächst einen Speicherort für die Ordner festlegen. Hierfür authentifiziert er sich mit einem technischen Nutzer.
-Der Lehrende kann nun einem Kurs beliebig viele Instanzen der Aktivität *Collaborative Folders* hinzufügen. In den Einstellungen kann der Lehrende
-nun festlegen wie der Ordner im Moodle Kurs benannt werden soll und wie der Ordner in der ownCloud Instanz benannt werden soll.
-
-![Settings for the activity collaborativefolders](activity_settings/settings.svg "Settings for the activity collaborativefolders")
-
-Desweiteren hat der Lehrende die Möglichkeit Ordner nur für einzelne Gruppen zu erstellen. Dies erfolgt über den Moodle `group_mode`. Wenn der Lehrende diesen auswäht wird für jede Gruppe ein eigener Ordner erstellt. Der Lehrende hat entweder Zugriff auf alle oder auf keinen Ordner, selbst wenn er in den Gruppen eingeschrieben ist.
 
 ## Vorgegebene Schnittstelle
-Zur Implementierung des Integrationszenario benutzen wir die `mod_form.php` um die Einstellungen für einzelne Instanzen des Plugins festzulegen.
-In der `settings.php` kann der Administrator den technischen Nutzer des Modules festlegen. Die `lib.php` bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
+Um die User Story zu realisieren haben wir ein Aktivity Plugin für Moodle entwickelt. Instanzen von Aktivity Plugins können Kursen beliebig oft hinzugefügt werden.
+Für genauere Informationen besuchen sie die Moodle Dokumentation von [Aktivity modules](https://docs.moodle.org/dev/Activity_modules "Activity Modules")
+In der `mod_form.php` fragen wir alle Einstellungen ab, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beeinhaltet Name des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen seperate Ordner erzeugt werden sollen.
+In der `settings.php` kann der Administrator den technischen Nutzer des Plugins festlegen. Dieser gilt für alle Instanzen, also global für das gesammte Plugin.
+Die `lib.php` bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
 <div class="alert alert-danger">
   <strong>TODO:</strong> nicht zu genau beschreiben die moodle Dokumentationist sehr gut lieber auf die Implementation mehr eingehen.
 </div>
-Für genauere Informationen besuchen sie die Moodle Dokumentation von [Aktivity modules](https://docs.moodle.org/dev/Activity_modules "Activity Modules")
+
 ## Implementierung
 ### Anmelden des technischen Nutzers
 
-Der Admin der Moodle Seite kann in der Seiten Administration einen technischen Nutzer hinzufügen. Spätere Änderungen sind möglich, aber nicht empfohlen und mit einer Warnmeldung versehen, da dies zu Kompilierungs-Problemen mit bestehenden Instanzen des Moduls führen würde.
+Der Admin der Moodle Seite kann in der Seiten Administration einen technischen Nutzer hinzufügen. Über `Site administration ► Plugins ► Activity modules ► collaborativefolders` kommt er zu den passenden Einstellungen. Dort wird er durch einen Login-Button auf die ownCloud Seite zum autorisieren der App weitergeleitet. Spätere Änderungen des technischen Nutzers sind durch ein Logout Button möglich. Dies ist nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Problemen mit bestehenden Instanzen entstehen würden. Wir haben uns dafür entschieden den Logout trotzdem bereitzustellen, für den Fall das ein falscher Account authentifiziert wird. Hierbei sind wir insbesondere über folgendes Szenario gestoßen:
+
+Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator account der ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen. 
+
+Der Administrator kommt
 
 ### Erstellen von Ordnern
 Wir haben einen Observer implementiert der darauf reagiert wenn eine Instanz der Aktivität `collaborativefolders` erstellt wird.
