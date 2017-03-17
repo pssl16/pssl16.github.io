@@ -229,13 +229,13 @@
 <h1 id="repository-sciebo">Repository: <code>sciebo</code></h1>
 <h2 id="zweck">Zweck</h2>
 <p>Der Plugin Typ <em>Repository</em> wird in Moodle unter anderem verwendet um Nutzer die Möglichkeit zu schaffen Zugang zu
-Dateien aus externen Quellen zu bekommen. Das Repository Plugin Sciebo kann somit die User Stories <a href="../../../index.md," title="2. Als &lt;b&gt;Nutzer&lt;/b&gt; möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.">Zwei</a> und <a href="../../../index.md," title="Als Nutzer möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.">Drei</a> realisieren. Sobald der Admin das Plugin unter <code>Site administration&gt;Plugins &gt;Repositories&gt;Manage repositories</code> aktiviert hat, sieht der Nutzer im File Picker folgende Optionen:</p>
+Dateien aus externen Quellen zu bekommen. Das Repository Plugin Sciebo kann somit die User Stories <a href="../../../index.md," title="2. Als &lt;b&gt;Nutzer&lt;/b&gt; möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.">Zwei</a> und <a href="../../../index.md," title="Als Nutzer möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.">Drei</a> realisieren. Sobald der Admin das Plugin unter <code>Site administration  ► Plugins ► Repositories ► Manage repositories</code> aktiviert hat, sieht der Nutzer im File Picker folgende Optionen:</p>
 <p><em>(Mehr Informationen zum File Picker finden sie in der <a href="https://docs.moodle.org/32/en/File_picker">Moodle Dokumentation</a>)</em></p>
 <div class="alert alert-danger">
   <strong>TODO:</strong> BILD nach richtiger Benennung.
 </div>
 
-<p>Wenn der Nutzer auf den anmelde Button klickt, wird er zu einem Pop-up Window weitergeleitet, dass ihn auffordert sich in der zugehörigen ownCloud Istanz zu authentifizieren. Sobald der Nutzer sich hier einmalig authentifiziert hat, werden ihm im File Picker seine Dateien angezeigt. Das Plugin bietet dem Benutzer zusätzliche Vorteile
+<p>Wenn der Nutzer auf den anmelde Button klickt, wird er zu einem Pop-up Window weitergeleitet, dass ihn auffordert sich in der zugehörigen ownCloud Instanz zu authentifizieren. Sobald der Nutzer sich hier einmalig authentifiziert hat, werden ihm im File Picker seine Dateien angezeigt. Das Plugin bietet dem Benutzer zusätzliche Vorteile
 dadurch, dass die Authentifizierung nur einmalig erfolgt. Durch den OAuth2 Protokollablauf werden danach Refresh Tokens angefordert ohne dass der Nutzer dies im Front-End zu sehen bekommt. Somit kann der Nutzer angemeldet bleiben während verschiedenen Sessions.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
 <p>Wie auch im <a href="../admin-tool/">Admin Tool</a> müssen zunächst einige Standartschnittstellen implementiert werden:</p>
