@@ -94,4 +94,42 @@ foreach ($data as $key => $value) {
             }
         }
 ```
+### `view.php`
+
+Nun da der Lehrende alle notwendigen Einstellungen tätigen konnte mussten wir die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementieren. Dies beeinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das hinzufügen dieser Ordner zur eigenen Instanz.
+Lehrende sollen entweder eine Übersicht aller Ordner haben, oder keinen Zugriff auf die Ordner haben.
+
+#### Sicht der Studierenden
+Für Studierende wird zunächst überprüft, ob der `group_mode` aktiviert ist. Wenn dies der Fall ist, wird an den Pfad an dem später der Ordner gefunden werden soll die Gruppenid angefügt. Moodle hat hierfür intern eine Methode `groups_get_activity_group()` Die zu einer Instanz der Aktivität angibt in welcher Gruppe der Studierende ist.
+Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden müssen.
+
+1. Der Ordnername wird erstmals gespeichert
+> Wir speichern den Ordnernamen in den moodle `user_preferences`. Diese werden für jeden Nutzer einzeln gespeichert und können beliebig geändert oder gelöscht werden. Die Eingabemaske für einen Ordnernamen wird nur angezeigt wenn bis jetzt kein Name gesetzt wurde oder der Nutzer explizit ausgewählt hat, das der Name zurückgesetzt werden soll.
+
+
+2. Der Name des Ordners wird geändert
+> Wenn der Name des Ordners zurückgesetzt wird, wird ein URL Parameter *reset=1* an die URL übergeben. In diesem Fall wird dem Kursteilnehmer eine Eingabemaske angezeigt. Diese ist als eigene Klasse in dem Ordner `collaborativefolders/classes` implementiert. Sie erbt von der abstrakten Klasse `moodleform`. Es muss nun sichergestellt werden das vergebene Namen kompatible mit ownCloud sind. Moodle unterstützt die zugelassenen Eingaben durch Form Element Regeln zu begrenzen.
+``` php
+$mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');
+```
+Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.
+
+3. Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus:
+> Der Nutzer muss mit Hilfe des `oauth2owncloud` admin_tools aus-geloggt werden, und der accesstoken wird auf null gesetzt.
+``` php
+    $ocs->owncloud->log_out();
+    set_user_preference('oC_token', null);
+```
+4. Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.
+> Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:
+``` php
+    $content = json_decode($element->customdata);
+    $cmidoftask = $content->cmid;
+
+    // As long as at least one ad-hoc task exist, that has the same cm->id as the current cm the folders were not created
+    if ($id == $cmidoftask) {
+        $created = false;
+    }
+    ```
+    Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
 ## Tests und Continuous Integration
