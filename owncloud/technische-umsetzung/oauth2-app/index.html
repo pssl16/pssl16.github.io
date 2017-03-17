@@ -293,10 +293,24 @@ mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access T
 </div>
 
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Die durch ownCloud Apps vorgegebene Schnittstelle beschreiben.
-</div>
+<p>Zur Erweiterung von ownCloud wird das Konzept von <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/">Apps</a> geboten. ownCloud Apps liegen im Verzeichnis <code>apps</code> einer ownCloud Installation und besitzen folgende <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/startapp.html#app-architecture">Struktur</a>:</p>
+<pre><code class="nohighlight">appinfo
+  ├── app.php               # Die erste Datei, die beim Laden der App ausgeführt wird
+  ├── database.xml          # Definiert das Datenbankschema
+  ├── info.xml              # Enthält Metadaten
+  └── routes.php            # Definiert die Routes
+css                         # Enthält alle CSS-Dateien
+img                         # Enthält alle Bilder
+js                          # Enthält alle JavaScript-Dateien
+l10n                        # Enthält die Übersetzungen
+lib                         # Enthält alle Klassen-Dateien
+  ├── Controller            # Enthält die Controller
+  └── ...
+templates                   # Enthält die Templates
+tests                       # Enthält die Tests
+</code></pre>
 
+<p>Auf die Implementierung der Hauptbestandteile wird in den nächsten Abschnitten eingegangen.</p>
 <h2 id="implementierung">Implementierung</h2>
 <h3 id="mapper-und-entities">Mapper und Entities</h3>
 <p>Für den Datenbank-Zugriff im PHP-Code ist es in ownCloud möglich, <a href="https://doc.owncloud.org/server/latest/developer_manual/app/database.html#mappers">Mapper</a> und 
