@@ -44,9 +44,26 @@ Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusa
 
 ## Vorgegebene Schnittstelle
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Die durch ownCloud Apps vorgegebene Schnittstelle beschreiben.
-</div>
+Zur Erweiterung von ownCloud wird das Konzept von [Apps](https://doc.owncloud.org/server/9.1/developer_manual/app/) geboten. ownCloud Apps liegen im Verzeichnis `apps` einer ownCloud Installation und besitzen folgende [Struktur](https://doc.owncloud.org/server/9.1/developer_manual/app/startapp.html#app-architecture):
+
+```nohighlight
+appinfo
+  ├── app.php				# Die erste Datei, die beim Laden der App ausgeführt wird
+  ├── database.xml			# Definiert das Datenbankschema
+  ├── info.xml				# Enthält Metadaten
+  └── routes.php			# Definiert die Routes
+css							# Enthält alle CSS-Dateien
+img							# Enthält alle Bilder
+js							# Enthält alle JavaScript-Dateien
+l10n						# Enthält die Übersetzungen
+lib							# Enthält alle Klassen-Dateien
+  ├── Controller			# Enthält die Controller
+  └── ...
+templates					# Enthält die Templates
+tests						# Enthält die Tests
+```
+
+Auf die Implementierung der Hauptbestandteile wird in den nächsten Abschnitten eingegangen.
 
 ## Implementierung
 
