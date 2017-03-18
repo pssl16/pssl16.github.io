@@ -3,10 +3,11 @@
 ## Zweck
 
 Wie bereits im Kapitel [Software Architektur](software-architektur/) angeschnitten, ist der Hauptzweck dieses Plugins
-die Schnittstelle zu Sciebo bzw. ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud 
-App [OAuth2](../owncloud/technische-umsetzung/) mit Hilfe eines OAuth 2.0 Clients über die WebDAV Schnittstelle angesprochen.
-Gleichzeitig kann dieses Plugin auch für ähnliche externe Datenquellen verwendet werden, sofern diese über die nötigen
-OAuth 2.0 und WebDAV Schnittstellen verfügen.
+die Schnittstelle zu ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud 
+App [OAuth2](../owncloud/technische-umsetzung/) mit Hilfe eines OAuth 2.0 Clients angesprochen. Zusätzlich werden
+sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert, in diesem Client umfasst.
+Zwar ist der Client auf einen OAuth 2.0 Protokollablauf in Zusammenarbeit mit der entsprechenden ownCloud App angepasst,
+jedoch könnte er in Zukunft auch als Ausgangspunkt genutzt werden, um ähnliche Schnittstellen zu erreichen.
 
 Im Wesentlichen implementiert dieses Plugin das folgende [Integrationsszenario](../index/):
 
@@ -27,8 +28,8 @@ abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können.
 
 Zusätzlich zu den allgemeinen Plugindateien, sollte unser Admin Tool auch mindestens noch eine Datei namens `settings.php`
 beinhalten. Diese umfasst alle Einstellungen, die für das Admin Tool geltend dem Administrator der moodle Instanz zur 
-Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration moodle-intern in dem sogenannten [Admin Tree](https://docs.moodle.org/dev/Admin_settings)
-gespeichert. Aus dieser Baumstruktur können anschließend benötigte Einstellungen beschafft werden.
+Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration moodle-intern gespeichert und kann von dem
+Client, wenn nötig abgerufen werden.
 
 Insgesamt ergibt sich folgende Struktur von Ordnern und Dateien, die mindestens für die Implementierung des von uns gebrauchten
 Admin Tools notwendig ist:
@@ -43,8 +44,7 @@ Admin Tools notwendig ist:
 
 Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende Sciebo bzw. ownCloud Instanz zu befähigen,
 müssen diese zunächst mit Hilfe benötigter Eingabedaten konfiguriert werden. Diese sollen zentral im Admin Tool eingegeben und
-gespeichert werden können, um sie anschließend von anderen Plugins aus nutzen zu können. Zu diesem Zweck werden globale Optionen
-werden, welche instanzübergreifend gelten.
+gespeichert werden können, um sie anschließend von dem Client aus, und damit auch in den ihn verwendenden Plugins, nutzen zu können.
 
 #### Benötigte Eingaben
 
@@ -54,199 +54,239 @@ Um den OAuth 2.0 Protokollablauf zu ermöglichen, müssen folgende Daten im Vorf
 * **`Secret`:** wird ebenfalls in ownCloud generiert und zur Authentifizierung verwendet.
 
 Beide Datensätze sind Strings bestehend aus Buchstaben und Zahlen. Daher eignet sich für beide ein Textfeld, welches ausschließlich 
-alphanumerische Werte erwartet zur Eingabe.
+alphanumerische Werte erwartet, zur Eingabe.
 
 Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:
 
 * **`Server Addresse`:** Url über die der ownCloud Server erreicht werden kann.
 * **`Server Pfad`:** der angehangene Pfad, über den die WebDAV Schnittstelle erreicht werden kann.
 * **`Port`:** Port des WebDAV-Servers.
-* **`SSL-Verschlüsselung`:** Wahl zwischen HTTP und HTTPS. 
+* **`Protokoll`:** Wahl zwischen HTTP und HTTPS. 
 
 Während die Wahl des Protokolls mittels einer Auswahl aus vorhandenen Optionen abgeboten werden kann, müssen die restlichen Werte
 in einem Textfeld erfragt werden. Auch in diesem Fall werden die Variablen nach den zu erwartenden Werten gesäubert. Darüber hinaus
 werden alle Eingaben, bis auf dem Port, als notwendig angesehen.
 
-#### External Page 
-
-Eine somit notwendige Eingabemaske kann im Rahmen der [`settings.php`] definiert werden. Da zum Zweck der individuellen Validierung und Säuberung
-der benötigten Parameter die in der [`adminlib.php`](https://github.com/moodle/moodle/blob/master/lib/adminlib.php) definierten 
-Klassen nicht ausreichen, wurde eine [externe Seite](https://docs.moodle.org/dev/Admin_settings#External_pages) speziell zur Darstellung
-des notwendigen Formulars erstellt. Die externe Seite, welche über die [`index.php`]() Datei aufgerufen wird, sorgt dafür, dass
-die Einstellungen aus dem Formular global in den [admin settings]() gespeichert werden. Von dort aus können sie, sobald nötig ausgelesen
-werden. Um die externe Seite nun in die Navigation in der Seitenadministration einzubinden, muss diese in der `settings.php` in den 
-Admin Tree eingebunden werden: 
+#### Settings
+ 
+Die nun benötigten Eingabedaten müssen in moodle auf der Einstellungsseite des Plugins erfragt und entprechend gespeichert werden.
+Um dies zu bewerkstelligen, wird in der settings.php jedes Eingabefeld einzeln definiert. In dem folgenden Beispiel wird das
+Eingabfeld für die Client ID beschrieben:
 
 ```php
-<?php
-defined('MOODLE_INTERNAL') || die('moodle_internal not defined');
-
-$ADMIN->add('authsettings', new admin_externalpage('tool_oauth2sciebo/auth',
-        'Sciebo OAuth 2.0 Configuration',
-        "$CFG->wwwroot/$CFG->admin/tool/oauth2sciebo/index.php"));
+$setting = new admin_setting_configtext('tool_oauth2owncloud/clientid',
+        get_string('clientid', 'tool_oauth2owncloud'),
+        get_string('help_oauth_param', 'tool_oauth2owncloud', 'client identifier'), '', PARAM_ALPHANUM, '64');
+$settings->add($setting);
 ```
 
-Das `admin_externalpage` Objekt beschreibt eine externe Seite, die im Admin Tree eingeordnet werden soll. Dazu wird die Seite mit einem
-einzigartigen Namen versehen, einem Anzeigenamen und dem Pfad, über den die Seite erreicht werden soll. Neben der externen Seite an
-sich, wird bei der Methode `add` zusätzlich übergeben, an welcher Stelle die Verknüpfung erstellt werden soll. In diesem Fall sind es die
-Authentifizierungseinstellungen (`authsettings`).
+Die Definition des Feldes beinhaltet den Ort, an dem die Eingabe gespeichert wird und dementsprechend wiedergefunden werden kann.
+In diesem Fall wird die Eingabe unter den Plugin-spezifischen Einstellungen hinterlegt. Weiterhin werden der Name des Feldes 
+(so wie er dem Nutzer angezeigt wird), ein Beschreibungstext und Standartwert (in diesem Fall bleibt es leer)für das Feld angegeben.
+Zuletzt werden der Typ (in diesem Fall alphanumerisch) und die Länge der erwarteten Eingabe festgelegt.
 
-Neben der Darstellung des Formulars, verwaltet die externe Seite auch die Speicherung der eigegebenen Daten. Diese werden, ähnlich wie die
-externe Seite zuvor, global in den Admin Settings mit Hilfe der Methode `set_config()` gespeichert. Sobald also das Formular erfolgreich validiert
-worden ist, werden die Eingabedaten durch einen Aufruf dieser Methode mit der genauen Bezeichnung der Option und dem Wert, den sie im Fomular
-erhalten hat, global abgelegt. Darüber hinaus wird über die externe Seite auch die Rücksetzung der Daten und der Abbruch der Bearbeitung geregelt.
-Zuletzt ist die Seite auch dafür zuständig das Formular mit zuvor gesetzten Werten zu füllen, die aus den globalen Einstellungen wiederbeschafft werden.
+Die Einstellungsseite wird anschließend in die Kategorie der Admin Tools eingeordnet, wo sie von dem Seitenadministrator wiedergefunden
+werden kann.
 
-#### Formular
-
-Um ein geeignetes Formular zu definieren musste die moodle-interne Klasse `moodleform` erweitert und innerhalb der Funktion `definition()`
-alle benötigten Eingabefelder definiert werden. Folgende Funktionen wurden dabei verwedet um die Elemente so genau wie möglich zu umreißen:
-
-| Funktion     | Beschreibung                                         | Beispiel                                        |
-|--------------|------------------------------------------------------|-------------------------------------------------|
-| `addElement` | Fügt ein Element zum Formular hinzu                  | Textfeld, Dropdown Menü, Checkbox               |
-| `addRule`    | Versieht ein Element mit einer Regel zur Validierung | erforderlich für die Abgabe, nur alphanumerisch |
-| `setDefault` | Setzt den Standartwert für ein Element               | -                                               |
-| `setType`    | Legt den Parametertypen der Eingabe fest             | Integer, String, Pfad, roh                      |
-
-Im Folgenden wird anhand von zwei Beispielen die Anwendung dieser Funktionen dargestellt:
-
-```php
-<?php
-class tool_oauth2sciebo_client_form extends moodleform {
-
-    public function definition() {
-        global $CFG;
-
-        $mform = $this->_form;
-        // Client ID.
-        $mform->addElement('text', 'clientid', get_string('clientid', 'tool_oauth2sciebo'), 
-            array('size' => '64'));
-        $mform->addRule('clientid', get_string('required'), 'required', null, 'client');
-        $mform->addRule('clientid', get_string('err_alphanumeric'), 'alphanumeric', null, 'client');
-        $mform->setDefault('clientid', $this->_customdata['clientid']);
-        $mform->setType('clientid', PARAM_ALPHANUM);
-```
-Zunächst wird das Client ID Eingabefeld definiert. Hierzu wird zum Formular ein Textfeld hinzugefügt, welches den eindeutigen Namen
-`clientid` trägt und 64 Felder breit ist. Der Anzeigename des Elements wird über ein die Sprachstring-Methode `get_string` beschafft.
-Daraufhin wird das Feld als für die Abgabe benötigt markiert und auf alphanumerische Werte beschränkt. Zuletzt wird der Standartwert
-für das Textfeld gesetzt, welcher zuvor durch die externe Seite bei Aufruf übergeben wird und zur Säuberung der Eingabe der Typ des
-Elements auf alphanumerisch gestellt.
-
-```php
-        // Type of server.
-        $mform->addElement('select', 'type', get_string('type', 'tool_oauth2sciebo'), 
-            array('http' => 'HTTP', 'https' => 'HTTPS'));
-        $mform->addRule('type', get_string('required'), 'required', null, 'client');
-        $mform->setDefault('type', $this->_customdata['type']);
-    }
-}
-```
-Im zweiten Beispiel wird ein `select` Element zum Formular hinzugefügt. Der Unterschied zum Textfeld ist, dass bei einem Dropdown
-Menü auch verfügbare Optionen angegeben werden müssen. Außerdem wird auch dieses Element als benötigt markiert und sein Standartwert
-Aus den Aufrufparametern beschafft und gesetzt.
-
-Am Ende des Formulares werden zu guter Letzt noch Buttons zur Abgabe des Formulars definiert. Damit ist die Eingabemaske vollständig. 
+Der Administrator kann die Einstellungen jederzeit ändern und damit die gewünschte Schnittstelle konfigurieren und gegebenenfalls anpassen.
 
 ### OAuth 2.0 Client
 
-Den funktionalen Kern des Plugins stellt der OAuth 2.0 Client dar. Dieser befindet sich in Form der Klasse `sciebo` in der
+Den funktionalen Kern des Plugins stellt der OAuth 2.0 ownCloud Client dar. Dieser befindet sich in Form der Klasse `owncloud` in der
 Datei `sciebo.php` in dem `classes` Ordner des Plugins. Diese Klasse steuert sowohl den moodle-seitigen Protokollablauf
-von OAuth 2.0, als auch den Verbindungsaufbau zu ownCloud mittels WebDAV. Dadurch, dass `sciebo` von der im moodle Core
+von OAuth 2.0, als auch den Verbindungsaufbau zu ownCloud mittels WebDAV und OCS Share API. Dadurch, dass `owncloud` von der im moodle Core
 enthaltenen Klasse `oauth2_client` erbt, ist ein Großteil des Protokollablaufs bereits abgedeckt.
 Der Konstruktor der Klasse `oauth2_client` muss mit den `Client ID` und `Secret` Daten aufgerufen werden. 
 Diese werden aus den zuvor angewandten Einstellungen beschafft:
 
 ```php
-<?php
+public function __construct($callback) {
+    $server = get_config('tool_oauth2owncloud', 'server');
+    $clientid = get_config('tool_oauth2owncloud', 'clientid');
+    $secret = get_config('tool_oauth2owncloud', 'secret');
+    $protocol = get_config('tool_oauth2owncloud', 'protocol');
+    $port = get_config('tool_oauth2owncloud', 'port');
+    $path = get_config('tool_oauth2owncloud', 'path');
 
-namespace tool_oauth2sciebo;
-
-defined('MOODLE_INTERNAL') || die();
-
-require_once($CFG->libdir . '/oauthlib.php');
-
-use tool_oauth2sciebo\sciebo_client;
-
-class sciebo extends \oauth2_client {
-
-    /**
-     * Create the DropBox API Client.
-     *
-     * @param   string      $key        The API key
-     * @param   string      $secret     The API secret
-     * @param   string      $callback   The callback URL
-     */
-    public function __construct($callback) {
-        parent::__construct(get_config('tool_oauth2sciebo', 'clientid'),
-            get_config('tool_oauth2sciebo', 'secret'), $callback, '');
+    parent::__construct($clientid, $secret, $callback, '');
 ```
 
 Zu diesem Zweck wird die Methode `get_config` verwendet. Sie gibt den für ein Plugin und einen zuvor einzigartig definierten
-Namen aus dem Admin Tree heraus die dazu gespeicherte Einstellung.
+Namen aus den Einstellungen heraus den dazu gespeicherten Wert.
 Darüber hinaus muss eine `callback URL` angefügt werden, die den Pfad angibt, an den nach der Authentifizierung und Authorisierung
-weitergeleitet werden soll. Dieser wird allerdings wird extern in den Plugins erzeugt, die die `sciebo` Klasse benutzen.
+der Nutzer weitergeleitet werden soll. Dieser wird allerdings extern in den Plugins erzeugt, die den `owncloud` Client benutzen.
 
-Zu beachten ist, dass für die Klasse `sciebo` ein namespace definiert wird, womit diese effizient in externen Plugins verwendet werden
-kann, die einen OAuth 2.0 Client benötigen.
+Zu beachten ist, dass für die Klasse `owncloud` ein namespace definiert wird, womit diese effizient in externen Plugins verwendet werden
+kann, die einen OAuth 2.0 ownCloud Client benötigen.
 
 Weiterhin müssen die Methoden `auth_url` und `token_url` der Elternklasse zwingend implementiert werden, um bei der Authentifizierung
-auf die richtigen Pfade zu verweisen:
+und der Token-Beschaffung auf die richtigen Pfade zu verweisen:
 
 ```php
-    /**
-    * Returns the auth url for OAuth 2.0 request
-    * @return string the auth url
-    */
-    protected function auth_url() {
+protected function auth_url() {
     // Dynamically generated from the admin tool settings.
-        $path = str_replace('remote.php/webdav/', '', get_config('tool_oauth2sciebo', 'path'));
-        return get_config('tool_oauth2sciebo', 'type') . '://' . get_config('tool_oauth2sciebo', 'server') . '/' . $path
-            . 'index.php/apps/oauth2/authorize';
-    }
-    
-    /**
-    * Returns the token url for OAuth 2.0 request
-    * @return string the token url
-    */
-    protected function token_url() {
-        $path = str_replace('remote.php/webdav/', '', get_config('tool_oauth2sciebo', 'path'));
-        return get_config('tool_oauth2sciebo', 'type') . '://' . get_config('tool_oauth2sciebo', 'server')  . '/' . $path
-            . 'index.php/apps/oauth2/api/v1/token';
-    }
+    return $this->prefixoc . 'index.php/apps/oauth2/authorize';
+}
+
+protected function token_url() {
+    return $this->prefixoc . 'index.php/apps/oauth2/api/v1/token';
+}
 ```
 
-Hierfür werden die beiden Pfade aus der Serveraddresse und dem Serverpfad berechnet, da der Endpunkt für die oauth2 App in
-ownCloud gleich bleibt.
+Hierfür werden die beiden Pfade aus der Serveraddresse, dem Port und dem Serverpfad berechnet, da der Endpunkt für die oauth2 App in
+ownCloud gleich bleibt. Die benötigten Eingabdaten werden, soweit angegeben, der Eingabemaske entnommen.
 
-## Änderungen an Core Bibliotheken
+## Erweiterungen der Schnittstellen
 
 Du zur Umsetzung des Verfahrens Die vorgegebenen Schnittstellen nicht ausreichten, mussten in Anpassungen in moodles Core 
 Bibliotheken vorgenommen werden. Im Folgenden werden diese Änderungen beschrieben.
 
-### Anpassung der `post` Methode
+### OAuth 2.0 Client
 
-Die moodle-interne Klasse `oauth2client` erbt von einer weiteren Klasse aus dem moodle Core mit dem Namen `curl`, welche mittels
-[Curl]() HTTP Requests erstellen und verschicken kann. Dadurch ist die Klasse fähig eigenständig einen Access Token mit einem 
+#### Anpassung der `post` Methode
+
+Die moodle-interne Klasse `oauth2_client` erbt von einer weiteren Klasse aus dem moodle Core mit dem Namen `curl`, welche mittels
+[cURL]() HTTP Requests erstellen und verschicken kann. Dadurch ist die Klasse fähig eigenständig einen Access Token mit einem 
 Authorization Code mittels der HTTP POST Methode über die `token` Schnittstelle in ownCloud zu beschaffen. Allerdings
 bietet die dafür zuständige Methode `post` nicht die Möglichkeit einen Basic Authorization Header zur Anfrage hinzuzufügen,
 welcher Client ID und Secret zur Autorisierung in der `oauth2` ownCloud App mit verschickt. Daher musste die `post` Methode
-in der `sciebo` Klasse so überschrieben werden, dass der Header vor dem Aufruf der geerbten Methode gesetzt wird.
-In dem zugehörigen Skipt wurde folende Methode ergänzt:
+in der `owncloud` Klasse so überschrieben werden, dass der benötigte Header vor dem Aufruf der geerbten Methode gesetzt wird:
 
 ```php
-public function post($url, $params = '', $options = array()) {
-    
-    $this->setHeader(array(
-        'Authorization: Basic ' . base64_encode($this->get_clientid() . ':' . $this->get_clientsecret())
+public function post($url, $params = '', $options = array(), $auth = false) {
+
+    if ($auth == false) {
+        $this->setHeader(array(
+                'Authorization: Basic ' . base64_encode($this->get_clientid() . ':' . $this->get_clientsecret())
         ));
         
+        $this->log_out();
+    }
+
     return parent::post($url, $params, $options);
 }
 ```
 
-### Anpassung des WebDAV Clients
+Der entsprechende Header wird nur dann gesetzt, wenn ein Access Token angefordert werden soll. Um nicht zusätzlich einen
+Authentication Header mit einem abgelaufenen Access Token zu versenden, muss dieses Access Token mittels `log_out()` 
+entfernt werden.
 
-### Weiterleitungen
+#### Erweiterung des Access Tokens
+
+Ein in der Eltern-Klasse `oauth2_client` erhaltenes Access Token verfügt über die Attribute `token`, was die Zeichenkette des Tokens
+beinhaltet, und `expires`, welches das Ablaufdatum des Tokens angibt. Da jedoch von der oauth2 ownCloud App darüber hinaus noch die
+Attribute `refresh_token` und `user_id` versandt werden und für einige Integrationsszenarien gebraucht werden, musste das Access Token
+im OAuth 2.0 ownCloud Client, nach dem Upgrade aus einem Authorization Code, um eben diese Eigenschaften erweitert werden:
+
+```php
+$r = upgrade($code);
+
+$accesstoken = new stdClass;
+$accesstoken->token = $r->access_token;
+$accesstoken->expires = (time() + ($r->expires_in - 10));
+$accesstoken->user_id = $r->user_id;
+$accesstoken->refresh_token = $r->refresh_token;
+
+$this->store_token($accesstoken);
+```
+
+#### Einführung des Refresh Tokens
+
+Da nun das Access Token um die fehlende Eigenschaft `refresh_token` ergänzt worden ist, musste der Client ebenfalls um die
+Fähigkeit, ein Refresh Token zu einem Access Token aufzuwerten, erweitert werden. Hierzu, musste einerseits an der Stelle
+eingegriffen werden, an der das aktuelle Access Token geprüft wird. Ist das aktuelle Access Token abgelaufen und ein Refresh
+Token vorhanden. So muss versucht werden ein neues Access Token mit Hilfe des Refresh Tokens anzufordern. Dabei wird die selbe
+Schnittstelle verwendet, die auch zum Aufwerten eines Authorization Codes zum Einsatz kommt. Daher muss bei der Ausführung der
+Methode `upgrade_token` zwischen Refresh Token und Authorization Code unterschieden werden:
+
+```php
+if ($refresh == false) {
+    $grant = 'authorization_code';
+    $type = 'code';
+} else {
+    $grant = 'refresh_token';
+    $type = 'refresh_token';
+}
+
+$params = array(
+        'grant_type' => $grant,
+        $type => $code,
+        'redirect_uri' => $callbackurl->out(false),
+);
+
+$response = $this->post($this->token_url(), $params);
+```
+
+Die übergebenen Parameter der HTTP POST Methode müssen, wie in dem Protokollablauf spezifiziert, jeweils auf den Typ der
+aufzuwertenden Zeichenkette (`code` vs. `refresh_token`) angepasst werden. Im Fall eines Erfolges sollten beide Anfrage-Typen
+ein Access Token zurückliefern.
+
+#### Speicherung Nutzer-spezifischer Access Tokens
+
+Um einen hohen Grad an Komfort und Sicherheit gewährleisten zu können, musste dem Nutzer die Möglichkeit eines einmaligen
+Logins gegeben werden. Durch die Einführung eines Refresh Tokens wurde der erste Schritt in diese Richtung getätigt, da nun
+das Access Token, im Normalfall, immer wieder aufgewertet werden kann, ohne sich erneut in ownCloud authentifizieren zu müssen.
+Weiterhin wurde der OAuth 2.0 ownCloud Client um eine Methode `check_login` ergänzt, welche nach Erhalt eines Access Tokens,
+dieses innerhalb der persönlichen Einstellungen des aktuellen Nutzers hinterlegt und, falls vorhanden, bei der Prüfung des
+Login-Status auch daraus bezieht.
+
+Darüber hinaus bietet die Methode `check_login` auch die Möglichkeit ein Access Token für ein spezielles, angegebenes Plugin
+zu speichern um zum Beispiel einen technischen Nutzer in ownCloud zu verwenden.
+
+### WebDAV Client
+
+Da ownCloud Datentransfer lediglich über eine WebDAV Schnittstelle anbietet, musste auf diese in moodle mittels eines dafür
+vorgesehenen Clients zugegriffen werden können. Moodle bietet bereits einen WebDAV Client an, welcher als Basis ownClouds
+WebDAV Schnittstelle verwendet werde konnte.
+
+#### Absicherung mittels OAuth 2.0
+
+Der moodle-interne Client bietet eine große Auswahl an WebDAV Methoden, welche zum Großteil erfolgreichen Datentransfer mit
+ownCloud ermöglichen. Der Nachteil des Client besteht darin, dass er ausschließlich mit Basic Auth ausgestattet ist und somit
+bei jedem Zugriff Nutzername und Passwort des ownCloud Accounts versandt werden muss. Um eine passwortlose Authentifizierung
+zu ermöglichen, musste der WebDAV Client mittles OAuth 2.0 abgesichert werden.
+
+In der Umsetzung wurde der Client mit einem Access Token ausgestattet, welches bei jedem Zugriff, innerhalb eines Bearer
+Authentication Headers, an ownCloud mitversandt wird:
+
+```php
+private function create_basic_request($method) {
+    // ...Füge die benötigten Header hinzu.
+    if ($this->_auth == 'basic') {
+        $this->header_add(sprintf('Authorization: Basic %s', 
+                    base64_encode("$this->_user:$this->_pass")));
+    } else if ($this->_auth == 'bearer') {
+        $this->header_add(sprintf('Authorization: Bearer %s', 
+                    $this->_token));
+    }
+}
+```
+
+ownCloud-seitig wird der Header erkannt und statt einer Kombintion aus Nutzernamen und Passwort, das übergebene Access Token
+ausgewertet. Wenn das Access Token noch gültig ist, wird die Anfrage ganz normal behandelt.
+
+#### Weiterleitungen
+
+Um den OAuth 2.0 und den WebDAV Client miteinander zu kombinieren, wurden Weiterleitungs-Methoden implementiert, welche die
+von weiteren Integrationsszenarien benötigten Zugriffe auf die WebDAV Schnittstelle über den OAuth 2.0 ownCloud Client
+weiterleiten. Dieser setzt zunächst ein gültiges Access Token und ruft dann die entsprechende WebDAV Methode über den WebDAV
+Client auf. Im folgenden Beispiel wird der Aufruf der Methode MKCOL gezeigt:
+
+```php
+public function make_folder($path) {
+    $this->dav->set_token($this->get_accesstoken()->token);
+    return $this->dav->mkcol($this->prefixwebdav . $path);
+}
+```
+
+Der Pfad zur WebDAV Schnittstelle des ownCloud Servers wird bereits im Konstruktor der Klasse `owncloud` aus Angaben in der
+Eingabemaske zusammengestellt.
+
+### OCS Share API
+
+Auch ownClouds OCS Share API wird zur Abdeckung einiger Intergrationsszenarien benötigt, da sie sowohl zum Teilen von privaten
+Inhalten, als auch zum Generieren öffentlicher Links gebraucht werden kann. Mussten zuvor noch Nutzername und Passwort bei jedem
+Zugriff auf diese Schnittstelle zwingend zur Authentifizierung angegeben werden, reicht durch das Setzen eines Bearer Authentication
+Headers nun auch ein von ownCloud erhaltenes Access Token.
 
 ## Tests und Continuous Integration
