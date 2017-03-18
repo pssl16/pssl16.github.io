@@ -203,7 +203,7 @@
     
         <li class="first-level active"><a href="#benutzung">Benutzung</a></li>
         
-            <li class="second-level"><a href="#installation">Installation</a></li>
+            <li class="second-level"><a href="#download">Download</a></li>
             
         
             <li class="second-level"><a href="#admin-tool-oauth2sciebo">Admin Tool oauth2sciebo</a></li>
@@ -229,12 +229,28 @@
         <div class="col-md-9" role="main">
 
 <h1 id="benutzung">Benutzung</h1>
-<p>Plugins können in Moodle zusätzlich installiert werden. Auf der <a href="https://moodle.org/plugins/" title="Moodle Plugin Page">offiziellen Seite</a>
-von Moodle können alle zurzeit angebotenen Plugins gefunden werden. Für mehr Informationen zur allgemeinen Installation von Moodle Plugins
-benutzen sie die Dokumentation der <a href="https://docs.moodle.org/25/de/Plugins_installieren" title="Installation von Moodle Plugins">Moodle Seite</a>.</p>
-<h2 id="installation">Installation</h2>
-<p>Wenn sie die Plugins heruntergeladen haben und richtig platziert haben zeigt der Moodle Plugin Manager Ihnen die verfügbaren Plugins an.
-Sie benötigen in jedem Fall das oauth2_admin_tool, alle anderen Plugins sind von diesem abhängig.</p>
+<p>Plugins können in Moodle zusätzlich zum core installiert werden. Im folgenden wird beschrieben, wie sie unsere Plugins herunterladen können und anschließend in den einzelnen Plugins die richtigen Einstellungen tätigen können. Zusätzlich werden Ihnen verschiedene Ansichten des Plugins präsentiert um die Funktionalitäten der jeweiligen Plugins zu verdeutlichen.
+Falls sie </p>
+<h2 id="download">Download</h2>
+<p>Unsere Plugins sind zurzeit in einem öffentlichen Github repository verfügbar.
+Von dort aus können sie Plugins auf zwei Wegen herunterladen.
+1. Als Zip-Datei</p>
+<blockquote>
+<p>Klicken sie am rechten Rand in dem Menü <code>clone or download</code> auf <strong>Download ZIP</strong>. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt <code>Website-Administration Plugins Plugin installieren</code> hochgeladen werden. Das Plugin wird automatisch richtig platziert.</p>
+</blockquote>
+<ol>
+<li>Mit dem Befehl git clone<blockquote>
+<p>Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:</p>
+</blockquote>
+</li>
+</ol>
+<pre><code>git clone git@github.com:pssl16/name_of_the_repository.github.git
+</code></pre>
+
+<p>Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.</p>
+<p>Der Vorteil des zweiten Weges ist, dass Sie mittels <code>git pull</code> Änderung schnell nach pflegen können. Wenn Sie sich mit git nicht auskennen sollten sie jedoch den ersten Weg wählen.</p>
+<p>Wenn sie die Plugins heruntergeladen und richtig platziert haben, werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
+Um unsere Plugins zu benutzen benötigen sie in jedem Fall das <code>oauth2owncloud_admin_tool</code>, alle anderen Plugins lassen sich nicht ohne dieses installieren. Beachten sie dies bei der Reihenfolge der Installation wenn sie die Plugins als ZIP-Ordner installieren.</p>
 <h2 id="admin-tool-oauth2sciebo">Admin Tool oauth2sciebo</h2>
 <h3 id="admin-einstellungen">Admin Einstellungen</h3>
 <p>Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.</p>
