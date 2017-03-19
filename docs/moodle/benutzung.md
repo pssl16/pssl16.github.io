@@ -49,7 +49,10 @@ Sobald das Admin tool installiert wurde, kann das Repository installiert werden.
 ### Nutzer Sicht
 
 Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter `Speicherorte` löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden.
-Danach sieht man nach der Anmeldung eine tabellarische Auflistung der vorhandenen Dateien:
+
+<img alt="FilePicker" src="../images/filepickerlogin.png" width=100%>
+
+Wird der Button getätigt erscheint ein Pop-up Window oder ein neuer Tab die Anmeldung des Nutzers in ownCloud fordert und anschließend den Nutzer auffordert die App zu autorisieren. Der Nutzer wird nun zurückgeleitet und sieht tabellarische Auflistung der vorhandenen Dateien:
 
 <img alt="FilePicker" src="../images/05.png" width=100%>
 
