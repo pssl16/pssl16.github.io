@@ -263,30 +263,51 @@
 </ul>
 <h2 id="authorization-code-flow">Authorization Code Flow</h2>
 <p>Die nachfolgende Abbildung stellt den durch die <code>oauth2</code> App implementierten <a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Code Flow</a> dar.</p>
-<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
+<blockquote>
 <p>Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.</p>
-<p>Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:</p>
-<ol>
-<li>Client Identifier &amp; Redirection URI: Der Client (hier Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
-zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine <code>redirection URI</code> an, zu welcher der
-User-Agent vom Authorization Server (hier sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.</li>
-<li>Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
-ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.</li>
-<li>Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,
-wozu die vorher (in der Anfrage oder während der Clientregistrierung) bereitgestellte <code>redirection URI</code> genutzt wird. Die 
-<code>redirection URI</code> beinhaltet einen <code>authorization code</code> und jeglichen vom Client im Vorhinein bereitgestellten Status.</li>
-<li>Authorization Code &amp; Redirection URI: Der Client fragt ein Access Token vom Endpunkt des Authorization Servers an, indem
-der Authorization Code aus dem vorherigen Schritt angefügt wird. Wenn die Anfrage durchgeführt wird, authentifiziert sich der Client
-automatisch mit dem Authorization Server. Der Client fügt die für den Erhalt des <code>authorization codes</code> genutzte <code>redirection URI</code>
-zur Verifizierung an.</li>
-<li>Access Token (&amp; optional: Refresh Token): Der Authorization Server authentifiziert den Client, validiert den <code>authorization code</code>, und
-prüft, dass die empfangene <code>redirection URI</code> mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
-Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem <code>access token</code> und optional mit einem <code>refresh token</code>.</li>
-</ol>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Updaten...
+</blockquote>
+<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
+<div align="right">
+    <small>[vgl. <a href="https://tools.ietf.org/html/rfc6749#page-24">RFC 6749, S. 24</a>]</small>
 </div>
 
+<p>Der Authorization Code Flow kann von jedem Client, der registriert ist, angestoßen werden. Zur Registrierung eines Clients gibt der Administrator in den ownCloud Einstellungen folgende Informationen an:</p>
+<ul>
+<li>Name des Clients: Zur Wiedererkennung</li>
+<li>Redirection URI: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.</li>
+<li>Umgang mit Subdomains: Zum Einstellen, on Subdomains der Redirection URI erlaubt werden sollen.</li>
+</ul>
+<p>Die App generiert daraufhin die Zugangsdaten des Clients, bestehend aus Client Identifier und Client Secret.</p>
+<p>Im Flow sind folgende Rollen beteiligt:</p>
+<ul>
+<li>Client: Die Applikation, die für Zugriffe auf geschützte Ressourcen autorisiert werden möchte. In unserem Integrationsszenario: Moodle.</li>
+<li>Authorization Server: Die Applikation, die den Client für Zugriffe autorisiert. In unserem Integrationsszenario: ownCloud.</li>
+<li>Resource Owner: Der Eigentümer der geschützten Ressourcen. In unserem Integrationsszenario: ownCloud Nutzer.</li>
+<li>User Agent: Durch ihn erfolgt die Kommunikation zwischen Client, Resource Owner und Authorization Server. In unserem Integrationsszenario: ein Webbrowser.</li>
+</ul>
+<p>Folgende Schritte werden durchlaufen:</p>
+<ol>
+<li>Der Client initiiert den Flow durch Weiterleitung des Resource Owners an die Authorization URL <code>/index.php/apps/oauth2/authorize</code>. URL Parameter:<ul>
+<li><code>response_type</code>: Da hier der Authorization Code Flow betrachtet wird, muss <code>code</code> angegeben werden.</li>
+<li><code>client_id</code>: Der Client Identifier aus der Clientregistrierung.</li>
+<li><code>redirect_uri</code>: Die Redirection URI aus der Clientregistrierung.</li>
+<li><code>state</code>: Kann vom Client optional angegeben werden, um die Anfrage bei Erhalt einer Antwort wiedererkennen zu können.</li>
+</ul>
+</li>
+<li>Der Resource Owner authentifiziert sich daraufhin beim Authorization Server und entscheidet über die Autorisierung des Clients.</li>
+<li>Bei erfolgter Autorisierung, wird ein Authorization Code ausgestellt (ein Authorization Code ist für 10 Minuten gültig). Die App leitet dann an die Redirection URI weiter. URL Parameter:<ul>
+<li><code>code</code>: Der ausgestellte Authorization Code.</li>
+<li><code>state</code>: optional, falls unter 1. angegeben.</li>
+</ul>
+</li>
+<li>Mit dem Authorization Code kann der Client ein Access Token anfordern. Dazu sendet er einen <code>POST</code>-Request an die Access Token URL <code>/index.php/apps/oauth2/api/v1/token</code>. Zusätzlich ist eine Client Authentifizierung mittels Basic Authentication (Nutzername: Client Identifier, Passwort: Client Secret) notwendig. URL Parameter:<ul>
+<li><code>grant_type</code>: entweder <code>authorization_code</code> oder <code>refresh_token</code></li>
+<li><code>code</code> und <code>redirect_uri</code> (falls <code>authorization_code</code> als Grant Type angegeben wurde)</li>
+<li><code>refresh_token</code> (falls <code>refresh_token</code> als Grant Type angegeben wurde)</li>
+</ul>
+</li>
+<li>Bei gültigen Angaben wird ein Access Token mit Refresh Token ausgestellt (ein Access Token ist für 1 Stunde gültig). Abgelaufene Access Tokens können mithilfe des Refresh Tokens gegen neue eingetauscht werden.</li>
+</ol>
 <h2 id="datenmodell">Datenmodell</h2>
 <p>Zunächst musste ein Datenmodell zur Speicherung der benötigten Daten aufgestellt werden. Gemäß dem Authorization Code Flow wurden folgende Entitäten mit Attributen definiert:</p>
 <ul>
