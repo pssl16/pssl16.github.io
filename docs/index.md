@@ -47,7 +47,6 @@ jedoch nur in der Moodle-Aktivität „URL“ verfügbar.
 Nach diesem Integrationsszenario wurde vermehrt von Lehrenden der Universität Münster gefragt. Ein Lehrender kann mithilfe eines [Activity Plugins](moodle/technische-umsetzung/activity) für Moodle in einem Kurs Ordner erstellen, auf den Studierende Zugriff haben und den sie zu ihrer ownCloud hinzufügen können.
 
 ## Komponenten
-
 Als Überblick werden nachfolgend die entwickelten Komponenten in den beiden Systemen dargestellt.
 
 * **ownCloud**
@@ -59,7 +58,6 @@ Als Überblick werden nachfolgend die entwickelten Komponenten in den beiden Sys
 	* [Activity Plugin `collaborativefolders`](moodle/technische-umsetzung/activity): Erstellen von Ordnern in ownCloud für kollaboratives Arbeiten.
 
 ## Weitere Integrationsszenarien
-
 Wegen zeitlicher Restriktionen konnten nicht alle Integrationsszenarien, über deren Implementierung wir nachgedacht haben, realisiert werden. Zukünftige Arbeiten könnten sich jedoch mit folgenden Erweiterungen beschäftigen.
 
 1. Als **Lehrender** möchte ich auf einen Button klicken, um hochgeladene Dateien zu aktualisieren.
@@ -83,8 +81,10 @@ Wegen zeitlicher Restriktionen konnten nicht alle Integrationsszenarien, über d
 10. Als **Lehrender** möchte ich in ownCloud die Teilen-Funktion nutzen, um Dateien oder Dokumente für Kursteilnehmer freigeben zu können.
 
 ## Zusammenfassung
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Ausführung.
+In diesem Projektseminar wurden die beiden Systeme ownCloud und Moodle integriert. Als Grundlage diente dabei das OAuth 2.0 Protokoll, um eine passwortlose Authentifizierung und Autorisierung zu ermöglichen. Es wurden verschiedene Integrationsszenarien betrachtet und vier von ihnen realisiert. Außerdem wurde die implementierte OAuth 2.0 ownCloud App in die offizielle [ownCloud GitHub Organisation](https://github.com/owncloud/) übernommen, sowie die Anpassungen am ownCloud Core akzeptiert. Das in Kürze erscheinende ownCloud 10.0 wird die Änderungen enthalten und vollständig kompatibel mit der OAuth 2.0 App sein. Des Weiteren könnte in Zukunft auch ownCloud 9.1.5 kompatibel mit der App sein, falls der Backport akzeptiert wird.
+
+Am 15. März 2017 wurde die Arbeit präsentiert. Nachfolgend finden Sie eine Aufzeichnung der Abschlusspräsentation (wir entschuldigen uns für die Mikrofon-Probleme). Die Folien dazu können Sie sich [hier](https://pssl16.github.io/abschlusspraesentation/) ansehen.
+
+<div align="center">
+	<iframe width="560" height="315" src="https://www.youtube.com/embed/2GYvoP36vFc" frameborder="0" allowfullscreen></iframe>
 </div>
-Erfüllungsgrad der User Stories, Geschaffene Funktionalitäten, (bekannte, ggf. bewusst gewählte) Einschränkungen, Ausblick auf weitere Entwicklungsmöglichkeiten.
-Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben
