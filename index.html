@@ -209,25 +209,19 @@
     
         <li class="first-level active"><a href="#sciebolearnweb">sciebo@Learnweb</a></li>
         
-            <li class="second-level"><a href="#allgemeine-motivation-fur-die-arbeit">Allgemeine Motivation für die Arbeit</a></li>
-            
-        
             <li class="second-level"><a href="#struktur-der-dokumentation">Struktur der Dokumentation</a></li>
             
         
-            <li class="second-level"><a href="#integrationsszenarien">Integrationsszenarien</a></li>
-            
-                <li class="third-level"><a href="#realisierte-szenarien">Realisierte Szenarien</a></li>
+            <li class="second-level"><a href="#motivation">Motivation</a></li>
             
         
             <li class="second-level"><a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a></li>
             
         
+            <li class="second-level"><a href="#integrationsszenarien">Integrationsszenarien</a></li>
+            
+        
             <li class="second-level"><a href="#komponenten">Komponenten</a></li>
-            
-                <li class="third-level"><a href="#owncloud">ownCloud</a></li>
-            
-                <li class="third-level"><a href="#moodle">Moodle</a></li>
             
         
             <li class="second-level"><a href="#weitere-integrationsszenarien">Weitere Integrationsszenarien</a></li>
@@ -242,51 +236,16 @@
         <div class="col-md-9" role="main">
 
 <h1 id="sciebolearnweb">sciebo@Learnweb</h1>
-<p>Diese Website dokumentiert die Integration von <a href="https://www.sciebo.de/">sciebo</a> in das <a href="https://www.uni-muenster.de/LearnWeb/learnweb2/">Learnweb</a>
-von dem Projektseminar <a href="https://www.wi.uni-muenster.de/de/studierende/lehrangebot/227197">sciebo@Learnweb</a>, das im Wintersemester 2016/17 an der <a href="http://www.uni-muenster.de/">Westfälischen Wilhelms-Universität Münster</a> stattgefunden hat.</p>
-<p>Sciebo ist ein Cloud-Dienst, der gemeinsam von 26 Hochschulen und Forschungseinrichtungen in NRW angeboten wird. Als Grundlage dient die Enterprise-Edition von <a href="https://owncloud.org/">ownCloud</a>.
-Das Learnweb ist ein auf der Open-Source-Lösung <a href="https://moodle.org/">Moodle</a> basierendes E-Learning System der Westfälischen Wilhelms-Universität Münster.</p>
-<p>Eine mögliche Lösung sollte dabei möglichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universitäten genutzt wird.</p>
-<h2 id="allgemeine-motivation-fur-die-arbeit">Allgemeine Motivation für die Arbeit</h2>
-<p>Die grundsätzliche Motivation für das Projektseminar war es, die beiden Systeme <a href="https://www.sciebo.de/">sciebo</a> und <a href="https://www.uni-muenster.de/LearnWeb/learnweb2/">Learnweb</a> passwortlos miteinander kommunizieren zu lassen.
-Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht im Klartext auf dem jeweils anderen System gespeichert wird.
-Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen.
-Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im Learnweb abgerufen werden können und kollaborative Ordner in sciebo vom Learnweb aus erstellt werden können.</p>
+<p>Diese Website dokumentiert die Integration von <a href="https://www.sciebo.de/">sciebo</a> in das <a href="https://www.uni-muenster.de/LearnWeb/learnweb2/">Learnweb</a>, die durch das Projektseminar <a href="https://www.wi.uni-muenster.de/de/studierende/lehrangebot/227197">sciebo@Learnweb</a> im Wintersemester 2016/17 an der <a href="http://www.uni-muenster.de/">Westfälischen Wilhelms-Universität Münster</a> realisiert wurde.</p>
+<p>Sciebo ist ein Cloud-Dienst, der gemeinsam von 26 Hochschulen und Forschungseinrichtungen in NRW angeboten wird. Als Grundlage dient die Enterprise-Edition von <a href="https://owncloud.org/">ownCloud</a>. Das Learnweb ist ein auf der Open-Source-Lösung <a href="https://moodle.org/">Moodle</a> basierendes E-Learning System der Westfälischen Wilhelms-Universität Münster.</p>
 <h2 id="struktur-der-dokumentation">Struktur der Dokumentation</h2>
-<p>Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zuerst die Aufteilung in <strong>Home</strong>, <strong>ownCloud</strong> und <strong>Moodle</strong>. Sie befinden sich gerade im Abschnitt <strong>Home</strong>,
-welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte <strong>ownCloud</strong> und <strong>Moodle</strong> dokumentieren
-jeweils die spezifische <strong>Benutzung</strong> (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige <strong>Technische Umsetzung</strong>, welche die Dokumentation für Entwickler bereitstellt. Der Punkt <strong>Technische Umsetzung</strong> im Abschnitt
-<strong>ownCloud</strong> enthält die Themen <a href="./owncloud/technische-umsetzung/oauth2">OAuth 2.0</a>, <a href="./owncloud/technische-umsetzung/softwarearchitektur">Softwarearchitektur</a>, <a href="./owncloud/technische-umsetzung/oauth2-app">OAuth 2.0 App</a>
-und <a href="./owncloud/technische-umsetzung/core-anpassungen">Core Anpassungen</a>. Der gleiche Unterpunkt im Abschnitt <strong>Moodle</strong> behandelt die Themen <a href="./moodle/technische-umsetzung/softwarearchitektur">Softwarearchitektur</a>,
-<a href="./moodle/technische-umsetzung/admin-tool">Admin Tool</a>, <a href="./moodle/technische-umsetzung/repository">Repository</a> und <a href="./moodle/technische-umsetzung/acitivity">Collaborative Folders</a>.</p>
-<h2 id="integrationsszenarien">Integrationsszenarien</h2>
-<p>Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
-Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
-Als Integrationsrichtung konzentrierte wir uns auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.</p>
-<h3 id="realisierte-szenarien">Realisierte Szenarien</h3>
-<h4 id="1-als-nutzer-mochte-ich-oauth2-benutzen-konnen-um-mich-im-learnweb-als-owncloud-nutzer-anzumelden">1. Als <strong>Nutzer</strong> möchte ich OAuth2 benutzen können, um mich im Learnweb als ownCloud Nutzer anzumelden.</h4>
-<p>Dieser Use Case implementiert die grundlegende Authentifizierung mit dem <a href="https://oauth.net/2/">OAuth 2.0</a> Verfahren.
-Im Rahmen unserer Vorbereiungsphase auf das Projektseminar haben wir verschiedene Authentifizierungsmethoden evaluiert. Im Abschnitt
- <a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a> finden sie hierfür genauere Informationen. Hierfür ist in Moodle das
- <a href="moodle/technische-umsetzung/admin-tool/">Admin Tool</a> implementiert worden. Es übernimmt sämtliche Aufgaben der Authentifizierung. Alle anderen Plugins nutzen dieses Tool.
- In OwnCloud wurde hierfür eine <a href="owncloud/technische-umsetzung/oauth2-app/">App</a> entwickelt.</p>
-<h4 id="2-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-owncloud-instanz-hochladen">2. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner ownCloud Instanz hochladen.</h4>
-<p>Der vorherige Use Case war für den Benutzer der Moodle Instanz noch nicht sichtbar. Das wichtigste Anwendungsszenario ist das Nutzer im Learnweb Dateien aus ihrer
-ownCloud Account hochladen können. Hierfür haben wir in Moodle ein <a href="moodle/technische-umsetzung/repository/">Repository-Plugins</a> entwickelt. Sobald das Reposiotory einer Moodle
-Instanz hinzugefügt wurde kann der Nutzer über einen anmelde Button Moodle autorisieren Dateien aus dem privaten ownCloud account anzuzeigen
-und mit Hilfe des File Pickers können nun Dateien ausgewählt werden.
-<div class="alert alert-danger">
-  <strong>TODO:</strong> BILDER! (Wenn get_listing wieder funktioniert)
-</div></p>
-<h4 id="3-als-nutzer-mochte-ich-in-der-dateiauswahl-im-learnweb-eine-datei-aus-meiner-owncloud-instanz-verlinken">3. Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner ownCloud Instanz verlinken.</h4>
-<p>Eine Erweiterung des vorherigen Szenarios ist die Verlinkung von Dateien. Hier wird zu der bestehenden Datei ein public-link erstellt.
-Dieser kann nun von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des <a href="moodle/technische-umsetzung/repository/">Repository-Plugins</a>. Das Verlinken ist
-jedoch nur in der Aktivität URL verfügbar.</p>
-<h4 id="4-als-lehrender-mochte-ich-studierenden-oder-gruppen-von-studierenden-ordner-fur-kollaboratives-arbeiten-bereitstellen">4. Als <strong>Lehrender</strong> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</h4>
-<p>Die letzte User Story die wir implementiert haben, wurde vermehrt von Lehrenden der Universität Münster nachgefragt. Ein Lehrender kann mir Hilfe der
-Aktivität <a href="/moodle/technische-umsetzung/acitivity.md">collaborativefolders</a> in einem Kurs Ordner erstellen auf den Studierende Zugriff haben und den sie ihrem sciebo account hinzufügen können.</p>
-<p>Weitere User Storys die jedoch nicht im Rahmen diese Projektseminars implementiert werden konnten finden sie unter dem Abschnitt
-<a href="#weitere-anwendungsszenarien">Weitere Anwendungsszenarien</a>.</p>
+<p>Die vorliegende Dokumentation ist in mehrere Teile gegliedert. Neben der Startseite (auf der Sie sich momentan befinden), gibt es die Abschnitte <strong>ownCloud</strong> und <strong>Moodle</strong>.</p>
+<p>Die Startseite enthält grundlegende Informationen zum Projektseminar und verschafft einen Überblick über die Dokumentation. Die Abschnitte <strong>ownCloud</strong> und <strong>Moodle</strong> dokumentieren jeweils die <strong>technische Umsetzung</strong> und <strong>Benutzung</strong> der beiden Systeme. Während die technische Umsetzung für Entwickler interessant ist, ist der Teil Benutzung als Bedienungsanleitung an die Nutzer gerichtet.</p>
+<p>Der Unterabschnitt <strong>technische Umsetzung</strong> im Abschnitt <strong>ownCloud</strong> enthält die Themen <a href="./owncloud/technische-umsetzung/oauth2">OAuth 2.0</a>, <a href="./owncloud/technische-umsetzung/softwarearchitektur">Softwarearchitektur</a>, <a href="./owncloud/technische-umsetzung/oauth2-app">OAuth 2.0 App</a> und <a href="./owncloud/technische-umsetzung/core-anpassungen">Core Anpassungen</a>. Auf Seiten von <strong>Moodle</strong> werden die Themen <a href="./moodle/technische-umsetzung/softwarearchitektur">Softwarearchitektur</a>, <a href="./moodle/technische-umsetzung/admin-tool">Admin Tool</a>, <a href="./moodle/technische-umsetzung/repository">Repository</a> und <a href="./moodle/technische-umsetzung/activity">Collaborative Folders</a> behandelt.</p>
+<h2 id="motivation">Motivation</h2>
+<p>Da im Learnweb sehr häufig mit Dateien umgegangen wird, lag es nahe, dem Nutzer nicht nur den Upload seiner lokalen Dateien anzubieten, sondern zusätzlich seinen Cloudspeicher zu integrieren (ganz abgesehen von den anderen Möglichkeiten, die die Integration eines Cloudspeichers bietet). Zur Kommunikation zwischen den beiden Systemen musste bisher jedoch das Passwort des Nutzers in beiden Systemen gespeichert werden, was ein Sicherheitsrisiko darstellt. Daher mussten andere Lösungen gefunden werden.</p>
+<p>Das grundlegende Ziel bei allen umzusetzenden <a href="#integrationsszenarien">Integrationsszenarien</a> war daher, die beiden Systeme sciebo und Learnweb passwortlos miteinander kommunizieren zu lassen. Dies bedeutet, dass beispielsweise für einen Zugriff vom Learnweb auf sciebo das Passwort des Nutzers nicht im Learnweb vorliegt, sondern die Authentifizierung und Autorisierung auf anderem Wege stattfindet.</p>
+<p>Des Weiteren sollte die zu entwickelnde Lösung möglichst allgemein einsetzbar sein, da die Kombination von Moodle und ownCloud an zahlreichen Universitäten genutzt wird. Aus diesem Grunde wird nachfolgend nicht mehr von Learnweb und sciebo, sondern von Moodle und ownCloud gesprochen.</p>
 <h2 id="authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</h2>
 <p>Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den Verfahren, die untersucht wurden, befinden sich:</p>
 <ul>
@@ -297,45 +256,66 @@ Aktivität <a href="/moodle/technische-umsetzung/acitivity.md">collaborativefold
 </ul>
 <p>Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und
 Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.</p>
+<h2 id="integrationsszenarien">Integrationsszenarien</h2>
+<p>Zu Beginn wurden verschiedene Integrationsszenarien zwischen den beiden Systemen entwickelt. Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementierungsaufwand priorisiert. Als Integrationsrichtung konzentrierte wir uns dabei auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.</p>
+<p>Es wurden folgende Integrationsszenarien realisiert.</p>
+<ol>
+<li>
+<p>Als <strong>Nutzer</strong> möchte ich OAuth 2.0 benutzen können, um Moodle Zugriff auf ownCloud zu gewähren. <p></p> 
+Dieses Integrationsszenario behandelt die passwortlose Authentifizierung mit dem OAuth 2.0 Verfahren, was die Grundlage für alle weiteren Szenarien war. Auf Seiten von ownCloud wurde dazu eine <a href="./owncloud/technische-umsetzung/oauth2-app">App</a> entwickelt und <a href="./owncloud/technische-umsetzung/core-anpassungen">Anpassungen am ownCloud Core</a> durchgeführt. Auf der anderen Seite ist in Moodle ein <a href="./moodle/technische-umsetzung/admin-tool">Admin Tool</a> implementiert worden, das sämtliche Aufgaben zur Authentifizierung und Autorisierung mittels OAuth 2.0 übernimmt. Alle anderen entwickelten Plugins nutzen dieses Tool.</p>
+</li>
+<li>
+<p>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz <strong>hochladen</strong>. </p></p>
+Für dieses Szenario wurde für Moodle ein <a href="./moodle/technische-umsetzung/repository">Repository Plugin</a> entwickelt, mithilfe dessen der Nutzer, nach Autorisierung von Moodle für den Zugriff auf ownCloud, Dateien aus ownCloud hochladen kann.</p>
+</li>
+<li>
+<p>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz <strong>verlinken</strong>. </p></p>
+Eine Erweiterung des vorherigen Szenarios ist die Verlinkung von Dateien. Hierzu wird zu einer Datei ein öffentlicher Link erstellt. Dieser kann daraufhin von Nutzern angeklickt werden. Diese Funktionalität ist auch Teil des <a href="./moodle/technische-umsetzung/repository">Repository Plugins</a>. Das Verlinken ist
+jedoch nur in der Moodle-Aktivität „URL“ verfügbar.</p>
+</li>
+<li>
+<p>Als <strong>Lehrender</strong> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen. </p></p>
+Nach diesem Integrationsszenario wurde vermehrt von Lehrenden der Universität Münster gefragt. Ein Lehrender kann mithilfe eines <a href="./moodle/technische-umsetzung/activity">Activity Plugins</a> für Moodle in einem Kurs Ordner erstellen, auf den Studierende Zugriff haben und den sie zu ihrer ownCloud hinzufügen können.</p>
+</li>
+</ol>
 <h2 id="komponenten">Komponenten</h2>
-<p><div class="alert alert-danger">
-  <strong>TODO:</strong> Würde ich nicht in den Index packen, sondern einzelne Komponenten nur in dem Moodle und ownCloud Unterpunkt beschreiben.
-</div></p>
-<h3 id="owncloud">ownCloud</h3>
-<p>Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte OAuth2 App und der ownCloud Core mit den (sich mittlerweile fest im <em>core</em> befindlichen) Änderungen aus unserem Pull Request,
-damit die OAuth2 App die volle Funktionalität bereitstellen kann. Die OAuth2 App implementiert den OAuth 2.0 Prozessfluss.
-Sie agiert als Endpunkt für die Authorisierung und die Bereitstellung von Access Tokens und Refresh Tokens.
-Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Server und auch Resource Server mit dem Client.</p>
-<h3 id="moodle">Moodle</h3>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Bestandteile der Lösung in moodle auflisten und kurz die Funktion anschneiden.
-</div>
-
+<p>Als Überblick werden nachfolgend die entwickelten Komponenten in den beiden Systemen dargestellt.</p>
+<ul>
+<li><strong>ownCloud</strong><ul>
+<li><a href="./owncloud/technische-umsetzung/oauth2-app/">App <code>oauth2</code></a>: Implementierung des OAuth 2.0 Protokolls.</li>
+<li><a href="./owncloud/technische-umsetzung/core-anpassungen/">Core Anpassungen</a>: Ermöglichen den Zugriff auf verschiedene Schnittstellen von ownCloud via OAuth 2.0.</li>
+</ul>
+</li>
+<li><strong>Moodle</strong><ul>
+<li><a href="./moodle/technische-umsetzung/admin-tool">Admin Tool <code>oauth2owncloud</code></a>: Verwaltung der Authentifizierung und Autorisierung mit OAuth 2.0.</li>
+<li><a href="./moodle/technische-umsetzung/repository">Repository Plugin <code>owncloud</code></a>: Herunterladen und Verlinken von Dateien aus ownCloud.</li>
+<li><a href="./moodle/technische-umsetzung/activity">Activity Plugin <code>collaborativefolders</code></a>: Erstellen von Ordnern in ownCloud für kollaboratives Arbeiten.</li>
+</ul>
+</li>
+</ul>
 <h2 id="weitere-integrationsszenarien">Weitere Integrationsszenarien</h2>
-<p>Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten Integrationsszenarien konzentriert.
-Im Folgenden werden weitere Szenarien erläutert, über deren Implementierung wir nachgedacht haben und die eine Erweiterung
-zu den bestehenden Szenarien bilden könnten.</p>
+<p>Wegen zeitlicher Restriktionen konnten nicht alle Integrationsszenarien, über deren Implementierung wir nachgedacht haben, realisiert werden. Zukünftige Arbeiten könnten sich jedoch mit folgenden Erweiterungen beschäftigen.</p>
 <ol>
 <li>
 <p>Als <strong>Lehrender</strong> möchte ich auf einen Button klicken, um hochgeladene Dateien zu aktualisieren.</p>
 </li>
 <li>
-<p>Als <strong>Studierender</strong> möchte ich Dateien aus dem Learnweb direkt in meiner ownCloud Instanz speichern können.</p>
+<p>Als <strong>Studierender</strong> möchte ich Dateien aus Moodle direkt in meiner ownCloud Instanz speichern können.</p>
 </li>
 <li>
 <p>Als <strong>Studierender</strong> möchte ich anderen Studierenden Schreib- und Lese-Rechte geben um kollaborativ zu arbeiten.</p>
 </li>
 <li>
-<p>Als <strong>Lehrender</strong> möchte ich Nutzern auf Modul-Basis das Recht entziehen eine Datei zu verlinken.</p>
+<p>Als <strong>Lehrender</strong> möchte ich Nutzern auf Modul-Basis das Recht entziehen, eine Datei zu verlinken.</p>
 </li>
 <li>
-<p>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl im Learnweb einen Ordner aus meiner ownCloud Instanz hochladen.</p>
+<p>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl in Moodle einen ganzen Ordner aus meiner ownCloud Instanz hochladen.</p>
 </li>
 <li>
-<p>Als <strong>Lehrender</strong> möchte ich in der Dateiauswahl im Learnweb einen Ordner aus meiner ownCloud Instanz verlinken.</p>
+<p>Als <strong>Lehrender</strong> möchte ich in der Dateiauswahl in Moodle einen Ordner aus meiner ownCloud Instanz verlinken.</p>
 </li>
 <li>
-<p>Als <strong>Studierender</strong> möchte ich Lehrenden Schreib- oder Lese-Rechte auf mein Dokument geben können um Feedback zu erhalten.</p>
+<p>Als <strong>Studierender</strong> möchte ich Lehrenden Schreib- oder Lese-Rechte auf mein Dokument geben können, um Feedback zu erhalten.</p>
 </li>
 <li>
 <p>Als <strong>Lehrender</strong> möchte ich die Möglichkeit haben, einen Zielordner in ownCloud zur Speicherung auszuwählen, um Abgaben herunterzuladen.</p>
@@ -407,5 +387,5 @@ Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben</p></d
 
 <!--
 MkDocs version : 0.16.2
-Build Date UTC : 2017-03-19 20:35:25
+Build Date UTC : 2017-03-19 20:35:59
 -->
