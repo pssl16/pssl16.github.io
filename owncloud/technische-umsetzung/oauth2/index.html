@@ -209,12 +209,20 @@
     
         <li class="first-level active"><a href="#oauth-20">OAuth 2.0</a></li>
         
+            <li class="second-level"><a href="#allgemeiner-protokollablauf">Allgemeiner Protokollablauf</a></li>
+            
+        
+            <li class="second-level"><a href="#authorization-code-flow">Authorization Code Flow</a></li>
+            
+        
     
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
 <h1 id="oauth-20">OAuth 2.0</h1>
+<p>Wie <a href="../../../#authentifizierung-und-autorisierung">eingangs begründet</a>, wurde OAuth 2.0 als Verfahren für die Authentifizierung und Autorisierung zwischen den beiden Systemen Moodle und ownCloud gewählt. Diese Seite erläutert den <a href="#allgemeiner-protokollablauf">allgemeinen Protokollablauf</a> und den speziellen, durch die <code>oauth2</code> App implementierten <a href="#authorization-code-flow">Authorization Code Flow</a>.</p>
+<h2 id="allgemeiner-protokollablauf">Allgemeiner Protokollablauf</h2>
 <p>Der allgemeine <a href="https://tools.ietf.org/html/rfc6749#section-1.2">OAuth 2.0 Protokollablauf</a> ist in der nachfolgenden Abbildung dargestellt.</p>
 <p><img alt="Authorization Code Flow" src="../images/oauth-allgemein.svg" /></p>
 <p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (ownCloud Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte,
@@ -228,6 +236,28 @@ der vier Autorisierungsgenehmigungen (authorization grant type) erfolgen, oder e
 Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.</li>
 <li>Anfrage mittels Access Token: Der Client fragt die geschützten Daten beim Resource Server an. Zur Authentifizierung benutzt er den Access Token.</li>
 <li>Zugriff auf geschützte Ressourcen: Der Resource Server prüft den Access Token und stellt, wenn gültig, die gewünschten Daten zur Verfügung.</li>
+</ol>
+<h2 id="authorization-code-flow">Authorization Code Flow</h2>
+<p>Die nachfolgende Abbildung stellt den durch die <code>oauth2</code> App implementierten <a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Code Flow</a> dar.</p>
+<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
+<p>Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.</p>
+<p>Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:</p>
+<ol>
+<li>Client Identifier &amp; Redirection URI: Der Client (hier Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
+zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine <code>redirection URI</code> an, zu welcher der
+User-Agent vom Authorization Server (hier sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.</li>
+<li>Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
+ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.</li>
+<li>Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,
+wozu die vorher (in der Anfrage oder während der Clientregistrierung) bereitgestellte <code>redirection URI</code> genutzt wird. Die 
+<code>redirection URI</code> beinhaltet einen <code>authorization code</code> und jeglichen vom Client im Vorhinein bereitgestellten Status.</li>
+<li>Authorization Code &amp; Redirection URI: Der Client fragt ein Access Token vom Endpunkt des Authorization Servers an, indem
+der Authorization Code aus dem vorherigen Schritt angefügt wird. Wenn die Anfrage durchgeführt wird, authentifiziert sich der Client
+automatisch mit dem Authorization Server. Der Client fügt die für den Erhalt des <code>authorization codes</code> genutzte <code>redirection URI</code>
+zur Verifizierung an.</li>
+<li>Access Token (&amp; optional: Refresh Token): Der Authorization Server authentifiziert den Client, validiert den <code>authorization code</code>, und
+prüft, dass die empfangene <code>redirection URI</code> mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
+Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem <code>access token</code> und optional mit einem <code>refresh token</code>.</li>
 </ol></div>
         
     </div>

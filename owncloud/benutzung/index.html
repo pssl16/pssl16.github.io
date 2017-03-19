@@ -215,12 +215,6 @@
             <li class="second-level"><a href="#clientregistrierung">Clientregistrierung</a></li>
             
         
-            <li class="second-level"><a href="#authorization-code-flow">Authorization Code Flow</a></li>
-            
-        
-            <li class="second-level"><a href="#angepasste-webdav-und-ocs-schnittstelle">Angepasste WebDAV und OCS Schnittstelle</a></li>
-            
-        
             <li class="second-level"><a href="#widerrufung-der-autorisierung">Widerrufung der Autorisierung</a></li>
             
         
@@ -267,33 +261,6 @@ Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine <code>C
 </div>
 
 <p><em>Zu beachten ist der Zeilenumbruch zur größeren Darstellung und die moodle-typische <code>redirect URI</code>.</em></p>
-<h2 id="authorization-code-flow">Authorization Code Flow</h2>
-<p>Die nachfolgende Abbildung stellt den durch die <code>oauth2</code> App implementierten <a href="https://tools.ietf.org/html/rfc6749#section-4.1">OAuth 2.0 Authorization Code Flow</a> dar.</p>
-<p><img alt="Authorization Code Flow" src="../images/authorization-code-flow.svg" /></p>
-<p>Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.</p>
-<p>Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:</p>
-<ol>
-<li>Client Identifier &amp; Redirection URI: Der Client (hier Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
-zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine <code>redirection URI</code> an, zu welcher der
-User-Agent vom Authorization Server (hier sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.</li>
-<li>Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
-ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.</li>
-<li>Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,
-wozu die vorher (in der Anfrage oder während der Clientregistrierung) bereitgestellte <code>redirection URI</code> genutzt wird. Die 
-<code>redirection URI</code> beinhaltet einen <code>authorization code</code> und jeglichen vom Client im Vorhinein bereitgestellten Status.</li>
-<li>Authorization Code &amp; Redirection URI: Der Client fragt ein Access Token vom Endpunkt des Authorization Servers an, indem
-der Authorization Code aus dem vorherigen Schritt angefügt wird. Wenn die Anfrage durchgeführt wird, authentifiziert sich der Client
-automatisch mit dem Authorization Server. Der Client fügt die für den Erhalt des <code>authorization codes</code> genutzte <code>redirection URI</code>
-zur Verifizierung an.</li>
-<li>Access Token (&amp; optional: Refresh Token): Der Authorization Server authentifiziert den Client, validiert den <code>authorization code</code>, und
-prüft, dass die empfangene <code>redirection URI</code> mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
-Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem <code>access token</code> und optional mit einem <code>refresh token</code>.</li>
-</ol>
-<h2 id="angepasste-webdav-und-ocs-schnittstelle">Angepasste WebDAV und OCS Schnittstelle</h2>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Ausführung entsprechend dem Abschnitt in technische-umsetzung.md
-</div>
-
 <h2 id="widerrufung-der-autorisierung">Widerrufung der Autorisierung</h2>
 <p>Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf den entsprechenden Button widerrufen werden. 
 Dies ist für den Nutzer in den persönlichen Einstellungen möglich, durch Klicken des Mülleimer-Symbols rechts neben dem jeweiligen Eintrag.
