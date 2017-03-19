@@ -50,23 +50,34 @@ Sobald das Admin tool installiert wurde, kann das Repository installiert werden.
 
 Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter `Speicherorte` löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden.
 
-<img alt="FilePicker" src="../images/filepickerlogin.png" width=100%>
+<img alt="FilePicker" src="../images/FilePickerlogin.png" width=100%>
 
-Wird der Button getätigt erscheint ein Pop-up Window oder ein neuer Tab die Anmeldung des Nutzers in ownCloud fordert und anschließend den Nutzer auffordert die App zu autorisieren. Der Nutzer wird nun zurückgeleitet und sieht tabellarische Auflistung der vorhandenen Dateien:
+Wird der Button getätigt erscheint ein Pop-up Window oder ein neuer Tab, der den Nutzer auffordert sich in ownCloud anzumelden. Anschließend eird der Nutzer gefragt ob er die App autorisieren möchte. Der Nutzer wird nun zurückgeleitet und sieht tabellarische Auflistung der vorhandenen Dateien:
 
 <img alt="FilePicker" src="../images/05.png" width=100%>
 
-Im roten Kasten sehen sie Buttons um den Inhalt neu zu laden, sich auszuloggen und nur als Admin sieht man den letzten Button in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
+Im roten Kasten sieht der Nutzer Buttons um den Inhalt neu zu laden, sich auszuloggen und nur als Admin sieht man den letzten Button, in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
 
 ## collaborative_folders
 
 ### Einstellungen
 #### Admin Einstellungen
-Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner die erstellt werden gespeichert. Um den Nutzer festzulegen muss in `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth2 Protokolls authentifizieren. Über einen Login Button werden Sie aufgefordert sich in ownCloud zu authentifizieren. Falls Sie nicht richtig weitergeleitet werden, sind die Einstellungen im Admin tool oauth2sciebo fehlerhaft, bitte überprüfen Sie diese. Achten Sie darauf, dass Sie sich nicht mit Ihrem normalen Account sondern mit dem technischen Nutzer anmelden.
+Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner die erstellt werden gespeichert. Um den Nutzer festzulegen muss in `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth2 Protokolls authentifizieren. Über einen Login Button werden Sie aufgefordert sich in ownCloud zu authentifizieren. Falls Sie nicht richtig weitergeleitet werden, sind die Einstellungen im Admin tool oauth2owncloud fehlerhaft, bitte überprüfen Sie diese. Achten Sie darauf, dass Sie sich nicht mit Ihrem normalen Account sondern mit dem technischen Nutzer anmelden.
 
 #### Sicht des Lehrenden
 Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen  von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.
 
 
 #### Sicht der Studierenden
-Wenn ein Ordner für einen Studierenden freigegeben wurde, sieht dieser die Aktivität in dem Kurs. Wählt er diese aus, kann er sich den Ordner herunterladen, oder sich den Ordner in seine Instanz duplizieren. Hat der Studierende keinen Account in der ownCloud Instanz kann er den Ordner herunterladen jedoch nichts in den Ordner laden.
+Wenn ein Ordner für einen Studierenden freigegeben wurde, sieht dieser die Aktivität in dem Kurs. Ordner werden von dem Plugin zeitverzögert erstellt um den Server nicht zu überlasten. SOmit kann es passieren, dass der Nutzer wenn er die Aktivität auswählt eine Nachricht bekommt, dass die Ordner noch nicht erstellt wurden. Sobald die Ordner erstellt wurden, wird der Nutzer aufgefordert dem Ordner einen individuellen Namen
+zu geben, wenn er die Aktivität auswählt. Dieser Name wird nur für den zurzeitigen Nutzer gespeichert.
+
+<img alt="Name Form" src="../images/NameForm.png" width=100%>
+
+Danach kann der Nutzer unter dem Menüpunkt `Change Folder Name` den gewählten Namen ändern. Wenn der Nutzer noch nicht eingeloggt ist, kann er sich über einen Login Button authentifizieren. Ansonsten kann er sich aus dem aktuellen Account ausloggen und sich mit einem anderen Account authentifizieren.
+Wenn er authentifiziert ist, kann der Ordner unter dem Menüpunkt `Generate Link to Folder` dem privaten Account hinzugefügt werden.
+
+<img alt="AddForm" src="../images/AddForm.png" width=100%>
+
+Nun kann der Nutzer über einen Link in Moodle oder über den normalen ownCloud Login auf
+den Ordner zugreifen.
