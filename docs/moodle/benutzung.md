@@ -30,7 +30,7 @@ Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in
 
 Hierfür muss der Administrator das Formular des Plugins, das unter `Website-Administration ► Plugins ► Authentifizierung ► Sciebo OAuth 2.0 Configuration` zu finden ist, ausfüllen.
 
-<img class='moodleimage' alt="OAuth 2.0 Formular" src="../images/OAuth2Form.png" width=100%>
+<img class='moodleimage' alt="OAuth 2.0 Formular" src="../images/OAuth2Form.png" width=70%>
 
 Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld, hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.
 
@@ -51,11 +51,11 @@ Sobald das Admin tool installiert wurde, kann das Repository installiert werden.
 
 Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter `Speicherorte` löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden.
 
-<img class='moodleimage' alt="FilePicker" src="../images/FilePickerlogin.png" width=100%>
+<img class='moodleimage' alt="FilePicker" src="../images/FilePickerlogin.png" width=70%>
 
 Wird der Button getätigt erscheint ein Pop-up Window oder ein neuer Tab, der den Nutzer auffordert sich in ownCloud anzumelden. Anschließend eird der Nutzer gefragt ob er die App autorisieren möchte. Der Nutzer wird nun zurückgeleitet und sieht tabellarische Auflistung der vorhandenen Dateien:
 
-<img class='moodleimage' alt="FilePicker" src="../images/05.png" width=100%>
+<img class='moodleimage' alt="FilePicker" src="../images/05.png" width=70%>
 
 Im roten Kasten sieht der Nutzer Buttons um den Inhalt neu zu laden, sich auszuloggen und nur als Admin sieht man den letzten Button, in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
 
@@ -73,12 +73,12 @@ Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktiv
 Wenn ein Ordner für einen Studierenden freigegeben wurde, sieht dieser die Aktivität in dem Kurs. Ordner werden von dem Plugin zeitverzögert erstellt um den Server nicht zu überlasten. SOmit kann es passieren, dass der Nutzer wenn er die Aktivität auswählt eine Nachricht bekommt, dass die Ordner noch nicht erstellt wurden. Sobald die Ordner erstellt wurden, wird der Nutzer aufgefordert dem Ordner einen individuellen Namen
 zu geben, wenn er die Aktivität auswählt. Dieser Name wird nur für den zurzeitigen Nutzer gespeichert.
 
-<img class='moodleimage' alt="Name Form" src="../images/NameForm.png" width=100%>
+<img class='moodleimage' alt="Name Form" src="../images/NameForm.png" width=80%>
 
 Danach kann der Nutzer unter dem Menüpunkt `Change Folder Name` den gewählten Namen ändern. Wenn der Nutzer noch nicht eingeloggt ist, kann er sich über einen Login Button authentifizieren. Ansonsten kann er sich aus dem aktuellen Account ausloggen und sich mit einem anderen Account authentifizieren.
 Wenn er authentifiziert ist, kann der Ordner unter dem Menüpunkt `Generate Link to Folder` dem privaten Account hinzugefügt werden.
 
-<img class='moodleimage' alt="AddForm" src="../images/AddForm.png" width=100%>
+<img class='moodleimage' alt="AddForm" src="../images/AddForm.png" width=60%>
 
 Nun kann der Nutzer über einen Link in Moodle oder über den normalen ownCloud Login auf
 den Ordner zugreifen.
