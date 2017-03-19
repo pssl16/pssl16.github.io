@@ -11,17 +11,17 @@ Von dort aus können sie Plugins auf zwei Wegen herunterladen.
 
 2. Mit dem Befehl git clone
 >Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:
-```
+>```
 git clone git@github.com:pssl16/name_of_the_repository.github.git
 ```
-Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
+>Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
 
 Der Vorteil des zweiten Weges ist, dass Sie mittels `git pull` Änderung schnell nach pflegen können. Wenn Sie sich mit git nicht auskennen sollten sie jedoch den ersten Weg wählen.
 
 Wenn sie die Plugins heruntergeladen und richtig platziert haben, werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
 Um unsere Plugins zu benutzen benötigen sie in jedem Fall das `oauth2owncloud_admin_tool`, alle anderen Plugins lassen sich nicht ohne dieses installieren. Beachten sie dies bei der Reihenfolge der Installation wenn sie die Plugins als ZIP-Ordner installieren.
 
-## Admin Tool oauth2sciebo
+## Admin Tool oauth2owncloud
 
 ### Admin Einstellungen
 
