@@ -129,12 +129,10 @@ $mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumer
 ``` php
     $content = json_decode($element->customdata);
     $cmidoftask = $content->cmid;
-
-    // As long as at least one ad-hoc task exist, that has the same cm->id as the current cm the folders were not created
     if ($id == $cmidoftask) {
         $created = false;
     }
 ```
-    Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
+> Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
 
 ## Tests und Continuous Integration
