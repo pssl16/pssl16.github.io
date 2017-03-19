@@ -619,7 +619,7 @@ public function authorize($response_type, $client_id, $redirect_uri, $state = nu
 </code></pre>
 
 <p>Hier werden zunächst die Parameter auf Gültigkeit überprüft. Sollten die Parameter nicht gültig sein (beispielsweise deshalb, 
-weil der angegebene Client nicht existiert oder dessen Redirect URI falsch angegeben wurde) wird mit einem <code>RedirectResponse</code> auf die ownCloud Startseite umgeleitet. 
+weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde) wird mit einem <code>RedirectResponse</code> auf die ownCloud Startseite umgeleitet. 
 Andernfalls wird ein <code>TemplateResponse</code> für das Template <code>authorize</code> zurückgegeben. 
 Für das Rendern des Templates können Parameter wie hier <code>client_name</code> für den Namen des Clients übergeben werden.</p>
 <p>Der Rückgabetyp <code>JSONResponse</code> wird für die Rückgabe des Access Tokens in der Funktion <code>generateToken</code> im <code>OAuthApiController</code> genutzt, 
