@@ -17,30 +17,27 @@ Zunächst musste ein Datenmodell zur Speicherung der benötigten Daten aufgestel
 	* `identifier`: Zeichenkette, die einen Client eindeutig identifiziert.
 	* `secret`: Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.
 	* `redirect_uri`: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.
+	* `name`: Ein Name für den Client zur Wiedererkennung.
+	* `allow_subdomains`: Zum Einstellen, on Subdomains der `redirect_uri` erlaubt werden sollen.
 * **[`authorization_code`](https://tools.ietf.org/html/rfc6749#section-1.3.1):** Ein [Authorization Grant](https://tools.ietf.org/html/rfc6749#section-1.3), 
 mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.
 	* `code`: Zeichenkette, die als Authorization Code dient.
 	* `client_id`: Client Identifier des Clients, für den der Authorization Code ausgegeben wird.
 	* `user_id`: User ID des ownCloud-Nutzers, der den Client autorisiert hat.
-	* `expires`: Zeitpunkt, zu dem der Authorization Code ungültig wird (optional).
+	* `expires`: Zeitpunkt, zu dem der Authorization Code ungültig wird.
 * **[`access_token`](https://tools.ietf.org/html/rfc6749#section-1.4):** Eine Zeichenkette, die den Zugriff auf die WebDAV Schnittstelle erlaubt.
-	* `code`: Zeichenkette, die als Access Token dient.
+	* `token`: Zeichenkette, die als Access Token dient.
 	* `client_id`: Client Identifier des Clients, für den der Access Token ausgegeben wird.
 	* `user_id`: User ID des ownCloud-Nutzers, der den Client autorisiert hat.
-	* `expires`: Zeitpunkt, zu dem der Access Token ungültig wird (optional).
+	* `expires`: Zeitpunkt, zu dem der Access Token ungültig wird.
 * **[`refresh_token`](https://tools.ietf.org/html/rfc6749#section-1.5):** Eine Zeichenkette, mit der ein abgelaufener Access Token gegen einen neuen ausgetauscht werden kann.
-	* `code`: Zeichenkette, die als Refresh Token dient.
+	* `token`: Zeichenkette, die als Refresh Token dient.
 	* `client_id`: Client Identifier des Clients, für den der Access Token ausgegeben wird.
 	* `user_id`: User ID des ownCloud-Nutzers, der den Client autorisiert hat.
-	* `expires`: Zeitpunkt, zu dem der Refresh Token ungültig wird (optional).
 
 Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.
 
 ![Datenmodell](images/datenmodell.svg)
-
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Datenmodell updaten.
-</div>
 
 ## Vorgegebene Schnittstelle
 
