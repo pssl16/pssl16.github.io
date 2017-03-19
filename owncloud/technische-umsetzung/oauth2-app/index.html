@@ -261,6 +261,8 @@
 <li><code>identifier</code>: Zeichenkette, die einen Client eindeutig identifiziert.</li>
 <li><code>secret</code>: Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.</li>
 <li><code>redirect_uri</code>: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.</li>
+<li><code>name</code>: Ein Name für den Client zur Wiedererkennung.</li>
+<li><code>allow_subdomains</code>: Zum Einstellen, on Subdomains der <code>redirect_uri</code> erlaubt werden sollen.</li>
 </ul>
 </li>
 <li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.3.1"><code>authorization_code</code></a>:</strong> Ein <a href="https://tools.ietf.org/html/rfc6749#section-1.3">Authorization Grant</a>, 
@@ -268,30 +270,25 @@ mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access T
 <li><code>code</code>: Zeichenkette, die als Authorization Code dient.</li>
 <li><code>client_id</code>: Client Identifier des Clients, für den der Authorization Code ausgegeben wird.</li>
 <li><code>user_id</code>: User ID des ownCloud-Nutzers, der den Client autorisiert hat.</li>
-<li><code>expires</code>: Zeitpunkt, zu dem der Authorization Code ungültig wird (optional).</li>
+<li><code>expires</code>: Zeitpunkt, zu dem der Authorization Code ungültig wird.</li>
 </ul>
 </li>
 <li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.4"><code>access_token</code></a>:</strong> Eine Zeichenkette, die den Zugriff auf die WebDAV Schnittstelle erlaubt.<ul>
-<li><code>code</code>: Zeichenkette, die als Access Token dient.</li>
+<li><code>token</code>: Zeichenkette, die als Access Token dient.</li>
 <li><code>client_id</code>: Client Identifier des Clients, für den der Access Token ausgegeben wird.</li>
 <li><code>user_id</code>: User ID des ownCloud-Nutzers, der den Client autorisiert hat.</li>
-<li><code>expires</code>: Zeitpunkt, zu dem der Access Token ungültig wird (optional).</li>
+<li><code>expires</code>: Zeitpunkt, zu dem der Access Token ungültig wird.</li>
 </ul>
 </li>
 <li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.5"><code>refresh_token</code></a>:</strong> Eine Zeichenkette, mit der ein abgelaufener Access Token gegen einen neuen ausgetauscht werden kann.<ul>
-<li><code>code</code>: Zeichenkette, die als Refresh Token dient.</li>
+<li><code>token</code>: Zeichenkette, die als Refresh Token dient.</li>
 <li><code>client_id</code>: Client Identifier des Clients, für den der Access Token ausgegeben wird.</li>
 <li><code>user_id</code>: User ID des ownCloud-Nutzers, der den Client autorisiert hat.</li>
-<li><code>expires</code>: Zeitpunkt, zu dem der Refresh Token ungültig wird (optional).</li>
 </ul>
 </li>
 </ul>
 <p>Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.</p>
 <p><img alt="Datenmodell" src="../images/datenmodell.svg" /></p>
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Datenmodell updaten.
-</div>
-
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
 <p>Zur Erweiterung von ownCloud wird das Konzept von <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/">Apps</a> geboten. ownCloud Apps liegen im Verzeichnis <code>apps</code> einer ownCloud Installation und besitzen folgende <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/startapp.html#app-architecture">Struktur</a>:</p>
 <pre><code class="nohighlight">appinfo
