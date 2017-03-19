@@ -53,6 +53,21 @@ Größere Darstellung des Clients:
 [Zu beachten ist der Zeilenumbruch und die moodle-typische `redirect URI`.]
 </div>
 
+## Autorisierung eines Clients
+
+Nach der Clientregistrierung kann der Client entsprechend verwendet werden. Es können also Anwendungen autorisiert werden um Zugriff auf die
+ownCloud-Instanz zu erhalten. Dies wird über Abfragen geregelt, welche der Endnutzer bestätigen oder ablehnen muss.
+
+Screenshot einer Autorisierungsabfrage
+<div align="center">
+	<img alt="test" src="../images/request.png" width=80%>
+</div>
+
+Screenshot einer fehlerhaften Autorisierungsabfrage
+<div align="center">
+	<img alt="Abfrage bei Löschung" src="../images/invalid_request.png" width=80%>
+</div>
+
 ## Widerrufung der Autorisierung
 
 Zur Widerrufung der Autorisierung muss diese in den Einstellungen per Klick auf den entsprechenden Button widerrufen werden. 
