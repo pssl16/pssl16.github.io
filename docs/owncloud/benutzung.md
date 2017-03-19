@@ -2,7 +2,9 @@
 
 ## Installation
 
-Da die Anpassungen durch den Pull Request [owncloud/core#26742](https://github.com/owncloud/core/pull/26742) erst kürzlich in den ownCloud Core aufgenommen wurden, sind sie noch in keiner Hauptversion enthalten. Es muss daher der aktuelle Stand aus dem [Repository](https://github.com/owncloud/core) heruntergeladen werden:
+Da die Anpassungen durch den Pull Request [owncloud/core#26742](https://github.com/owncloud/core/pull/26742) erst kürzlich in den ownCloud Core aufgenommen wurden, sind sie noch in keiner Hauptversion enthalten. Erst die [in Kürze erscheinende](https://github.com/owncloud/core/wiki/Maintenance-and-Release-Schedule) Version 10.0 wird die Änderungen enthalten.
+
+Um die OAuth 2.0 in ownCloud schon jetzt nutzen zu können, muss daher der aktuelle Stand aus dem [`core` Repository](https://github.com/owncloud/core) heruntergeladen werden:
 
 ```nohighlight
 $ git clone https://github.com/owncloud/core.git
@@ -16,7 +18,7 @@ $ make
 
 Die restlichen Installationsschritte von ownCloud unterscheiden sich nicht von denen im [ownCloud Handbuch](https://doc.owncloud.org/server/latest/admin_manual/installation/index.html).
 
-Die `oauth2` App wird dadurch installiert, dass der Inhalt des [Repositorys](https://github.com/owncloud/oauth2) in das Verzeichnis `apps` kopiert wird:
+Die `oauth2` App wird dadurch installiert, dass der Inhalt des [`oauth2` Repositorys](https://github.com/owncloud/oauth2) in das Verzeichnis `apps` kopiert wird:
 
 ```nohighlight
 $ cd apps
@@ -58,12 +60,12 @@ Größere Darstellung des Clients:
 Nach der Clientregistrierung kann der Client entsprechend verwendet werden. Es können also Anwendungen autorisiert werden um Zugriff auf die
 ownCloud-Instanz zu erhalten. Dies wird über Abfragen geregelt, welche der Endnutzer bestätigen oder ablehnen muss.
 
-Screenshot einer Autorisierungsabfrage:
+Screenshot einer Autorisierungsabfrage
 <div align="center">
 	<img alt="test" src="../images/request.png" width=80%>
 </div>
 
-Screenshot einer fehlerhaften Autorisierungsabfrage:
+Screenshot einer fehlerhaften Autorisierungsabfrage
 <div align="center">
 	<img alt="Abfrage bei Löschung" src="../images/invalid_request.png" width=75%>
 </div>
@@ -91,7 +93,7 @@ Screenshot zur Sicherheitsabfrage bei Löschung einer autorisierten Anwendung:
 Bei Bedarf kann ein Client beziehungsweise eine Clientregistrierung gelöscht werden. Dies kann notwendig sein, wenn sich
 beim Client die `redirect URI` geändert hat, oder man dem Client aus anderen Gründen den Zugriff entziehen möchte. Dadurch, dass
 ein Client gelöscht wird, kann dieser nun nicht mehr auf Dateien aus der ownCloud-Instanz zugreifen und die ausgestellten `authorization codes`, 
-`access token`s und `refresh token`s sind ungültig. Bei irrtümlicher Löschung des Clients muss bei erneuter Einpflegung jeder
+`access tokens` und `refresh tokens` sind ungültig. Bei irrtümlicher Löschung des Clients muss bei erneuter Einpflegung jeder
 Nutzer des Clients erneut das Authentifizierungsverfahren durchlaufen, da eine neue `ClientID` und ein neues `ClientSecret` generiert werden.
 Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellarische Ansicht der registrierten Clients aufgerufen werden. 
 Nun kann man bei dem zu löschenden Client rechts neben den zugeordneten Attributen auf ein Mülleimer-Symbol klicken, um die entsprechende Clientregistrierung zu löschen.
