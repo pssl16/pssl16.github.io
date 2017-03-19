@@ -1,6 +1,6 @@
 # OAuth 2.0
 
-Wie [eingangs begründet](../../#authentifizierung-und-autorisierung), wurde OAuth 2.0 als Verfahren für die Authentifizierung und Autorisierung zwischen den beiden Systemen Moodle und ownCloud gewählt. Diese Seite erläutert den [allgemeinen Protokollablauf](#allgemeiner-protokollablauf) und den speziellen, durch die `oauth2` App implementierten [Authorization Code Flow](#authorization-code-flow).
+Wie [eingangs begründet](../../#authentifizierung-und-autorisierung), wurde OAuth 2.0 als Verfahren für die Authentifizierung und Autorisierung zwischen den beiden Systemen Moodle und ownCloud gewählt. Diese Seite erläutert den [allgemeinen Protokollablauf](#allgemeiner-protokollablauf) von OAuth 2.0.
 
 ## Allgemeiner Protokollablauf
 
