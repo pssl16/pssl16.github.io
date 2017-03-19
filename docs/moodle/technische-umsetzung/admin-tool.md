@@ -114,7 +114,7 @@ public function __construct($callback) {
 Zu diesem Zweck wird die Methode `get_config` verwendet. Sie gibt den für ein Plugin und einen zuvor einzigartig definierten
 Namen aus den Einstellungen heraus den dazu gespeicherten Wert.
 Darüber hinaus muss eine `callback URL` angefügt werden, die den Pfad angibt, an den nach der Authentifizierung und Authorisierung
-der Nutzer weitergeleitet werden soll. Dieser wird allerdings extern in den Plugins erzeugt, die den `owncloud` Client benutzen.
+der Nutzer weitergeleitet werden soll. Dieser wird allerdings extern in den Anwendungen erzeugt, die den `owncloud` Client benutzen.
 
 Zu beachten ist, dass für die Klasse `owncloud` ein namespace definiert wird, womit diese effizient in externen Plugins verwendet werden
 kann, die einen OAuth 2.0 ownCloud Client benötigen.
@@ -287,14 +287,69 @@ Eingabemaske zusammengestellt.
 Auch ownClouds OCS Share API wird zur Abdeckung einiger Intergrationsszenarien benötigt, da sie sowohl zum Teilen von privaten
 Inhalten, als auch zum Generieren öffentlicher Links gebraucht werden kann. Mussten zuvor noch Nutzername und Passwort bei jedem
 Zugriff auf diese Schnittstelle zwingend zur Authentifizierung angegeben werden, reicht durch das Setzen eines Bearer Authentication
-Headers nun auch ein von ownCloud erhaltenes Access Token.
+Headers nun auch ein von ownCloud erhaltenes Access Token. Somit ist auch diese Schnittstelle nun mittels OAuth 2.0 abgesichert.
 
 ## Integration mit ownCloud
 
+Nachdem die nötigen Schnittstellen individuell implementiert worden sind, können sie genutzt werden um den von OAuth 2.0 spezifizierten
+Protokollablauf moodle-seitig durchzuführen. Um beispielsweise über eine WebDAV Anfrage Daten aus einer ownCloud Instanz 
+beschaffen zu können, müssen im Wesentlich folgende Schritte in Moodle unternommen werden, nachdem die Eingabemaske korrekt 
+ausgefüllt worden ist:
+
+1. Anfrage auf Authentifizierung und Autorisierung
+2. Anfrage eines Access Tokens
+3. Zugriff auf die WebDAV Schnittstelle
+
+Der damit vollzogene Ablauf lässt sich in folgender Grafik erfassen:
+
 ![Protokollablauf](images/protokollablauf.svg)
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Zusammenspiel mit ownCloud beschreiben...
-</div>
+Diese Schritte werden im Folgenden erläutert.
+
+### Authentifizierung und Autorisierung
+
+Sobald ein Nutzer in Moodle zum ersten Mal mittels OAuth 2.0 auf ownCloud zugreifen möchte, müssen in ownCloud dessen
+Authentifizierung und Autorisierung erfragt werden. Zu diesem Zweck wird der Nutzer mittels eines Links an die `authorize`
+Schnittstelle der oauth2 App in ownCloud weitergeleitet. Dabei werden die im Authorization Code Flow aufgeführten Parameter,
+welche zur Bearbeitung der Autorisierungsanfrage nötig sind, angefügt. Während `respone_type`, `client_id` und `redirect_uri`
+stets gleich bleiben, beziehungsweise von der vorgenommenen Konfiguration abhängig sind, wird der `state` Moodle-intern
+von der Anwendung gestellt, welche den Client benutzt. Der `state` Parameter gibt an, wohin in Moodle weitergeleitet werden
+soll, nachdem eine erfolgreiche Anfrage gestellt worden ist. Somit dient `state` in Moodle der Wiederherstellung des Standes,
+an dem der Nutzer sich vor der Anfrage befand. Im Fall des ownCloud Repository Plugins wird, wie im folgenden gezeigt,
+auf eine Moodle-interne Adresse verwiesen, die den Status eines Repositories in dem File Picker wiederherstellt.
+
+```php
+$returnurl = new moodle_url('/repository/repository_callback.php', [
+        'callback'  => 'yes',
+        'repo_id'   => $repositoryid,
+        'sesskey'   => sesskey(),
+]);
+```
+
+Falls die Anfrage erfolgreich verläuft, erhält der Client einen Authorization Code, welcher ihn zur Anfrage eines Access Tokens
+bemächtigt.
+
+Die Autorisierung durch den Nutzer stellt die einzige für den diesen sichtbare Schnittstelle dar.
+
+### Anfrage eines Access Tokens
+
+Um einen Authorization Code zu einem Access Token aufzuwerten muss mittels einer POST-Anfrage die `token` Schnittstelle
+der oauth2 App in ownCloud angesprochen werden. Erneut müssen alle spezifizierten Angaben in dem Request übergeben werden,
+unter Anderem der Authorization Code. Da ownCloud-seitig zusätzlich ein Basic Authentication Header mit Client ID und
+Client Secret zur Authentifizierung erwartet wird, muss dieser zusätzlich bei der Anfrage nach einem Access Token hinzugefügt werden.
+
+Die Anfrage auf einen Access Token erfolgt Moodle-intern sobald ein Authorization Code erhalten worden ist, um ein
+Ablaufen des Codes zu verhindern und dem Nutzer sofort Zugang zu ownCloud zu ermöglichen.
+
+### Zugriff auf WebDAV
+
+Nachdem erfolreich ein Access Token angefordert worden ist, kann dieses verwendet werden um die WebDAV Schnittstelle abzusichern.
+Wenn der Nutzer eine WebDAV Anfrage anfordert, setzt der OAuth 2.0 Client zunächst das erhaltene Access Token im WebDAV Client.
+Anschließend leitet dieser die Anfrage an den WebDAV Client weiter, der den WebDAV Request, mitsamt eines Bearer Authentication
+Headers, an ownClouds WebDAV Schnittstelle äußert. Der Header ersetzt dabei den ansonsten versendeten Basic Authentication Header
+und beinhaltet das Access Token.
+
+Zu beachten ist, dass sowohl bei Zugriffen über WebDAV, als auch über die OCS Share API nur die Authentifizierungsmethode verändert
+wird. Ansonsten bleiben die Anfragen unverändert im Vergleich mit Basic Auth.
 
 ## Tests und Continuous Integration
