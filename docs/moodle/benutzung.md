@@ -1,11 +1,11 @@
 # Benutzung
 
 Plugins können in Moodle zusätzlich zum core installiert werden. Im folgenden wird beschrieben, wie sie unsere Plugins herunterladen können und anschließend in den einzelnen Plugins die richtigen Einstellungen tätigen können. Zusätzlich werden Ihnen verschiedene Ansichten des Plugins präsentiert um die Funktionalitäten der jeweiligen Plugins zu verdeutlichen.
-Falls sie 
 
 ## Download
 Unsere Plugins sind zurzeit in einem öffentlichen Github repository verfügbar.
 Von dort aus können sie Plugins auf zwei Wegen herunterladen.
+
 1. Als Zip-Datei
 >Klicken sie am rechten Rand in dem Menü `clone or download` auf **Download ZIP**. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
 
@@ -51,7 +51,7 @@ Sobald das Admin tool installiert wurde, kann das Repository installiert werden.
 Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter `Speicherorte` löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden.
 Danach sieht man nach der Anmeldung eine tabellarische Auflistung der vorhandenen Dateien:
 
-<img alt="FilePicker" src="../images/FilePickerredblock.png" width=100%>
+<img alt="FilePicker" src="../images/FilePicker.png" width=100%>
 
 Im roten Kasten sehen sie Buttons um den Inhalt neu zu laden, sich auszuloggen und nur als Admin sieht man den letzten Button in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
 
