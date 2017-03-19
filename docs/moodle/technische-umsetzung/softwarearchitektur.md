@@ -41,7 +41,7 @@ Die aus der Aufteilung der Funktionen in verschiedene Plugins resultierenden Abh
 dargestellt:
 
 
-![Plugin-Struktur](images/plugin-struktur-03.svg)
+![Plugin-Struktur](images/plugin-struktur.svg)
 
 Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Softwarearchitektur erzielt
 werden sollte. Das führt zwar mit sich, dass funktionale Plugins (also das `repository` und das `activity` Plugin) nicht
