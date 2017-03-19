@@ -241,22 +241,16 @@
 Von dort aus können sie Plugins auf zwei Wegen herunterladen.</p>
 <ol>
 <li>
-<p>Als Zip-Datei</p>
-<blockquote>
-<p>Klicken sie am rechten Rand in dem Menü <code>clone or download</code> auf <strong>Download ZIP</strong>. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt <code>Website-Administration Plugins Plugin installieren</code> hochgeladen werden. Das Plugin wird automatisch richtig platziert.</p>
-</blockquote>
+<p>Als Zip-Datei
+    Klicken sie am rechten Rand in dem Menü <code>clone or download</code> auf <strong>Download ZIP</strong>. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt <code>Website-Administration Plugins Plugin installieren</code> hochgeladen werden. Das Plugin wird automatisch richtig platziert.</p>
 </li>
 <li>
-<p>Mit dem Befehl git clone</p>
-<blockquote>
-<p>Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:
-<code>git clone git@github.com:pssl16/name_of_the_repository.github.git</code></p>
-</blockquote>
+<p>Mit dem Befehl git clone
+    Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:
+    <code>git clone git@github.com:pssl16/name_of_the_repository.github.git</code>
+    Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.</p>
 </li>
 </ol>
-<blockquote>
-<p>Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.</p>
-</blockquote>
 <p>Der Vorteil des zweiten Weges ist, dass Sie mittels <code>git pull</code> Änderung schnell nach pflegen können. Wenn Sie sich mit git nicht auskennen sollten sie jedoch den ersten Weg wählen.</p>
 <p>Wenn sie die Plugins heruntergeladen und richtig platziert haben, werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
 Um unsere Plugins zu benutzen benötigen sie in jedem Fall das <code>oauth2owncloud_admin_tool</code>, alle anderen Plugins lassen sich nicht ohne dieses installieren. Beachten sie dies bei der Reihenfolge der Installation wenn sie die Plugins als ZIP-Ordner installieren.</p>
