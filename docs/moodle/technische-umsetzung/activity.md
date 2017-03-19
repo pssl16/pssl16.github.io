@@ -109,24 +109,21 @@ Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden mü
 
 2. Der Name des Ordners wird geändert
 > Wenn der Name des Ordners zurückgesetzt wird, wird ein URL Parameter *reset=1* an die URL übergeben. In diesem Fall wird dem Kursteilnehmer eine Eingabemaske angezeigt. Diese ist als eigene Klasse in dem Ordner `collaborativefolders/classes` implementiert. Sie erbt von der abstrakten Klasse `moodleform`. Es muss nun sichergestellt werden das vergebene Namen kompatible mit ownCloud sind. Moodle unterstützt die zugelassenen Eingaben durch Form Element Regeln zu begrenzen.
-
-``` php
+>``` php
 $mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');
 ```
-    > Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.
+> Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.
 
 3. Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus:
 > Der Nutzer muss mit Hilfe des `oauth2owncloud` admin_tools aus-geloggt werden, und der accesstoken wird auf null gesetzt.
-
-``` php
+>``` php
     $ocs->owncloud->log_out();
     set_user_preference('oC_token', null);
 ```
 
 4. Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.
 > Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:
-
-``` php
+>``` php
     $content = json_decode($element->customdata);
     $cmidoftask = $content->cmid;
     if ($id == $cmidoftask) {
