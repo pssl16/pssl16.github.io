@@ -65,7 +65,7 @@ Screenshot einer Autorisierungsabfrage
 
 Screenshot einer fehlerhaften Autorisierungsabfrage
 <div align="center">
-	<img alt="Abfrage bei Löschung" src="../images/invalid_request.png" width=80%>
+	<img alt="Abfrage bei Löschung" src="../images/invalid_request.png" width=75%>
 </div>
 
 ## Widerrufung der Autorisierung
