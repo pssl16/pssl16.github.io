@@ -35,30 +35,21 @@ Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mi
 
 Implementiert haben wir dies in der `collaborativefolders/settings.php`. Diese erstellt eine Seite in den Admin Settings der Moodle Instanz. Hier müssen wir drei verschiedene Fälle beachten:
 
-1. Der technische Nutzer ist bereits angemeldet aber soll die Möglichkeit haben ausgeloggt zu werden.
-    >Die `check_login()` Methode des `oauth2_owncloud` Plugins überprüft ob ein technischer Nutzer registriert ist. Falls der Nutzer angemeldet ist, kann der Administrator den Nutzer mit einem Logout-Button ausloggen. Dieser leitet den Nutzer auf eine neue Seite. Diese enthält eine Warnung da alte Instanzen des Plugins nicht länger genutzt werden können wenn der technische Nutzer geändert wird.
+1. **Der technische Nutzer ist bereits angemeldet aber soll die Möglichkeit haben ausgeloggt zu werden.**
+    Die `check_login()` Methode des `oauth2_owncloud` Plugins überprüft ob ein technischer Nutzer registriert ist. Falls der Nutzer angemeldet ist, kann der Administrator den Nutzer mit einem Logout-Button ausloggen. Dieser leitet den Nutzer auf eine neue Seite. Diese enthält eine Warnung da alte Instanzen des Plugins nicht länger genutzt werden können wenn der technische Nutzer geändert wird.
 
-2. Der technische Nutzer wird erstmals registriert.
+2. **Der technische Nutzer wird erstmals registriert.**
 
-    >Der token des technischen Nutzers wird für das Plugin in den `config` Einstellungen gespeichert, da er zu keinem Nutzer aber zu dem Plugin gehört. Zur Sicherheit setzten wir diese auf null, und zeigen dem Admin einen Login-Button an.
+    Der token des technischen Nutzers wird für das Plugin in den `config` Einstellungen gespeichert, da er zu keinem Nutzer, aber zu dem Plugin, gehört. Zur Sicherheit setzten wir diese auf null, und zeigen dem Admin einen Login-Button an. Die Speicherung des token erfolgt durch den callback des oauth2 Protokolls.
 
-    >``` php
-      set_config('token', null, 'mod_collaborativefolders');
-      $url = $owncloud->get_login_url();
-    ```
+3. **Der technische Nutzer soll ausgeloggt werden.**
 
-    >Die Speicherung des token erfolgt durch den callback des oauth2 Protokolls.
+    Dem Administrator wird dasselbe Login Fenster angezeigt wie bei der erstmaligen Registrierung. Genauso wird der bisherige *Access token* gelöscht. Zusätzlich wird jedoch ein `logout Event` ausgelöst. Diese Event wird geloggt, damit der Vorgang später nachverfolgt werden kann.
 
-3. Der technische Nutzer soll ausgeloggt werden.
-
-    >Dem Administrator wird dasselbe Login Fenster angezeigt wie bei der erstmaligen Registrierung. Genauso wird der bisherige *Access token* gelöscht. Zusätzlich wird jedoch ein `logout Event` ausgelöst.
-
-    >``` php
+``` php
     $logoutevent = \mod_collaborativefolders\event\technical_user_loggedout::create($params);
     $logoutevent->trigger();
-      ```
-
-    >Diese Event wird geloggt, damit der Vorgang später nachverfolgt werden kann.
+```
 
 ### Hinzufügen eine Instanz
 Die Schnittstelle in Moodle für das Einstellungs Formular ist sehr ausführlich. Den Standard Einstellungen haben wir nur eine Checkbox hinzugefügt die bestimmt ob der Lehrende Zugriff auf die Ordner hat.
@@ -134,10 +125,12 @@ Lehrende sollen entweder eine Übersicht aller Ordner haben, oder keinen Zugriff
 Für Studierende wird zunächst überprüft, ob der `group_mode` aktiviert ist. Wenn dies der Fall ist, wird an den Pfad an dem später der Ordner gefunden werden soll die Gruppenid angefügt. Moodle hat hierfür intern eine Methode `groups_get_activity_group()` Die zu einer Instanz der Aktivität angibt in welcher Gruppe der Studierende ist.
 Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden müssen.
 
-1. Der Ordnername wird erstmals gespeichert
+1. **Der Ordnername wird erstmals gespeichert**
+
     Wir speichern den Ordnernamen in den moodle `user_preferences`. Diese werden für jeden Nutzer einzeln gespeichert und können beliebig geändert oder gelöscht werden. Die Eingabemaske für einen Ordnernamen wird nur angezeigt wenn bis jetzt kein Name gesetzt wurde oder der Nutzer explizit ausgewählt hat, das der Name zurückgesetzt werden soll.
 
-2. Der Name des Ordners wird geändert
+2. **Der Name des Ordners wird geändert**
+
     Wenn der Name des Ordners zurückgesetzt wird, wird ein URL Parameter *reset=1* an die URL übergeben. In diesem Fall wird dem Kursteilnehmer eine Eingabemaske angezeigt. Diese ist als eigene Klasse in dem Ordner `collaborativefolders/classes` implementiert. Sie erbt von der abstrakten Klasse `moodleform`. Es muss nun sichergestellt werden das vergebene Namen kompatible mit ownCloud sind. Moodle unterstützt die zugelassenen Eingaben durch Form Element Regeln zu begrenzen.
 
     ``` php
@@ -146,17 +139,17 @@ Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden mü
 
     Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.
 
-3. Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus:
+3. **Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus**
     Der Nutzer muss mit Hilfe des `oauth2owncloud` admin_tools aus-geloggt werden, und der accesstoken wird auf null gesetzt.
 
-    ``` php
+    ```
     $ocs->owncloud->log_out();
     set_user_preference('oC_token', null);
     ```
 
-4. Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.
+4. **Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.**
 
-    Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:
+    Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
 
     ``` php
     $content = json_decode($element->customdata);
@@ -165,8 +158,6 @@ Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden mü
         $created = false;
     }
     ```
-
-    Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
 
 #### Sicht der Lehrenden
 
