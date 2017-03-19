@@ -113,7 +113,7 @@ Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden mü
 ``` php
 $mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');
 ```
-> Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.
+    > Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.
 
 3. Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus:
 > Der Nutzer muss mit Hilfe des `oauth2owncloud` admin_tools aus-geloggt werden, und der accesstoken wird auf null gesetzt.
@@ -133,6 +133,6 @@ $mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumer
         $created = false;
     }
 ```
-> Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
+    > Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
 
 ## Tests und Continuous Integration
