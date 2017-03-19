@@ -646,15 +646,7 @@ public static function generateRandom() {
 
 Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren Beziehungen zu den Entities und Mappern dargestellt.
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Klassendiagramme zusammenfügen bzw. vervollständigen.
-</div>
-
-![Controller](images/UML_Controller.svg)
-
-![Mapper](images/UML_Mapper.svg)
-
-![Entities](images/UML_Entities.svg)
+![UML-Klassendiagramm](images/uml-klassendiagramm.svg)
 
 ### Templates
 
