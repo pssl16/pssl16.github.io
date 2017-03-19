@@ -238,13 +238,149 @@
 <h2 id="zweck">Zweck</h2>
 <p>Um das durch die <code>oauth2</code> App implementierte OAuth 2.0 Protokoll für den Zugriff auf die <a href="https://doc.owncloud.org/server/9.1/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> und die <a href="https://doc.owncloud.org/server/9.1/developer_manual/core/ocs-share-api.html">OCS Share API</a> nutzen zu können, mussten Anpassungen am <a href="https://github.com/owncloud/core">ownCloud Core</a> durchgeführt werden. Diese Änderungen liegen im Pull Request <a href="https://github.com/owncloud/core/pull/26742">owncloud/core#26742</a> vor. Ein Backport für ownCloud 9.1 ist im Pull Request <a href="https://github.com/owncloud/core/pull/27370">owncloud/core#27370</a> zu finden.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
-<p>Bevor wir um OAuth 2.0 erweitern konnten, mussten wir die vorgegebene Schnittstelle untersuchen. Dazu schauten wir uns die Implementierungen von WebDAV und der OCS Share API an.</p>
+<p>Bevor wir ownCloud um OAuth 2.0 erweitern konnten, mussten wir die vorgegebene Schnittstelle untersuchen. Dazu schauten wir uns die Implementierungen von WebDAV und der OCS Share API an.</p>
 <h3 id="webdav">WebDAV</h3>
+<p>Bei der Untersuchung der WebDAV Schnittstelle stellte sich heraus, dass hierfür eine ownCloud App namens <code>dav</code> verwendet wurde, die die <a href="http://sabre.io">sabre/dav</a> Bibliothek zur Implementierung des WebDAV-Serves nutzt. Da die Bibliothek den Austausch der Authentifizierung über eigene Authentication Backends unterstützt, entschieden wir uns dafür, diesen Mechanismus auch für die Bereitstellung von OAuth 2.0 zu nutzen. Die Implementierung eines solchen Backends wird auf der Seite zur <a href="../oauth2-app/#authentifizierungslogik">OAuth 2.0 App</a> beschrieben.</p>
 <h3 id="owncloud-apis">ownCloud APIs</h3>
+<p>Die Implementierung der OCS Share API wird größtenteils durch die ownCloud App <code>files_sharing</code> bereitgestellt. Daher mussten Änderungen auf Ebene von ownCloud Apps und im Speziellen bei der Authentifizierung der von ihnen definierten APIs durchgeführt werden. Wir folgten dem Vorschlag eines ownCloud Entwicklers, dafür einen Plugin Mechanismus zu implementieren, sodass Apps weitere Authentifizierungsmethoden bereitstellen können.</p>
 <h2 id="implementierung">Implementierung</h2>
 <h3 id="webdav_1">WebDAV</h3>
+<p>Um eigene Authentication Backends für die <code>dav</code> App bekannt zu machen und gleichzeitig keine Abhängigkeit zu schaffen, nutzten wir Event Listener. Vor dem Start des WebDAV-Servers in der Datei <code>appinfo/v1/webdav.php</code> lösten wir das <code>authInit</code>-Event aus, wie folgendes Codebeispiel zeigt.</p>
+<pre><code class="php">&lt;?php
+$event = new \OCP\SabrePluginEvent($server);
+\OC::$server-&gt;getEventDispatcher()-&gt;dispatch('OCA\DAV\Connector\Sabre::authInit', $event);
+</code></pre>
+
+<p>Dadurch ist es ownCloud Apps möglich, das Event abzugreifen und vor dem Start des WebDAV-Servers weitere Authentication Backends hinzuzufügen. Wie dies in der OAuth 2.0 App implementiert wurde, beschreibt <a href="../oauth2-app/#authentifizierungslogik">dessen Seite</a>.</p>
 <h3 id="owncloud-apis_1">ownCloud APIs</h3>
-<h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
+<p>Die Authentifizierung von API-Zugriffen in ownCloud geschieht in der Datei <code>lib/private/legacy/api.php</code>, welche auf <code>lib/private/User/Session.php</code> zurückgreift. Analog zu den bestehenden Funktionen <code>tryTokenLogin</code> und <code>tryBasicAuthLogin</code> fügten wir die Funktion <code>tryAuthModuleLogin</code> hinzu. Ein <code>AuthModule</code> kann dabei von ownCloud Apps bereitgestellt werden, indem eine Implementierung des Interfaces <code>IAuthModule</code> (zu finden in der Datei <code>lib/public/Authentication/IAuthModule.php</code>) registriert wird. Nachfolgendes Codebeispiel zeigt dieses Interface.</p>
+<pre><code class="php">&lt;?php
+namespace OCP\Authentication;
+
+use OCP\IRequest;
+use OCP\IUser;
+
+/**
+ * Interface IAuthModule
+ *
+ * @package OCP\Authentication
+ * @since 10.0.0
+ */
+interface IAuthModule {
+
+    /**
+     * Authenticates a request.
+     *
+     * @param IRequest $request The request.
+     *
+     * @return null|IUser The user if the request is authenticated, null otherwise.
+     * @since 10.0.0
+     */
+    public function auth(IRequest $request);
+
+    /**
+     * Returns the user's password.
+     *
+     * @param IRequest $request The request.
+     *
+     * @return String The user's password.
+     * @since 10.0.0
+     */
+    public function getUserPassword(IRequest $request);
+
+}
+</code></pre>
+
+<p>Die Funktion <code>auth</code> authentifiziert eine Anfrage und ermittelt (bei erfolgreicher Authentifizierung) den zugehörigen Nutzer. Zusätzlich gibt es noch die Funktion <code>getUserPassword</code>, welche zu einer Anfrage das Passwort des Nutzers bestimmt. Sie wurde hinzugefügt, da die App <code>encryption</code> in bestimmten Nutzungsszenarien auf das Passwort des Nutzers angewiesen ist.</p>
+<p>In der Funktion <code>tryAuthModuleLogin</code> der Klasse <code>Session</code> werden nun alle von ownCloud Apps bereitgestellten Implementierungen von <code>IAuthModule</code> geladen und zur Authentifizierung genutzt, wie im folgenden Codebeispiel zu sehen.</p>
+<pre><code class="php">&lt;?php
+/**
+ * Tries to login with an AuthModule provided by an app
+ *
+ * @param IRequest $request The request
+ * @return bool True if request can be authenticated, false otherwise
+ * @throws Exception If the auth module could not be loaded
+ */
+public function tryAuthModuleLogin(IRequest $request) {
+    /** @var IAppManager $appManager */
+    $appManager = OC::$server-&gt;query('AppManager');
+    $allApps = $appManager-&gt;getInstalledApps();
+
+    foreach ($allApps as $appId) {
+        $info = $appManager-&gt;getAppInfo($appId);
+
+        if (isset($info['auth-modules'])) {
+            $authModules = $info['auth-modules'];
+
+            foreach ($authModules as $class) {
+                try {
+                    if (!OC_App::isAppLoaded($appId)) {
+                        OC_App::loadApp($appId);
+                    }
+
+                    /** @var IAuthModule $authModule */
+                    $authModule = OC::$server-&gt;query($class);
+
+                    if ($authModule instanceof IAuthModule) {
+                        return $this-&gt;loginUser(
+                            $authModule-&gt;auth($request),
+                            $authModule-&gt;getUserPassword($request)
+                        );
+                    } else {
+                        throw new Exception(&quot;Could not load the auth module $class&quot;);
+                    }
+                } catch (QueryException $exc) {
+                    throw new Exception(&quot;Could not load the auth module $class&quot;);
+                }
+            }
+        }
+    }
+
+    return false;
+}
+</code></pre>
+
+<p>Hier wird in allen installierten Apps in der <code>info.xml</code> nach dem Tag <code>auth-modules</code> gesucht. Durch Nutzung von Registrierungen in der <code>info.xml</code> war es möglich, Abhängigkeiten zu anderen Apps zu vermeiden. Falls die App ein <code>AuthModule</code> implementiert und registriert hat, wird die registrierte Klasse geladen und für die Funktion <code>loginUser</code> genutzt.</p>
+<p>Die Funktion <code>loginUser</code> ist analog zu der bestehenden Funktion <code>loginWithToken</code> implementiert worden und nutzt die Rückgabewerte der beiden Funktionen aus dem <code>AuthModule</code>, wie folgendes Codebeispiel zeigt.</p>
+<pre><code class="php">/**
+ * Logs a user in
+ *
+ * @param IUser $user The user
+ * @param String $password The user's password
+ * @return boolean True if the user can be authenticated, false otherwise
+ * @throws LoginException if an app canceled the login process or the user is not enabled
+ */
+private function loginUser($user, $password) {
+    if (is_null($user)) {
+        return false;
+    }
+
+    $this-&gt;manager-&gt;emit('\OC\User', 'preLogin', [$user, $password]);
+
+    if (!$user-&gt;isEnabled()) {
+        $message = \OC::$server-&gt;getL10N('lib')-&gt;t('User disabled');
+        throw new LoginException($message);
+    }
+
+    $this-&gt;setUser($user);
+    $this-&gt;setLoginName($user-&gt;getDisplayName());
+
+    $this-&gt;manager-&gt;emit('\OC\User', 'postLogin', [$user, $password]);
+
+    if ($this-&gt;isLoggedIn()) {
+        $this-&gt;prepareUserLogin(false);
+    } else {
+        $message = \OC::$server-&gt;getL10N('lib')-&gt;t('Login canceled by app');
+        throw new LoginException($message);
+    }
+
+    return true;
+}
+</code></pre>
+
+<p>Die Implementierung und Registrierung eines <code>AuthModule</code>s in der OAuth 2.0 App wird auf <a href="../oauth2-app/#authentifizierungslogik">dessen Seite</a> beschrieben.</p>
+<h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2>
+<p>Die Änderungen in den Pull Requests durchliefen die Tests zum ownCloud Core, die bei <a href="https://jenkins.owncloud.org/job/owncloud-core/job/core/">Jenkins</a> und <a href="https://travis-ci.org/owncloud/core/">Travis</a> durchgeführt werden.</p></div>
         
     </div>
 
