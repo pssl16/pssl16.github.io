@@ -275,7 +275,7 @@
 <ul>
 <li>Name des Clients: Zur Wiedererkennung</li>
 <li>Redirection URI: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.</li>
-<li>Umgang mit Subdomains: Zum Einstellen, on Subdomains der Redirection URI erlaubt werden sollen.</li>
+<li>Umgang mit Subdomains: Zum Einstellen, ob Subdomains der Redirection URI erlaubt werden sollen.</li>
 </ul>
 <p>Die App generiert daraufhin die Zugangsdaten des Clients, bestehend aus Client Identifier und Client Secret.</p>
 <p>Im Flow sind folgende Rollen beteiligt:</p>
@@ -316,7 +316,7 @@
 <li><code>secret</code>: Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.</li>
 <li><code>redirect_uri</code>: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.</li>
 <li><code>name</code>: Ein Name für den Client zur Wiedererkennung.</li>
-<li><code>allow_subdomains</code>: Zum Einstellen, on Subdomains der <code>redirect_uri</code> erlaubt werden sollen.</li>
+<li><code>allow_subdomains</code>: Zum Einstellen, ob Subdomains der <code>redirect_uri</code> erlaubt werden sollen.</li>
 </ul>
 </li>
 <li><strong><a href="https://tools.ietf.org/html/rfc6749#section-1.3.1"><code>authorization_code</code></a>:</strong> Ein <a href="https://tools.ietf.org/html/rfc6749#section-1.3">Authorization Grant</a>, 
@@ -405,8 +405,13 @@ class Client extends Entity {
 }
 </code></pre>
 
-<p>Wichtig ist, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Entity.html"><code>Entity</code></a> erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle übereinstimmen. Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case für die Datenbank umgewandelt. Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, in der Entwicklungsumgebung eine automatische Vervollständigung zu haben. Die Angabe von <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/database.html#types">Typen</a> im Konstruktor dienen dazu, beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.</p>
-<p>Das folgende Codebeispiel zeigt einen Ausschnitt aus dem zur <code>Client</code> Entity gehörenden Mapper.</p>
+<p>Wichtig ist, dass die Klasse von <a href="https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Entity.html"><code>Entity</code></a> erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle übereinstimmen. 
+Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case für die Datenbank umgewandelt. 
+Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, 
+in der Entwicklungsumgebung eine automatische Vervollständigung zu haben. 
+Die Angabe von <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/database.html#types">Typen</a> im Konstruktor dient dazu, 
+beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.</p>
+<p>Das folgende Codebeispiel zeigt einen Ausschnitt aus dem zur <code>Client</code>-Entity gehörenden Mapper.</p>
 <pre><code class="php">&lt;?php
 namespace OCA\OAuth2\Db;
 
@@ -569,7 +574,7 @@ public function __construct($AppName, IRequest $request,
 </code></pre>
 
 <p>Die hier notwendigen Parameter sind der Name der App, die Anfrage (Objekt, das die Schnittstelle <code>IRequest</code> implementiert), verschiedene Mapper Instanzen, die ID des Nutzers, 
-um bei der Autorisierung des Clients speichern zu können, welcher Nutzers dies veranlasst hat, und ein Logger (Objekt, das die Schnittstelle <code>ILogger</code> implementiert). Letzterer ist notwendig zum Schreiben in die Log-Datei von ownCloud.</p>
+um bei der Autorisierung des Clients speichern zu können, welcher Nutzer dies veranlasst hat, und ein Logger (Objekt, das die Schnittstelle <code>ILogger</code> implementiert). Letzterer ist notwendig um in die Log-Datei von ownCloud zu schreiben.</p>
 <p>Die mit den Routes verknüpften Funktionen können zur Zugriffskontrolle mit <a href="https://doc.owncloud.org/server/9.1/developer_manual/app/controllers.html#authentication">PHPDoc Annotationen</a> versehen werden. Folgendes Codebeispiel zeigt die Annotationen für die Funktion <code>generateToken</code> im <code>OAuthApiController</code>.</p>
 <pre><code class="php">&lt;?php
 /**
@@ -774,7 +779,9 @@ public function generateAuthorizationCode($response_type, $client_id, $redirect_
 }
 </code></pre>
 
-<p>In dieser Funktion werden die Parameter überprüft. Falls diese nicht gültig sind (beispielsweise deshalb, weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde), wird an die ownCloud Startseite weitergeleitet. Ansonsten wird ein Authorization Code ausgestellt und als Parameter der Redirection URI angehägnt, zu welcher schließlich weitergeleitet wird.</p>
+<p>In dieser Funktion werden die Parameter überprüft. Falls diese nicht gültig sind (beispielsweise deshalb, 
+weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde), wird an die ownCloud Startseite weitergeleitet. 
+Ansonsten wird ein Authorization Code ausgestellt und als Parameter der Redirection URI angehängt, zu welcher schließlich weitergeleitet wird.</p>
 <p>Der Rückgabetyp <code>JSONResponse</code> wird für die Rückgabe des Access Tokens in der Funktion <code>generateToken</code> im <code>OAuthApiController</code> genutzt, wie nachfolgendes Codebeispiel zeigt. Zudem ist erneut das Zusammenspiel mit Entities und Mappern zu sehen.</p>
 <pre><code class="php">&lt;?php
 /**
@@ -908,7 +915,10 @@ public function generateToken($grant_type, $code = null,
 }
 </code></pre>
 
-<p>Hier werden zunächst die Parameter auf Gültigkeit überprüft. Dabei gibt es die Zwei Fälle <code>authorization_code</code> und <code>refresh_token</code>, die durch die <code>switch</code>-Anweisung abgedeckt werden. Bei fehlerhaften Angaben wird eine entsprechende Fehlermeldung im JSON-Format zurückgegeben. Andernfalls wird eine neuer Access Token erstellt und in der Datenbank gespeichert. Der verwendete Authorization Code bzw. der Refresh Token wird zudem gelöscht. Im JSON Response wird dann der Access Token, der Token Typ (<code>Bearer</code> wegen des Authorization Code Flow), die Lebensdauer, der Refresh Token und die ID des Nutzers zurückgegeben. Nachfolgend ist ein Beispiel dazu angegeben.</p>
+<p>Hier werden zunächst die Parameter auf Gültigkeit überprüft. Dabei gibt es die zwei Fälle <code>authorization_code</code> und <code>refresh_token</code>, 
+die durch die <code>switch</code>-Anweisung abgedeckt werden. Bei fehlerhaften Angaben wird eine entsprechende Fehlermeldung im JSON-Format zurückgegeben. 
+Andernfalls wird eine neuer Access Token erstellt und in der Datenbank gespeichert. Der verwendete Authorization Code bzw. der Refresh Token wird zudem gelöscht. 
+Im JSON Response wird dann der Access Token, der Token Typ (<code>Bearer</code> wegen des Authorization Code Flow), die Lebensdauer, der Refresh Token und die ID des Nutzers zurückgegeben. Nachfolgend ist ein Beispiel dazu angegeben.</p>
 <pre><code class="json">{
     &quot;access_token&quot; : &quot;1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ&quot;,
     &quot;token_type&quot; : &quot;Bearer&quot;,
@@ -1075,7 +1085,7 @@ class CleanUp {
 <p>Als Log-Level wurde <code>info</code> gewählt.</p>
 <h3 id="authentifizierungslogik">Authentifizierungslogik</h3>
 <p>Nach der Implementierung des OAuth 2.0 Protokolls musste die Authentifizierung von WebDAV und von ownCloud APIs (für die Nutzung der OCS Share API) Erweitert werden. Diese Erweiterung basiert auf den durchgeführten <a href="../core-anpassungen">Core Anpassungen</a>.</p>
-<p>Zunächst schauten wir uns die Umsetzung der bestehenden Basic Authentication in der <code>dav</code> App an. Dabei stellten wir fest, dass sabre den <a href="http://sabre.io/dav/authentication/">Austausch des Authentifizierungsmechanismus</a> durch Implementierung eines Interfaces bietet. Für unser Szenario war das Interface <code>AbstractBearer</code> relevant, da die Access Tokens aus dem Authorization Code Flow des OAuth 2.0 Protokolls für Bearer Authentication genutzt werden. Dazu haben wir die Funktion <code>validateBearerToken</code> in der Klasse <code>OAuth2</code> implementieren. Die Logik und das Session-Management lehnen sich stark an die bestehende Implementierung der Basic Authentication an. Für die Authentifizierung einer Anfrage wird hier jedoch auf <code>AuthModule</code>s zurückgegriffen.</p>
+<p>Zunächst sahen wir uns die Umsetzung der bestehenden Basic Authentication in der <code>dav</code> App an. Dabei stellten wir fest, dass sabre den <a href="http://sabre.io/dav/authentication/">Austausch des Authentifizierungsmechanismus</a> durch Implementierung eines Interfaces bietet. Für unser Szenario war das Interface <code>AbstractBearer</code> relevant, da die Access Tokens aus dem Authorization Code Flow des OAuth 2.0 Protokolls für Bearer Authentication genutzt werden. Dazu haben wir die Funktion <code>validateBearerToken</code> in der Klasse <code>OAuth2</code> implementieren. Die Logik und das Session-Management lehnen sich stark an die bestehende Implementierung der Basic Authentication an. Für die Authentifizierung einer Anfrage wird hier jedoch auf <code>AuthModule</code>s zurückgegriffen.</p>
 <p>Ein <code>AuthModule</code> kann von ownCloud Apps implementiert und registriert werden. Es wird auch bei der Authentifizierung von API Zugriffen eingesetzt. Eine App muss dazu die Funktionen <code>auth</code> und <code>getUserPassword</code> implementieren. Erstere authentifiziert eine Anfrage, während letztere das Passwort des Nutzers zu einer Anfrage ermittelt. Da die App <code>encryption</code> in bestimmten Nutzungsszenarien auf das Passwort des Nutzers angewiesen ist, existiert die Funktion <code>getUserPassword</code>. Sie gibt jedoch in unserer Implementierung eine leere Zeichenkette zurück, da wir an keiner Stelle mit Passwörtern umgehen (siehe <a href="#einschrankungen">Einschränkungen</a>). <code>getUserPassword</code> gibt bei erfolgreicher Authentifizierung ein <code>User</code>-Objekt zurück, wie in folgendem Codebeispiel zu sehen ist.</p>
 <pre><code class="php">&lt;?php
 /**
