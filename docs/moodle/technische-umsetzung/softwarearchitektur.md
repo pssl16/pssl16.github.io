@@ -46,5 +46,5 @@ dargestellt:
 Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Softwarearchitektur erzielt
 werden sollte. Das führt zwar mit sich, dass funktionale Plugins (also das `repository` und das `activity` Plugin) nicht
 eigenständig ohne das `admin tool` existieren können, allerdings wird weiteren, in Zukunft entwickelten Plugins ebenfalls
-Zugriff auf die OAuth 2.0 Schnittstelle in [Sciebo](https://www.sciebo.de/) bzw. [ownCloud](https://owncloud.org/) ermöglicht,
+Zugriff auf die OAuth 2.0 Schnittstelle in Sciebo bzw. ownCloud ermöglicht,
 wodurch sich das Projektergebnis zu einer guten Wiederverwendbarkeit qualifiziert.
