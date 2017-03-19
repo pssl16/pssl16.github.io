@@ -119,7 +119,7 @@ foreach ($data as $key => $value) {
             }
         }
 ```
-### Ansicht der Moodle Nutzer
+### Ansicht der bestehenden Instanzen
 
 Nun da der Lehrende alle notwendigen Einstellungen tätigen konnte, mussten wir die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementieren. Dies beinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das Hinzufügen dieser Ordner zur eigenen Instanz.
 Lehrende sollen entweder eine Übersicht aller Ordner haben, oder keinen Zugriff auf die Ordner haben. Alle Funktionalitäten sind in der `view.php` implementiert.
@@ -154,10 +154,10 @@ $mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumer
         $created = false;
     }
 ```
-    > Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
+> Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
 
 #### Sicht der Lehrenden
 
-Falls der Lehrende sich selbst keinen Zugriff gewährt hat, sieht er den Ordner auch nicht wenn er in einer Gruppe eingeschrieben ist.
-Hat der Lehrende Zugriff auf die Ordner sieht er eine tabellarische Auflistung aller bestehenden Ordner und kann per Klick den Überordner zu seiner Instanz hinzufügen.
+Falls der Lehrende sich selbst keinen Zugriff gewährt hat, sieht er den Ordner auch nicht wenn er in einer Gruppe eingeschrieben ist. Hat der Lehrende Zugriff auf die Ordner sieht er eine tabellarische Auflistung aller bestehenden Ordner. Zusätzlich kann er genau wie Studierende seinen ownCloud Account ändern, den Namen des Ordners ändern und Ordner per Klick der eigenen Instanz hinzufügen. In dem Fall, dass Gruppenordner erstellt wurden wird dem Lehrenden der Überordner aller Gruppenordner hinzugefügt.
+
 ## Tests und Continuous Integration
