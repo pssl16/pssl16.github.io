@@ -231,7 +231,8 @@
 
 <h1 id="benutzung">Benutzung</h1>
 <h2 id="installation">Installation</h2>
-<p>Da die Anpassungen durch den Pull Request <a href="https://github.com/owncloud/core/pull/26742">owncloud/core#26742</a> erst kürzlich in den ownCloud Core aufgenommen wurden, sind sie noch in keiner Hauptversion enthalten. Es muss daher der aktuelle Stand aus dem <a href="https://github.com/owncloud/core">Repository</a> heruntergeladen werden:</p>
+<p>Da die Anpassungen durch den Pull Request <a href="https://github.com/owncloud/core/pull/26742">owncloud/core#26742</a> erst kürzlich in den ownCloud Core aufgenommen wurden, sind sie noch in keiner Hauptversion enthalten. Erst die <a href="https://github.com/owncloud/core/wiki/Maintenance-and-Release-Schedule">in Kürze erscheinende</a> Version 10.0 wird die Änderungen enthalten.</p>
+<p>Um die OAuth 2.0 in ownCloud schon jetzt nutzen zu können, muss daher der aktuelle Stand aus dem <a href="https://github.com/owncloud/core"><code>core</code> Repository</a> heruntergeladen werden:</p>
 <pre><code class="nohighlight">$ git clone https://github.com/owncloud/core.git
 </code></pre>
 
@@ -240,7 +241,7 @@
 </code></pre>
 
 <p>Die restlichen Installationsschritte von ownCloud unterscheiden sich nicht von denen im <a href="https://doc.owncloud.org/server/latest/admin_manual/installation/index.html">ownCloud Handbuch</a>.</p>
-<p>Die <code>oauth2</code> App wird dadurch installiert, dass der Inhalt des <a href="https://github.com/owncloud/oauth2">Repositorys</a> in das Verzeichnis <code>apps</code> kopiert wird:</p>
+<p>Die <code>oauth2</code> App wird dadurch installiert, dass der Inhalt des <a href="https://github.com/owncloud/oauth2"><code>oauth2</code> Repositorys</a> in das Verzeichnis <code>apps</code> kopiert wird:</p>
 <pre><code class="nohighlight">$ cd apps
 $ git clone https://github.com/owncloud/oauth2.git
 </code></pre>
@@ -271,11 +272,11 @@ Mit Klick auf <em>Hinzufügen</em> wird der Client registriert, erhält eine <co
 <h2 id="autorisierung-eines-clients">Autorisierung eines Clients</h2>
 <p>Nach der Clientregistrierung kann der Client entsprechend verwendet werden. Es können also Anwendungen autorisiert werden um Zugriff auf die
 ownCloud-Instanz zu erhalten. Dies wird über Abfragen geregelt, welche der Endnutzer bestätigen oder ablehnen muss.</p>
-<p>Screenshot einer Autorisierungsabfrage:
+<p>Screenshot einer Autorisierungsabfrage
 <div align="center">
     <img alt="test" src="../images/request.png" width=80%>
 </div></p>
-<p>Screenshot einer fehlerhaften Autorisierungsabfrage:
+<p>Screenshot einer fehlerhaften Autorisierungsabfrage
 <div align="center">
     <img alt="Abfrage bei Löschung" src="../images/invalid_request.png" width=75%>
 </div></p>
@@ -297,7 +298,7 @@ Nachdem auf das Symbol geklickt wurde, erscheint auch hier eine Sicherheitsabfra
 <p>Bei Bedarf kann ein Client beziehungsweise eine Clientregistrierung gelöscht werden. Dies kann notwendig sein, wenn sich
 beim Client die <code>redirect URI</code> geändert hat, oder man dem Client aus anderen Gründen den Zugriff entziehen möchte. Dadurch, dass
 ein Client gelöscht wird, kann dieser nun nicht mehr auf Dateien aus der ownCloud-Instanz zugreifen und die ausgestellten <code>authorization codes</code>, 
-<code>access token</code>s und <code>refresh token</code>s sind ungültig. Bei irrtümlicher Löschung des Clients muss bei erneuter Einpflegung jeder
+<code>access tokens</code> und <code>refresh tokens</code> sind ungültig. Bei irrtümlicher Löschung des Clients muss bei erneuter Einpflegung jeder
 Nutzer des Clients erneut das Authentifizierungsverfahren durchlaufen, da eine neue <code>ClientID</code> und ein neues <code>ClientSecret</code> generiert werden.
 Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellarische Ansicht der registrierten Clients aufgerufen werden. 
 Nun kann man bei dem zu löschenden Client rechts neben den zugeordneten Attributen auf ein Mülleimer-Symbol klicken, um die entsprechende Clientregistrierung zu löschen.
