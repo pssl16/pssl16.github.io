@@ -27,7 +27,7 @@ Danach lässt sie sich wie jede andere ownCloud App in der Administrator-Ansicht
 
 ## Clientregistrierung
 
-Zur Clientregistrierung muss in der Eingabemaske der OAuth 2 App in den *Adminsettings* dem Client ein Name gegeben werden und eine gültige URL als `redirect URI` angegeben werden. 
+Zur Clientregistrierung muss in der Eingabemaske der OAuth2 App in den *Adminsettings* dem Client ein Name gegeben werden und eine gültige URL als `redirect URI` angegeben werden. 
 Eine `redirect URI` bezeichnet eine Adresse, zu der der jeweilige Client nach der erfolgreichen Autorisierung weitergeleitet wird. Setzt man einen Haken im Feld *Erlaube Subdomains*, so 
 können auch Subdomains der eingegebenen `redirect URI` angesprochen werden. Werden beispielsweise verschiedene Anmeldeverfahren wie *SSO* oder *XSSO* über Subdomains aufgerufen, so funktioniert
 die Authentifizierung über OAuth 2.0 auch bei diesen Anmeldeverfahren und nicht nur mit dem Anmeldeverfahren der "Hauptdomain".
