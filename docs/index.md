@@ -90,13 +90,6 @@ Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Ser
   <strong>TODO:</strong> Bestandteile der Lösung in moodle auflisten und kurz die Funktion anschneiden.
 </div>
 
-## Zusammenspiel
-
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Wie arbeiten die einzelnen Komponenten zusammen, um das Problem zu lösen? (WebDAV: Wie wird der
-  komplette OAuth Protokollablauf erfüllt?).
-</div>
-
 ## Weitere Integrationsszenarien
 
 Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten Integrationsszenarien konzentriert. Im Folgenden werden weitere Szenarien erläutert, über deren Implementierung wir nachgedacht haben und die eine Erweiterung

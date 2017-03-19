@@ -289,4 +289,8 @@ Inhalten, als auch zum Generieren öffentlicher Links gebraucht werden kann. Mus
 Zugriff auf diese Schnittstelle zwingend zur Authentifizierung angegeben werden, reicht durch das Setzen eines Bearer Authentication
 Headers nun auch ein von ownCloud erhaltenes Access Token.
 
+## Integration mit ownCloud
+
+![Protokollablauf](images/protokollablauf.svg)
+
 ## Tests und Continuous Integration
