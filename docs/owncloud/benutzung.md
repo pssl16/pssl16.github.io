@@ -34,13 +34,21 @@ die Authentifizierung über OAuth 2.0 auch bei diesen Anmeldeverfahren und nicht
 Mit Betätigung des OK-Buttons wird der Client registriert, erhält eine `ClientID` und ein `Clientsecret` zugewiesen und wird nun in der Tabelle mit den entsprechenden Attributen dargestellt.
 
 <div align="center">
-	<img alt="Eingabemaske" src="../images/eingabe-app.png" width=50%>
+	<img alt="Eingabemaske" src="../images/eingabe-app.png" width=75%>
 </div>
 
 
 Screenshot zur Darstellung der Clients:
 
 <img alt="Clientdarstellung" src="../images/darstellung-app.svg" width=100%>
+
+Größere Darstellung des Clients:
+
+<div align="center">
+	<img alt="Clientdarstellung zoomed in" src="../images/Zoomed_eingabe.png" width=75%>
+</div>
+
+*Zu beachten ist der Zeilenumbruch zur größeren Darstellung und die moodle-typische `redirect URI`.*
 
 ## Authorization Code Flow
 
@@ -83,13 +91,13 @@ Nachdem auf das Symbol geklickt wurde, erscheint auch hier eine Sicherheitsabfra
 Screenshot zur Darstellung der autorisierten Anwendungen:
 
 <div align="center">
-	<img alt="Clientdarstellung" src="../images/personal-app.png" width=50%>
+	<img alt="Clientdarstellung" src="../images/personal-app.png" width=75%>
 </div>
 
 Screenshot zur Sicherheitsabfrage bei Löschung einer autorisierten Anwendung:
 
 <div align="center">
-	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=50%>
+	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=75%>
 </div>
 
 ##Löschen der Clientregistrierung
@@ -105,5 +113,5 @@ Nachdem auf das Symbol geklickt wurde, erscheint noch eine Sicherheitsabfrage, i
 Screenshot zur Sicherheitsabfrage bei Löschung des Clients:
 
 <div align="center">
-	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=50%>
+	<img alt="Abfrage bei Löschung" src="../images/abfrage-app.png" width=75%>
 </div>

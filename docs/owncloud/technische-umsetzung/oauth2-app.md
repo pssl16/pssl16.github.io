@@ -513,9 +513,10 @@ In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Du
 Sollten noch keine Clients registriert worden sein, sorgt die `if`-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. 
 Durch Nutzung von `$l->t()` können die Strings auch [in andere Sprachen Übersetzt werden](https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates).
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Auf die Integration mit Transifex als Übersetzungsplattform eingehen.
-</div>
+Im Zuge des Transfers der App in die ownCloud GitHub-Organisation wurde Transifex als Übersetzungsplattform integriert. Dies bedeutet, 
+dass nun im `l1on`-Verzeichnis der OAuth 2.0 App Übersetzungen der originalen (von uns erstellten) englischen Strings aus den Templates
+von der Transifexcommunity hinzugefügt und geändert werden können. Dadurch befinden sich jetzt schon um die zwanzig Übersetzungen
+der App im Quellcode. Diese werden je nach Spracheinstellung der ownCloud-Instanz angezeigt.
 
 Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion `addClient` im `SettingsController` aus. 
 Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion `deleteClient` im `SettingsController` auslöst.
