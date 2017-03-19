@@ -219,9 +219,11 @@
             
                 <li class="third-level"><a href="#anmelden-des-technischen-nutzers">Anmelden des technischen Nutzers</a></li>
             
+                <li class="third-level"><a href="#hinzufugen-eine-instanz">Hinzufügen eine Instanz</a></li>
+            
                 <li class="third-level"><a href="#erstellen-von-ordnern">Erstellen von Ordnern</a></li>
             
-                <li class="third-level"><a href="#viewphp">view.php</a></li>
+                <li class="third-level"><a href="#ansicht-der-bestehenden-instanzen">Ansicht der bestehenden Instanzen</a></li>
             
         
             <li class="second-level"><a href="#tests-und-continuous-integration">Tests und Continuous Integration</a></li>
@@ -240,24 +242,55 @@ Die Autorisierung und Authentifizierung erfolgt über das <code>oauth2sciebo adm
   <li>Als <b>Lehrender</b> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</li>
 </ol>
 
-<p>Im Folgenden wird erklärt wozu einzelne Beteiligte des Integrationszenarioin der Lage sein müssen.
-Dafür ist es erforderlich einen neutralen Speicherort für die geteilten Ordner bereitzustellen. Falls der Lehrende keinen Zugriff auf die Ordner haben soll, dürfen sie nicht in seiner Instanz gespeichert sein. Um die Privatsphäre der Kursteilnehmer zu sichern darf ein Lehrender nicht unter ihrem Namen Ordner erstellen. Aus diesem Grund haben wir unsere Lösung so implementiert, dass der Moodle Administrator einen technischen Nutzer festlegen kann. In dessen Namen werden alle Ordner erstellt.
-Der Lehrende wird in der Lage sein einem Kurs beliebig viele Instanzen der Aktivität <em>Collaborative Folders</em> hinzufügen. In den Einstellungen kann der Lehrende
-nun festlegen wie der Ordner im Moodle Kurs benannt werden soll und wie der Ordner in der ownCloud Instanz benannt werden soll. Mit dieser Aktivität kann er Kursteilnehmer ermutigen kollaborativ zu arbeiten. Zusätzlich hat die Option die laufende Arbeit zu betreuen, indem er sich selbst Zugriff auf die Ordner gewährt. In diesem Fall werden die Kursteilnehmer darüber in Kenntniss gesetzt, dass der Ordner Lehrenden zugänglich ist.
-Kursteilnehmer haben weniger Organisationsaufwand und werden bei ihrer Gruppenarbeit unterstützt. Zusätzlich muss kein Kursteilnehmer eigenen Speicherplatz zur Verfügung stellen.</p>
+<p>Im Folgenden wird erklärt wozu einzelne Beteiligte des Integrationsszenario in der Lage sein müssen.
+Zunächst ist es erforderlich einen neutralen Speicherort für die geteilten Ordner anzugeben. Falls der Lehrende keinen Zugriff auf die Ordner haben soll, dürfen sie nicht in seiner Instanz gespeichert sein. Um die Privatsphäre der Kursteilnehmer zu sichern darf ein Lehrender nicht unter ihrem Namen Ordner erstellen. Aus diesem Grund haben wir unsere Lösung so implementiert, dass der Moodle Administrator einen technischen Nutzer festlegen kann. In dessen Namen werden alle Ordner erstellt.</p>
+<p>Der Lehrende soll in der Lage sein einem Kurs beliebig viele Instanzen der Aktivität <em>Collaborative Folders</em> hinzuzufügen. In den Einstellungen kann der Lehrende nun festlegen wie der Ordner im Moodle Kurs benannt werden soll. Außerdem kann der Lehrende entscheiden ob er Zugriff auf die Ordner bekommt.</p>
+<p>Kursteilnehmer sollen den Ordner in Ihren eigenen ownCloud Account kopieren können. Dabei sollen sie dem Ordner einen eigene Namen geben können.</p>
+<p>Mit dieser Aktivität kann der Lehrende Kursteilnehmer ermutigen kollaborativ zu arbeiten. Zusätzlich hat die Option die laufende Arbeit zu betreuen, indem er sich selbst Zugriff auf die Ordner gewährt. In diesem Fall werden die Kursteilnehmer darüber in Kenntnis gesetzt, dass der Ordner Lehrenden zugänglich ist.</p>
+<p>Kursteilnehmer haben weniger Organisationsaufwand und werden bei ihrer Gruppenarbeit unterstützt. Zusätzlich muss kein Kursteilnehmer eigenen Speicherplatz zur Verfügung stellen.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
 <p>Um die User Story zu realisieren haben wir ein Aktivity Plugin für Moodle entwickelt. Instanzen von Aktivity Plugins können Kursen beliebig oft hinzugefügt werden.
 Für genauere Informationen besuchen sie die Moodle Dokumentation von <a href="https://docs.moodle.org/dev/Activity_modules" title="Activity Modules">Aktivity modules</a>
-In der <code>collaborativefolders/mod_form.php</code> fragen wir alle Einstellungen ab, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beeinhaltet Name des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen seperate Ordner erzeugt werden sollen.
+In der <code>collaborativefolders/mod_form.php</code> fragen wir alle Einstellungen ab, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beinhaltet Name des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen separate Ordner erzeugt werden sollen.
 In der <code>collaborativefolders/settings.php</code> kann der Administrator den technischen Nutzer des Plugins festlegen. Dieser gilt für alle Instanzen, also global für das gesammte Plugin.
-Die <code>collaborativefolders/lib.php</code> bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
-<div class="alert alert-danger">
-  <strong>TODO:</strong> nicht zu genau beschreiben die moodle Dokumentationist sehr gut lieber auf die Implementation mehr eingehen.
-</div></p>
+Die <code>collaborativefolders/lib.php</code> bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.</p>
 <h2 id="implementierung">Implementierung</h2>
 <h3 id="anmelden-des-technischen-nutzers">Anmelden des technischen Nutzers</h3>
-<p>Der Admin der Moodle Seite kann in der Seiten Administration einen technischen Nutzer hinzufügen. Über <code>Site administration ► Plugins ► Activity modules ► collaborativefolders</code> kommt er zu den passenden Einstellungen. Dort wird er durch einen Login-Button auf die ownCloud Seite zum autorisieren der App weitergeleitet. Spätere Änderungen des technischen Nutzers sind durch ein Logout Button möglich. Dies ist nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Problemen mit bestehenden Instanzen entstehen würden. Wir haben uns dafür entschieden den Logout trotzdem bereitzustellen, für den Fall das ein falscher Account authentifiziert wird. Hierbei sind wir insbesondere über folgendes Szenario gestoßen:</p>
-<p>Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator account der ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen.</p>
+<p>Der Admin der Moodle Seite kann in der Seiten Administration einen technischen Nutzer hinzufügen. Über <code>Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders</code> kommt er zu den passenden Einstellungen. Dort wird er durch einen Login-Button auf die ownCloud Seite zum autorisieren der App weitergeleitet. Spätere Änderungen des technischen Nutzers sind durch ein Logout Button möglich. Dies ist nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Problemen mit bestehenden Instanzen entstehen würden. Wir haben uns dafür entschieden den Logout trotzdem bereitzustellen, für den Fall das ein falscher Account authentifiziert wird. Hierbei sind wir insbesondere über folgendes Szenario gestoßen:</p>
+<p>Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator Account der ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen.</p>
+<p>Implementiert haben wir dies in der <code>collaborativefolders/settings.php</code>. Diese erstellt eine Seite in den Admin Settings der Moodle Instanz. Hier müssen wir drei verschiedene Fälle beachten:</p>
+<ol>
+<li>
+<p>Der technische Nutzer ist bereits angemeldet aber soll die Möglichkeit haben ausgeloggt zu werden.</p>
+<blockquote>
+<p>Die <code>check_login()</code> Methode des <code>oauth2_owncloud</code> Plugins überprüft ob ein technischer Nutzer registriert ist. Falls der Nutzer angemeldet ist, kann der Administrator den Nutzer mit einem Logout-Button ausloggen. Dieser leitet den Nutzer auf eine neue Seite. Diese enthält eine Warnung da alte Instanzen des Plugins nicht länger genutzt werden können wenn der technische Nutzer geändert wird.</p>
+</blockquote>
+</li>
+<li>
+<p>Der technische Nutzer wird erstmals registriert.</p>
+<blockquote>
+<p>Der token des technischen Nutzers wird für das Plugin in den <code>config</code> Einstellungen gespeichert, da er zu keinem Nutzer aber zu dem Plugin gehört. Zur Sicherheit setzten wir diese auf null, und zeigen dem Admin einen Login-Button an.
+``` php
+      set_config('token', null, 'mod_collaborativefolders');
+      $url = $owncloud-&gt;get_login_url();</p>
+</blockquote>
+</li>
+</ol>
+<pre><code>&gt; Die Speicherung des token erfolgt durch den callback des oauth2 Protokolls.
+
+3. Der technische Nutzer soll ausgeloggt werden.
+&gt; Dem Administrator wird dasselbe Login Fenster angezeigt wie bei der erstmaligen Registrierung. Genauso wird der bisherige *Access token* gelöscht. Zusätzlich wird jedoch ein `logout Event` ausgelöst.
+&gt;``` php
+    $logoutevent = \mod_collaborativefolders\event\technical_user_loggedout::create($params);
+    $logoutevent-&gt;trigger();
+</code></pre>
+
+<blockquote>
+<p>Diese Event wird geloggt, damit der Vorgang später nachverfolgt werden kann.</p>
+</blockquote>
+<h3 id="hinzufugen-eine-instanz">Hinzufügen eine Instanz</h3>
+<p>Die Schnittstelle in Moodle für das Einstellungs Formular ist sehr ausführlich. Den Standard Einstellungen haben wir nur eine Checkbox hinzugefügt die bestimmt ob der Lehrende Zugriff auf die Ordner hat.
+Außerdem benutzen wird den Moodle internen <em>group_mode</em>. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie wir für separate Gruppen Ordner erstellen erklären wir unter anderem im nächsten Abschnitt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der <code>mod_form.php</code> in Moodle benötigen besuchen sie <a href="../www.moodle.de">diese Seite</a>.</p>
 <h3 id="erstellen-von-ordnern">Erstellen von Ordnern</h3>
 <p>Zum Erstellen von Ordnern haben einen Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
 In <code>collaborativefolders/db/events.php</code> können in einem array alle Observer registriert werden und werden von Moodle verwaltet.</p>
@@ -315,9 +348,9 @@ Dieser ließt aus den Daten die er übergeben bekommt alle Ordner aus die erstel
         }
 </code></pre>
 
-<h3 id="viewphp"><code>view.php</code></h3>
-<p>Nun da der Lehrende alle notwendigen Einstellungen tätigen konnte mussten wir die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementieren. Dies beeinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das hinzufügen dieser Ordner zur eigenen Instanz.
-Lehrende sollen entweder eine Übersicht aller Ordner haben, oder keinen Zugriff auf die Ordner haben.</p>
+<h3 id="ansicht-der-bestehenden-instanzen">Ansicht der bestehenden Instanzen</h3>
+<p>Nun da der Lehrende alle notwendigen Einstellungen tätigen konnte, mussten wir die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementieren. Dies beinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das Hinzufügen dieser Ordner zur eigenen Instanz.
+Lehrende sollen entweder eine Übersicht aller Ordner haben, oder keinen Zugriff auf die Ordner haben. Alle Funktionalitäten sind in der <code>view.php</code> implementiert.</p>
 <h4 id="sicht-der-studierenden">Sicht der Studierenden</h4>
 <p>Für Studierende wird zunächst überprüft, ob der <code>group_mode</code> aktiviert ist. Wenn dies der Fall ist, wird an den Pfad an dem später der Ordner gefunden werden soll die Gruppenid angefügt. Moodle hat hierfür intern eine Methode <code>groups_get_activity_group()</code> Die zu einer Instanz der Aktivität angibt in welcher Gruppe der Studierende ist.
 Die <code>view.php</code> wird zu verschiedenen Zwecken aufgerufen die behandelt werden müssen.</p>
@@ -331,40 +364,36 @@ Die <code>view.php</code> wird zu verschiedenen Zwecken aufgerufen die behandelt
 <li>
 <p>Der Name des Ordners wird geändert</p>
 <blockquote>
-<p>Wenn der Name des Ordners zurückgesetzt wird, wird ein URL Parameter <em>reset=1</em> an die URL übergeben. In diesem Fall wird dem Kursteilnehmer eine Eingabemaske angezeigt. Diese ist als eigene Klasse in dem Ordner <code>collaborativefolders/classes</code> implementiert. Sie erbt von der abstrakten Klasse <code>moodleform</code>. Es muss nun sichergestellt werden das vergebene Namen kompatible mit ownCloud sind. Moodle unterstützt die zugelassenen Eingaben durch Form Element Regeln zu begrenzen.</p>
+<p>Wenn der Name des Ordners zurückgesetzt wird, wird ein URL Parameter <em>reset=1</em> an die URL übergeben. In diesem Fall wird dem Kursteilnehmer eine Eingabemaske angezeigt. Diese ist als eigene Klasse in dem Ordner <code>collaborativefolders/classes</code> implementiert. Sie erbt von der abstrakten Klasse <code>moodleform</code>. Es muss nun sichergestellt werden das vergebene Namen kompatible mit ownCloud sind. Moodle unterstützt die zugelassenen Eingaben durch Form Element Regeln zu begrenzen.
+``` php
+$mform-&gt;addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');</p>
 </blockquote>
 </li>
 </ol>
-<pre><code class="php">$mform-&gt;addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');
-</code></pre>
-
 <pre><code>&gt; Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.
-</code></pre>
-<ol>
-<li>Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus:<blockquote>
-<p>Der Nutzer muss mit Hilfe des <code>oauth2owncloud</code> admin_tools aus-geloggt werden, und der accesstoken wird auf null gesetzt.</p>
-</blockquote>
-</li>
-</ol>
-<pre><code class="php">    $ocs-&gt;owncloud-&gt;log_out();
+
+3. Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus:
+&gt; Der Nutzer muss mit Hilfe des `oauth2owncloud` admin_tools aus-geloggt werden, und der accesstoken wird auf null gesetzt.
+&gt;``` php
+    $ocs-&gt;owncloud-&gt;log_out();
     set_user_preference('oC_token', null);
 </code></pre>
 
 <ol>
 <li>Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.<blockquote>
-<p>Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:</p>
-</blockquote>
-</li>
-</ol>
-<pre><code class="php">    $content = json_decode($element-&gt;customdata);
+<p>Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:
+<code>php
+    $content = json_decode($element-&gt;customdata);
     $cmidoftask = $content-&gt;cmid;
     if ($id == $cmidoftask) {
         $created = false;
-    }
-</code></pre>
-
-<pre><code>&gt; Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
-</code></pre>
+    }</code>
+Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.</p>
+</blockquote>
+</li>
+</ol>
+<h4 id="sicht-der-lehrenden">Sicht der Lehrenden</h4>
+<p>Falls der Lehrende sich selbst keinen Zugriff gewährt hat, sieht er den Ordner auch nicht wenn er in einer Gruppe eingeschrieben ist. Hat der Lehrende Zugriff auf die Ordner sieht er eine tabellarische Auflistung aller bestehenden Ordner. Zusätzlich kann er genau wie Studierende seinen ownCloud Account ändern, den Namen des Ordners ändern und Ordner per Klick der eigenen Instanz hinzufügen. In dem Fall, dass Gruppenordner erstellt wurden wird dem Lehrenden der Überordner aller Gruppenordner hinzugefügt.</p>
 <h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
         
     </div>
