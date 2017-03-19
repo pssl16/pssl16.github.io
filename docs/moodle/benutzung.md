@@ -7,15 +7,14 @@ Unsere Plugins sind zurzeit in einem öffentlichen Github repository verfügbar.
 Von dort aus können sie Plugins auf zwei Wegen herunterladen.
 
 1. Als Zip-Datei
-> Klicken sie am rechten Rand in dem Menü `clone or download` auf **Download ZIP**. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
+    Klicken sie am rechten Rand in dem Menü `clone or download` auf **Download ZIP**. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
 
 2. Mit dem Befehl git clone
-> Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:
-> ```
-git clone git@github.com:pssl16/name_of_the_repository.github.git
-```
-
-> Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
+    Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:
+    ```
+    git clone git@github.com:pssl16/name_of_the_repository.github.git
+    ```
+    Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
 
 Der Vorteil des zweiten Weges ist, dass Sie mittels `git pull` Änderung schnell nach pflegen können. Wenn Sie sich mit git nicht auskennen sollten sie jedoch den ersten Weg wählen.
 
