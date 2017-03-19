@@ -27,7 +27,7 @@ Um unsere Plugins zu benutzen benötigen sie in jedem Fall das `oauth2owncloud_a
 
 Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.
 
-Hierfür muss der Administrator das Formular des Plugins, das unter `Website-Administration>Plugins>Authentifizierung>Sciebo OAuth 2.0 Configuration` zu finden ist, ausfüllen.
+Hierfür muss der Administrator das Formular des Plugins, das unter `Website-Administration ► Plugins ► Authentifizierung ► Sciebo OAuth 2.0 Configuration` zu finden ist, ausfüllen.
 
 <img alt="OAuth 2.0 Formular" src="../images/OAuth2Form.png" width=100%>
 
@@ -44,7 +44,7 @@ Als letztes kann der Port angegeben werden.
 ## Repository sciebo
 
 ### Admin Einstellungen
-Sobald das Admin tool installiert wurde, kann das Repository installiert werden. Bitte beachten Sie, dass die oben genannten Einträge getätigt wurden, ansonsten funktioniert die Authentifizierung des Repositorys nicht. Repositorys Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt `Website-Administration>PluginsRepositories>Übersicht` aktiviert werden. Der Administrator kann dem Repository zusätzlich unter `Einstellungen` einen globalen Namen geben.
+Sobald das Admin tool installiert wurde, kann das Repository installiert werden. Bitte beachten Sie, dass die oben genannten Einträge getätigt wurden, ansonsten funktioniert die Authentifizierung des Repositorys nicht. Repositorys Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt `Website-Administration ► PluginsRepositories ► Übersicht` aktiviert werden. Der Administrator kann dem Repository zusätzlich unter `Einstellungen` einen globalen Namen geben.
 
 ### Nutzer Sicht
 
@@ -62,7 +62,7 @@ Im roten Kasten sehen sie Buttons um den Inhalt neu zu laden, sich auszuloggen u
 
 ### Einstellungen
 #### Admin Einstellungen
-Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner die erstellt werden gespeichert. Um den Nutzer festzulegen muss in `Website-Administration>Plugins>Aktivitäten>collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth2 Protokolls authentifizieren. Über einen Login Button werden Sie aufgefordert sich in ownCloud zu authentifizieren. Falls Sie nicht richtig weitergeleitet werden, sind die Einstellungen im Admin tool oauth2sciebo fehlerhaft, bitte überprüfen Sie diese. Achten Sie darauf, dass Sie sich nicht mit Ihrem normalen Account sondern mit dem technischen Nutzer anmelden.
+Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner die erstellt werden gespeichert. Um den Nutzer festzulegen muss in `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth2 Protokolls authentifizieren. Über einen Login Button werden Sie aufgefordert sich in ownCloud zu authentifizieren. Falls Sie nicht richtig weitergeleitet werden, sind die Einstellungen im Admin tool oauth2sciebo fehlerhaft, bitte überprüfen Sie diese. Achten Sie darauf, dass Sie sich nicht mit Ihrem normalen Account sondern mit dem technischen Nutzer anmelden.
 
 #### Sicht des Lehrenden
 Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen  von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.
