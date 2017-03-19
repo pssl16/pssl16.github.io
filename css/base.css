@@ -166,3 +166,9 @@ div.source-links {
     -moz-border-radius: 6px 0 6px 6px;
     border-radius: 6px 0 6px 6px;
 }
+.moodleimage {
+    border-style: solid;
+    border-width: 5px;
+    border-color: #343838;
+    
+}
