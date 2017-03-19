@@ -51,7 +51,7 @@ Sobald das Admin tool installiert wurde, kann das Repository installiert werden.
 Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter `Speicherorte` löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden.
 Danach sieht man nach der Anmeldung eine tabellarische Auflistung der vorhandenen Dateien:
 
-<img alt="FilePicker" src="../images/FilePicker.png" width=100%>
+<img alt="FilePicker" src="../images/05.png" width=100%>
 
 Im roten Kasten sehen sie Buttons um den Inhalt neu zu laden, sich auszuloggen und nur als Admin sieht man den letzten Button in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
 
