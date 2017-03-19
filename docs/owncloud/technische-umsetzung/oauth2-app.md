@@ -26,7 +26,7 @@ Der Authorization Code Flow kann von jedem Client, der registriert ist, angesto�
 
 * Name des Clients: Zur Wiedererkennung
 * Redirection URI: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.
-* Umgang mit Subdomains: Zum Einstellen, on Subdomains der Redirection URI erlaubt werden sollen.
+* Umgang mit Subdomains: Zum Einstellen, ob Subdomains der Redirection URI erlaubt werden sollen.
 
 Die App generiert daraufhin die Zugangsdaten des Clients, bestehend aus Client Identifier und Client Secret.
 
@@ -63,7 +63,7 @@ Zunächst musste ein Datenmodell zur Speicherung der benötigten Daten aufgestel
 	* `secret`: Zeichenkette, mit der ein Client sich beim Anfordern eines Access Tokens authentifizieren kann.
 	* `redirect_uri`: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.
 	* `name`: Ein Name für den Client zur Wiedererkennung.
-	* `allow_subdomains`: Zum Einstellen, on Subdomains der `redirect_uri` erlaubt werden sollen.
+	* `allow_subdomains`: Zum Einstellen, ob Subdomains der `redirect_uri` erlaubt werden sollen.
 * **[`authorization_code`](https://tools.ietf.org/html/rfc6749#section-1.3.1):** Ein [Authorization Grant](https://tools.ietf.org/html/rfc6749#section-1.3), 
 mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access Token anfordern kann.
 	* `code`: Zeichenkette, die als Authorization Code dient.
@@ -155,9 +155,14 @@ class Client extends Entity {
 }
 ```
 
-Wichtig ist, dass die Klasse von [`Entity`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Entity.html) erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle übereinstimmen. Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case für die Datenbank umgewandelt. Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, in der Entwicklungsumgebung eine automatische Vervollständigung zu haben. Die Angabe von [Typen](https://doc.owncloud.org/server/9.1/developer_manual/app/database.html#types) im Konstruktor dienen dazu, beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.
+Wichtig ist, dass die Klasse von [`Entity`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Entity.html) erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle übereinstimmen. 
+Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case für die Datenbank umgewandelt. 
+Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, 
+in der Entwicklungsumgebung eine automatische Vervollständigung zu haben. 
+Die Angabe von [Typen](https://doc.owncloud.org/server/9.1/developer_manual/app/database.html#types) im Konstruktor dient dazu, 
+beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.
 
-Das folgende Codebeispiel zeigt einen Ausschnitt aus dem zur `Client` Entity gehörenden Mapper.
+Das folgende Codebeispiel zeigt einen Ausschnitt aus dem zur `Client`-Entity gehörenden Mapper.
 
 ```php
 <?php
@@ -300,7 +305,7 @@ public function __construct($AppName, IRequest $request,
 ```
 
 Die hier notwendigen Parameter sind der Name der App, die Anfrage (Objekt, das die Schnittstelle `IRequest` implementiert), verschiedene Mapper Instanzen, die ID des Nutzers, 
-um bei der Autorisierung des Clients speichern zu können, welcher Nutzers dies veranlasst hat, und ein Logger (Objekt, das die Schnittstelle `ILogger` implementiert). Letzterer ist notwendig zum Schreiben in die Log-Datei von ownCloud.
+um bei der Autorisierung des Clients speichern zu können, welcher Nutzer dies veranlasst hat, und ein Logger (Objekt, das die Schnittstelle `ILogger` implementiert). Letzterer ist notwendig um in die Log-Datei von ownCloud zu schreiben.
 
 Die mit den Routes verknüpften Funktionen können zur Zugriffskontrolle mit [PHPDoc Annotationen](https://doc.owncloud.org/server/9.1/developer_manual/app/controllers.html#authentication) versehen werden. Folgendes Codebeispiel zeigt die Annotationen für die Funktion `generateToken` im `OAuthApiController`.
 
@@ -480,7 +485,9 @@ public function generateAuthorizationCode($response_type, $client_id, $redirect_
 }
 ```
 
-In dieser Funktion werden die Parameter überprüft. Falls diese nicht gültig sind (beispielsweise deshalb, weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde), wird an die ownCloud Startseite weitergeleitet. Ansonsten wird ein Authorization Code ausgestellt und als Parameter der Redirection URI angehägnt, zu welcher schließlich weitergeleitet wird.
+In dieser Funktion werden die Parameter überprüft. Falls diese nicht gültig sind (beispielsweise deshalb, 
+weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde), wird an die ownCloud Startseite weitergeleitet. 
+Ansonsten wird ein Authorization Code ausgestellt und als Parameter der Redirection URI angehängt, zu welcher schließlich weitergeleitet wird.
 
 Der Rückgabetyp `JSONResponse` wird für die Rückgabe des Access Tokens in der Funktion `generateToken` im `OAuthApiController` genutzt, wie nachfolgendes Codebeispiel zeigt. Zudem ist erneut das Zusammenspiel mit Entities und Mappern zu sehen.
 
@@ -617,7 +624,10 @@ public function generateToken($grant_type, $code = null,
 }
 ```
 
-Hier werden zunächst die Parameter auf Gültigkeit überprüft. Dabei gibt es die Zwei Fälle `authorization_code` und `refresh_token`, die durch die `switch`-Anweisung abgedeckt werden. Bei fehlerhaften Angaben wird eine entsprechende Fehlermeldung im JSON-Format zurückgegeben. Andernfalls wird eine neuer Access Token erstellt und in der Datenbank gespeichert. Der verwendete Authorization Code bzw. der Refresh Token wird zudem gelöscht. Im JSON Response wird dann der Access Token, der Token Typ (`Bearer` wegen des Authorization Code Flow), die Lebensdauer, der Refresh Token und die ID des Nutzers zurückgegeben. Nachfolgend ist ein Beispiel dazu angegeben.
+Hier werden zunächst die Parameter auf Gültigkeit überprüft. Dabei gibt es die zwei Fälle `authorization_code` und `refresh_token`, 
+die durch die `switch`-Anweisung abgedeckt werden. Bei fehlerhaften Angaben wird eine entsprechende Fehlermeldung im JSON-Format zurückgegeben. 
+Andernfalls wird eine neuer Access Token erstellt und in der Datenbank gespeichert. Der verwendete Authorization Code bzw. der Refresh Token wird zudem gelöscht. 
+Im JSON Response wird dann der Access Token, der Token Typ (`Bearer` wegen des Authorization Code Flow), die Lebensdauer, der Refresh Token und die ID des Nutzers zurückgegeben. Nachfolgend ist ein Beispiel dazu angegeben.
 
 ```json
 {
@@ -644,17 +654,9 @@ public static function generateRandom() {
 }
 ```
 
-Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren Beziehungen zu den Entities und Mappern dargestellt.
+Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren Beziehungen, die Entities und die Mapper, sowie die Klasse `Utilities` dargestellt.
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Klassendiagramme zusammenfügen bzw. vervollständigen.
-</div>
-
-![Controller](images/UML_Controller.svg)
-
-![Mapper](images/UML_Mapper.svg)
-
-![Entities](images/UML_Entities.svg)
+![UML-Klassendiagramm](images/uml-klassendiagramm.svg)
 
 ### Templates
 
@@ -818,7 +820,7 @@ Als Log-Level wurde `info` gewählt.
 
 Nach der Implementierung des OAuth 2.0 Protokolls musste die Authentifizierung von WebDAV und von ownCloud APIs (für die Nutzung der OCS Share API) Erweitert werden. Diese Erweiterung basiert auf den durchgeführten [Core Anpassungen](core-anpassungen).
 
-Zunächst schauten wir uns die Umsetzung der bestehenden Basic Authentication in der `dav` App an. Dabei stellten wir fest, dass sabre den [Austausch des Authentifizierungsmechanismus](http://sabre.io/dav/authentication/) durch Implementierung eines Interfaces bietet. Für unser Szenario war das Interface `AbstractBearer` relevant, da die Access Tokens aus dem Authorization Code Flow des OAuth 2.0 Protokolls für Bearer Authentication genutzt werden. Dazu haben wir die Funktion `validateBearerToken` in der Klasse `OAuth2` implementieren. Die Logik und das Session-Management lehnen sich stark an die bestehende Implementierung der Basic Authentication an. Für die Authentifizierung einer Anfrage wird hier jedoch auf `AuthModule`s zurückgegriffen.
+Zunächst sahen wir uns die Umsetzung der bestehenden Basic Authentication in der `dav` App an. Dabei stellten wir fest, dass sabre den [Austausch des Authentifizierungsmechanismus](http://sabre.io/dav/authentication/) durch Implementierung eines Interfaces bietet. Für unser Szenario war das Interface `AbstractBearer` relevant, da die Access Tokens aus dem Authorization Code Flow des OAuth 2.0 Protokolls für Bearer Authentication genutzt werden. Dazu haben wir die Funktion `validateBearerToken` in der Klasse `OAuth2` implementieren. Die Logik und das Session-Management lehnen sich stark an die bestehende Implementierung der Basic Authentication an. Für die Authentifizierung einer Anfrage wird hier jedoch auf `AuthModule`s zurückgegriffen.
 
 Ein `AuthModule` kann von ownCloud Apps implementiert und registriert werden. Es wird auch bei der Authentifizierung von API Zugriffen eingesetzt. Eine App muss dazu die Funktionen `auth` und `getUserPassword` implementieren. Erstere authentifiziert eine Anfrage, während letztere das Passwort des Nutzers zu einer Anfrage ermittelt. Da die App `encryption` in bestimmten Nutzungsszenarien auf das Passwort des Nutzers angewiesen ist, existiert die Funktion `getUserPassword`. Sie gibt jedoch in unserer Implementierung eine leere Zeichenkette zurück, da wir an keiner Stelle mit Passwörtern umgehen (siehe [Einschränkungen](#einschrankungen)). `getUserPassword` gibt bei erfolgreicher Authentifizierung ein `User`-Objekt zurück, wie in folgendem Codebeispiel zu sehen ist.
 

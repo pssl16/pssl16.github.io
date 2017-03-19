@@ -2,7 +2,9 @@
 
 ## Installation
 
-Da die Anpassungen durch den Pull Request [owncloud/core#26742](https://github.com/owncloud/core/pull/26742) erst kürzlich in den ownCloud Core aufgenommen wurden, sind sie noch in keiner Hauptversion enthalten. Es muss daher der aktuelle Stand aus dem [Repository](https://github.com/owncloud/core) heruntergeladen werden:
+Da die Anpassungen durch den Pull Request [owncloud/core#26742](https://github.com/owncloud/core/pull/26742) erst kürzlich in den ownCloud Core aufgenommen wurden, sind sie noch in keiner Hauptversion enthalten. Erst die [in Kürze erscheinende](https://github.com/owncloud/core/wiki/Maintenance-and-Release-Schedule) Version 10.0 wird die Änderungen enthalten.
+
+Um die OAuth 2.0 in ownCloud schon jetzt nutzen zu können, muss daher der aktuelle Stand aus dem [`core` Repository](https://github.com/owncloud/core) heruntergeladen werden:
 
 ```nohighlight
 $ git clone https://github.com/owncloud/core.git
@@ -16,7 +18,7 @@ $ make
 
 Die restlichen Installationsschritte von ownCloud unterscheiden sich nicht von denen im [ownCloud Handbuch](https://doc.owncloud.org/server/latest/admin_manual/installation/index.html).
 
-Die `oauth2` App wird dadurch installiert, dass der Inhalt des [Repositorys](https://github.com/owncloud/oauth2) in das Verzeichnis `apps` kopiert wird:
+Die `oauth2` App wird dadurch installiert, dass der Inhalt des [`oauth2` Repositorys](https://github.com/owncloud/oauth2) in das Verzeichnis `apps` kopiert wird:
 
 ```nohighlight
 $ cd apps
@@ -51,6 +53,21 @@ Größere Darstellung des Clients:
 </div>
 <div align="right">
 [Zu beachten ist der Zeilenumbruch und die moodle-typische `redirect URI`.]
+</div>
+
+## Autorisierung eines Clients
+
+Nach der Clientregistrierung kann der Client entsprechend verwendet werden. Es können also Anwendungen autorisiert werden um Zugriff auf die
+ownCloud-Instanz zu erhalten. Dies wird über Abfragen geregelt, welche der Endnutzer bestätigen oder ablehnen muss.
+
+Screenshot einer Autorisierungsabfrage
+<div align="center">
+	<img alt="test" src="../images/request.png" width=80%>
+</div>
+
+Screenshot einer fehlerhaften Autorisierungsabfrage
+<div align="center">
+	<img alt="Abfrage bei Löschung" src="../images/invalid_request.png" width=75%>
 </div>
 
 ## Widerrufung der Autorisierung
