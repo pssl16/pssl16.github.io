@@ -169,4 +169,4 @@ Die Implementierung und Registrierung eines `AuthModule`s in der OAuth 2.0 App w
 
 ## Tests und Continuous Integration
 
-Die Änderungen in den Pull Requests durchliefen die Tests zum ownCloud Core, die bei [Jenkins](https://jenkins.owncloud.org/job/owncloud-core/job/core/) und [Travis](https://travis-ci.org/owncloud/core/) durchgeführt werden.
+Die Änderungen in den Pull Requests durchliefen die Tests zum ownCloud Core, die bei [Jenkins](https://jenkins.owncloud.org/job/owncloud-core/job/core/) und [Travis](https://travis-ci.org/owncloud/core/) ausgeführt wurden.
