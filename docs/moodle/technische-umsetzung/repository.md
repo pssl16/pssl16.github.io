@@ -1,15 +1,12 @@
-# Repository: `sciebo`
+# Repository: `owncloud`
 
 ## Zweck
 
 Der Plugin Typ *Repository* wird in Moodle unter anderem verwendet um Nutzer die Möglichkeit zu schaffen Zugang zu Dateien aus externen Quellen zu bekommen. Das Repository Plugin ownCloud kann somit folgende Integrationsszenarien realisieren:
-2:
 
-<ol start="2">
-  <li> Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.</li></ol>
+> Als **Nutzer** möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz **hochladen**.
 
-<ol start="3">
-  <li> Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken. </li></ol>
+> Als **Nutzer** möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz **verlinken**.
 
 Unser Plugin soll dem Administrator der Seite ermöglichen das Repository zu aktivieren und zu deaktivieren.
 Alle Nutzer der Moodle Instanz sollen mit Hilfe des Plugins sind in ownCloud authentifizieren können. Danach sollen sie in Moodle im [File Picker](https://docs.moodle.org/32/en/File_picker) bequem zwischen Ihren Dateien wählen können und sich mit verschiedenen Accounts authentifizieren können. Besonders im Vordergrund steht das unser Plugin möglichst einfach zu bedienen ist, um die Benutzerfreundlichkeit zu erhöhen.

@@ -1,4 +1,4 @@
-# Admin Tool: `oauth2sciebo`
+# Admin Tool: `oauth2owncloud`
 
 ## Zweck
 
@@ -11,7 +11,7 @@ jedoch könnte er in Zukunft auch als Ausgangspunkt genutzt werden, um ähnliche
 
 Im Wesentlichen implementiert dieses Plugin das folgende [Integrationsszenario](../../#realisierte-szenarien):
 
-1. Als **Nutzer** möchte ich OAuth2 benutzen können, um mich im Learnweb als ownCloud Nutzer anzumelden.
+> Als **Nutzer** möchte ich OAuth 2.0 benutzen können, um Moodle Zugriff auf ownCloud zu gewähren.
 
 Jedoch betrifft es auch alle anderen Szenarien indirekt, da diese erst durch die Authentifizierung mittels OAuth 2.0
 ermöglicht werden können.
