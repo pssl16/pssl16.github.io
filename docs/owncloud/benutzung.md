@@ -58,12 +58,12 @@ Größere Darstellung des Clients:
 Nach der Clientregistrierung kann der Client entsprechend verwendet werden. Es können also Anwendungen autorisiert werden um Zugriff auf die
 ownCloud-Instanz zu erhalten. Dies wird über Abfragen geregelt, welche der Endnutzer bestätigen oder ablehnen muss.
 
-Screenshot einer Autorisierungsabfrage
+Screenshot einer Autorisierungsabfrage:
 <div align="center">
 	<img alt="test" src="../images/request.png" width=80%>
 </div>
 
-Screenshot einer fehlerhaften Autorisierungsabfrage
+Screenshot einer fehlerhaften Autorisierungsabfrage:
 <div align="center">
 	<img alt="Abfrage bei Löschung" src="../images/invalid_request.png" width=75%>
 </div>
