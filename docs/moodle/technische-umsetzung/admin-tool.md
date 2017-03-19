@@ -2,14 +2,14 @@
 
 ## Zweck
 
-Wie bereits im Kapitel [Software Architektur](software-architektur/) angeschnitten, ist der Hauptzweck dieses Plugins
+Wie bereits im Kapitel [Software Architektur](softwarearchitektur/) angeschnitten, ist der Hauptzweck dieses Plugins
 die Schnittstelle zu ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud 
-App [OAuth2](../owncloud/technische-umsetzung/) mit Hilfe eines OAuth 2.0 Clients angesprochen. Zusätzlich werden
+App [oauth2](../../owncloud/technische-umsetzung/oauth2-app/) mit Hilfe eines OAuth 2.0 Clients angesprochen. Zusätzlich werden
 sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert, in diesem Client umfasst.
 Zwar ist der Client auf einen OAuth 2.0 Protokollablauf in Zusammenarbeit mit der entsprechenden ownCloud App angepasst,
 jedoch könnte er in Zukunft auch als Ausgangspunkt genutzt werden, um ähnliche Schnittstellen zu erreichen.
 
-Im Wesentlichen implementiert dieses Plugin das folgende [Integrationsszenario](../index/):
+Im Wesentlichen implementiert dieses Plugin das folgende [Integrationsszenario](../../#realisierte-szenarien):
 
 1. Als **Nutzer** möchte ich OAuth2 benutzen können, um mich im Learnweb als ownCloud Nutzer anzumelden.
 
@@ -18,31 +18,42 @@ ermöglicht werden können.
 
 ## Vorgegebene Schnittstelle
 
-Für Admin Tools ist in moodle lediglich eine schwach definierte Schnittstelle gegeben. Wie in jedem anderen moodle Plugin 
+Für Admin Tools ist in Moodle lediglich eine schwach definierte Schnittstelle gegeben. Wie in jedem anderen Moodle Plugin 
 auch, müssen zunächst einige Standartdateien implementiert werden: 
 
-* **`version.php`:** Beschreibt die Versionsnummer des Plugins, die benötigte moodle Version und Abhängigkeiten des Plugins.
+* **`version.php`:** Beschreibt die Versionsnummer des Plugins, die benötigte Moodle Version und Abhängigkeiten des Plugins.
 * **`access.php`:** Legt die Berechtigungen für definierte Aktionen innerhalb des Plugins anhand von Nutzerrollen fest.
 * **`tool_oauth2sciebo.php`:** Beinhaltet Sprachstrings für unterschiedliche Regionen und Sprachen, sodass definierte Strings,
 abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können.
 
 Zusätzlich zu den allgemeinen Plugindateien, sollte unser Admin Tool auch mindestens noch eine Datei namens `settings.php`
-beinhalten. Diese umfasst alle Einstellungen, die für das Admin Tool geltend dem Administrator der moodle Instanz zur 
-Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration moodle-intern gespeichert und kann von dem
+beinhalten. Diese umfasst alle Einstellungen, die für das Admin Tool geltend dem Administrator der Moodle Instanz zur 
+Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration Moodle-intern gespeichert und kann von dem
 Client, wenn nötig abgerufen werden.
 
 Insgesamt ergibt sich folgende Struktur von Ordnern und Dateien, die mindestens für die Implementierung des von uns gebrauchten
 Admin Tools notwendig ist:
-
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Grafik für Ordnerstruktur einfügen.
-</div>
+                                    
+```nohighlight                      
+classes                             # Enthält alle implementierten Klassen
+db	
+  └── access.php					# Enthält alle definierten Capabilities
+lang
+  └── en
+      └── tool_oauth2sciebo.php		# Enthält Sprach-Strings (englisch) 										
+pix						            # Bilder und Icons
+tests                               # Test-Dateien und Generatoren
+settings.php	                    # Einstellungs-Seite				
+version.php						    
+```
 
 ## Implementierung
 
+Im Folgenden wird zunächst ausgeführt, wie die vorgegebenen Schnitstellen implementiert worden sind.
+
 ### Eingabemaske
 
-Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende Sciebo bzw. ownCloud Instanz zu befähigen,
+Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende ownCloud Instanz zu befähigen,
 müssen diese zunächst mit Hilfe benötigter Eingabedaten konfiguriert werden. Diese sollen zentral im Admin Tool eingegeben und
 gespeichert werden können, um sie anschließend von dem Client aus, und damit auch in den ihn verwendenden Plugins, nutzen zu können.
 
@@ -69,7 +80,7 @@ werden alle Eingaben, bis auf dem Port, als notwendig angesehen.
 
 #### Settings
  
-Die nun benötigten Eingabedaten müssen in moodle auf der Einstellungsseite des Plugins erfragt und entprechend gespeichert werden.
+Die nun benötigten Eingabedaten müssen in Moodle auf der Einstellungsseite des Plugins erfragt und entprechend gespeichert werden.
 Um dies zu bewerkstelligen, wird in der settings.php jedes Eingabefeld einzeln definiert. In dem folgenden Beispiel wird das
 Eingabfeld für die Client ID beschrieben:
 
@@ -93,8 +104,8 @@ Der Administrator kann die Einstellungen jederzeit ändern und damit die gewüns
 ### OAuth 2.0 Client
 
 Den funktionalen Kern des Plugins stellt der OAuth 2.0 ownCloud Client dar. Dieser befindet sich in Form der Klasse `owncloud` in der
-Datei `sciebo.php` in dem `classes` Ordner des Plugins. Diese Klasse steuert sowohl den moodle-seitigen Protokollablauf
-von OAuth 2.0, als auch den Verbindungsaufbau zu ownCloud mittels WebDAV und OCS Share API. Dadurch, dass `owncloud` von der im moodle Core
+Datei `sciebo.php` in dem `classes` Ordner des Plugins. Diese Klasse steuert sowohl den Moodle-seitigen Protokollablauf
+von OAuth 2.0, als auch den Verbindungsaufbau zu ownCloud mittels WebDAV und OCS Share API. Dadurch, dass `owncloud` von der im Moodle Core
 enthaltenen Klasse `oauth2_client` erbt, ist ein Großteil des Protokollablaufs bereits abgedeckt.
 Der Konstruktor der Klasse `oauth2_client` muss mit den `Client ID` und `Secret` Daten aufgerufen werden. 
 Diese werden aus den zuvor angewandten Einstellungen beschafft:
@@ -138,15 +149,15 @@ ownCloud gleich bleibt. Die benötigten Eingabdaten werden, soweit angegeben, de
 
 ## Erweiterungen der Schnittstellen
 
-Du zur Umsetzung des Verfahrens Die vorgegebenen Schnittstellen nicht ausreichten, mussten in Anpassungen in moodles Core 
+Du zur Umsetzung des Verfahrens Die vorgegebenen Schnittstellen nicht ausreichten, mussten in Anpassungen in Moodles Core 
 Bibliotheken vorgenommen werden. Im Folgenden werden diese Änderungen beschrieben.
 
 ### OAuth 2.0 Client
 
 #### Anpassung der `post` Methode
 
-Die moodle-interne Klasse `oauth2_client` erbt von einer weiteren Klasse aus dem moodle Core mit dem Namen `curl`, welche mittels
-[cURL]() HTTP Requests erstellen und verschicken kann. Dadurch ist die Klasse fähig eigenständig einen Access Token mit einem 
+Die Moodle-interne Klasse `oauth2_client` erbt von einer weiteren Klasse aus dem Moodle Core mit dem Namen `curl`, welche mittels
+[cURL](https://de.wikipedia.org/wiki/CURL) HTTP Requests erstellen und verschicken kann. Dadurch ist die Klasse fähig eigenständig einen Access Token mit einem 
 Authorization Code mittels der HTTP POST Methode über die `token` Schnittstelle in ownCloud zu beschaffen. Allerdings
 bietet die dafür zuständige Methode `post` nicht die Möglichkeit einen Basic Authorization Header zur Anfrage hinzuzufügen,
 welcher Client ID und Secret zur Autorisierung in der `oauth2` ownCloud App mit verschickt. Daher musste die `post` Methode
@@ -235,14 +246,14 @@ zu speichern um zum Beispiel einen technischen Nutzer in ownCloud zu verwenden.
 
 ### WebDAV Client
 
-Da ownCloud Datentransfer lediglich über eine WebDAV Schnittstelle anbietet, musste auf diese in moodle mittels eines dafür
+Da ownCloud Datentransfer lediglich über eine WebDAV Schnittstelle anbietet, musste auf diese in Moodle mittels eines dafür
 vorgesehenen Clients zugegriffen werden können. Moodle bietet bereits einen WebDAV Client an, welcher als Basis ownClouds
 WebDAV Schnittstelle verwendet werde konnte.
 
 #### Absicherung mittels OAuth 2.0
 
-Der moodle-interne Client bietet eine große Auswahl an WebDAV Methoden, welche zum Großteil erfolgreichen Datentransfer mit
-ownCloud ermöglichen. Der Nachteil des Client besteht darin, dass er ausschließlich mit Basic Auth ausgestattet ist und somit
+Der Moodle-interne Client bietet eine große Auswahl an WebDAV Methoden, welche zum Großteil erfolgreichen Datentransfer mit
+ownCloud ermöglichen. Der Nachteil des Client besteht darin, dass er ausschließlich mit [Basic Auth](https://tools.ietf.org/html/rfc2617) ausgestattet ist und somit
 bei jedem Zugriff Nutzername und Passwort des ownCloud Accounts versandt werden muss. Um eine passwortlose Authentifizierung
 zu ermöglichen, musste der WebDAV Client mittles OAuth 2.0 abgesichert werden.
 
@@ -292,13 +303,13 @@ Headers nun auch ein von ownCloud erhaltenes Access Token. Somit ist auch diese 
 ## Integration mit ownCloud
 
 Nachdem die nötigen Schnittstellen individuell implementiert worden sind, können sie genutzt werden um den von OAuth 2.0 spezifizierten
-Protokollablauf moodle-seitig durchzuführen. Um beispielsweise über eine WebDAV Anfrage Daten aus einer ownCloud Instanz 
+Protokollablauf Moodle-seitig durchzuführen. Um beispielsweise über eine WebDAV Anfrage Daten aus einer ownCloud Instanz 
 beschaffen zu können, müssen im Wesentlich folgende Schritte in Moodle unternommen werden, nachdem die Eingabemaske korrekt 
 ausgefüllt worden ist:
 
-1. Anfrage auf Authentifizierung und Autorisierung
-2. Anfrage eines Access Tokens
-3. Zugriff auf die WebDAV Schnittstelle
+1. Anfrage auf **Authentifizierung und Autorisierung**
+2. Anfrage eines **Access Tokens**
+3. Zugriff auf die **WebDAV** Schnittstelle
 
 Der damit vollzogene Ablauf lässt sich in folgender Grafik erfassen:
 
@@ -334,7 +345,8 @@ Die Autorisierung durch den Nutzer stellt die einzige für den diesen sichtbare 
 ### Anfrage eines Access Tokens
 
 Um einen Authorization Code zu einem Access Token aufzuwerten muss mittels einer POST-Anfrage die `token` Schnittstelle
-der oauth2 App in ownCloud angesprochen werden. Erneut müssen alle spezifizierten Angaben in dem Request übergeben werden,
+der oauth2 App in ownCloud angesprochen werden. Erneut müssen alle 
+[spezifizierten Angaben](../../owncloud/technische-umsetzung/oauth2-app/#authorization-code-flow) in dem Request übergeben werden,
 unter Anderem der Authorization Code. Da ownCloud-seitig zusätzlich ein Basic Authentication Header mit Client ID und
 Client Secret zur Authentifizierung erwartet wird, muss dieser zusätzlich bei der Anfrage nach einem Access Token hinzugefügt werden.
 
