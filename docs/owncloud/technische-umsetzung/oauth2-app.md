@@ -644,7 +644,7 @@ public static function generateRandom() {
 }
 ```
 
-Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren Beziehungen zu den Entities und Mappern dargestellt.
+Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren Beziehungen, die Entities und die Mapper, sowie die Klasse `Utilities` dargestellt.
 
 ![UML-Klassendiagramm](images/uml-klassendiagramm.svg)
 
