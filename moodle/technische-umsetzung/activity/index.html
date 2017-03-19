@@ -373,8 +373,10 @@ Die <code>view.php</code> wird zu verschiedenen Zwecken aufgerufen die behandelt
 </code></pre>
 
 <ol>
-<li>Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.
-    Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:</li>
+<li>
+<p>Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.</p>
+<p>Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:</p>
+</li>
 </ol>
 <pre><code class="php">    $content = json_decode($element-&gt;customdata);
     $cmidoftask = $content-&gt;cmid;
