@@ -21,7 +21,7 @@ Kursteilnehmer haben weniger Organisationsaufwand und werden bei ihrer Gruppenar
 ## Vorgegebene Schnittstelle
 Um das Integrationsszenario zu realisieren haben wir ein Activity Plugin für Moodle entwickelt. Instanzen von Activity Plugins können Kursen beliebig oft hinzugefügt werden.
 Für genauere Informationen besuchen sie die Moodle Dokumentation von [Activity modules](https://docs.moodle.org/dev/Activity_modules "Activity Modules")
-In der `collaborativefolders/mod_form.php` fragen wir alle Einstellungen ab, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beinhaltet den Namen des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen separate Ordner erzeugt werden sollen.
+In der `collaborativefolders/mod_form.php` werden alle Einstellungen abgefragt, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beinhaltet den Namen des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen separate Ordner erzeugt werden sollen.
 In der `collaborativefolders/settings.php` kann der Administrator den technischen Nutzer des Plugins festlegen. Dieser gilt für alle Instanzen, also global für das gesammte Plugin.
 Die `collaborativefolders/lib.php` bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
 
@@ -32,14 +32,14 @@ Der Admin der Moodle Seite kann in der Seiten-Administration einen technischen N
 
 Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator Account der ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist und autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen.
 
-Implementiert haben wir dies in der `collaborativefolders/settings.php`. Diese erstellt eine Seite in den Admin Settings der Moodle Instanz. Hier müssen wir drei verschiedene Fälle beachten:
+Implementiert haben wir dies in der `collaborativefolders/settings.php`. Diese erstellt eine Seite in den Admin Settings der Moodle Instanz. Hier müssen drei verschiedene Fälle beachtet werden:
 
 1. **Der technische Nutzer ist bereits angemeldet, soll aber die Möglichkeit haben ausgeloggt zu werden.**
     Die `check_login()` Methode des `oauth2_owncloud` Plugins überprüft ob ein technischer Nutzer registriert ist. Falls der Nutzer angemeldet ist, kann der Administrator den Nutzer mit einem Logout-Button ausloggen. Dieser leitet den Nutzer auf eine neue Seite. Diese enthält eine Warnung da alte Instanzen des Plugins nicht länger genutzt werden können wenn der technische Nutzer geändert wird.
 
 2. **Der technische Nutzer wird erstmals registriert.**
 
-    Das Token des technischen Nutzers wird für das Plugin in den `config` Einstellungen gespeichert, da es zu keinem Nutzer, aber zu dem Plugin, gehört. Zur Sicherheit setzten wir dieses auf null, und zeigen dem Admin einen Login-Button an. Die Speicherung des Tokens erfolgt durch den `callback` des OAuth 2.0 Protokolls.
+    Das Token des technischen Nutzers wird für das Plugin in den `config` Einstellungen gespeichert, da es zu keinem Nutzer, aber zu dem Plugin, gehört. Zur Sicherheit wird ist dieses auf null gesetzt. Dem Admin wird ein Login-Button angezeigt. Die Speicherung des Tokens erfolgt durch den `callback` des OAuth 2.0 Protokolls.
 
 3. **Der technische Nutzer soll ausgeloggt werden.**
 
@@ -51,11 +51,11 @@ Implementiert haben wir dies in der `collaborativefolders/settings.php`. Diese e
 ```
 
 ### Hinzufügen einer Instanz
-Die Schnittstelle in Moodle für das Einstellungsformular ist sehr ausführlich. Den Standardeinstellungen haben wir nur eine Checkbox hinzugefügt die bestimmt, ob der Lehrende Zugriff auf die Ordner hat.
-Außerdem benutzen wird den Moodle internen *group_mode*. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie wir für separate Gruppen Ordner erstellen erklären wir unter anderem im nächsten Abschnitt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der `mod_form.php` in Moodle benötigen besuchen sie [diese Seite](https://docs.moodle.org/dev/Activity_modules#mod_form.php).
+Die Schnittstelle in Moodle für das Einstellungsformular ist sehr ausführlich. Den Standardeinstellungen haben wurde nur eine Checkbox hinzugefügt die bestimmt, ob der Lehrende Zugriff auf die Ordner hat.
+Außerdem benutzen wird den Moodle internen *group_mode*. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie für separate Gruppen Ordner erstellt werden  wird unter anderem im nächsten Abschnitt erklärt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der `mod_form.php` in Moodle benötigen besuchen sie [diese Seite](https://docs.moodle.org/dev/Activity_modules#mod_form.php).
 
 ### Erstellen von Ordnern
-Zum Erstellen von Ordnern haben wir einen Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität `collaborativefolders` erstellt wird.
+Zum Erstellen von Ordnern haben wurde einen Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität `collaborativefolders` erstellt wird.
 In `collaborativefolders/db/events.php` können in einem Array alle Observer registriert werden und werden dann von Moodle verwaltet.
 ```php
 $observers = array(
@@ -74,7 +74,7 @@ Somit wird, sobald das Event `course_module_created` erzeugt wird, der Observer 
 Beim Erstellen müssen zwei unterschiedliche Szenarien betrachtet werden:
 
 Im ersten Szenario wird ein Ordner für alle Studierenden eines Kurses erstellt.
-Die Anforderung an das Modul ist es also einen Ordner in dem gespeicherten Account zu erstellen, der eindeutig identifizierbar ist. Dies ist gesichert indem wir die Ordner nach der `course_module_id` benennen. Diese ist einzigartig für jede Aktivität, die in Moodle erzeugt wird. So kann es, soweit manuell
+Die Anforderung an das Modul ist es also einen Ordner in dem gespeicherten Account zu erstellen, der eindeutig identifizierbar ist. Dies ist gesichert indem die Ordner nach der `course_module_id` benannt werden. Diese ist einzigartig für jede Aktivität, die in Moodle erzeugt wird. So kann es, soweit manuell
 keine Ordner erstellt werden, zu keinen Synchronisationskonflikten kommen.
 
 ``` php
@@ -117,7 +117,7 @@ foreach ($data as $key => $value) {
 ```
 ### Ansicht der bestehenden Instanzen
 
-Nun, da der Lehrende alle notwendigen Einstellungen tätigen konnte, mussten wir die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementieren. Dies beinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das Hinzufügen dieser Ordner zur eigenen Instanz.
+Nun, da der Lehrende alle notwendigen Einstellungen tätigen konnte, musste die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementiert werden. Dies beinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das Hinzufügen dieser Ordner zur eigenen Instanz.
 Lehrende sollen entweder eine Übersicht aller Ordner haben, oder keinen Zugriff auf die Ordner haben. Alle Funktionalitäten sind in der `view.php` implementiert.
 
 #### Sicht der Studierenden
@@ -126,7 +126,7 @@ Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden mü
 
 1. **Der Ordnername wird erstmals gespeichert**
 
-    Wir speichern den Ordnernamen in den moodle `user_preferences`. Diese werden für jeden Nutzer einzeln gespeichert und können beliebig geändert oder gelöscht werden. Die Eingabemaske für einen Ordnernamen wird nur angezeigt wenn bis jetzt kein Name gesetzt wurde oder der Nutzer explizit ausgewählt hat, das der Name zurückgesetzt werden soll.
+    Der Ordnername wird in den moodle `user_preferences` gespeichert. Diese werden für jeden Nutzer einzeln gespeichert und können beliebig geändert oder gelöscht werden. Die Eingabemaske für einen Ordnernamen wird nur angezeigt wenn bis jetzt kein Name gesetzt wurde oder der Nutzer explizit ausgewählt hat, das der Name zurückgesetzt werden soll.
 
 2. **Der Name des Ordners wird geändert**
 
