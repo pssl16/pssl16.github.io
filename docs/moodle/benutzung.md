@@ -7,14 +7,15 @@ Unsere Plugins sind zurzeit in einem öffentlichen Github repository verfügbar.
 Von dort aus können sie Plugins auf zwei Wegen herunterladen.
 
 1. Als Zip-Datei
->Klicken sie am rechten Rand in dem Menü `clone or download` auf **Download ZIP**. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
+> Klicken sie am rechten Rand in dem Menü `clone or download` auf **Download ZIP**. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
 
 2. Mit dem Befehl git clone
->Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:
->```
+> Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:
+> ```
 git clone git@github.com:pssl16/name_of_the_repository.github.git
 ```
->Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
+
+> Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
 
 Der Vorteil des zweiten Weges ist, dass Sie mittels `git pull` Änderung schnell nach pflegen können. Wenn Sie sich mit git nicht auskennen sollten sie jedoch den ersten Weg wählen.
 
@@ -29,11 +30,11 @@ Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in
 
 Hierfür muss der Administrator das Formular des Plugins, das unter `Website-Administration ► Plugins ► Authentifizierung ► Sciebo OAuth 2.0 Configuration` zu finden ist, ausfüllen.
 
-<img alt="OAuth 2.0 Formular" src="../images/OAuth2Form.png" width=100%>
+<img class='moodleimage' alt="OAuth 2.0 Formular" src="../images/OAuth2Form.png" width=100%>
 
 Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld, hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.
 
-<img alt="WebDAV Formular" src="../images/WebDAVForm.png" width=100%>
+<img class='moodleimage' alt="WebDAV Formular" src="../images/WebDAVForm.png" width=100%>
 
 Nun werden die Einstellungen für den WebDAV Zugriff festgelegt.
 Als erstes wird die Adresse des ownCloud Servers angegeben.
@@ -50,11 +51,11 @@ Sobald das Admin tool installiert wurde, kann das Repository installiert werden.
 
 Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs Administratoren können das Repository jedoch unter `Speicherorte` löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden.
 
-<img alt="FilePicker" src="../images/FilePickerlogin.png" width=100%>
+<img class='moodleimage' alt="FilePicker" src="../images/FilePickerlogin.png" width=100%>
 
 Wird der Button getätigt erscheint ein Pop-up Window oder ein neuer Tab, der den Nutzer auffordert sich in ownCloud anzumelden. Anschließend eird der Nutzer gefragt ob er die App autorisieren möchte. Der Nutzer wird nun zurückgeleitet und sieht tabellarische Auflistung der vorhandenen Dateien:
 
-<img alt="FilePicker" src="../images/05.png" width=100%>
+<img class='moodleimage' alt="FilePicker" src="../images/05.png" width=100%>
 
 Im roten Kasten sieht der Nutzer Buttons um den Inhalt neu zu laden, sich auszuloggen und nur als Admin sieht man den letzten Button, in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
 
@@ -72,12 +73,12 @@ Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktiv
 Wenn ein Ordner für einen Studierenden freigegeben wurde, sieht dieser die Aktivität in dem Kurs. Ordner werden von dem Plugin zeitverzögert erstellt um den Server nicht zu überlasten. SOmit kann es passieren, dass der Nutzer wenn er die Aktivität auswählt eine Nachricht bekommt, dass die Ordner noch nicht erstellt wurden. Sobald die Ordner erstellt wurden, wird der Nutzer aufgefordert dem Ordner einen individuellen Namen
 zu geben, wenn er die Aktivität auswählt. Dieser Name wird nur für den zurzeitigen Nutzer gespeichert.
 
-<img alt="Name Form" src="../images/NameForm.png" width=100%>
+<img class='moodleimage' alt="Name Form" src="../images/NameForm.png" width=100%>
 
 Danach kann der Nutzer unter dem Menüpunkt `Change Folder Name` den gewählten Namen ändern. Wenn der Nutzer noch nicht eingeloggt ist, kann er sich über einen Login Button authentifizieren. Ansonsten kann er sich aus dem aktuellen Account ausloggen und sich mit einem anderen Account authentifizieren.
 Wenn er authentifiziert ist, kann der Ordner unter dem Menüpunkt `Generate Link to Folder` dem privaten Account hinzugefügt werden.
 
-<img alt="AddForm" src="../images/AddForm.png" width=100%>
+<img class='moodleimage' alt="AddForm" src="../images/AddForm.png" width=100%>
 
 Nun kann der Nutzer über einen Link in Moodle oder über den normalen ownCloud Login auf
 den Ordner zugreifen.
