@@ -338,7 +338,9 @@ Die <code>view.php</code> wird zu verschiedenen Zwecken aufgerufen die behandelt
 <pre><code class="php">$mform-&gt;addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');
 </code></pre>
 
+<blockquote>
 <p>Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.</p>
+</blockquote>
 <ol>
 <li>Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus:<blockquote>
 <p>Der Nutzer muss mit Hilfe des <code>oauth2owncloud</code> admin_tools aus-geloggt werden, und der accesstoken wird auf null gesetzt.</p>
@@ -350,23 +352,23 @@ Die <code>view.php</code> wird zu verschiedenen Zwecken aufgerufen die behandelt
 </code></pre>
 
 <ol>
-<li>
-<p>Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.</p>
-<blockquote>
-<p>Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:
-``` php
-    $content = json_decode($element-&gt;customdata);
-    $cmidoftask = $content-&gt;cmid;</p>
+<li>Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.<blockquote>
+<p>Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:</p>
 </blockquote>
-<p>// As long as at least one ad-hoc task exist, that has the same cm-&gt;id as the current cm the folders were not created
-if ($id == $cmidoftask) {
-    $created = false;
-}
-```
-Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.</p>
-<h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2>
 </li>
-</ol></div>
+</ol>
+<pre><code class="php">    $content = json_decode($element-&gt;customdata);
+    $cmidoftask = $content-&gt;cmid;
+
+    // As long as at least one ad-hoc task exist, that has the same cm-&gt;id as the current cm the folders were not created
+    if ($id == $cmidoftask) {
+        $created = false;
+    }
+</code></pre>
+
+<pre><code>Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
+</code></pre>
+<h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
         
     </div>
 
