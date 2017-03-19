@@ -49,7 +49,9 @@ Größere Darstellung des Clients:
 <div align="center">
 	<img alt="Clientdarstellung zoomed in" src="../images/Zoomed_eingabe.png" width=85%>
 </div>
-*(Zu beachten ist der Zeilenumbruch und die moodle-typische `redirect URI`.)*
+<div align="right">
+[Zu beachten ist der Zeilenumbruch und die moodle-typische `redirect URI`.]
+</div>
 
 ## Widerrufung der Autorisierung
 
