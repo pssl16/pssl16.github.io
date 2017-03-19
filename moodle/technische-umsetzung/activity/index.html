@@ -359,15 +359,14 @@ Die <code>view.php</code> wird zu verschiedenen Zwecken aufgerufen die behandelt
 </ol>
 <pre><code class="php">    $content = json_decode($element-&gt;customdata);
     $cmidoftask = $content-&gt;cmid;
-
-    // As long as at least one ad-hoc task exist, that has the same cm-&gt;id as the current cm the folders were not created
     if ($id == $cmidoftask) {
         $created = false;
     }
 </code></pre>
 
-<pre><code>Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
-</code></pre>
+<blockquote>
+<p>Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.</p>
+</blockquote>
 <h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
         
     </div>
