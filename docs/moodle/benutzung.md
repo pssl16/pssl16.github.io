@@ -1,9 +1,9 @@
 # Benutzung
 
-Plugins können in Moodle zusätzlich zum core installiert werden. Im folgenden wird beschrieben, wie sie unsere Plugins herunterladen können und anschließend in den einzelnen Plugins die richtigen Einstellungen tätigen können. Zusätzlich werden Ihnen verschiedene Ansichten des Plugins präsentiert um die Funktionalitäten der jeweiligen Plugins zu verdeutlichen.
+Plugins können in Moodle zusätzlich zum *moodle core* installiert werden. Im Folgenden wird beschrieben, wie sie unsere Plugins herunterladen können und anschließend in den einzelnen Plugins die richtigen Einstellungen tätigen können. Zusätzlich werden Ihnen verschiedene Ansichten des Plugins präsentiert, um die Funktionalitäten der jeweiligen Plugins zu verdeutlichen.
 
 ## Download
-Unsere Plugins sind zurzeit in einem öffentlichen Github repository verfügbar.
+Unsere Plugins sind zurzeit in einem öffentlichen *Github repository* verfügbar.
 Von dort aus können sie Plugins auf zwei Wegen herunterladen.
 
 1. Als Zip-Datei
@@ -16,16 +16,16 @@ Von dort aus können sie Plugins auf zwei Wegen herunterladen.
     ```
     Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
 
-Der Vorteil des zweiten Weges ist, dass Sie mittels `git pull` Änderung schnell nach pflegen können. Wenn Sie sich mit git nicht auskennen sollten sie jedoch den ersten Weg wählen.
+Der Vorteil des zweiten Weges ist, dass Sie mittels `git pull` Änderung schnell nach pflegen können. Wenn Sie sich mit *git* nicht auskennen sollten sie jedoch den ersten Weg wählen.
 
 Wenn sie die Plugins heruntergeladen und richtig platziert haben, werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
 Um unsere Plugins zu benutzen benötigen sie in jedem Fall das `oauth2owncloud_admin_tool`, alle anderen Plugins lassen sich nicht ohne dieses installieren. Beachten sie dies bei der Reihenfolge der Installation wenn sie die Plugins als ZIP-Ordner installieren.
 
-### Icons 
-Die vorgegebenen Icons können einfach ersetzt werden, indem sie die in der `plugin/pix/icon.svg` vorhandene Datei ersetzten durch eine Datei die auch *icon* heißt. Es können auch andere Formate als *.svg* verwendet werden. Das Bild darf jedoch nicht die Größe von 16 x 16 px überschreiten.
+### Icons
+Die vorgegebenen Icons können einfach ersetzt werden, indem Sie die in der `plugin/pix/icon.svg` vorhandene Datei ersetzten durch eine Datei die auch *icon* heißt. Es können auch andere Formate als *.svg* verwendet werden. Das Bild darf jedoch nicht die Größe von 16 x 16 px überschreiten.
 
 ## Admin Tool oauth2owncloud
-
+[*Downloadlink*](https://github.com/pssl16/moodle-tool_oauth2owncloud)
 ### Admin Einstellungen
 
 Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.
@@ -45,6 +45,7 @@ Als Protokolltyp kann http oder https angegeben werden. Wenn keine Angabe gemach
 Als letztes kann der Port angegeben werden.
 
 ## Repository sciebo
+[*Downloadlink*](https://github.com/pssl16/moodle-repository_owncloud)
 
 ### Admin Einstellungen
 Sobald das Admin tool installiert wurde, kann das Repository installiert werden. Bitte beachten Sie, dass die oben genannten Einträge getätigt wurden, ansonsten funktioniert die Authentifizierung des Repositorys nicht. Repositorys Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt `Website-Administration ► PluginsRepositories ► Übersicht` aktiviert werden. Der Administrator kann dem Repository zusätzlich unter `Einstellungen` einen globalen Namen geben.
@@ -62,6 +63,7 @@ Wird der Button getätigt erscheint ein Pop-up Window oder ein neuer Tab, der de
 Im roten Kasten sieht der Nutzer Buttons um den Inhalt neu zu laden, sich auszuloggen und nur als Admin sieht man den letzten Button, in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
 
 ## collaborative_folders
+[*Downloadlink*](https://github.com/pssl16/moodle-mod_collaborativefolders)
 
 ### Einstellungen
 #### Admin Einstellungen

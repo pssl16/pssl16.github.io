@@ -13,7 +13,7 @@ Im Wesentlichen implementiert dieses Plugin das folgende [Integrationsszenario](
 
 1. Als **Nutzer** möchte ich OAuth2 benutzen können, um mich im Learnweb als ownCloud Nutzer anzumelden.
 
-Jedoch betrifft es auch alle anderen Szenarien indirekt, da diese erst durch die Authentifizierung mittels OAuth 2.0 
+Jedoch betrifft es auch alle anderen Szenarien indirekt, da diese erst durch die Authentifizierung mittels OAuth 2.0
 ermöglicht werden können.
 
 ## Vorgegebene Schnittstelle
@@ -64,7 +64,7 @@ Um den OAuth 2.0 Protokollablauf zu ermöglichen, müssen folgende Daten im Vorf
 * **`Client ID`:** wird in ownCloud generiert und dient der Identifizierung eines regstrierten Clients.
 * **`Secret`:** wird ebenfalls in ownCloud generiert und zur Authentifizierung verwendet.
 
-Beide Datensätze sind Strings bestehend aus Buchstaben und Zahlen. Daher eignet sich für beide ein Textfeld, welches ausschließlich 
+Beide Datensätze sind Strings bestehend aus Buchstaben und Zahlen. Daher eignet sich für beide ein Textfeld, welches ausschließlich
 alphanumerische Werte erwartet, zur Eingabe.
 
 Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:
@@ -72,7 +72,7 @@ Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:
 * **`Server Addresse`:** Url über die der ownCloud Server erreicht werden kann.
 * **`Server Pfad`:** der angehangene Pfad, über den die WebDAV Schnittstelle erreicht werden kann.
 * **`Port`:** Port des WebDAV-Servers.
-* **`Protokoll`:** Wahl zwischen HTTP und HTTPS. 
+* **`Protokoll`:** Wahl zwischen HTTP und HTTPS.
 
 Während die Wahl des Protokolls mittels einer Auswahl aus vorhandenen Optionen abgeboten werden kann, müssen die restlichen Werte
 in einem Textfeld erfragt werden. Auch in diesem Fall werden die Variablen nach den zu erwartenden Werten gesäubert. Darüber hinaus
@@ -92,7 +92,7 @@ $settings->add($setting);
 ```
 
 Die Definition des Feldes beinhaltet den Ort, an dem die Eingabe gespeichert wird und dementsprechend wiedergefunden werden kann.
-In diesem Fall wird die Eingabe unter den Plugin-spezifischen Einstellungen hinterlegt. Weiterhin werden der Name des Feldes 
+In diesem Fall wird die Eingabe unter den Plugin-spezifischen Einstellungen hinterlegt. Weiterhin werden der Name des Feldes
 (so wie er dem Nutzer angezeigt wird), ein Beschreibungstext und Standartwert (in diesem Fall bleibt es leer)für das Feld angegeben.
 Zuletzt werden der Typ (in diesem Fall alphanumerisch) und die Länge der erwarteten Eingabe festgelegt.
 
@@ -107,7 +107,7 @@ Den funktionalen Kern des Plugins stellt der OAuth 2.0 ownCloud Client dar. Dies
 Datei `sciebo.php` in dem `classes` Ordner des Plugins. Diese Klasse steuert sowohl den Moodle-seitigen Protokollablauf
 von OAuth 2.0, als auch den Verbindungsaufbau zu ownCloud mittels WebDAV und OCS Share API. Dadurch, dass `owncloud` von der im Moodle Core
 enthaltenen Klasse `oauth2_client` erbt, ist ein Großteil des Protokollablaufs bereits abgedeckt.
-Der Konstruktor der Klasse `oauth2_client` muss mit den `Client ID` und `Secret` Daten aufgerufen werden. 
+Der Konstruktor der Klasse `oauth2_client` muss mit den `Client ID` und `Secret` Daten aufgerufen werden.
 Diese werden aus den zuvor angewandten Einstellungen beschafft:
 
 ```php
