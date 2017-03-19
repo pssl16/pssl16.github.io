@@ -1,30 +1,30 @@
 # Benutzung
 
-Plugins können in Moodle zusätzlich zum *moodle core* installiert werden. Im Folgenden wird beschrieben, wie Sie unsere Plugins herunterladen können und anschließend in den einzelnen Plugins die richtigen Einstellungen tätigen können. 
-Zusätzlich werden Ihnen verschiedene Ansichten der Plugins präsentiert um die Funktionalitäten der jeweiligen Plugins zu verdeutlichen.
+Plugins können in Moodle zusätzlich zum *moodle core* installiert werden. Im Folgenden wird beschrieben, wie die Plugins heruntergeladen werden können und anschließend in den einzelnen Plugins die richtigen Einstellungen getätigt können. 
+Zusätzlich werden verschiedene Ansichten der Plugins dargestellt um die Funktionalitäten der jeweiligen Plugins zu verdeutlichen.
 
 ## Download
-Unsere Plugins sind zurzeit in einem öffentlichen *GitHub repository* verfügbar.
-Von dort aus können Sie die Plugins auf zwei Wegen herunterladen.
+Die Plugins sind zurzeit in einem öffentlichen *GitHub repository* verfügbar.
+Von dort aus können die Plugins auf zwei Wegen heruntergeladen werden.
 
 1. Als Zip-Datei
-    Klicken Sie am rechten Rand in dem Menü `clone or download` auf **Download ZIP**. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
+    Am rechten Rand in dem Menü `clone or download` auf **Download ZIP** klicken. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
 
 2. Mit dem Befehl `git clone`
-    Gehen Sie in Ihrer Moodle Instanz in den zugehörigen Ordner. Falls Sie unsicher sind, lesen Sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen Sie folgenden Befehl aus:
+    In der Moodle Instanz in den zugehörigen Ordner navigieren. Bei Unsicherheiten können die richtigen Ordner in den Beschreibungen der einzelnen Plugins nachgelesen werden. Nun den folgenden Befehl ausführen:
     ```
     git clone git@github.com:pssl16/name_of_the_repository.github.git
     ```
     Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nur noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
 
-Der Vorteil des zweiten Weges ist, dass Sie mittels `git pull` Änderung schnell nach pflegen können. Wenn Sie sich mit *git* nicht auskennen sollten sie jedoch den ersten Weg wählen.
+Der Vorteil des zweiten Weges ist, dass mittels `git pull` Änderung schnell nachgepflegt können. Bei Unerfahrenheit mit *git* sollte jedoch lieber der erste Weg gewählt werden.
 
-Wenn Sie die Plugins heruntergeladen und richtig platziert haben, werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
-Um unsere Plugins zu benutzen benötigen sie in jedem Fall das `oauth2owncloud_admin_tool`, alle anderen Plugins lassen sich nicht ohne dieses installieren. Beachten Sie dies bei der Reihenfolge der Installation wenn Sie die Plugins als ZIP-Ordner installieren.
+Nach Herunterladen und richtiger Platzierung der Plugins werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
+Um die Plugins zu benutzen wird in jedem Fall das `oauth2owncloud_admin_tool`benötigt , alle anderen Plugins lassen sich nicht ohne dieses installieren. Dies ist bei der Reihenfolge der Installation bei Installation der Plugins als ZIP-Ordner zu beachten.
 
 
 ### Icons 
-Die vorgegebenen Icons können einfach ersetzt werden, indem Sie die in der `plugin/pix/icon.svg` vorhandene Datei durch eine Datei die auch *icon* heißt austauschen. Es können auch andere Formate als *.svg* verwendet werden. Das Bild darf jedoch nicht die Größe von 16x16 px überschreiten.
+Die vorgegebenen Icons können einfach ersetzt werden, indem die in `plugin/pix/icon.svg` vorhandene Datei durch eine gleichnamige Datei ausgetauscht wird. Es können auch andere Formate als *.svg* verwendet werden. Das Bild darf jedoch nicht die Größe von 16x16 px überschreiten.
 
 ## Admin Tool oauth2owncloud
 [*Downloadlink*](https://github.com/pssl16/moodle-tool_oauth2owncloud)
@@ -50,7 +50,7 @@ Als letztes kann der Port angegeben werden.
 [*Downloadlink*](https://github.com/pssl16/moodle-repository_owncloud)
 
 ### Admin Einstellungen
-Sobald das Admin tool installiert wurde, kann das Repository installiert werden. Bitte beachten Sie, dass die oben genannten Einträge getätigt wurden, ansonsten funktioniert die Authentifizierung des Repositorys nicht. Repository Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt `Website-Administration ► Plugins ► Repositories ► Übersicht` aktiviert werden. Der Administrator kann dem Repository zusätzlich unter `Einstellungen` einen globalen Namen geben.
+Sobald das Admin tool installiert wurde, kann das Repository installiert werden. Es ist zu beachten, dass die oben genannten Einträge getätigt wurden, da ansonsten die Authentifizierung des Repositorys nicht funktioniert. Repository Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt `Website-Administration ► Plugins ► Repositories ► Übersicht` aktiviert werden. Der Administrator kann dem Repository zusätzlich unter `Einstellungen` einen globalen Namen geben.
 
 ### Nutzer Sicht
 
@@ -58,21 +58,21 @@ Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügb
 
 <img class='moodleimage' alt="FilePicker" src="../images/FilePickerlogin.png" width=70%>
 
-Wird der Button getätigt erscheint ein Pop-up Window oder ein neuer Tab, der den Nutzer auffordert sich in ownCloud anzumelden. Anschließend wird der Nutzer gefragt ob er die App autorisieren möchte. Der Nutzer wird nun zurückgeleitet und sieht eine tabellarische Auflistung der vorhandenen Dateien:
+Wird der Button betätigt, erscheint ein Pop-up Window oder ein neuer Tab, der den Nutzer auffordert sich in ownCloud anzumelden. Anschließend wird der Nutzer gefragt ob er die App autorisieren möchte. Der Nutzer wird nun zurückgeleitet und sieht eine tabellarische Auflistung der vorhandenen Dateien:
 
 <img class='moodleimage' alt="FilePicker" src="../images/05.png" width=70%>
 
-Im roten Kasten sieht der Nutzer Buttons um den Inhalt neu zu laden, sich auszuloggen. Nur als Admin sieht man den letzten Button, in dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
+Im roten Kasten sieht der Nutzer Buttons um den Inhalt neu zu laden und sich auszuloggen. Nur als Admin sieht man den letzten Button, mit dem man die Einstellungen des OAuth2 admin_tool bearbeiten kann.
 
 ## collaborative_folders
 [*Downloadlink*](https://github.com/pssl16/moodle-mod_collaborativefolders)
 
 ### Einstellungen
 #### Admin Einstellungen
-Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner, die erstellt werden, gespeichert. Um den Nutzer festzulegen muss in `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth 2.0 Protokolls authentifizieren. Über einen Login Button werden Sie aufgefordert sich in ownCloud zu authentifizieren. Falls Sie nicht richtig weitergeleitet werden, sind die Einstellungen im Admin tool oauth2owncloud fehlerhaft, bitte überprüfen Sie diese. Achten Sie darauf, dass Sie sich nicht mit Ihrem normalen Account sondern mit dem technischen Nutzer anmelden.
+Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner, die erstellt werden, gespeichert. Um den Nutzer festzulegen muss in `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth 2.0 Protokolls authentifiziert werden. Über einen Login Button muss sich in ownCloud authentifiziert werden. Bei nicht erfolgter Weiterleitung sind die Einstellungen im Admin tool oauth2owncloud fehlerhaft und diese sind zu überprüfen. Es ist darauf zu achten, dass sich nicht mit dem regulären privaten Account, sondern mit dem des technischen Nutzers angemeldet wird.
 
 #### Sicht des Lehrenden
-Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen  von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.
+Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden, ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen  von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.
 
 
 #### Sicht der Studierenden
