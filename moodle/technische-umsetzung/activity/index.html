@@ -279,7 +279,7 @@ Die <code>collaborativefolders/lib.php</code> bietet eine Schnittstelle um auf d
 
 <h3 id="hinzufugen-eine-instanz">Hinzufügen eine Instanz</h3>
 <p>Die Schnittstelle in Moodle für das Einstellungs Formular ist sehr ausführlich. Den Standard Einstellungen haben wir nur eine Checkbox hinzugefügt die bestimmt ob der Lehrende Zugriff auf die Ordner hat.
-Außerdem benutzen wird den Moodle internen <em>group_mode</em>. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie wir für separate Gruppen Ordner erstellen erklären wir unter anderem im nächsten Abschnitt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der <code>mod_form.php</code> in Moodle benötigen besuchen sie <a href="../www.moodle.de">diese Seite</a>.</p>
+Außerdem benutzen wird den Moodle internen <em>group_mode</em>. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie wir für separate Gruppen Ordner erstellen erklären wir unter anderem im nächsten Abschnitt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der <code>mod_form.php</code> in Moodle benötigen besuchen sie <a href="https://docs.moodle.org/dev/Activity_modules#mod_form.php">diese Seite</a>.</p>
 <h3 id="erstellen-von-ordnern">Erstellen von Ordnern</h3>
 <p>Zum Erstellen von Ordnern haben einen Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
 In <code>collaborativefolders/db/events.php</code> können in einem array alle Observer registriert werden und werden von Moodle verwaltet.</p>
@@ -351,8 +351,7 @@ Die <code>view.php</code> wird zu verschiedenen Zwecken aufgerufen die behandelt
 <li>
 <p><strong>Der Name des Ordners wird geändert</strong></p>
 <p>Wenn der Name des Ordners zurückgesetzt wird, wird ein URL Parameter <em>reset=1</em> an die URL übergeben. In diesem Fall wird dem Kursteilnehmer eine Eingabemaske angezeigt. Diese ist als eigene Klasse in dem Ordner <code>collaborativefolders/classes</code> implementiert. Sie erbt von der abstrakten Klasse <code>moodleform</code>. Es muss nun sichergestellt werden das vergebene Namen kompatible mit ownCloud sind. Moodle unterstützt die zugelassenen Eingaben durch Form Element Regeln zu begrenzen.</p>
-<p><code>php
-$mform-&gt;addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');</code></p>
+<p><code>$mform-&gt;addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');</code></p>
 <p>Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.</p>
 </li>
 <li>
@@ -364,8 +363,7 @@ set_user_preference('oC_token', null);</code></p>
 <li>
 <p><strong>Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.</strong></p>
 <p>Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.</p>
-<p><code>php
-$content = json_decode($element-&gt;customdata);
+<p><code>$content = json_decode($element-&gt;customdata);
 $cmidoftask = $content-&gt;cmid;
 if ($id == $cmidoftask) {
     $created = false;
