@@ -293,4 +293,8 @@ Headers nun auch ein von ownCloud erhaltenes Access Token.
 
 ![Protokollablauf](images/protokollablauf.svg)
 
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Zusammenspiel mit ownCloud beschreiben...
+</div>
+
 ## Tests und Continuous Integration
