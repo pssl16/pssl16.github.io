@@ -1,6 +1,8 @@
 # Softwarearchitektur
 
-Da wir möglichst keine neue Schnittstelle implementieren wollten, war es das Ziel, die bestehenden Schnittstellen in ownCloud um OAuth 2.0 zu erweitern. Zunächst war dafür die Implementierung des OAuth 2.0 Protokolls mit seinen Schnittstellen notwendig. Außerdem musste zur Umsetzung der [Integrationsszenarien](../..#integrationsszenarien) der Zugriff auf [WebDAV](https://doc.owncloud.org/server/9.1/user_manual/files/access_webdav.html) und die [OCS Share API](https://doc.owncloud.org/server/9.1/developer_manual/core/ocs-share-api.html) über OAuth 2.0 bereitgestellt werden.
+Da wir möglichst keine neue Schnittstelle implementieren wollten, war es das Ziel, die bestehenden Schnittstellen in ownCloud um OAuth 2.0 zu erweitern. Zunächst war dafür die Implementierung des OAuth 2.0 Protokolls mit seinen Schnittstellen notwendig. Außerdem musste zur Umsetzung der [Integrationsszenarien](../..#integrationsszenarien) der Zugriff auf [WebDAV](https://doc.owncloud.org/server/9.1/user_manual/files/access_webdav.html) und die [OCS Share API](https://doc.owncloud.org/server/9.1/developer_manual/core/ocs-share-api.html) über OAuth 2.0 bereitgestellt werden. Es wird damit folgendes Integrationsszenario realisiert:
+
+> Als **Nutzer** möchte ich OAuth 2.0 benutzen können, um Moodle Zugriff auf ownCloud zu gewähren.
 
 ## Bestandteile
 

@@ -2,7 +2,7 @@
 
 ## Zweck
 
-In der App sollte der häufig für Webapplikationen eingesetzte [Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-4.1) implementiert werden. Dazu mussten folgende User Stories umgesetzt werden:
+In der App sollte der häufig für Webapplikationen eingesetzte [Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-4.1) implementiert werden. Dazu mussten folgende Nutzungsszenarien umgesetzt werden:
 
 * **Clientregistrierung:** Als ownCloud-Administrator möchte ich Clients in den Administrator-Einstellungen hinzufügen und löschen können, um die Kontrolle über erlaubte Clients zu haben.
 * **Log-Einträge**: Als ownCloud-Administrator möchte ich durch Log-Einträge über Ereignisse zu OAuth 2.0 informiert werden.
