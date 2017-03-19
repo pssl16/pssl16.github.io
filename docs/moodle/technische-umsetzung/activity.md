@@ -53,7 +53,7 @@ Implementiert haben wir dies in der `collaborativefolders/settings.php`. Diese e
 
 ### Hinzufügen eine Instanz
 Die Schnittstelle in Moodle für das Einstellungs Formular ist sehr ausführlich. Den Standard Einstellungen haben wir nur eine Checkbox hinzugefügt die bestimmt ob der Lehrende Zugriff auf die Ordner hat.
-Außerdem benutzen wird den Moodle internen *group_mode*. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie wir für separate Gruppen Ordner erstellen erklären wir unter anderem im nächsten Abschnitt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der `mod_form.php` in Moodle benötigen besuchen sie [diese Seite](www.moodle.de).
+Außerdem benutzen wird den Moodle internen *group_mode*. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie wir für separate Gruppen Ordner erstellen erklären wir unter anderem im nächsten Abschnitt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der `mod_form.php` in Moodle benötigen besuchen sie [diese Seite](https://docs.moodle.org/dev/Activity_modules#mod_form.php).
 
 ### Erstellen von Ordnern
 Zum Erstellen von Ordnern haben einen Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität `collaborativefolders` erstellt wird.
@@ -133,7 +133,7 @@ Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden mü
 
     Wenn der Name des Ordners zurückgesetzt wird, wird ein URL Parameter *reset=1* an die URL übergeben. In diesem Fall wird dem Kursteilnehmer eine Eingabemaske angezeigt. Diese ist als eigene Klasse in dem Ordner `collaborativefolders/classes` implementiert. Sie erbt von der abstrakten Klasse `moodleform`. Es muss nun sichergestellt werden das vergebene Namen kompatible mit ownCloud sind. Moodle unterstützt die zugelassenen Eingaben durch Form Element Regeln zu begrenzen.
 
-    ``` php
+    ```
     $mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');
     ```
 
@@ -151,7 +151,7 @@ Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden mü
 
     Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
 
-    ``` php
+    ```
     $content = json_decode($element->customdata);
     $cmidoftask = $content->cmid;
     if ($id == $cmidoftask) {
