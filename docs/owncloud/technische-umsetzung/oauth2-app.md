@@ -332,7 +332,7 @@ public function authorize($response_type, $client_id, $redirect_uri, $state = nu
 ```
 
 Hier werden zunächst die Parameter auf Gültigkeit überprüft. Sollten die Parameter nicht gültig sein (beispielsweise deshalb, 
-weil der angegebene Client nicht existiert oder dessen Redirect URI falsch angegeben wurde) wird mit einem `RedirectResponse` auf die ownCloud Startseite umgeleitet. 
+weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde) wird mit einem `RedirectResponse` auf die ownCloud Startseite umgeleitet. 
 Andernfalls wird ein `TemplateResponse` für das Template `authorize` zurückgegeben. 
 Für das Rendern des Templates können Parameter wie hier `client_name` für den Namen des Clients übergeben werden.
 
