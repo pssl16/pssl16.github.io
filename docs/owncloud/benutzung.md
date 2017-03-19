@@ -91,7 +91,7 @@ Screenshot zur Sicherheitsabfrage bei Löschung einer autorisierten Anwendung:
 Bei Bedarf kann ein Client beziehungsweise eine Clientregistrierung gelöscht werden. Dies kann notwendig sein, wenn sich
 beim Client die `redirect URI` geändert hat, oder man dem Client aus anderen Gründen den Zugriff entziehen möchte. Dadurch, dass
 ein Client gelöscht wird, kann dieser nun nicht mehr auf Dateien aus der ownCloud-Instanz zugreifen und die ausgestellten `authorization codes`, 
-`access tokens` und `refresh tokens` sind ungültig. Bei irrtümlicher Löschung des Clients muss bei erneuter Einpflegung jeder
+`access token`s und `refresh token`s sind ungültig. Bei irrtümlicher Löschung des Clients muss bei erneuter Einpflegung jeder
 Nutzer des Clients erneut das Authentifizierungsverfahren durchlaufen, da eine neue `ClientID` und ein neues `ClientSecret` generiert werden.
 Um eine Clientregistrierung zu löschen muss in den Adminsettings die tabellarische Ansicht der registrierten Clients aufgerufen werden. 
 Nun kann man bei dem zu löschenden Client rechts neben den zugeordneten Attributen auf ein Mülleimer-Symbol klicken, um die entsprechende Clientregistrierung zu löschen.
