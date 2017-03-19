@@ -13,32 +13,46 @@ In der App sollte der häufig für Webapplikationen eingesetzte [Authorization C
 ## Authorization Code Flow
 
 Die nachfolgende Abbildung stellt den durch die `oauth2` App implementierten [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-4.1) dar.
+
+> Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.
  
 ![Authorization Code Flow](images/authorization-code-flow.svg)
 
-Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.
-
-Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:
-
-1. Client Identifier & Redirection URI: Der Client (hier Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
-zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine `redirection URI` an, zu welcher der
-User-Agent vom Authorization Server (hier sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.
-2. Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
-ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.
-3. Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,
-wozu die vorher (in der Anfrage oder während der Clientregistrierung) bereitgestellte `redirection URI` genutzt wird. Die 
-`redirection URI` beinhaltet einen `authorization code` und jeglichen vom Client im Vorhinein bereitgestellten Status.
-4. Authorization Code & Redirection URI: Der Client fragt ein Access Token vom Endpunkt des Authorization Servers an, indem
-der Authorization Code aus dem vorherigen Schritt angefügt wird. Wenn die Anfrage durchgeführt wird, authentifiziert sich der Client
-automatisch mit dem Authorization Server. Der Client fügt die für den Erhalt des `authorization codes` genutzte `redirection URI`
-zur Verifizierung an.
-5. Access Token (& optional: Refresh Token): Der Authorization Server authentifiziert den Client, validiert den `authorization code`, und
-prüft, dass die empfangene `redirection URI` mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
-Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem `access token` und optional mit einem `refresh token`.
-
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Updaten...
+<div align="right">
+	<small>[vgl. <a href="https://tools.ietf.org/html/rfc6749#page-24">RFC 6749, S. 24</a>]</small>
 </div>
+
+Der Authorization Code Flow kann von jedem Client, der registriert ist, angestoßen werden. Zur Registrierung eines Clients gibt der Administrator in den ownCloud Einstellungen folgende Informationen an:
+
+* Name des Clients: Zur Wiedererkennung
+* Redirection URI: URI, an die nach erfolgter Autorisierung des Nutzers weitergeleitet wird.
+* Umgang mit Subdomains: Zum Einstellen, on Subdomains der Redirection URI erlaubt werden sollen.
+
+Die App generiert daraufhin die Zugangsdaten des Clients, bestehend aus Client Identifier und Client Secret.
+
+Im Flow sind folgende Rollen beteiligt:
+
+* Client: Die Applikation, die für Zugriffe auf geschützte Ressourcen autorisiert werden möchte. In unserem Integrationsszenario: Moodle.
+* Authorization Server: Die Applikation, die den Client für Zugriffe autorisiert. In unserem Integrationsszenario: ownCloud.
+* Resource Owner: Der Eigentümer der geschützten Ressourcen. In unserem Integrationsszenario: ownCloud Nutzer.
+* User Agent: Durch ihn erfolgt die Kommunikation zwischen Client, Resource Owner und Authorization Server. In unserem Integrationsszenario: ein Webbrowser.
+
+Folgende Schritte werden durchlaufen:
+
+1. Der Client initiiert den Flow durch Weiterleitung des Resource Owners an die Authorization URL `/index.php/apps/oauth2/authorize`. URL Parameter:
+	* `response_type`: Da hier der Authorization Code Flow betrachtet wird, muss `code` angegeben werden.
+	* `client_id`: Der Client Identifier aus der Clientregistrierung.
+	* `redirect_uri`: Die Redirection URI aus der Clientregistrierung.
+	* `state`: Kann vom Client optional angegeben werden, um die Anfrage bei Erhalt einer Antwort wiedererkennen zu können.
+2. Der Resource Owner authentifiziert sich daraufhin beim Authorization Server und entscheidet über die Autorisierung des Clients.
+3. Bei erfolgter Autorisierung, wird ein Authorization Code ausgestellt (ein Authorization Code ist für 10 Minuten gültig). Die App leitet dann an die Redirection URI weiter. URL Parameter:
+	* `code`: Der ausgestellte Authorization Code.
+	* `state`: optional, falls unter 1. angegeben.
+4. Mit dem Authorization Code kann der Client ein Access Token anfordern. Dazu sendet er einen `POST`-Request an die Access Token URL `/index.php/apps/oauth2/api/v1/token`. Zusätzlich ist eine Client Authentifizierung mittels Basic Authentication (Nutzername: Client Identifier, Passwort: Client Secret) notwendig. URL Parameter:
+	* `grant_type`: entweder `authorization_code` oder `refresh_token`
+	* `code` und `redirect_uri` (falls `authorization_code` als Grant Type angegeben wurde)
+	* `refresh_token` (falls `refresh_token` als Grant Type angegeben wurde)
+5. Bei gültigen Angaben wird ein Access Token mit Refresh Token ausgestellt (ein Access Token ist für 1 Stunde gültig). Abgelaufene Access Tokens können mithilfe des Refresh Tokens gegen neue eingetauscht werden.
 
 ## Datenmodell
 
