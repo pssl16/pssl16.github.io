@@ -240,12 +240,12 @@ Da unsere Use Cases verschiedene Arten von Funktionalitäten benötigen haben wi
 </thead>
 <tbody>
 <tr>
-<td><a href="https://docs.moodle.org/dev/Admin_tools"><code>admin tool</code></a> oauth2sciebo</td>
+<td><a href="https://docs.moodle.org/dev/Admin_tools"><code>admin tool</code></a> oauth2owncloud</td>
 <td>Bietet Dienste zur Site-Administration an, d.h. die Einstellungen gelten global und können nur vom Administrator der Seite getätigt werden</td>
 <td>Verwaltung der Authentifizierung mittels OAuth 2.0</td>
 </tr>
 <tr>
-<td><a href="https://docs.moodle.org/dev/Repository_plugins"><code>repository</code></a> sciebo</td>
+<td><a href="https://docs.moodle.org/dev/Repository_plugins"><code>repository</code></a> owncloud</td>
 <td>Stellt die Verbindung zu einer externen Datenquelle her</td>
 <td>Datenbeschaffung aus Sciebo</td>
 </tr>
@@ -259,23 +259,25 @@ Da unsere Use Cases verschiedene Arten von Funktionalitäten benötigen haben wi
 <h2 id="funktionsubersicht">Funktionsübersicht</h2>
 <p>Die in den verschiedenen Plugins angebotenen Funktionalitäten können wie folgt zusammengefasst werden:</p>
 <ul>
-<li><strong><code>Admin Tool</code>:</strong> <a href="../admin-tool/"><code>oauth2sciebo</code></a><ul>
+<li><strong><code>Admin Tool</code>:</strong> <a href="../admin-tool/"><code>oauth2owncloud</code></a><ul>
 <li>Umfasst sowohl OAuth 2.0, als auch einen WebDAV Client.</li>
 <li>Steuert den Protokollablauf von OAuth 2.0 und verwaltet alle dazu nötigen Informationen.<ul>
-<li>globale Speicherung des Secrets und der ClientID</li>
+<li>globale Speicherung des Secrets, der ClientID und der WebDAV Zugangsdaten</li>
 </ul>
 </li>
-<li>Stellt das Verbindungsstück von moodle zu Sciebo bzw. ownCloud zur Verfügung</li>
+<li>Stellt das Verbindungsstück von moodle zu ownCloud zur Verfügung</li>
 </ul>
 </li>
-<li><strong><code>Repository</code>:</strong> <a href="../repository/"><code>sciebo</code></a><ul>
-<li>Bewerkstelligt die Datenbeschaffung aus Sciebo bzw. ownCloud nach Moodle.</li>
-<li>Ermöglicht den Upload von Dateien aus einer persönlichen Sciebo Instanz.</li>
-<li>Ermöglicht die Verlinkung von Dateien aus Sciebo in Moodle.</li>
+<li><strong><code>Repository</code>:</strong> <a href="../repository/"><code>ownCloud</code></a><ul>
+<li>Bewerkstelligt die Datenbeschaffung aus ownCloud nach Moodle.</li>
+<li>Ermöglicht den Upload von Dateien aus einer persönlichen ownCloud Instanz.</li>
+<li>Ermöglicht die Verlinkung von Dateien aus ownCloud in Moodle.</li>
 </ul>
 </li>
 <li><strong><code>Activity Module</code>:</strong> <a href="../activity/"><code>collaborative folders</code></a><ul>
-<li>Ermöglicht die Erstellung und Freigabe von Ordern in Sciebo für bestimmte Gruppen in Moodle.</li>
+<li>Ermöglicht die Erstellung und Freigabe von Ordern in ownCloud für Kursteilnehmer in Moodle.</li>
+<li>Ermöglicht das Erzeugen von separaten Ordnern für Gruppen.</li>
+<li>Ermöglicht den Zugriff des Lehrenden auf diese Ordner sowie das Verbot des Zugriffes.</li>
 </ul>
 </li>
 </ul>
