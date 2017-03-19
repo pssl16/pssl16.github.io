@@ -21,6 +21,9 @@ Der Vorteil des zweiten Weges ist, dass Sie mittels `git pull` Änderung schnell
 Wenn sie die Plugins heruntergeladen und richtig platziert haben, werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
 Um unsere Plugins zu benutzen benötigen sie in jedem Fall das `oauth2owncloud_admin_tool`, alle anderen Plugins lassen sich nicht ohne dieses installieren. Beachten sie dies bei der Reihenfolge der Installation wenn sie die Plugins als ZIP-Ordner installieren.
 
+### Icons 
+Die vorgegebenen Icons können einfach ersetzt werden, indem sie die in der `plugin/pix/icon.svg` vorhandene Datei ersetzten durch eine Datei die auch *icon* heißt. Es können auch andere Formate als *.svg* verwendet werden. Das Bild darf jedoch nicht die Größe von 16 x 16 px überschreiten.
+
 ## Admin Tool oauth2owncloud
 
 ### Admin Einstellungen
