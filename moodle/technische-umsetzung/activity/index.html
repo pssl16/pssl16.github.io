@@ -237,11 +237,10 @@
 <h1 id="aktivitat-collaborative-folders">Aktivität: <code>collaborative folders</code></h1>
 <h2 id="zweck">Zweck</h2>
 <p>Das Aktivitäts Modul <em>Collaborative Folders</em> soll Lehrenden die Möglichkeit geben, für Studierende oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten zu erstellen.
-Die Autorisierung und Authentifizierung erfolgt über das <code>oauth2sciebo admin_tool</code>. Diese Aktivität <code>collaborativefolders</code> implementiert die User Story 4:</p>
-<ol start="4">
-  <li>Als <b>Lehrender</b> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</li>
-</ol>
-
+Die Autorisierung und Authentifizierung erfolgt über das <code>oauth2sciebo admin_tool</code>. Diese Aktivität <code>collaborativefolders</code> implementiert das vierte Integrationsszenario:</p>
+<blockquote>
+<p>Als <strong>Lehrender</strong> möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.</p>
+</blockquote>
 <p>Im Folgenden wird erklärt wozu einzelne Beteiligte des Integrationsszenario in der Lage sein müssen.
 Zunächst ist es erforderlich einen neutralen Speicherort für die geteilten Ordner anzugeben. Falls der Lehrende keinen Zugriff auf die Ordner haben soll, dürfen sie nicht in seiner Instanz gespeichert sein. Um die Privatsphäre der Kursteilnehmer zu sichern darf ein Lehrender nicht unter ihrem Namen Ordner erstellen. Aus diesem Grund haben wir unsere Lösung so implementiert, dass der Moodle Administrator einen technischen Nutzer festlegen kann. In dessen Namen werden alle Ordner erstellt.</p>
 <p>Der Lehrende soll in der Lage sein einem Kurs beliebig viele Instanzen der Aktivität <em>Collaborative Folders</em> hinzuzufügen. In den Einstellungen kann der Lehrende nun festlegen wie der Ordner im Moodle Kurs benannt werden soll. Außerdem kann der Lehrende entscheiden ob er Zugriff auf die Ordner bekommt.</p>

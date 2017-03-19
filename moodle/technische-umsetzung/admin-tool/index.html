@@ -207,7 +207,7 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="first-level active"><a href="#admin-tool-oauth2sciebo">Admin Tool: oauth2sciebo</a></li>
+        <li class="first-level active"><a href="#admin-tool-oauth2owncloud">Admin Tool: oauth2owncloud</a></li>
         
             <li class="second-level"><a href="#zweck">Zweck</a></li>
             
@@ -248,7 +248,7 @@
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="admin-tool-oauth2sciebo">Admin Tool: <code>oauth2sciebo</code></h1>
+<h1 id="admin-tool-oauth2owncloud">Admin Tool: <code>oauth2owncloud</code></h1>
 <h2 id="zweck">Zweck</h2>
 <p>Wie bereits im Kapitel <a href="../softwarearchitektur/">Software Architektur</a> angeschnitten, ist der Hauptzweck dieses Plugins
 die Schnittstelle zu ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud 
@@ -257,9 +257,9 @@ sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesic
 Zwar ist der Client auf einen OAuth 2.0 Protokollablauf in Zusammenarbeit mit der entsprechenden ownCloud App angepasst,
 jedoch könnte er in Zukunft auch als Ausgangspunkt genutzt werden, um ähnliche Schnittstellen zu erreichen.</p>
 <p>Im Wesentlichen implementiert dieses Plugin das folgende <a href="../../../#realisierte-szenarien">Integrationsszenario</a>:</p>
-<ol>
-<li>Als <strong>Nutzer</strong> möchte ich OAuth2 benutzen können, um mich im Learnweb als ownCloud Nutzer anzumelden.</li>
-</ol>
+<blockquote>
+<p>Als <strong>Nutzer</strong> möchte ich OAuth 2.0 benutzen können, um Moodle Zugriff auf ownCloud zu gewähren.</p>
+</blockquote>
 <p>Jedoch betrifft es auch alle anderen Szenarien indirekt, da diese erst durch die Authentifizierung mittels OAuth 2.0
 ermöglicht werden können.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
