@@ -14,12 +14,12 @@ Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie
 Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im Learnweb abgerufen werden können und kollaborative Ordner in sciebo vom Learnweb aus erstellt werden können.
 
 ## Struktur der Dokumentation
-Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zu erst die Aufteilung in **Home**, **ownCloud** und **Moodle**. Sie befinden sich gerade im Abschnitt **Home**,
+Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zuerst die Aufteilung in **Home**, **ownCloud** und **Moodle**. Sie befinden sich gerade im Abschnitt **Home**,
 welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte **ownCloud** und **Moodle** dokumentieren
 jeweils die spezifische **Benutzung** (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige **Technische Umsetzung**, welche die Dokumentation für Entwickler bereitstellt. Der Punkt **Technische Umsetzung** im Abschnitt
-**ownCloud** enthält die Themen [Softwarearchitektur](/owncloud/technische-umsetzung/softwarearchitektur.md), [OAuth 2.0 App](/owncloud/technische-umsetzung/oauth2-app.md)
-und [Core Anpassungen](/owncloud/technische-umsetzung/core-anpassungen.md). Der gleiche Unterpunkt im Abschnitt **Moodle** behandelt die Themen [Softwarearchitektur](/moodle/technische-umsetzung/softwarearchitektur.md),
-[Admin Tool](/moodle/technische-umsetzung/admin-tool.md), [Repository](/moodle/technische-umsetzung/repository.md) und [Collaborative Folders](/moodle/technische-umsetzung/acitivity.md).
+**ownCloud** enthält die Themen [OAuth 2.0](/owncloud/technische-umsetzung/oauth2), [Softwarearchitektur](/owncloud/technische-umsetzung/softwarearchitektur), [OAuth 2.0 App](/owncloud/technische-umsetzung/oauth2-app)
+und [Core Anpassungen](/owncloud/technische-umsetzung/core-anpassungen). Der gleiche Unterpunkt im Abschnitt **Moodle** behandelt die Themen [Softwarearchitektur](/moodle/technische-umsetzung/softwarearchitektur),
+[Admin Tool](/moodle/technische-umsetzung/admin-tool), [Repository](/moodle/technische-umsetzung/repository) und [Collaborative Folders](/moodle/technische-umsetzung/acitivity).
 
 ## Integrationsszenarien
 Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
@@ -58,32 +58,17 @@ Aktivität [collaborativefolders](/moodle/technische-umsetzung/acitivity.md) in 
 
 Weitere User Storys die jedoch nicht im Rahmen diese Projektseminars implementiert werden konnten finden sie unter dem Abschnitt
 [Weitere Anwendungsszenarien](#weitere-anwendungsszenarien).
+
 ## Authentifizierung und Autorisierung
-Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den gängigen Verfahren, die untersucht wurden, befinden sich:
+Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den Verfahren, die untersucht wurden, befinden sich:
 
 * [OAuth 2.0](https://oauth.net/2/)
 * [JSON Web Tokens](https://jwt.io/)
+* [Macaroons](https://research.google.com/pubs/pub41892.html)
 * Federated Single Sign-on mit beispielsweise [Shibboleth](https://shibboleth.net/)
 
 Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und
 Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.
-
-### OAuth 2.0
-Der allgemeine [OAuth 2.0 Protokollablauf](https://tools.ietf.org/html/rfc6749#section-1.2) ist in der nachfolgenden Abbildung dargestellt.
-
-![Authorization Code Flow](images/oauth-allgemein.svg)
-
-Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (ownCloud Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte,
-bei dem Authorization Server (ownCloud) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:
-
-1. Authorization Request: Der Client fordert eine Autorisierung vom Resource Owner an.
-2. Authorization Response: Der Client erhält eine Autorisierungsgenehmigung vom Resource Owner. Die Autorisierung kann über eine
-der vier Autorisierungsgenehmigungen (authorization grant type) erfolgen, oder es wird ein erweiterer Genehmigungsprozess verwendet.
-3. Access Token Request: Der Client fordert ein Access Token vom Authorization Server an. Hierfür nutzt er die Autorisierungsgenehmigung vom Resource Owner.
-4. Access Token Response: Der Authorization Server authentifiziert den Client und prüft die Autorisierungsgenehmigung.
-Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.
-5. Anfrage mittels Access Token: Der Client fragt die geschützten Daten beim Resource Server an. Zur Authentifizierung benutzt er den Access Token.
-6. Zugriff auf geschützte Ressourcen: Der Resource Server prüft den Access Token und stellt, wenn gültig, die gewünschten Daten zur Verfügung.
 
 ## Komponenten
 <div class="alert alert-danger">

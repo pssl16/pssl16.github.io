@@ -14,6 +14,7 @@ pages:
   - Home: 'index.md'
   - ownCloud:
     - Technische Umsetzung:
+      - OAuth 2.0: 'owncloud/technische-umsetzung/oauth2.md'
       - Softwarearchitektur: 'owncloud/technische-umsetzung/softwarearchitektur.md'
       - OAuth 2.0 App: 'owncloud/technische-umsetzung/oauth2-app.md'
       - Core Anpassungen: 'owncloud/technische-umsetzung/core-anpassungen.md'
