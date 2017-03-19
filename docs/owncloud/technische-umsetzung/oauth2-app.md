@@ -5,9 +5,40 @@
 In der App sollte der häufig für Webapplikationen eingesetzte [Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-4.1) implementiert werden. Dazu mussten folgende User Stories umgesetzt werden:
 
 * **Clientregistrierung:** Als ownCloud-Administrator möchte ich Clients in den Administrator-Einstellungen hinzufügen und löschen können, um die Kontrolle über erlaubte Clients zu haben.
+* **Log-Einträge**: Als ownCloud-Administrator möchte ich durch Log-Einträge über Ereignisse zu OAuth 2.0 informiert werden.
 * **Authorization URL:** Als Client-Entwickler möchte ich eine Authorization URL zur Verfügung haben, um Authorization Codes anfordern zu können.
 * **Access Token URL:** Als Client-Entwickler möchte ich eine Access Token URL zur Verfügung haben, um Access Tokens anfordern zu können.
 * **Verwaltung autorisierter Applikationen**: Als ownCloud-Nutzer möchte ich in den persönlichen Einstellungen autorisierte Applikationen verwalten können, um einen Überblick zu haben und Autorisierungen widerrufen zu können.
+
+## Authorization Code Flow
+
+Die nachfolgende Abbildung stellt den durch die `oauth2` App implementierten [OAuth 2.0 Authorization Code Flow](https://tools.ietf.org/html/rfc6749#section-4.1) dar.
+ 
+![Authorization Code Flow](images/authorization-code-flow.svg)
+
+Anmerkung: Die Schritte 1, 2 und 3 sind zweigeteilt, da sie durch den User-Agent laufen.
+
+Der dargestellte Authorization Code Flow beinhaltet die folgenden Schritte:
+
+1. Client Identifier & Redirection URI: Der Client (hier Learnweb) initiiert den Flow durch die Weiterleitung des User-Agents des Resource Owners
+zum Authorization Endpoint. Der Client fügt seinen Client Identifier, das angefragte Scope, Status und eine `redirection URI` an, zu welcher der
+User-Agent vom Authorization Server (hier sciebo) zurückgeleitet wird, wenn der Zugriff gestattet, oder abgelehnt wurde.
+2. Authentifizierung durch Benutzer: Der Authorization Server authentifiziert den Resource Owner (über den User-Agent) und stellt fest,
+ob der Resource Owner die Zugriffsanfrage des Clients zulässt oder ablehnt.
+3. Authorization Code: Vorausgesetzt der Resource Owner erlaubt den Zugriff, so leitet der Authorization Server den User-Agent zurück zum Client,
+wozu die vorher (in der Anfrage oder während der Clientregistrierung) bereitgestellte `redirection URI` genutzt wird. Die 
+`redirection URI` beinhaltet einen `authorization code` und jeglichen vom Client im Vorhinein bereitgestellten Status.
+4. Authorization Code & Redirection URI: Der Client fragt ein Access Token vom Endpunkt des Authorization Servers an, indem
+der Authorization Code aus dem vorherigen Schritt angefügt wird. Wenn die Anfrage durchgeführt wird, authentifiziert sich der Client
+automatisch mit dem Authorization Server. Der Client fügt die für den Erhalt des `authorization codes` genutzte `redirection URI`
+zur Verifizierung an.
+5. Access Token (& optional: Refresh Token): Der Authorization Server authentifiziert den Client, validiert den `authorization code`, und
+prüft, dass die empfangene `redirection URI` mit der zur Weiterleitung im dritten Schritt ("Authorization Code") genutzte URI übereinstimmt.
+Wenn die Überprüfung erfolgreich verläuft, antwortet der Authorization Server mit einem `access token` und optional mit einem `refresh token`.
+
+<div class="alert alert-danger">
+  <strong>TODO:</strong> Updaten...
+</div>
 
 ## Datenmodell
 
@@ -35,7 +66,7 @@ mit dem der Client die Autorisierung des Nutzers darlegen und somit ein Access T
 	* `client_id`: Client Identifier des Clients, für den der Access Token ausgegeben wird.
 	* `user_id`: User ID des ownCloud-Nutzers, der den Client autorisiert hat.
 
-Folgendes Entity-Relationship-Modell fasst das Datenmodell nochmal grafisch zusammen.
+Folgendes Entity-Relationship-Modell fasst das Datenmodell grafisch zusammen.
 
 ![Datenmodell](images/datenmodell.svg)
 
@@ -66,8 +97,8 @@ Auf die Implementierung der Hauptbestandteile wird in den nächsten Abschnitten 
 
 ### Mapper und Entities
 
-Für den Datenbank-Zugriff im PHP-Code ist es in ownCloud möglich, [Mapper](https://doc.owncloud.org/server/latest/developer_manual/app/database.html#mappers) und 
-[Entities](https://doc.owncloud.org/server/latest/developer_manual/app/database.html#entities) zu schreiben. 
+Für den Datenbank-Zugriff im PHP-Code ist es in ownCloud möglich, [Mapper](https://doc.owncloud.org/server/9.1/developer_manual/app/database.html#mappers) und 
+[Entities](https://doc.owncloud.org/server/9.1/developer_manual/app/database.html#entities) zu schreiben. 
 Dadurch werden Tupel in einer Datenbank-Tabelle automatisch in ein Objekt umgewandelt.
 
 Folgendes Codebeispiel zeigt am Beispiel des Entitys `Client`, wie eine PHP-Klasse dazu aussehen muss.
@@ -79,8 +110,6 @@ namespace OCA\OAuth2\Db;
 use OCP\AppFramework\Db\Entity;
 
 /**
- * Class Client
- *
  * @method string getIdentifier()
  * @method void setIdentifier(string $identifier)
  * @method string getSecret()
@@ -89,29 +118,30 @@ use OCP\AppFramework\Db\Entity;
  * @method void setRedirectUri(string $redirectUri)
  * @method string getName()
  * @method void setName(string $name)
+ * @method boolean getAllowSubdomains()
+ * @method void setAllowSubdomains(boolean $value)
  */
 class Client extends Entity {
 
-    protected $identifier;
-    protected $secret;
-    protected $redirectUri;
-    protected $name;
+	protected $identifier;
+	protected $secret;
+	protected $redirectUri;
+	protected $name;
+	protected $allowSubdomains;
 
-    public function __construct() {
-        $this->addType('id', 'int');
-        $this->addType('identifier', 'string');
-        $this->addType('secret', 'string');
-        $this->addType('redirect_uri', 'string');
-        $this->addType('name', 'string');
-    }
+	public function __construct() {
+		$this->addType('id', 'int');
+		$this->addType('identifier', 'string');
+		$this->addType('secret', 'string');
+		$this->addType('redirect_uri', 'string');
+		$this->addType('name', 'string');
+		$this->addType('allow_subdomains', 'boolean');
+	}
 
 }
 ```
 
-Wichtig ist, dass die Klasse von [`Entity`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Entity.html) erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle übereinstimmen. 
-Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case für die Datenbank umgewandelt. 
-Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, in der Entwicklungsumgebung eine automatische Vervollständigung zu haben. 
-Die Angabe von [Typen](https://doc.owncloud.org/server/latest/developer_manual/app/database.html#types) im Konstruktor dienen dazu, beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.
+Wichtig ist, dass die Klasse von [`Entity`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Entity.html) erbt und sowohl der Klassenname als auch die Attribute mit denen der Tabelle übereinstimmen. Pascal bzw. Camel case im PHP-Code wird automatisch zu Snake case für die Datenbank umgewandelt. Getter und Setter werden ebenfalls automatisch generiert. Die PHPDoc Kommentare dienen lediglich dazu, in der Entwicklungsumgebung eine automatische Vervollständigung zu haben. Die Angabe von [Typen](https://doc.owncloud.org/server/9.1/developer_manual/app/database.html#types) im Konstruktor dienen dazu, beim Lesen aus der Datenbank die richtige Umwandlung zu erhalten.
 
 Das folgende Codebeispiel zeigt einen Ausschnitt aus dem zur `Client` Entity gehörenden Mapper.
 
@@ -121,8 +151,8 @@ namespace OCA\OAuth2\Db;
 
 use InvalidArgumentException;
 use OCP\AppFramework\Db\Entity;
-use OCP\IDb;
 use OCP\AppFramework\Db\Mapper;
+use OCP\IDb;
 
 class ClientMapper extends Mapper {
 
@@ -143,7 +173,8 @@ class ClientMapper extends Mapper {
 	 * @return Entity The client entity.
 	 *
 	 * @throws \OCP\AppFramework\Db\DoesNotExistException if not found.
-	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more than one result.
+	 * @throws \OCP\AppFramework\Db\MultipleObjectsReturnedException if more
+	 * than one result.
 	 */
 	public function find($id) {
 		if (!is_int($id)) {
@@ -151,7 +182,7 @@ class ClientMapper extends Mapper {
 		}
 
 		$sql = 'SELECT * FROM `' . $this->tableName . '` WHERE `id` = ?';
-		return $this->findEntity($sql, array($id), null, null);
+		return $this->findEntity($sql, [$id], null, null);
 	}
 
 	/**
@@ -171,8 +202,8 @@ class ClientMapper extends Mapper {
 				. 'SELECT `client_id` FROM `oc_oauth2_authorization_codes` WHERE `user_id` = ? '
 				. 'UNION '
 				. 'SELECT `client_id` FROM `oc_oauth2_access_tokens` WHERE `user_id` = ? '
-			.')';
-		return $this->findEntities($sql, array($userId, $userId), null, null);
+			. ')';
+		return $this->findEntities($sql, [$userId, $userId], null, null);
 	}
 
 }
@@ -181,12 +212,12 @@ class ClientMapper extends Mapper {
 Beim Mapper ist es wichtig, dass die Klasse von [`Mapper`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Db.Mapper.html) erbt und eine Entity-Klasse zu ihm existiert. 
 Dazu wird das Wort vor „Mapper“ als Entityname verwendet. Im Konstruktur wird der Tabellenname angegeben. 
 Die beiden Funktionen `find` und `findByUser` demonstrieren `SELECT`-Anweisungen. 
-Dazu wird die SQL-Anweisungen zusammen mit benötigten Parametern an `findEntity` bzw. `findEntities` übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. 
-Funktionen zum löschen, einfügen und updaten werden von der Oberklasse bereits implementiert und mussten nicht angepasst werden.
+Dazu wird die SQL-Anweisung zusammen mit benötigten Parametern an `findEntity` bzw. `findEntities` übergeben, abhängig davon, ob mehrere Entities im Ergebnis enthalten sein sollten. 
+Funktionen zum Löschen, Einfügen und Aktualisieren werden von der Oberklasse bereits implementiert und mussten nicht angepasst werden.
 
 ### Schnittstellen und Routes
 
-Um in einer ownCloud App Schnittstellen anzubieten, müssen [Routes](https://doc.owncloud.org/server/latest/developer_manual/app/routes.html) registriert werden. 
+Um in einer ownCloud App Schnittstellen anzubieten, müssen [Routes](https://doc.owncloud.org/server/9.1/developer_manual/app/routes.html) registriert werden. 
 Zur Umsetzung der erwähnten User Stories waren folgende Routes notwendig:
 
 | Methode | Endpunkt              | Beschreibung                                                                                              |
@@ -209,54 +240,65 @@ return [
 		['name' => 'settings#deleteClient', 'url' => '/clients/{id}/delete', 'verb' => 'POST']
     ]
 ];
-
 ```
 
-Durch `name` wird für jede Route der Name des dazugehörigen [Controllers](#controller) sowie die aufzurufende Funktion angegeben. 
-Vor dem `#`-Zeichen steht der Controllername in Snake case und hinter dem `#`-Zeichen steht der Funktionsname (ebenfalls in Snake case). 
-Mithilfe von `url` wird der Endpunkt festgelegt und `verb` definiert die HTTP-Methode.
+Durch `name` wird für jede Route der Name des dazugehörigen [Controllers](#controller) sowie die aufzurufende Funktion angegeben: Vor dem `#`-Zeichen steht der Controllername in Snake case und hinter dem `#`-Zeichen steht der Funktionsname (ebenfalls in Snake case). Mithilfe von `url` wird der Endpunkt festgelegt und `verb` definiert die HTTP-Methode.
 
 ### Controller
 
-Wenn an einem Endpunkt eine HTTP-Anfrage ankommt, so wird der in den Routes definierte [Controller](https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html) aufgerufen. 
-Wichtig ist hierbei, dass von der Klasse [`Controller`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Controller.html) oder 
+Wenn an einem Endpunkt eine HTTP-Anfrage ankommt, so wird der in den Routes definierte [Controller](https://doc.owncloud.org/server/9.1/developer_manual/app/controllers.html) aufgerufen. Wichtig ist hierbei, dass von der Klasse [`Controller`](https://doc.owncloud.org/api/classes/OCP.AppFramework.Controller.html) oder 
 einer Unterklasse wie [`ApiController`](https://doc.owncloud.org/api/classes/OCP.AppFramework.ApiController.html) geerbt wird.
 
 Für den Controller notwendige Parameter wie [Mapper](#mapper-und-entities) können im Konstruktor als Parameter angegeben und so durch 
-[Dependency Injection](https://doc.owncloud.org/server/latest/developer_manual/app/container.html) erhalten werden. 
+[Dependency Injection](https://doc.owncloud.org/server/9.1/developer_manual/app/container.html) erhalten werden. 
 Nachfolgendes Codebeispiel zeigt den Konstruktor vom `PageController`.
 
 ```php
+<?php
 /**
  * PageController constructor.
- * 
- * @param string $AppName The name of the app.
+ *
+ * @param string $AppName The app's name.
  * @param IRequest $request The request.
  * @param ClientMapper $clientMapper The client mapper.
  * @param AuthorizationCodeMapper $authorizationCodeMapper The authorization code mapper.
+ * @param AccessTokenMapper $accessTokenMapper The access token mapper.
+ * @param RefreshTokenMapper $refreshTokenMapper The refresh token mapper.
  * @param string $UserId The user ID.
+ * @param ILogger $logger The logger.
  */
-public function __construct($AppName, IRequest $request, ClientMapper $clientMapper,
-	AuthorizationCodeMapper $authorizationCodeMapper, $UserId) {
+public function __construct($AppName, IRequest $request,
+							ClientMapper $clientMapper,
+							AuthorizationCodeMapper $authorizationCodeMapper,
+							AccessTokenMapper $accessTokenMapper,
+							RefreshTokenMapper $refreshTokenMapper,
+							$UserId,
+							ILogger $logger) {
 	parent::__construct($AppName, $request);
 
 	$this->clientMapper = $clientMapper;
 	$this->authorizationCodeMapper = $authorizationCodeMapper;
+	$this->accessTokenMapper = $accessTokenMapper;
+	$this->refreshTokenMapper = $refreshTokenMapper;
 	$this->userId = $UserId;
+	$this->logger = $logger;
 }
 ```
 
-Die hier notwendigen Parameter sind der Name der App, eine `ClientMapper` Instanz, eine `AuthorizationCodeMapper` Instanz und die ID des Nutzers, 
-um bei der Autorisierung des Clients speichern zu können, welcher Nutzers dies veranlasst hat.
+Die hier notwendigen Parameter sind der Name der App, die Anfrage (Objekt, das die Schnittstelle `IRequest` implementiert), verschiedene Mapper Instanzen, die ID des Nutzers, 
+um bei der Autorisierung des Clients speichern zu können, welcher Nutzers dies veranlasst hat, und ein Logger (Objekt, das die Schnittstelle `ILogger` implementiert). Letzterer ist notwendig zum Schreiben in die Log-Datei von ownCloud.
 
-Die mit den Routes verknüpften Funktionen können zur Zugriffskontrolle mit [PHPDoc Annotationen](https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#authentication) 
-versehen werden. Folgendes Codebeispiel zeigt die Annotationen für die Funktion `generateToken` im `OAuthApiController`.
+Die mit den Routes verknüpften Funktionen können zur Zugriffskontrolle mit [PHPDoc Annotationen](https://doc.owncloud.org/server/9.1/developer_manual/app/controllers.html#authentication) versehen werden. Folgendes Codebeispiel zeigt die Annotationen für die Funktion `generateToken` im `OAuthApiController`.
 
 ```php
+<?php
 /**
  * Implements the OAuth 2.0 Access Token Response.
  *
+ * @param string $grant_type The authorization grant type.
  * @param string $code The authorization code.
+ * @param string $redirect_uri The redirect URI.
+ * @param string $refresh_token The refresh token.
  * @return JSONResponse The Access Token or an empty JSON Object.
  *
  * @NoAdminRequired
@@ -264,7 +306,8 @@ versehen werden. Folgendes Codebeispiel zeigt die Annotationen für die Funktion
  * @PublicPage
  * @CORS
  */
-public function generateToken($code) { }
+public function generateToken($grant_type, $code = null,
+							  $redirect_uri = null, $refresh_token = null) { }
 ```
 
 Die Annotationen haben dabei folgende Bedeutungen.
@@ -276,26 +319,25 @@ Die Annotationen haben dabei folgende Bedeutungen.
 | `@PublicPage`      | Zugriff auch ohne Login möglich.                                  |
 | `@CORS`            | Aufruf der API durch andere Web Applikationen von außen möglich.  |
 
-
 In den Controller-Funktionen können verschiedene Inhalte zurückgegeben werden. Hier genutzte Rückgabetypen sind in der folgenden Tabelle zusammengefasst.
 
 | Typ                                                                                                          | Beschreibung                                                        |
 |--------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| [`TemplateResponse`](https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#templates) | Zur Rückgabe eines Templates, das dem Nutzer angezeigt werden soll. |
-| [`RedirectResponse`](https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#redirects) | Zur Weiterleitung des Nutzers an eine andere URL.                   |
-| [`JSONResponse`](https://doc.owncloud.org/server/latest/developer_manual/app/controllers.html#json)          | Zur Rückgabe eines JSON Strings.                                    |
+| [`TemplateResponse`](https://doc.owncloud.org/server/9.1/developer_manual/app/controllers.html#templates) | Zur Rückgabe eines Templates, das dem Nutzer angezeigt werden soll. |
+| [`RedirectResponse`](https://doc.owncloud.org/server/9.1/developer_manual/app/controllers.html#redirects) | Zur Weiterleitung des Nutzers an eine andere URL.                   |
+| [`JSONResponse`](https://doc.owncloud.org/server/9.1/developer_manual/app/controllers.html#json)          | Zur Rückgabe eines JSON Strings.                                    |
 
-Ein Beispiel für die Rückgabetypen `TemplateResponse` und `RedirectResponse` gibt die Funktion `authorize` im `PageController`, die im folgenden Codebeispiel zu sehen ist.
+Ein Beispiel für den Rückgabetyp `TemplateResponse` und gibt die Funktion `authorize` im `PageController`, die im folgenden Codebeispiel zu sehen ist.
 
 ```php
+<?php
 /**
  * Shows a view for the user to authorize a client.
  *
  * @param string $response_type The expected response type.
  * @param string $client_id The client identifier.
- * @param string $redirect_uri The redirect URI.
+ * @param string $redirect_uri The redirection URI.
  * @param string $state The state.
- * @param string $scope The scope.
  *
  * @return TemplateResponse|RedirectResponse The authorize view or a
  * redirection to the ownCloud main page.
@@ -303,44 +345,140 @@ Ein Beispiel für die Rückgabetypen `TemplateResponse` und `RedirectResponse` g
  * @NoAdminRequired
  * @NoCSRFRequired
  */
-public function authorize($response_type, $client_id, $redirect_uri, $state = null, $scope = null) {
+public function authorize($response_type, $client_id, $redirect_uri,
+						  $state = null) {
 	if (!is_string($response_type) || !is_string($client_id)
 		|| !is_string($redirect_uri) || (isset($state) && !is_string($state))
-		|| (isset($scope) && !is_string($scope))) {
-		return new RedirectResponse(OC_Util::getDefaultPageUrl());
+	) {
+		return new TemplateResponse(
+			$this->appName,
+			'authorize-error',
+			['client_name' => null, 'back_url' => OC_Util::getDefaultPageUrl()]
+		);
 	}
 
 	try {
 		/** @var Client $client */
 		$client = $this->clientMapper->findByIdentifier($client_id);
 	} catch (DoesNotExistException $exception) {
-		return new RedirectResponse(OC_Util::getDefaultPageUrl());
+		return new TemplateResponse(
+			$this->appName,
+			'authorize-error',
+			['client_name' => null, 'back_url' => OC_Util::getDefaultPageUrl()]
+		);
 	}
 
-	if (strcmp($client->getRedirectUri(), urldecode($redirect_uri)) !== 0) {
-		return new RedirectResponse(OC_Util::getDefaultPageUrl());
+	if (!Utilities::validateRedirectUri(
+			$client->getRedirectUri(),
+			urldecode($redirect_uri),
+			$client->getAllowSubdomains())
+	) {
+		return new TemplateResponse(
+			$this->appName,
+			'authorize-error',
+			['client_name' => $client->getName(), 'back_url' => OC_Util::getDefaultPageUrl()]
+		);
 	}
+
 	if (strcmp($response_type, 'code') !== 0) {
-		return new RedirectResponse(OC_Util::getDefaultPageUrl());
+		return new TemplateResponse(
+			$this->appName,
+			'authorize-error',
+			['client_name' => $client->getName(), 'back_url' => OC_Util::getDefaultPageUrl()]
+		);
 	}
 
-	return new TemplateResponse('oauth2', 'authorize', ['client_name' => $client->getName()]);
+	return new TemplateResponse($this->appName, 'authorize', ['client_name' => $client->getName()]);
 }
 ```
 
-Hier werden zunächst die Parameter auf Gültigkeit überprüft. Sollten die Parameter nicht gültig sein (beispielsweise deshalb, 
-weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde) wird mit einem `RedirectResponse` auf die ownCloud Startseite umgeleitet. 
-Andernfalls wird ein `TemplateResponse` für das Template `authorize` zurückgegeben. 
-Für das Rendern des Templates können Parameter wie hier `client_name` für den Namen des Clients übergeben werden.
+Hier werden zunächst die Parameter auf Gültigkeit überprüft. Sollten die Parameter nicht gültig sein (beispielsweise deshalb, weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde), wird mit einem `TemplateResponse` das Template `authorize-error` zurückgegeben. Andernfalls kommt das Template `authorize` zum Einsatz. Für das Rendern des Templates können Parameter übergeben werden. Hier wurden die Parameter `client_name` für den Namen des Clients und `back_url` für die URL des Zurück-Buttons verwendet.
 
-Der Rückgabetyp `JSONResponse` wird für die Rückgabe des Access Tokens in der Funktion `generateToken` im `OAuthApiController` genutzt, 
-wie nachfolgendes Codebeispiel zeigt. Zudem ist das Zusammenspiel mit Entities und Mappern zu sehen.
+Der Rückgabetyp `RedirectResponse` wird für die Ausstellung eines Authorization Codes in der Funktion `generateAuthorizationCode` im `PageController` genutzt. Folgendes Codebeispiel macht dies deutlich. Zudem wird der Einsatz von Entities und Mappern gezeigt.
 
 ```php
+<?php
+/**
+ * Implements the OAuth 2.0 Authorization Response.
+ *
+ * @param string $response_type The expected response type.
+ * @param string $client_id The client identifier.
+ * @param string $redirect_uri The redirection URI.
+ * @param string $state The state.
+ *
+ * @return RedirectResponse|JSONResponse Redirection to the given
+ * redirect_uri or a JSON with an error message.
+ *
+ * @NoAdminRequired
+ * @NoCSRFRequired
+ */
+public function generateAuthorizationCode($response_type, $client_id, $redirect_uri, $state = null) {
+	if (!is_string($response_type) || !is_string($client_id)
+		|| !is_string($redirect_uri) || (isset($state) && !is_string($state))
+	) {
+		return new RedirectResponse(OC_Util::getDefaultPageUrl());
+	}
+
+	switch ($response_type) {
+		case 'code':
+			try {
+				/** @var Client $client */
+				$client = $this->clientMapper->findByIdentifier($client_id);
+			} catch (DoesNotExistException $exception) {
+				return new RedirectResponse(OC_Util::getDefaultPageUrl());
+			}
+
+			if (!Utilities::validateRedirectUri(
+					$client->getRedirectUri(),
+					urldecode($redirect_uri),
+					$client->getAllowSubdomains())
+			) {
+				return new RedirectResponse(OC_Util::getDefaultPageUrl());
+			}
+
+			$this->authorizationCodeMapper->deleteByClientUser($client->getId(), $this->userId);
+			$this->accessTokenMapper->deleteByClientUser($client->getId(), $this->userId);
+			$this->refreshTokenMapper->deleteByClientUser($client->getId(), $this->userId);
+
+			$code = Utilities::generateRandom();
+			$authorizationCode = new AuthorizationCode();
+			$authorizationCode->setCode($code);
+			$authorizationCode->setClientId($client->getId());
+			$authorizationCode->setUserId($this->userId);
+			$authorizationCode->resetExpires();
+			$this->authorizationCodeMapper->insert($authorizationCode);
+
+			$result = urldecode($redirect_uri);
+			$result = $result . '?code=' . $code;
+			if (!is_null($state)) {
+				$result = $result . '&state=' . urlencode($state);
+			}
+
+			$this->logger->info(
+				'An authorization code has been issued for the client "' . $client->getName() .'".',
+				['app' => $this->appName]
+			);
+
+			return new RedirectResponse($result);
+		default:
+			return new RedirectResponse(OC_Util::getDefaultPageUrl());
+	}
+}
+```
+
+In dieser Funktion werden die Parameter überprüft. Falls diese nicht gültig sind (beispielsweise deshalb, weil der angegebene Client nicht existiert oder dessen Redirection URI falsch angegeben wurde), wird an die ownCloud Startseite weitergeleitet. Ansonsten wird ein Authorization Code ausgestellt und als Parameter der Redirection URI angehägnt, zu welcher schließlich weitergeleitet wird.
+
+Der Rückgabetyp `JSONResponse` wird für die Rückgabe des Access Tokens in der Funktion `generateToken` im `OAuthApiController` genutzt, wie nachfolgendes Codebeispiel zeigt. Zudem ist erneut das Zusammenspiel mit Entities und Mappern zu sehen.
+
+```php
+<?php
 /**
  * Implements the OAuth 2.0 Access Token Response.
  *
+ * @param string $grant_type The authorization grant type.
  * @param string $code The authorization code.
+ * @param string $redirect_uri The redirect URI.
+ * @param string $refresh_token The refresh token.
  * @return JSONResponse The Access Token or an empty JSON Object.
  *
  * @NoAdminRequired
@@ -348,86 +486,147 @@ wie nachfolgendes Codebeispiel zeigt. Zudem ist das Zusammenspiel mit Entities u
  * @PublicPage
  * @CORS
  */
-public function generateToken($code) {
-	if (is_null($code) || is_null($_SERVER['PHP_AUTH_USER'])
-		|| is_null($_SERVER['PHP_AUTH_PW'])) {
-		return new JSONResponse(['message' => 'Missing credentials.'], Http::STATUS_BAD_REQUEST);
+public function generateToken($grant_type, $code = null,
+							  $redirect_uri = null, $refresh_token = null) {
+	if (!is_string($grant_type)) {
+		return new JSONResponse(['error' => 'invalid_request'], Http::STATUS_BAD_REQUEST);
+	}
+
+	if (is_null($_SERVER['PHP_AUTH_USER']) || is_null($_SERVER['PHP_AUTH_PW'])) {
+		return new JSONResponse(['error' => 'invalid_request'], Http::STATUS_BAD_REQUEST);
 	}
 
 	try {
 		/** @var Client $client */
 		$client = $this->clientMapper->findByIdentifier($_SERVER['PHP_AUTH_USER']);
 	} catch (DoesNotExistException $exception) {
-		return new JSONResponse(['message' => 'Unknown credentials.'], Http::STATUS_BAD_REQUEST);
+		return new JSONResponse(['error' => 'invalid_client'], Http::STATUS_BAD_REQUEST);
 	}
 
-    if (strcmp($client->getSecret(), $_SERVER['PHP_AUTH_PW']) !== 0) {
-        return new JSONResponse(['message' => 'Unknown credentials.'], Http::STATUS_BAD_REQUEST);
-    }
-
-	try {
-		/** @var AuthorizationCode $authorizationCode */
-		$authorizationCode = $this->authorizationCodeMapper->findByCode($code);
-	} catch (DoesNotExistException $exception) {
-		return new JSONResponse(['message' => 'Unknown credentials.'], Http::STATUS_BAD_REQUEST);
+	if (strcmp($client->getSecret(), $_SERVER['PHP_AUTH_PW']) !== 0) {
+		return new JSONResponse(['error' => 'invalid_client'], Http::STATUS_BAD_REQUEST);
 	}
 
-    if (strcmp($authorizationCode->getClientId(), $client->getId()) !== 0) {
-        return new JSONResponse(['message' => 'Unknown credentials.'], Http::STATUS_BAD_REQUEST);
-    }
+	switch ($grant_type) {
+		case 'authorization_code':
+			if (!is_string($code) || !is_string($redirect_uri)) {
+				return new JSONResponse(['error' => 'invalid_request'], Http::STATUS_BAD_REQUEST);
+			}
+
+			try {
+				/** @var AuthorizationCode $authorizationCode */
+				$authorizationCode = $this->authorizationCodeMapper->findByCode($code);
+			} catch (DoesNotExistException $exception) {
+				return new JSONResponse(['error' => 'invalid_grant'], Http::STATUS_BAD_REQUEST);
+			}
+
+			if (strcmp($authorizationCode->getClientId(), $client->getId()) !== 0) {
+				return new JSONResponse(['error' => 'invalid_grant'], Http::STATUS_BAD_REQUEST);
+			}
+
+			if ($authorizationCode->hasExpired()) {
+				return new JSONResponse(['error' => 'invalid_grant'], Http::STATUS_BAD_REQUEST);
+			}
+
+			if (!Utilities::validateRedirectUri(
+					$client->getRedirectUri(),
+					urldecode($redirect_uri),
+					$client->getAllowSubdomains())
+			) {
+				return new JSONResponse(['error' => 'invalid_grant'], Http::STATUS_BAD_REQUEST);
+			}
+
+			$this->logger->info(
+				'An authorization code has been used by the client "'
+					. $client->getName() . '" to request an access token.',
+				['app' => $this->appName]
+			);
+
+			$userId = $authorizationCode->getUserId();
+			break;
+		case 'refresh_token':
+			if (!is_string($refresh_token)) {
+				return new JSONResponse(['error' => 'invalid_request'], Http::STATUS_BAD_REQUEST);
+			}
+
+			try {
+				/** @var RefreshToken $refreshToken */
+				$refreshToken = $this->refreshTokenMapper->findByToken($refresh_token);
+			} catch (DoesNotExistException $exception) {
+				return new JSONResponse(['error' => 'invalid_grant'], Http::STATUS_BAD_REQUEST);
+			}
+
+			if (strcmp($refreshToken->getClientId(), $client->getId()) !== 0) {
+				return new JSONResponse(['error' => 'invalid_grant'], Http::STATUS_BAD_REQUEST);
+			}
+
+			$this->logger->info(
+				'A refresh token has been used by the client "'
+					. $client->getName() . '" to request an access token.',
+				['app' => $this->appName]
+			);
+
+			$userId = $refreshToken->getUserId();
+			break;
+		default:
+			return new JSONResponse(['error' => 'invalid_grant'], Http::STATUS_BAD_REQUEST);
+	}
+
+	$this->authorizationCodeMapper->deleteByClientUser($client->getId(), $userId);
+	$this->accessTokenMapper->deleteByClientUser($client->getId(), $userId);
+	$this->refreshTokenMapper->deleteByClientUser($client->getId(), $userId);
 
 	$token = Utilities::generateRandom();
-	$userId = $authorizationCode->getUserId();
 	$accessToken = new AccessToken();
 	$accessToken->setToken($token);
-	$accessToken->setClientId($authorizationCode->getClientId());
+	$accessToken->setClientId($client->getId());
 	$accessToken->setUserId($userId);
+	$accessToken->resetExpires();
 	$this->accessTokenMapper->insert($accessToken);
 
-    $this->authorizationCodeMapper->delete($authorizationCode);
+	$token = Utilities::generateRandom();
+	$refreshToken = new RefreshToken();
+	$refreshToken->setToken($token);
+	$refreshToken->setClientId($client->getId());
+	$refreshToken->setUserId($userId);
+	$this->refreshTokenMapper->insert($refreshToken);
 
-    return new JSONResponse(
-        [
-            'access_token' => $token,
-            'token_type' => 'Bearer',
+	return new JSONResponse(
+		[
+			'access_token' => $accessToken->getToken(),
+			'token_type' => 'Bearer',
+			'expires_in' => 3600,
+			'refresh_token' => $refreshToken->getToken(),
 			'user_id' => $userId
-        ]
-    );
+		]
+	);
 }
 ```
 
-Nach erfolgreicher Überprüfung des Authorization Codes und der Angaben zur Client Authentication im Authorization Header wird eine neuer Access Token erstellt und in der Datenbank gespeichert. 
-Der verwendete Authorization Code wird zudem gelöscht. Im JSON Response wird dann der Access Token, der Token Typ und die ID des Nutzers zurückgegeben. 
-Nachfolgend ist ein Beispiel dazu angegeben.
+Hier werden zunächst die Parameter auf Gültigkeit überprüft. Dabei gibt es die Zwei Fälle `authorization_code` und `refresh_token`, die durch die `switch`-Anweisung abgedeckt werden. Bei fehlerhaften Angaben wird eine entsprechende Fehlermeldung im JSON-Format zurückgegeben. Andernfalls wird eine neuer Access Token erstellt und in der Datenbank gespeichert. Der verwendete Authorization Code bzw. der Refresh Token wird zudem gelöscht. Im JSON Response wird dann der Access Token, der Token Typ (`Bearer` wegen des Authorization Code Flow), die Lebensdauer, der Refresh Token und die ID des Nutzers zurückgegeben. Nachfolgend ist ein Beispiel dazu angegeben.
 
 ```json
 {
 	"access_token" : "1vtnuo1NkIsbndAjVnhl7y0wJha59JyaAiFIVQDvcBY2uvKmj5EPBEhss0pauzdQ",
 	"token_type" : "Bearer",
+	"expires_in" : 3600,
+	"refresh_token" : "7y0wJuvKmj5E1vjVnhlPBEhha59JyaAiFIVQDvcBY2ss0pauzdQtnuo1NkIsbndA",
 	"user_id" : "admin"
 }
 ```
 
-Für die Token-Generierung wurde die Hilfsklasse `Utilities` mit der statischen Funktion `generateRandom` geschrieben, 
-die mithilfe einer ownCloud-internen Funktion 64-stellige Zeichenketten erzeugt. 
-Folgendes Codebeispiel zeigt diese Klasse.
+Für die Token-Generierung wurde die Hilfsklasse `Utilities` mit der statischen Funktion `generateRandom` geschrieben, die mithilfe einer ownCloud-internen Funktion 64-stellige zufällige Zeichenketten erzeugt. Folgendes Codebeispiel zeigt diese Funktion.
 
 ```php
 <?php
-namespace OCA\OAuth2;
-
-class Utilities {
-
-    /**
-     * Generates a random string with 64 characters.
-     *
-     * @return string The random string.
-     */
-    public static function generateRandom() {
-        return \OC::$server->getSecureRandom()->generate(64,
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
-    }
-
+/**
+ * Generates a random string with 64 characters.
+ *
+ * @return string The random string.
+ */
+public static function generateRandom() {
+    return \OC::$server->getSecureRandom()->generate(64,
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789');
 }
 ```
 
@@ -445,14 +644,12 @@ Zusammenfassend werden im folgenden UML-Klassendiagramm die Controller mit ihren
 
 ### Templates
 
-In den [Templates](https://doc.owncloud.org/server/9.0/developer_manual/app/templates.html) einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. 
-Es können die vom [Controller](#controller) übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen `$_`. 
-Zur Vermeidung von Cross-Site-Scripting gibt es die ownCloud-interne Funktion `p()`, mithilfe derer Werte ausgegeben werden können.
+In den [Templates](https://doc.owncloud.org/server/9.1/developer_manual/app/templates.html) einer ownCloud App wird die für den Nutzer sichtbare Oberfläche definiert. Es können die vom [Controller](#controller) übergebenen Parameter genutzt werden. Dazu gibt es ein Array mit dem Namen `$_`. Zur Vermeidung von Cross-Site-Scripting existiert zudem die ownCloud-interne Funktion `p()`, mithilfe derer Werte ausgegeben werden können.
 
 Folgende Templates wurden in der App definiert:
 
-* **`authorize`**: Zur Darstellung des Authroization Requests, bei dem der Nutzer um Autorisierung eines Clients gebeten wird. 
-Es werden ein Text zur Erklärung sowie Buttons zum Akzeptieren oder Ablehnen angezeigt.
+* **`authorize`**: Zur Darstellung des Authorization Requests, bei dem der Nutzer um Autorisierung eines Clients gebeten wird. Es werden ein Text zur Erklärung sowie Buttons zum Akzeptieren oder Ablehnen angezeigt.
+* **`authorize-error`**: Zur Information des Nutzers mit einer Fehlermeldung, falls der Authorization Request wegen fehlerhafter Parameter ungültig ist.
 * **`settings-admin`**: Stellt zur Verwaltung der Clients eine tabellarische Auflistung der Clients sowie ein Formular zum Hinzufügen von Clients dar.
 * **`settings-personal`**: Stellt eine tabellarische Auflistung der vom Nutzer autorisierten Clients dar, mit der Möglichkeit, die Autorisierung zu widerrufen.
 
@@ -460,6 +657,12 @@ Folgendes Codebeispiel zeigt das Template `settings-admin`.
 
 ```php
 <?php
+/** @var \OCA\OAuth2\Db\Client $client */
+script('oauth2', 'settings');
+style('oauth2', 'main');
+style('oauth2', 'settings-admin');
+?>
+
 <div class="section" id="oauth2">
     <h2><?php p($l->t('OAuth 2.0')); ?></h2>
 
@@ -472,9 +675,10 @@ Folgendes Codebeispiel zeigt das Template `settings-admin`.
         <thead>
         <tr>
             <th id="headerName" scope="col"><?php p($l->t('Name')); ?></th>
-            <th id="headerRedirectUri" scope="col"><?php p($l->t('Redirect URI')); ?></th>
+            <th id="headerRedirectUri" scope="col"><?php p($l->t('Redirection URI')); ?></th>
             <th id="headerClientIdentifier" scope="col"><?php p($l->t('Client Identifier')); ?></th>
             <th id="headerSecret" scope="col"><?php p($l->t('Secret')); ?></th>
+			<th id="headerSubdomains" scope="col"><?php p($l->t('Subdomains allowed')); ?></th>
             <th id="headerRemove">&nbsp;</th>
         </tr>
         </thead>
@@ -483,11 +687,20 @@ Folgendes Codebeispiel zeigt das Template `settings-admin`.
                 <tr>
                     <td><?php p($client->getName()); ?></td>
                     <td><?php p($client->getRedirectUri()); ?></td>
-                    <td><?php p($client->getIdentifier()); ?></td>
-                    <td><?php p($client->getSecret()); ?></td>
+                    <td><code><?php p($client->getIdentifier()); ?></code></td>
+                    <td><code><?php p($client->getSecret()); ?></code></td>
+						<td id="td-allow-subdomains">
+							<?php if ($client->getAllowSubdomains()) {?>
+								<img alt="" src="/core/img/actions/checkmark.svg">
+							<?php } ?>
+						</td>
                     <td>
-                        <form action="../apps/oauth2/clients/<?php p($client->getId()); ?>/delete" method="post"
-                              style='display:inline;'>
+                        <form id="form-inline" class="delete"
+                        	data-confirm="<?php
+                        		p($l->t('Are you sure you want to delete this item?'));
+                        	?>"
+                        	action="../apps/oauth2/clients/<?php p($client->getId()); ?>/delete"
+                        	method="post">
                             <input type="submit" class="button icon-delete" value="">
                         </form>
                     </td>
@@ -499,109 +712,104 @@ Folgendes Codebeispiel zeigt das Template `settings-admin`.
 
     <h3><?php p($l->t('Add client')); ?></h3>
     <form action="../apps/oauth2/clients" method="post">
-        <input id="name" name="name" type="text" placeholder="<?php p($l->t('Name')); ?>">
-        <input id="redirect_uri" name="redirect_uri" type="url" placeholder="<?php p($l->t('Redirect URI')); ?>">
+		<input id="name" name="name" type="text" placeholder="<?php p($l->t('Name')); ?>">
+        <input id="redirect_uri" name="redirect_uri" type="url"
+        	placeholder="<?php p($l->t('Redirection URI')); ?>">
+		<input type="checkbox" class="checkbox" name="allow_subdomains"
+			id="allow_subdomains" value="1"/>
+		<label for="allow_subdomains"><?php p($l->t('Allow subdomains'));?></label>
         <input type="submit" class="button" value="<?php p($l->t('Add')); ?>">
     </form>
 </div>
 ```
 
-In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Durch eine `for`-Schleife wird für jeden Client aus dem Parameter `clients` ein Tabelleneintrag angezeigt. 
-Sollten noch keine Clients registriert worden sein, sorgt die `if`-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. 
-Durch Nutzung von `$l->t()` können die Strings auch [in andere Sprachen Übersetzt werden](https://doc.owncloud.org/server/latest/developer_manual/app/l10n.html#templates).
-
-Im Zuge des Transfers der App in die ownCloud GitHub-Organisation wurde Transifex als Übersetzungsplattform integriert. Dies bedeutet, 
-dass nun im `l1on`-Verzeichnis der OAuth 2.0 App Übersetzungen der originalen (von uns erstellten) englischen Strings aus den Templates
-von der Transifexcommunity hinzugefügt und geändert werden können. Dadurch befinden sich jetzt schon um die zwanzig Übersetzungen
-der App im Quellcode. Diese werden je nach Spracheinstellung der ownCloud-Instanz angezeigt.
-
-Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion `addClient` im `SettingsController` aus. 
-Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion `deleteClient` im `SettingsController` auslöst.
-
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Einbindung eigener CSS und JavaScript Dateien erwähnen.
-</div>
+In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Zu Beginn werden mit den Funktionen `script` und `style` zusätzliche JavaScript- bzw. CSS-Dateien aus den Verzeichnissen `js` bzw. `css` geladen. Durch eine `for`-Schleife wird dann für jeden Client aus dem Parameter `clients` ein Tabelleneintrag angezeigt. Sollten noch keine Clients registriert worden sein, sorgt die `if`-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. Durch Nutzung der Funktion `t` der globalen Variable `$l` können die Strings auch [in andere Sprachen Übersetzt werden](https://doc.owncloud.org/server/9.1/developer_manual/app/l10n.html#templates). Im Zuge des Transfers der App in die ownCloud GitHub-Organisation wurde Transifex als Übersetzungsplattform integriert. Dies bedeutet, dass nun im `l1on`-Verzeichnis der OAuth 2.0 App Übersetzungen der originalen (von uns erstellten) englischen Strings aus den Templates von der Transifex-Community hinzugefügt und geändert werden können. Dadurch liegen bereits zum aktuellen Zeitpunkt über 15 Übersetzungen der App vor. Diese werden je nach Spracheinstellung der ownCloud-Instanz angezeigt. Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion `addClient` im `SettingsController` aus. Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion `deleteClient` im `SettingsController` auslöst.
 
 ### Hooks
 
-Wenn ein Nutzer gelöscht wird, sollen dementsprechend auch alle seine Daten gelöscht werden, wozu auch jegliche Art von 
-Authorization Codes und Tokens aus dem OAuth 2.0 Protokollablauf gehören. Hooks müssen also implementiert werden, um die 
-Säuberung von Datenbankeinträgen durchzuführen. 
+Bei der Implementierung der App mussten wir bedenken, dass Nutzer aus ownCloud auch gelöscht werden können. Deshalb musste sichergestellt werden, dass beim Löschen eines Nutzers auch alle mit ihm verknüpften Authorization Codes, Access Tokens und Refresh Tokens gelöscht werden.
 
-In den [Hooks](https://doc.owncloud.org/server/latest/developer_manual/app/hooks.html?highlight=hook) einer ownCloud App wird Code gespeichert, 
-der vor oder nach einem bestimmten Ereignis ausgeführt werden soll. 
-Diese Hooks sind teilweise vorgefertig, können aber auch für bestimmte Funktionalitäten selbst entworfen werden. 
-Diese Hooks müssen in den `routes` registriert werden und die zugehörige Logik im `Container` gespeichert werden.
+Hierfür gibt es in ownCloud das Konzept der [Hooks](https://doc.owncloud.org/server/9.1/developer_manual/app/hooks.html), welche bei bestimmten Ereignissen ausgelöst werden. Eigene Hooks werden in der `app.php` registriert.
 
-In der App wurden Userhooks definiert, welche vor dem endgültigen Löschen eines Nutzers Code ausführen. 
-Zuerst wird eine Konstruktorfunktion aufgerufen, welche den `userManager`, den `authorizationCodeMapper`, den `accessTokenMapper` und den `refreshTokenMapper` aufruft. 
-Dann wird der pre-delete Hook registriert und ein `callback` für den Hook definiert. 
-Dieser `callback` löscht jegliche, dem Nutzer zugehörige, `authorizationCodes`, `accessTokens` und `refreshTokens`. 
-Dazu wird in den jeweiligen Konstruktoren die Methode `deleteByUID` aufgerufen.
-
-Folgendes Codebeispiel zeigt den genannten Fall der **`UserHooks`**.
+Da wir vor dem Löschen eines Nutzers eine Datenbankbereinigung durchführen müssen, war der `preDelete`-Hook von Interesse. Dazu wurde die Klasse `UserHooks` implementiert. Folgendes Codebeispiel zeigt dessen Funktion `register`, in der die vor dem Löschen durchzuführenden Aktionen definiert werden.
 
 ```php
-class UserHooks {
+/**
+ * Registers a pre-delete hook for users to delete authorization codes,
+ * access tokens and refresh tokens that reference the user.
+ */
+public function register() {
+	/**
+	 * @param User $user .
+	 */
+	$callback = function ($user) {
+		if (!is_null($user->getUID())) {
+			$this->logger->info(
+				'Deleting authorization codes, access tokens and refresh tokens referencing the user to be deleted "' . $user->getUID() . '".',
+				['app' => $this->appName]);
 
-	/**
-	 * UserHooks constructor.
-	 *
-	 * @param IUserManager $userManager The user manager
-	 * @param AuthorizationCodeMapper $authorizationCodeMapper The authorization code mapper
-	 * @param AccessTokenMapper $accessTokenMapper The access token mapper
-	 * @param RefreshTokenMapper $refreshTokenMapper The refresh token mapper
-	 */
-	public function __construct(IUserManager $userManager,
-								AuthorizationCodeMapper $authorizationCodeMapper,
-								AccessTokenMapper $accessTokenMapper,
-								RefreshTokenMapper $refreshTokenMapper) {
-		$this->userManager = $userManager;
-		$this->authorizationCodeMapper = $authorizationCodeMapper;
-		$this->accessTokenMapper = $accessTokenMapper;
-		$this->refreshTokenMapper = $refreshTokenMapper;
-	}
-	/**
-	 * Registers a pre-delete hook for users to delete authorization codes,
-	 * access tokens and refresh tokens that reference the user.
-	 */
-	public function register() {
-		/**
-		 * @param User $user
-		 */
-		$callback = function ($user) {
-			if (!is_null($user->getUID())) {
-				$this->authorizationCodeMapper->deleteByUser($user->getUID());
-				$this->accessTokenMapper->deleteByUser($user->getUID());
-				$this->refreshTokenMapper->deleteByUser($user->getUID());
-			}
-		};
-		$this->userManager->listen('\OC\User', 'preDelete', $callback);
-	}
+			$this->authorizationCodeMapper->deleteByUser($user->getUID());
+			$this->accessTokenMapper->deleteByUser($user->getUID());
+			$this->refreshTokenMapper->deleteByUser($user->getUID());
+		}
+	};
+
+	$this->userManager->listen('\OC\User', 'preDelete', $callback);
 }
 ```
 
+Hier wird mithilfe des ownCloud-internen `UserManager`s ein Callback für den `preDelete`-Hook registriert. In dem Callback werden nach Erstellung eines Log-Eintrags mithilfe der Mapper alle Datenbank-Einträge zu dem Nutzer gelöscht. Dazu wurde die Funktion `deleteByUser` im `AuthorizationCodeMapper`, `AccessTokenMapper` und `RefreshTokenMapper` implementiert.
+
 ### Background Job
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Background Job, der abgelaufene Authorization Codes und Access Tokens löscht, beschreiben.
-</div>
+Da Authorization Codes und Access Tokens eine begrenzte Lebensdauer haben, entstehen mit der Zeit ungenutzte Einträge in der Datenbank. Zur Bereinigung wurde ein [Background Job](https://doc.owncloud.org/server/9.1/developer_manual/app/backgroundjobs.html) erstellt, der regelmäßig ausgeführt wird. Die Registrierung erfolgt dabei auch in der `app.php`. Folgendes Codebeispiel zeigt die Implementierung der Klasse `CleanUp`, in der der auszuführende Code definiert wird.
+
+```php
+<?php
+namespace OCA\OAuth2\BackgroundJob;
+
+use OCA\OAuth2\AppInfo\Application;
+
+class CleanUp {
+
+	/**
+	 * Cleans up expired authorization codes and access tokens.
+	 */
+	public static function run() {
+		$app = new Application();
+		$container = $app->getContainer();
+
+		$container->query('OCA\OAuth2\Db\AuthorizationCodeMapper')->cleanUp();
+		$container->query('OCA\OAuth2\Db\AccessTokenMapper')->cleanUp();
+	}
+
+}
+```
+
+Bei Ausführung des Background Jobs wird die `run` Methode aufgerufen. Hier werden über den [Container](https://doc.owncloud.org/server/9.1/developer_manual/app/container.html) der App der `AuthorizationCodeMapper` und `AccessTokenMapper` abgefragt, sowie deren `cleanUp` Funktion aufgerufen. In dieser Funktion werden alle Einträge, die vor einer Woche abgelaufen sind, aus der Datenbank gelöscht.
 
 ### Logging
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Logging beschreiben.
-</div>
+Zur Information des Administrators wird bei folgenden Ereignissen in die Log-Datei geschrieben:
+
+* Hinzufügen bzw. Löschen von Clients.
+* Ausstellung von Authorization Codes.
+* Einlösung von Authorization Codes bzw. Refresh Tokens.
+* Bereinigung der Datenbank von abgelaufenen Authorization Codes bzw. Access Tokens.
+
+Als Log-Level wurde `info` gewählt.
+
 
 ### Authentifizierungslogik
 
 Nach der Implementierung des OAuth 2.0 Protokolls musste die Authentifizierung von WebDAV und von ownCloud APIs (für die Nutzung der OCS Share API) Erweitert werden. Diese Erweiterung basiert auf den durchgeführten [Core Anpassungen](core-anpassungen).
 
-Zunächst schauten wir uns die Umsetzung der bestehenden Basic Authentication in der `dav` App an. Dabei stellten wir fest, dass sabre den [Austausch des Authentifizierungsmechanismus](http://sabre.io/dav/authentication/) durch Implementierung eines Interfaces bietet. Für unser Szenario war das Interface `AbstractBearer` relevant, da die Access Tokens aus dem Authorization Code Flow des OAuth 2.0 Protokolls für Bearer Authentication genutzt werden. Dazu mussten wir die Funktion `validateBearerToken` implementieren. Die Logik und das Session-Management lehnen sich stark an die bestehende Implementierung der Basic Authentication an. Für die Authentifizierung einer Anfrage wird hier jedoch auf `AuthModule`s zurückgegriffen.
+Zunächst schauten wir uns die Umsetzung der bestehenden Basic Authentication in der `dav` App an. Dabei stellten wir fest, dass sabre den [Austausch des Authentifizierungsmechanismus](http://sabre.io/dav/authentication/) durch Implementierung eines Interfaces bietet. Für unser Szenario war das Interface `AbstractBearer` relevant, da die Access Tokens aus dem Authorization Code Flow des OAuth 2.0 Protokolls für Bearer Authentication genutzt werden. Dazu haben wir die Funktion `validateBearerToken` in der Klasse `OAuth2` implementieren. Die Logik und das Session-Management lehnen sich stark an die bestehende Implementierung der Basic Authentication an. Für die Authentifizierung einer Anfrage wird hier jedoch auf `AuthModule`s zurückgegriffen.
 
-Ein `AuthModule` kann von ownCloud Apps implementiert und registriert werden. Es wird auch bei der Authentifizierung von API Zugriffen eingesetzt. Eine App muss dazu die Funktionen `auth` und `getUserPassword` implementieren. Erstere authentifiziert eine Anfrage, während letztere das Passwort des Nutzers zu einer Anfrage ermittelt. Da die App `encryption` in bestimmten Nutzungsszenarien auf das Passwort des Nutzers angewiesen ist, existiert die Funktion `getUserPassword`. Sie gibt jedoch in unserer Implementierung eine leere Zeichenkette zurück, da wir an keiner Stelle mit Passwörtern umgehen (siehe [Einschränkungen](#einschrankungen)). `getUserPassword` gibt bei erfolgreicher Authentifizierung ein `User`-Objekt zurück, wie in folgendem Codebeispiel zu sehen ist. Nach Extraktion des Bearer Tokens aus den Authorization Header, wird durch Rückgriff auf den `AccessTokenMapper` die `user_id` ermittelt. Mithilfe des ownCloud-internen `UserManagers` kann daraufhin das `User`-Objekt abgefragt werden.
+Ein `AuthModule` kann von ownCloud Apps implementiert und registriert werden. Es wird auch bei der Authentifizierung von API Zugriffen eingesetzt. Eine App muss dazu die Funktionen `auth` und `getUserPassword` implementieren. Erstere authentifiziert eine Anfrage, während letztere das Passwort des Nutzers zu einer Anfrage ermittelt. Da die App `encryption` in bestimmten Nutzungsszenarien auf das Passwort des Nutzers angewiesen ist, existiert die Funktion `getUserPassword`. Sie gibt jedoch in unserer Implementierung eine leere Zeichenkette zurück, da wir an keiner Stelle mit Passwörtern umgehen (siehe [Einschränkungen](#einschrankungen)). `getUserPassword` gibt bei erfolgreicher Authentifizierung ein `User`-Objekt zurück, wie in folgendem Codebeispiel zu sehen ist.
 
 ```php
+<?php
 /**
  * Authenticates a request.
  *
@@ -636,6 +844,8 @@ public function auth(IRequest $request) {
 }
 ``` 
 
+Nach Extraktion des Bearer Tokens aus den Authorization Header, wird durch Rückgriff auf den `AccessTokenMapper` die `user_id` ermittelt. Mithilfe des ownCloud-internen `UserManager`s kann daraufhin das `User`-Objekt abgefragt werden.
+
 Zur Registrierung eines `AuthModules` muss dessen Namespace in der [`info.xml`](https://doc.owncloud.org/server/9.1/developer_manual/app/info.html) angegeben werden, wie im folgenden Codebeispiel gezeigt wird:
 
 ```xml
@@ -644,31 +854,33 @@ Zur Registrierung eines `AuthModules` muss dessen Namespace in der [`info.xml`](
 </auth-modules>
 ```
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Registrierung für WebDAV beschreiben (<code>types</code> in <code>info.xml</code> und durch Event Listener).
-</div>
+Damit die OAuth 2.0 Implementierung für die Authentifizierung in der `dav` App genutzt werden kann, musste sie für diese bekannt gemacht werden. Dazu wurde im Konstruktur der Klasse `Application`, von der in der `app.php` eine Instanz erzeugt wird, ein Event Listener hinzugefügt, der das `authInit`-Event des WebDAV-Server abgreift. Folgendes Codebeispiel macht dies deutlich.
 
-WebDAV wurde in einer [ownCloud App](https://doc.owncloud.org/server/9.1/developer_manual/app/) namens `dav` mit Unterstützung der Bibliothek [sabre/dav](http://sabre.io/) implementiert. Bei der Untersuchung des bestehenden Authentifizierungsmechanismus stellten wir fest,
+```php
+<?php
+$dispatcher = $this->getContainer()->getServer()->getEventDispatcher();
+$dispatcher->addListener('OCA\DAV\Connector\Sabre::authInit', function ($event) use ($container) {
+	if ($event instanceof SabrePluginEvent) {
+		$authPlugin = $event->getServer()->getPlugin('auth');
+		if ($authPlugin instanceof Plugin) {
+			$authPlugin->addBackend(
+				new OAuth2(\OC::$server->getSession(),
+					\OC::$server->getUserSession(),
+					\OC::$server->getRequest(),
+					'principals/')
+			);
+		}
+	}
+});
+```
 
-## Protokollablauf
+Beim Auslösen des `authInit`-Events wird der hier definierte Code ausgeführt, der dafür sorgt, dass ein zusätzliches Backend für die Authentifizierung mittels OAuth 2.0 hinzugefügt wird. Da die App damit ein Authentication Backend bereitstellt, war es notwendig, dies in der `info.xml` bei den [Types](https://doc.owncloud.org/server/9.1/developer_manual/app/info.html#types) bekanntzugeben, wie folgendes Codebeispiel zeigt.
 
-Der Protokollablauf der oauth2 App ist dem regulären OAuth2 Protokollablauf nachempfunden. 
-
-Zunächst wird vom Moodle Plugin die Methode `GET authorize` mit den Parametern `response_type`, `client_id` und `redirect_uri` ausgeführt, welche die OAuth 2.0 App anspricht und für eine Weiterleitung an ownCloud sorgt. 
-Dann wird von ownCloud eine Authentifizierung erfragt, sprich der reguläre Anmeldebildschirm wird gezeigt, oder die Weiterleitung erfolgt sofort zur Autorisierungsabfrage der OAuth 2.0 App. 
-Nach erfolgter Autorisierung wird zur `redirectURI` aus der `GET authorize` Methode weitergeleitet, sprich zurück zum Moodle Plugin. 
-
-Anschließend führt das Moodle Plugin die Methode `POST /api/v1/token` aus, die den Authorizationcode an die OAuth 2.0 App sendet und als Antwort einen Access Token erhält.
-
-Nach erfolgter Autorisierung von Moodle mit ownCloud via OAuth 2.0 kann nun der WebDAV Zugriff folgen. Dieser erfolgt mit dem Access Code auf die OAuth WebDAV App. 
-Diese kommuniziert daraufhin mit der OAuth 2.0 App über die Methode `GET api/v1/validate` und dem Access Token und prüft diesen. 
-Bei erfolgreicher Überprüfung wird dann der WebDAV Zugriff entsprechend ermöglicht.
-
-div class="alert alert-danger">
-  <strong>TODO:</strong> An endgültigen Ablauf anpassen.
-</div>
-
-![Protokollablauf](images/protokollablauf.svg)
+```xml
+<types>
+	<authentication/>
+</types>
+```
 
 ## Tests und Continuous Integration
 
@@ -684,6 +896,4 @@ Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://tra
 
 ## Einschränkungen
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> Einschränkungen mit der <code>encryption</code> App beschreiben.
-</div>
+Da in der App nicht mit Passwörtern des Nutzers umgegangen wird, können beim Login eines Nutzers der `preLogin`- und der `postLogin`-Hook nicht mit dem Passwort des Nutzers ausgelöst werden. Dies führt dazu, dass die `encryption` App nur mit der Master Key Encryption genutzt werden kann.
