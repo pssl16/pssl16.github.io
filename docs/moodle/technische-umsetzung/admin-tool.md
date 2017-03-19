@@ -4,7 +4,7 @@
 
 Wie bereits im Kapitel [Software Architektur](softwarearchitektur/) angeschnitten, ist der Hauptzweck dieses Plugins
 die Schnittstelle zu ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud
-App [OAuth2](../owncloud/technische-umsetzung/oauth2-app/) mit Hilfe eines OAuth 2.0 Clients angesprochen. Zusätzlich werden
+App [OAuth2](../../owncloud/technische-umsetzung/oauth2-app/) mit Hilfe eines OAuth 2.0 Clients angesprochen. Zusätzlich werden
 sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert, in diesem Client umfasst.
 Zwar ist der Client auf einen OAuth 2.0 Protokollablauf in Zusammenarbeit mit der entsprechenden ownCloud App angepasst,
 jedoch könnte er in Zukunft auch als Ausgangspunkt genutzt werden, um ähnliche Schnittstellen zu erreichen.
