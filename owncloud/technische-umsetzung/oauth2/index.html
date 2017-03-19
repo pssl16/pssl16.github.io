@@ -8,7 +8,7 @@
     <meta name="author" content="Lukas Biermann, Nina Herrmann, Wladislaw Iwanzow, Dennis Meis, Jonathan Neugebauer">  
     <link rel="shortcut icon" href="../../../img/favicon.ico">
 
-    <title>Core Anpassungen - sciebo@Learnweb</title>
+    <title>OAuth 2.0 - sciebo@Learnweb</title>
 
     <link href="../../../css/bootstrap-custom.min.css" rel="stylesheet">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet">
@@ -81,8 +81,8 @@
     <ul class="dropdown-menu">
         
             
-<li >
-    <a href="../oauth2/">OAuth 2.0</a>
+<li class="active">
+    <a href="./">OAuth 2.0</a>
 </li>
 
         
@@ -99,8 +99,8 @@
 
         
             
-<li class="active">
-    <a href="./">Core Anpassungen</a>
+<li >
+    <a href="../core-anpassungen/">Core Anpassungen</a>
 </li>
 
         
@@ -177,12 +177,12 @@
                 </li>
                 
                     <li >
-                        <a rel="next" href="../oauth2-app/">
+                        <a rel="next" href="../../..">
                             <i class="fa fa-arrow-left"></i> Zurück
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="../../benutzung/">
+                        <a rel="prev" href="../softwarearchitektur/">
                             Weiter <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -207,44 +207,28 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="first-level active"><a href="#core-anpassungen">Core Anpassungen</a></li>
-        
-            <li class="second-level"><a href="#zweck">Zweck</a></li>
-            
-        
-            <li class="second-level"><a href="#vorgegebene-schnittstelle">Vorgegebene Schnittstelle</a></li>
-            
-                <li class="third-level"><a href="#webdav">WebDAV</a></li>
-            
-                <li class="third-level"><a href="#owncloud-apis">ownCloud APIs</a></li>
-            
-        
-            <li class="second-level"><a href="#implementierung">Implementierung</a></li>
-            
-                <li class="third-level"><a href="#webdav_1">WebDAV</a></li>
-            
-                <li class="third-level"><a href="#owncloud-apis_1">ownCloud APIs</a></li>
-            
-        
-            <li class="second-level"><a href="#tests-und-continuous-integration">Tests und Continuous Integration</a></li>
-            
+        <li class="first-level active"><a href="#oauth-20">OAuth 2.0</a></li>
         
     
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="core-anpassungen">Core Anpassungen</h1>
-<h2 id="zweck">Zweck</h2>
-<p>Um das durch die <code>oauth2</code> App implementierte OAuth 2.0 Protokoll für den Zugriff auf die <a href="https://doc.owncloud.org/server/9.1/user_manual/files/access_webdav.html">WebDAV Schnittstelle</a> und die <a href="https://doc.owncloud.org/server/9.1/developer_manual/core/ocs-share-api.html">OCS Share API</a> nutzen zu können, mussten Anpassungen am <a href="https://github.com/owncloud/core">ownCloud Core</a> durchgeführt werden. Diese Änderungen liegen im Pull Request <a href="https://github.com/owncloud/core/pull/26742">owncloud/core#26742</a> vor. Ein Backport für ownCloud 9.1 ist im Pull Request <a href="https://github.com/owncloud/core/pull/27370">owncloud/core#27370</a> zu finden.</p>
-<h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
-<p>Bevor wir um OAuth 2.0 erweitern konnten, mussten wir die vorgegebene Schnittstelle untersuchen. Dazu schauten wir uns die Implementierungen von WebDAV und der OCS Share API an.</p>
-<h3 id="webdav">WebDAV</h3>
-<h3 id="owncloud-apis">ownCloud APIs</h3>
-<h2 id="implementierung">Implementierung</h2>
-<h3 id="webdav_1">WebDAV</h3>
-<h3 id="owncloud-apis_1">ownCloud APIs</h3>
-<h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
+<h1 id="oauth-20">OAuth 2.0</h1>
+<p>Der allgemeine <a href="https://tools.ietf.org/html/rfc6749#section-1.2">OAuth 2.0 Protokollablauf</a> ist in der nachfolgenden Abbildung dargestellt.</p>
+<p><img alt="Authorization Code Flow" src="../images/oauth-allgemein.svg" /></p>
+<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (ownCloud Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte,
+bei dem Authorization Server (ownCloud) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:</p>
+<ol>
+<li>Authorization Request: Der Client fordert eine Autorisierung vom Resource Owner an.</li>
+<li>Authorization Response: Der Client erhält eine Autorisierungsgenehmigung vom Resource Owner. Die Autorisierung kann über eine
+der vier Autorisierungsgenehmigungen (authorization grant type) erfolgen, oder es wird ein erweiterer Genehmigungsprozess verwendet.</li>
+<li>Access Token Request: Der Client fordert ein Access Token vom Authorization Server an. Hierfür nutzt er die Autorisierungsgenehmigung vom Resource Owner.</li>
+<li>Access Token Response: Der Authorization Server authentifiziert den Client und prüft die Autorisierungsgenehmigung.
+Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.</li>
+<li>Anfrage mittels Access Token: Der Client fragt die geschützten Daten beim Resource Server an. Zur Authentifizierung benutzt er den Access Token.</li>
+<li>Zugriff auf geschützte Ressourcen: Der Resource Server prüft den Access Token und stellt, wenn gültig, die gewünschten Daten zur Verfügung.</li>
+</ol></div>
         
     </div>
 

@@ -82,6 +82,12 @@
         
             
 <li >
+    <a href="owncloud/technische-umsetzung/oauth2/">OAuth 2.0</a>
+</li>
+
+        
+            
+<li >
     <a href="owncloud/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>
 </li>
 
@@ -176,7 +182,7 @@
                         </a>
                     </li>
                     <li >
-                        <a rel="prev" href="owncloud/technische-umsetzung/softwarearchitektur/">
+                        <a rel="prev" href="owncloud/technische-umsetzung/oauth2/">
                             Weiter <i class="fa fa-arrow-right"></i>
                         </a>
                     </li>
@@ -216,8 +222,6 @@
         
             <li class="second-level"><a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a></li>
             
-                <li class="third-level"><a href="#oauth-20">OAuth 2.0</a></li>
-            
         
             <li class="second-level"><a href="#komponenten">Komponenten</a></li>
             
@@ -252,12 +256,12 @@ Bedeutet, dass einmalig ein Passwort eingegeben werden muss, welches aber nicht 
 Der Zugriff sollte also über ein tokenbasiertes Authentifizierungsverfahren wie zum Beispiel OAuth 2.0 ablaufen.
 Dadurch sollte es unter Anderem ermöglicht werden, dass Dateien aus Sciebo im Learnweb abgerufen werden können und kollaborative Ordner in sciebo vom Learnweb aus erstellt werden können.</p>
 <h2 id="struktur-der-dokumentation">Struktur der Dokumentation</h2>
-<p>Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zu erst die Aufteilung in <strong>Home</strong>, <strong>ownCloud</strong> und <strong>Moodle</strong>. Sie befinden sich gerade im Abschnitt <strong>Home</strong>,
+<p>Die hier vorliegende Dokumentation ist in mehrere Teile strukturiert. Zuerst die Aufteilung in <strong>Home</strong>, <strong>ownCloud</strong> und <strong>Moodle</strong>. Sie befinden sich gerade im Abschnitt <strong>Home</strong>,
 welcher grundlegende Informationen zum Projektseminar enthält und einen groben Überblick verschafft, was in der Dokumentation enthalten ist. Die Abschnitte <strong>ownCloud</strong> und <strong>Moodle</strong> dokumentieren
 jeweils die spezifische <strong>Benutzung</strong> (Teil der Dokumention, welcher eher an die Nutzer gerichtet ist), und die jeweilige <strong>Technische Umsetzung</strong>, welche die Dokumentation für Entwickler bereitstellt. Der Punkt <strong>Technische Umsetzung</strong> im Abschnitt
-<strong>ownCloud</strong> enthält die Themen <a href="owncloud/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>, <a href="owncloud/technische-umsetzung/oauth2-app/">OAuth 2.0 App</a>
-und <a href="owncloud/technische-umsetzung/core-anpassungen/">Core Anpassungen</a>. Der gleiche Unterpunkt im Abschnitt <strong>Moodle</strong> behandelt die Themen <a href="moodle/technische-umsetzung/softwarearchitektur/">Softwarearchitektur</a>,
-<a href="moodle/technische-umsetzung/admin-tool/">Admin Tool</a>, <a href="moodle/technische-umsetzung/repository/">Repository</a> und <a href="/moodle/technische-umsetzung/acitivity.md">Collaborative Folders</a>.</p>
+<strong>ownCloud</strong> enthält die Themen <a href="./owncloud/technische-umsetzung/oauth2">OAuth 2.0</a>, <a href="./owncloud/technische-umsetzung/softwarearchitektur">Softwarearchitektur</a>, <a href="./owncloud/technische-umsetzung/oauth2-app">OAuth 2.0 App</a>
+und <a href="./owncloud/technische-umsetzung/core-anpassungen">Core Anpassungen</a>. Der gleiche Unterpunkt im Abschnitt <strong>Moodle</strong> behandelt die Themen <a href="./moodle/technische-umsetzung/softwarearchitektur">Softwarearchitektur</a>,
+<a href="./moodle/technische-umsetzung/admin-tool">Admin Tool</a>, <a href="./moodle/technische-umsetzung/repository">Repository</a> und <a href="./moodle/technische-umsetzung/acitivity">Collaborative Folders</a>.</p>
 <h2 id="integrationsszenarien">Integrationsszenarien</h2>
 <p>Als Integrationsszenarien der Systeme wurden verschiedene User Stories entwickelt.
 Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementationsaufwand priorisiert.
@@ -287,29 +291,15 @@ Aktivität <a href="/moodle/technische-umsetzung/acitivity.md">collaborativefold
 <p>Weitere User Storys die jedoch nicht im Rahmen diese Projektseminars implementiert werden konnten finden sie unter dem Abschnitt
 <a href="#weitere-anwendungsszenarien">Weitere Anwendungsszenarien</a>.</p>
 <h2 id="authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</h2>
-<p>Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den gängigen Verfahren, die untersucht wurden, befinden sich:</p>
+<p>Grundlegend für die Integration beider Systeme ist die Authentifizierung und Autorisierung. Unter den Verfahren, die untersucht wurden, befinden sich:</p>
 <ul>
 <li><a href="https://oauth.net/2/">OAuth 2.0</a></li>
 <li><a href="https://jwt.io/">JSON Web Tokens</a></li>
+<li><a href="https://research.google.com/pubs/pub41892.html">Macaroons</a></li>
 <li>Federated Single Sign-on mit beispielsweise <a href="https://shibboleth.net/">Shibboleth</a></li>
 </ul>
 <p>Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein standardisiertes Verfahren zur tokenbasierten Authentifizierung und
 Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.</p>
-<h3 id="oauth-20">OAuth 2.0</h3>
-<p>Der allgemeine <a href="https://tools.ietf.org/html/rfc6749#section-1.2">OAuth 2.0 Protokollablauf</a> ist in der nachfolgenden Abbildung dargestellt.</p>
-<p><img alt="Authorization Code Flow" src="./images/oauth-allgemein.svg" /></p>
-<p>Zunächst muss sich der Client (Learnweb), der im Namen des Resource Owners (ownCloud Nutzer) auf eine geschützte Ressource auf dem Resource Server (sciebo) zugreifen möchte,
-bei dem Authorization Server (ownCloud) registrieren. Danach werden nach dem Protokoll folgende Schritte durchlaufen:</p>
-<ol>
-<li>Authorization Request: Der Client fordert eine Autorisierung vom Resource Owner an.</li>
-<li>Authorization Response: Der Client erhält eine Autorisierungsgenehmigung vom Resource Owner. Die Autorisierung kann über eine
-der vier Autorisierungsgenehmigungen (authorization grant type) erfolgen, oder es wird ein erweiterer Genehmigungsprozess verwendet.</li>
-<li>Access Token Request: Der Client fordert ein Access Token vom Authorization Server an. Hierfür nutzt er die Autorisierungsgenehmigung vom Resource Owner.</li>
-<li>Access Token Response: Der Authorization Server authentifiziert den Client und prüft die Autorisierungsgenehmigung.
-Ist die Prüfung erfolgreich, wird ein Access Token ausgestellt.</li>
-<li>Anfrage mittels Access Token: Der Client fragt die geschützten Daten beim Resource Server an. Zur Authentifizierung benutzt er den Access Token.</li>
-<li>Zugriff auf geschützte Ressourcen: Der Resource Server prüft den Access Token und stellt, wenn gültig, die gewünschten Daten zur Verfügung.</li>
-</ol>
 <h2 id="komponenten">Komponenten</h2>
 <p><div class="alert alert-danger">
   <strong>TODO:</strong> Würde ich nicht in den Index packen, sondern einzelne Komponenten nur in dem Moodle und ownCloud Unterpunkt beschreiben.
@@ -425,5 +415,5 @@ Einschränkungen festhalten; den Rest ganz zum Schluss des PS beschreiben</p></d
 
 <!--
 MkDocs version : 0.16.2
-Build Date UTC : 2017-03-19 10:43:13
+Build Date UTC : 2017-03-19 10:52:37
 -->
