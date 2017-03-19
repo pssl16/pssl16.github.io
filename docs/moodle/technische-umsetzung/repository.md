@@ -2,17 +2,17 @@
 
 ## Zweck
 
-Der Plugin Typ *Repository* wird in Moodle unter anderem verwendet um Nutzer die Möglichkeit zu schaffen Zugang zu
-Dateien aus externen Quellen zu bekommen. Das Repository Plugin Sciebo kann somit die User Stories [Zwei](/index.md, "2. Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.") und [Drei](/index.md, "Als Nutzer möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken.") realisieren. Sobald der Admin das Plugin unter `Site administration  ► Plugins ► Repositories ► Manage repositories` aktiviert hat, sieht der Nutzer im File Picker folgende Optionen:
+Der Plugin Typ *Repository* wird in Moodle unter anderem verwendet um Nutzer die Möglichkeit zu schaffen Zugang zu Dateien aus externen Quellen zu bekommen. Das Repository Plugin ownCloud kann somit folgende Integrationsszenarien realisieren:
+2:
 
-*(Mehr Informationen zum File Picker finden sie in der [Moodle Dokumentation](https://docs.moodle.org/32/en/File_picker))*
+<ol start="2">
+  <li> Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz hochladen.</li></ol>
 
-<div class="alert alert-danger">
-  <strong>TODO:</strong> BILD nach richtiger Benennung.
-</div>
+<ol start="3">
+  <li> Als <b>Nutzer</b> möchte ich in der Dateiauswahl im Learnweb eine Datei aus meiner sciebo Instanz verlinken. </li></ol>
 
-Wenn der Nutzer auf den anmelde Button klickt, wird er zu einem Pop-up Window weitergeleitet, dass ihn auffordert sich in der zugehörigen ownCloud Instanz zu authentifizieren. Sobald der Nutzer sich hier einmalig authentifiziert hat, werden ihm im File Picker seine Dateien angezeigt. Das Plugin bietet dem Benutzer zusätzliche Vorteile
-dadurch, dass die Authentifizierung nur einmalig erfolgt. Durch den OAuth2 Protokollablauf werden danach Refresh Tokens angefordert ohne dass der Nutzer dies im Front-End zu sehen bekommt. Somit kann der Nutzer angemeldet bleiben während verschiedenen Sessions.
+Unser Plugin soll dem Administrator der Seite ermöglichen das Repository zu aktivieren und zu deaktivieren.
+Alle Nutzer der Moodle Instanz sollen mit Hilfe des Plugins sind in ownCloud authentifizieren können. Danach sollen sie in Moodle im [File Picker](https://docs.moodle.org/32/en/File_picker) bequem zwischen Ihren Dateien wählen können und sich mit verschiedenen Accounts authentifizieren können. Besonders im Vordergrund steht das unser Plugin möglichst einfach zu bedienen ist, um die Benutzerfreundlichkeit zu erhöhen.
 
 ## Vorgegebene Schnittstelle
 
@@ -25,7 +25,7 @@ abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können. Als St
 
 Für Repository-Plugins müssen außerdem folgende Dateien implementiert werden:
 
-* **`pix/icon.png`:** Hier wird ein 16x16 icon platziert, welches für das Plugin genutzt wird.
+* **`pix/icon.png`:** Hier wird ein 16x16 icon platziert, welches für das Plugin genutzt wird. Dies kann auch beliebig angepasst werden.
 * **`lib.php`:** Hier wird eine Klasse `repository_sciebo extends repository` deklariert, die als Hauptaufgabe die Integration in den File Picker verwaltet.
 
 ## Implementierung

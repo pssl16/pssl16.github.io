@@ -1,8 +1,6 @@
 # Softwarearchitektur
 
-Zur Umsetzung des Projektziels, musste Moodle um nötige Funktionalitäten ergänzt werden, die weder durch den [Moodle Core](https://github.com/moodle/moodle)
-bereitgestellt werden, noch mit Hilfe von externen Plugins hinzugefügt werden konnten. Im Folgenden wird beschrieben,
-wie Moodle im Rahmen des Projektes erweitert wurde und welche Auswirkungen sich daraus ergaben.
+Zur Umsetzung des Projektziels, musste Moodle um nötige Funktionalitäten ergänzt werden. Im Folgenden kriegen sie eine strukturierte Übersicht zu den Plugins die in Moodle entwickelt wurden und welche Funktionalitäten sie bereit stellen.
 
 ## Übersicht über die Plugin-Struktur
 
