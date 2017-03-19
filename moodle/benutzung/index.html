@@ -206,7 +206,7 @@
             <li class="second-level"><a href="#download">Download</a></li>
             
         
-            <li class="second-level"><a href="#admin-tool-oauth2sciebo">Admin Tool oauth2sciebo</a></li>
+            <li class="second-level"><a href="#admin-tool-oauth2owncloud">Admin Tool oauth2owncloud</a></li>
             
                 <li class="third-level"><a href="#admin-einstellungen">Admin Einstellungen</a></li>
             
@@ -243,18 +243,16 @@ Von dort aus können sie Plugins auf zwei Wegen herunterladen.</p>
 <li>
 <p>Mit dem Befehl git clone</p>
 <blockquote>
-<p>Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:</p>
+<p>Gehen sie in ihrer Moodle Instanz in den zugehörigen Ordner. Falls sie unsicher sind, lesen sie in den Beschreibungen der einzelnen Plugins nach, welcher der richtige Ordner ist. Führen sie folgenden Befehl aus:
+<code>git clone git@github.com:pssl16/name_of_the_repository.github.git</code>
+Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.</p>
 </blockquote>
 </li>
 </ol>
-<pre><code>git clone git@github.com:pssl16/name_of_the_repository.github.git
-</code></pre>
-
-<p>Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nun noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.</p>
 <p>Der Vorteil des zweiten Weges ist, dass Sie mittels <code>git pull</code> Änderung schnell nach pflegen können. Wenn Sie sich mit git nicht auskennen sollten sie jedoch den ersten Weg wählen.</p>
 <p>Wenn sie die Plugins heruntergeladen und richtig platziert haben, werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
 Um unsere Plugins zu benutzen benötigen sie in jedem Fall das <code>oauth2owncloud_admin_tool</code>, alle anderen Plugins lassen sich nicht ohne dieses installieren. Beachten sie dies bei der Reihenfolge der Installation wenn sie die Plugins als ZIP-Ordner installieren.</p>
-<h2 id="admin-tool-oauth2sciebo">Admin Tool oauth2sciebo</h2>
+<h2 id="admin-tool-oauth2owncloud">Admin Tool oauth2owncloud</h2>
 <h3 id="admin-einstellungen">Admin Einstellungen</h3>
 <p>Damit das OAuth 2 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.</p>
 <p>Hierfür muss der Administrator das Formular des Plugins, das unter <code>Website-Administration ► Plugins ► Authentifizierung ► Sciebo OAuth 2.0 Configuration</code> zu finden ist, ausfüllen.</p>
