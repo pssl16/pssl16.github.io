@@ -77,8 +77,8 @@ Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis viele
 
 ### ownCloud
 
-Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte `oauth2` App und der ownCloud Core mit den (sich mittlerweile fest im *core* befindlichen) Änderungen aus unserem Pull Request,
-damit die `oauth2` App die volle Funktionalität bereitstellen kann. Die `oauth2` App implementiert den OAuth 2.0 Prozessfluss.
+Die Komponenten, die wir benötigen um eine Lösung anzubieten, sind die von uns implementierte OAuth2 App und der ownCloud Core mit den (sich mittlerweile fest im *core* befindlichen) Änderungen aus unserem Pull Request,
+damit die OAuth2 App die volle Funktionalität bereitstellen kann. Die OAuth2 App implementiert den OAuth 2.0 Prozessfluss.
 Sie agiert als Endpunkt für die Authorisierung und die Bereitstellung von Access Tokens und Refresh Tokens.
 Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Server und auch Resource Server mit dem Client.
 
@@ -91,7 +91,7 @@ Die App ist also das Mittel zur Verbindung von Resource Owner, Authorization Ser
 
 ## Weitere Integrationsszenarien
 
-Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten Integrationsszenarien konzentriert. 
+Im Rahmen unseres Projektseminars haben wir uns auf die für uns wichtigsten Integrationsszenarien konzentriert.
 Im Folgenden werden weitere Szenarien erläutert, über deren Implementierung wir nachgedacht haben und die eine Erweiterung
 zu den bestehenden Szenarien bilden könnten.
 

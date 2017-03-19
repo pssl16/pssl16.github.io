@@ -44,6 +44,7 @@ Implementiert haben wir dies in der `collaborativefolders/settings.php`. Diese e
       set_config('token', null, 'mod_collaborativefolders');
       $url = $owncloud->get_login_url();
 ```
+
     Die Speicherung des token erfolgt durch den callback des oauth2 Protokolls.
 
 3. Der technische Nutzer soll ausgeloggt werden.
@@ -136,16 +137,19 @@ Die `view.php` wird zu verschiedenen Zwecken aufgerufen die behandelt werden mü
 ``` php
 $mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');
 ```
+
     Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.
 
 3. Der Nutzer logt sich aus seinem aktuell gespeichertem Account aus:
     Der Nutzer muss mit Hilfe des `oauth2owncloud` admin_tools aus-geloggt werden, und der accesstoken wird auf null gesetzt.
+
 ``` php
     $ocs->owncloud->log_out();
     set_user_preference('oC_token', null);
 ```
 
 4. Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.
+
     Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde:
 ``` php
     $content = json_decode($element->customdata);
@@ -154,6 +158,7 @@ $mform->addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumer
         $created = false;
     }
 ```
+
     Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.
 
 #### Sicht der Lehrenden
