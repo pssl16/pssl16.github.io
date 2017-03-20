@@ -27,7 +27,7 @@ Für Repository-Plugins müssen außerdem folgende Dateien implementiert werden:
 
 ## Implementierung
 
-Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom [oauth2owncloud_admin_tool](/moodle/technische-umsetzung/admin-tool.md) geregelt. Somit hat das *Repository* niemals Zugriff auf den Login-Status oder den *Access Token*. Falls Konfihurationen des *Admin Tool* fehlen ist das *Repository* nicht mehr verfügbar. 
+Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom [oauth2owncloud_admin_tool](/moodle/technische-umsetzung/admin-tool.md) geregelt. Somit hat das *Repository* niemals Zugriff auf den Login-Status oder den *Access Token*. Falls Konfigurationen des *Admin Tool* fehlen, ist das *Repository* nicht mehr verfügbar. 
 
 ### Implementierung der `lib.php`
 
