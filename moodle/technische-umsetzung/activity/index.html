@@ -218,6 +218,9 @@
     
         <li class="first-level "><a href="#implementierung">Implementierung</a></li>
         
+            <li class="second-level"><a href="#zugriff-auf-owncloud">Zugriff auf ownCloud</a></li>
+            
+        
             <li class="second-level"><a href="#anmelden-des-technischen-nutzers">Anmelden des technischen Nutzers</a></li>
             
         
@@ -225,6 +228,10 @@
             
         
             <li class="second-level"><a href="#erstellen-von-ordnern">Erstellen von Ordnern</a></li>
+            
+                <li class="third-level"><a href="#observer">Observer</a></li>
+            
+                <li class="third-level"><a href="#ad-hoc-task">Ad Hoc Task</a></li>
             
         
             <li class="second-level"><a href="#ansicht-der-bestehenden-instanzen">Ansicht der bestehenden Instanzen</a></li>
@@ -294,6 +301,15 @@ Sowohl die Autorisierung und Authentifizierung, als auch der Zugriff auf ownClou
 <p>Sonstige Standarddateien werden auch in der Dokumentation zum <a href="../admin-tool/#vorgegebene-schnittstelle">Admin Tool</a> beschrieben.</p>
 <h2 id="implementierung">Implementierung</h2>
 <p>Da die Implementierung der vorgegebenen Schnittstelle von Zugriffen auf ownCloud und zusätzlichen Hilfsklassen abhängt, umfasst sie vorgegebenen und nicht-vorgegebenen Schnittstellen und Inhalte gemeinsam. </p>
+<h3 id="zugriff-auf-owncloud">Zugriff auf ownCloud</h3>
+<p>Zur Umsetzung des Integrationsszenarios ist Zugriff zu ownCloud notwendig. Der zuvor implementierte OAuth 2.0 ownCloud Client bietet bereits die Möglichkeit zur Weiterleitung von WebDAV und OCS Share API Anfragen. Einige von diesen Anfragen wurden, gebündelt in der speziell dafür vorgesehenen Klasse <code>owncloud_access</code>, zusammengefasst um die Verwendung dieser zu vereinfachen und von der technischen Ebene zu abstrahieren. Die folgenden Funkionen wurden dabei implementiert und werden von dieser Aktivität verwendet:</p>
+<ul>
+<li><strong><code>handle_folder</code>:</strong> Diese Methode kann benutzt werden um einen Ordner, welcher dem technischen Nutzer der Aktivität gehört, in ownCloud zu erstellen oder zu löschen.</li>
+<li><strong><code>generate_share</code>:</strong> Mit Hilfe dieser Methode wird für einen Nutzer ein Ordner aus dem ownCloud Verzeichnis des technischen Nutzers freigegeben.</li>
+<li><strong><code>rename</code>:</strong> Diese Methode benennt einen Ordner im ownCloud Verzeichnis des aktuellen Nutzers um.</li>
+<li><strong><code>share_and_rename</code>:</strong> Hier werden die Methoden <code>generate_share</code> und <code>rename</code> vereint.</li>
+</ul>
+<p>Die Methoden liefern bei Erfolg jeweils das gewünschte Ergebnis und im Fall eines Fehlschlags eine angemessene Fehlermeldung.</p>
 <h3 id="anmelden-des-technischen-nutzers">Anmelden des technischen Nutzers</h3>
 <p>Der Administrator der Moodle Seite kann in der Seiten-Administration einen technischen Nutzer hinzufügen. Über <code>Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders</code> kommt er zu den entsprechenden Einstellungen. An dieser Stelle kann er mittels eines Login-Links einen technischen Nutzer authentifizieren und autorisieren. Damit wird der technische Nutzer mit allen Instanzen der <code>collaborativefolders</code> Aktivität <a href="../activity/#speicherort-und-zugriff">verknüpft</a>. Zwar sind spätere Änderungen des technischen Nutzers durch einen Logout möglich, jedoch ist dies nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Probleme mit bestehenden Instanzen entstehen würden. Für den Fall, dass im Moment des Logins zum Bespiel ein falscher Nutzer in ownCloud authentifiziert ist, wird der Logout des technischen Nutzer dennoch bereitgestellt. Das folgende Szenario begründet die Entscheidung:</p>
 <blockquote>
@@ -337,26 +353,50 @@ Sowohl die Autorisierung und Authentifizierung, als auch der Zugriff auf ownClou
 </li>
 </ol>
 <h3 id="hinzufugen-einer-instanz">Hinzufügen einer Instanz</h3>
-<p>Die Schnittstelle in Moodle für das Einstellungsformular ist sehr ausführlich. Den Standardeinstellungen haben wurde nur eine Checkbox hinzugefügt die bestimmt, ob der Lehrende Zugriff auf die Ordner hat.
-Außerdem benutzen wird den Moodle internen <em>group_mode</em>. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie für separate Gruppen Ordner erstellt werden  wird unter anderem im nächsten Abschnitt erklärt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der <code>mod_form.php</code> in Moodle benötigen besuchen sie <a href="https://docs.moodle.org/dev/Activity_modules#mod_form.php">diese Seite</a>.</p>
+<p>Die Schnittstelle in Moodle für das <a href="https://docs.moodle.org/dev/Activity_modules#mod_form.php">Erstellungsformular</a> einer Aktivität ist sehr ausführlich. Den Standardeinstellungen wurden nur ein Textfeld zur Eingabe des gewünschten, angezeigten Namens der Aktivität und eine Checkbox hinzugefügt, die festlegt, ob der Lehrende Zugriff auf die Ordner haben soll. 
+Unter den bereits vorgegebenen Einstellungen für die Erstellung einer Instanz der Aktivität, wird vor allem von dem Moodle-internen <a href="https://docs.moodle.org/32/en/Groups#Group_modes">Gruppenmodus</a> in der <code>collaborativefolders</code> Aktivität Gebrauch gemacht. Anhand des eingestellten Gruppenmodus wird in dem Plugin bestimmt, welche Ordner erstellt werden müssen und wer zum Zugriff zu der Aktivität und damit den kollaborativen Ordnern haben soll.</p>
+<p>Die vorgenommenen Einstellungen werden nach dem Hinzufügen der Instanz durch die Methode <code>add_instance</code> der <code>lib.php</code> in einer für die Aktivität vorgesehenen Datenbanktabelle hinterlegt.</p>
 <h3 id="erstellen-von-ordnern">Erstellen von Ordnern</h3>
-<p>Zum Erstellen von Ordnern wurde ein Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
-In <code>collaborativefolders/db/events.php</code> können in einem Array alle Observer registriert werden und werden dann von Moodle verwaltet.</p>
+<p>Für jede Instanz von <code>collaborativefolder</code> muss zunächst ein Hauptordner erstellt werden. Dieser fasst alle anschließend erstellten Gruppenordner, falls eine der Gruppenmodus aktiviert worden ist. Sollte das nicht der Fall sein, ist dieser Hauptordner der einzige kollaborative Ordner, der erstellt wird und mit allen Kursteilnehmern geteilt werden muss. Unabhängig davon, ob der Gruppenmodus aktiv ist, wird dieser Ordner, falls vom Lehrenden gewünscht, für ihn freigegeben um die Arbeit in den/dem kollaborativen Ordner/-n zu beaufsichtigen.</p>
+<p>Zusätzlich wird für jede teilnehmende Gruppe ebenfalls ein Ordner erstellt. </p>
+<h4 id="observer">Observer</h4>
+<p>Nachdem die Instanz von einem Lehrenden hinzugefügt worden ist, müssen anhand des angegebenen Gruppenmodus die entsprechenden Ordner in ownCloud über den technischen Nutzer erstellt werden. Zwar sind die Informationen zum Gruppenmodus bereits innerhalb der Methode <code>add_instance</code> verfügbar, allerdings hat man an dieser Stelle noch keinen Zugriff auf die <a href="https://docs.moodle.org/dev/Course_module#Usage">Course Module ID</a>, weil die entsprechende Datenbanktabelle noch nicht aktualisiert worden ist. Die Course Module ID (<code>cmid</code>) wird verwendet um den übergeordneten Ordner zu benennen, welcher die kollaborativen Gruppenordner beinhaltet. Die <code>cmid</code> ist deswegen notwendig, weil sie innerhalb eines Moodle-Lebenszyklus nie doppelt belegt wird und sich daher Ordnernamen in ownCloud nicht wiederholen können. </p>
+<p>Um die Ordner nachgezogen erstellen zu können wurde ein <a href="https://docs.moodle.org/dev/Event_2#Event_observers">Observer</a> implementiert, der aufgerufen wird wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
+In <code>db/events.php</code> kann der Observer registriert werden.</p>
 <pre><code class="php">$observers = array(
         array(
-                // Zuerst wird das Event, dass beobachtet werden soll festgelegt.
                 'eventname'   =&gt; '\core\event\course_module_created',
-                // Als nächstes wird der Observer festgelegt.
                 'callback'    =&gt; 'mod_collaborativefolders\observer::collaborativefolders_created',
                 'internal'  =&gt; false,
                 'priority'  =&gt; 1000
         )
-
 );
 </code></pre>
 
-<p>Somit wird, sobald das Event <code>course_module_created</code> erzeugt wird, der Observer aufgerufen. Es gibt zwei Hauptgründe warum dies erforderlich ist. Zunächst benötigt man für das Erstellen der Ordner die <code>course_module_id</code>. Diese ist nur verfügbar wenn die Instanz schon erstellt wurde, somit kann nicht die Schnittstelle der <code>collaborativefolders/lib.php</code> <code>add_instance()</code> genutzt werden. Desweiteren ruft unser Observer einen CronJob auf. Dieser sorgt dafür, dass Ordner zeitlich verzögert erstellt werden, wodurch der Server nicht kurzzeitig überlastet wird. Falls Ordner für große Kurse mit über 50 Gruppen erstellt werden sollen könnte es hier sonst zu Schwierigkeiten kommen.
-Beim Erstellen müssen zwei unterschiedliche Szenarien betrachtet werden:</p>
+<p>Es wird angegeben, dass auf das Event gehört werden soll, welches das Hinzufügen einer Aktivität signalisiert. Daraufhin werden, sobald alle nötigen Datenbankzugriffe erfolgt sind, die Eventdaten an den implementierten Observer weitergeleitet.</p>
+<p>Die Aufgabe des Observers besteht zunächst darin die Namen für alle zu erstellenden Gruppen zu ermitteln. Diese werden in einem Array zusammengetragen, wie das folgende Codebeispiel zeigt.</p>
+<pre><code class="php">$paths = array();
+$paths['cmid'] = $cmid;
+
+list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'collaborativefolders');
+
+if (groups_get_activity_groupmode($cm) != 0) {
+
+    $groupingid = $cm-&gt;groupingid;
+
+    $groups = groups_get_all_groups($course-&gt;id, 0, $grid);
+
+    foreach ($groups as $group) {
+
+            $path = $cmid . '/' . $group-&gt;id;
+            $paths[$group-&gt;id] = $path;
+    }
+}
+</code></pre>
+
+<p>Falls ein Gruppenmodus für die betreffende Instanz der Aktivität aktiv ist, werden die teilnehmenden Gruppen ermittelt. Hierzu muss geprüft werden, ob ein <a href="https://docs.moodle.org/32/en/Groupings">Grouping</a> in der Aktivität gewählt worden ist. Sollte dies der Fall sein, werden alle Gruppen aus dem Grouping einbezogen, ansonsten alle Gruppen des Kurses.</p>
+<p>Sobald alle teilnehmenden Gruppen ermittelt worden sind, wird ein Ad Hoc Taks mit der Erstellung der entsprechenden Ordner im ownCloud Verzeichnis des technischen Nutzers beauftragt.</p>
+<h4 id="ad-hoc-task">Ad Hoc Task</h4>
 <p>Im ersten Szenario wird ein Ordner für alle Studierenden eines Kurses erstellt.
 Die Anforderung an das Modul ist es also einen Ordner in dem gespeicherten Account zu erstellen, der eindeutig identifizierbar ist. Dies ist gesichert indem die Ordner nach der <code>course_module_id</code> benannt werden. Diese ist einzigartig für jede Aktivität, die in Moodle erzeugt wird. So kann es, soweit manuell
 keine Ordner erstellt werden, zu keinen Synchronisationskonflikten kommen.</p>
