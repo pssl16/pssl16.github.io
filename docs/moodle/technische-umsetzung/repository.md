@@ -1,4 +1,5 @@
-<div><h1> Repository: `owncloud`</h1> <img alt="" src="../../images/icon_repository.svg" width=20% float=right>
+<div><img alt="" align=right src="../../images/icon_repository.svg" width=20% position=right>
+<h1> Repository: <span class=code>owncloud</span></h1>
 </div>
 
 
