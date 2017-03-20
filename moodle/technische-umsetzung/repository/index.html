@@ -255,7 +255,7 @@ abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können. Als St
 <li><strong><code>lib.php</code>:</strong> Hier wird eine Klasse <code>repository_sciebo extends repository</code> deklariert, die als Hauptaufgabe die Integration in den File Picker verwaltet.</li>
 </ul>
 <h2 id="implementierung">Implementierung</h2>
-<p>Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom <a href="../admin-tool/">oauth2owncloud_admin_tool</a> geregelt. Somit hat das <em>Repository</em> niemals Zugriff auf den Login-Status oder den <em>Access Token</em>. Falls Konfihurationen des <em>Admin Tool</em> fehlen ist das <em>Repository</em> nicht mehr verfügbar. </p>
+<p>Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom <a href="../admin-tool/">oauth2owncloud_admin_tool</a> geregelt. Somit hat das <em>Repository</em> niemals Zugriff auf den Login-Status oder den <em>Access Token</em>. Falls Konfigurationen des <em>Admin Tool</em> fehlen, ist das <em>Repository</em> nicht mehr verfügbar. </p>
 <h3 id="implementierung-der-libphp">Implementierung der <code>lib.php</code></h3>
 <p>In der lib.php wird eine Klasse definiert die von der abstrakten Klasse <code>repository</code> erbt. Im Folgenden wird darauf eingegangen wie die vorgegebenen Funktionen implementiert wurden.</p>
 <h4 id="__construct"><code>__construct()</code></h4>
