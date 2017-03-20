@@ -163,7 +163,7 @@ if (groups_get_activity_groupmode($cm) != 0) {
 
 Falls ein Gruppenmodus für die betreffende Instanz der Aktivität aktiv ist, werden die teilnehmenden Gruppen ermittelt. Hierzu muss geprüft werden, ob ein [Grouping](https://docs.moodle.org/32/en/Groupings) in der Aktivität gewählt worden ist. Sollte dies der Fall sein, werden alle Gruppen aus dem Grouping einbezogen, ansonsten alle Gruppen des Kurses.
 
-Sobald alle teilnehmenden Gruppen ermittelt worden sind, wird ein [Ad Hoc Taks](https://docs.moodle.org/dev/Task_API#Adhoc_tasks) mit der Erstellung der entsprechenden Ordner im ownCloud Verzeichnis des technischen Nutzers beauftragt.
+Sobald alle teilnehmenden Gruppen ermittelt worden sind, wird ein [Ad Hoc Task](https://docs.moodle.org/dev/Task_API#Adhoc_tasks) mit der Erstellung der entsprechenden Ordner im ownCloud Verzeichnis des technischen Nutzers beauftragt.
 
 #### Ad Hoc Task
 
