@@ -233,6 +233,7 @@
         <div class="col-md-9" role="main">
 
 <h1 id="repository-owncloud">Repository: <code>owncloud</code></h1>
+<p><img alt="Name Form" src="../images/icon_repository.svg" width=40% float=right></p>
 <h2 id="zweck">Zweck</h2>
 <p>Der Plugin Typ <em>Repository</em> wird in Moodle unter anderem verwendet um Nutzer die Möglichkeit zu schaffen Zugang zu Dateien aus externen Quellen zu bekommen. Das Repository Plugin ownCloud kann somit folgende Integrationsszenarien realisieren:</p>
 <blockquote>
@@ -255,7 +256,7 @@ abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können. Als St
 <li><strong><code>lib.php</code>:</strong> Hier wird eine Klasse <code>repository_sciebo extends repository</code> deklariert, die als Hauptaufgabe die Integration in den File Picker verwaltet.</li>
 </ul>
 <h2 id="implementierung">Implementierung</h2>
-<p>Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom <a href="../admin-tool/">oauth2owncloud_admin_tool</a> geregelt. Somit hat das <em>Repository</em> niemals Zugriff auf den Login-Status oder den <em>Access Token</em>. Falls Konfigurationen des <em>Admin Tool</em> fehlen, ist das <em>Repository</em> nicht mehr verfügbar. </p>
+<p>Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom <a href="../admin-tool/">oauth2owncloud_admin_tool</a> geregelt. Somit hat das <em>Repository</em> niemals Zugriff auf den Login-Status oder den <em>Access Token</em>. Falls Konfigurationen des <em>Admin Tool</em> fehlen, ist das <em>Repository</em> nicht mehr verfügbar.</p>
 <h3 id="implementierung-der-libphp">Implementierung der <code>lib.php</code></h3>
 <p>In der lib.php wird eine Klasse definiert die von der abstrakten Klasse <code>repository</code> erbt. Im Folgenden wird darauf eingegangen wie die vorgegebenen Funktionen implementiert wurden.</p>
 <h4 id="__construct"><code>__construct()</code></h4>
@@ -273,7 +274,7 @@ $this-&gt;sciebo = new sciebo($returnurl);
 <h4 id="get_file"><code>get_file()</code></h4>
 <p>Diese Funktion stellt eine Schnittstelle zum oauht2 Objekt des Admin tools bereit. Die Funktion überprüft ob schon eine offene Verbindung besteht mit Hilfe der Methode <code>sciebo-&gt;dav-&gt;open()</code>. Falls keine Verbindung besteht wird die Funktion <code>$this-&gt;sciebo-&gt;get_file();</code> aufgerufen. Die Funktion ähnelt sehr der Funktion des <code>WebDAV Repository</code>, statt Basic Authentication wird jedoch das OAuth2 Protokoll benutzt. Danach wird der Nutzer  mit Hilfe der <code>logout()</code> Funktion ausgeloggt. Dies erfolgt auch über das Admin tool.</p>
 <h4 id="get_listing"><code>get_listing()</code></h4>
-<p>Diese Funktion wird aufgerufen um im File Picker die verfügbaren Dateien anzuzeigen. Als Rückgabe wird ein Array aller verfügbaren Dateien mit spezifischen Informationen über diese Dateien erwartet. Bis auf die Authentifizierung funktioniert diese Methode genauso wie die Methode des WebDAV Repository. Am Anfang werden noch grundlegende Einstellungen für die Ansicht definiert:</p>
+<p>Diese Funktion wird aufgerufen um im File Picker die verfügbaren Dateien anzuzeigen. Als Rückgabe wird ein Array aller verfügbaren Dateien mit spezifischen Informationen über diese Dateien erwartet. Bis auf die Authentifizierung funktioniert diese Methode genauso wie die Methode des <em>WebDAV Repository</em>. Am Anfang werden noch grundlegende Einstellungen für die Ansicht definiert:</p>
 <pre><code class="php">$ret['dynload'] = true;
 </code></pre>
 
