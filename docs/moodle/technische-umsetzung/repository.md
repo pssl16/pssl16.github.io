@@ -1,4 +1,5 @@
 # Repository: `owncloud`
+<img alt="Name Form" src="../images/icon_repository.svg" width=40% float=right>
 
 ## Zweck
 
@@ -27,7 +28,7 @@ Für Repository-Plugins müssen außerdem folgende Dateien implementiert werden:
 
 ## Implementierung
 
-Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom [oauth2owncloud_admin_tool](/moodle/technische-umsetzung/admin-tool.md) geregelt. Somit hat das *Repository* niemals Zugriff auf den Login-Status oder den *Access Token*. Falls Konfigurationen des *Admin Tool* fehlen, ist das *Repository* nicht mehr verfügbar. 
+Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom [oauth2owncloud_admin_tool](/moodle/technische-umsetzung/admin-tool.md) geregelt. Somit hat das *Repository* niemals Zugriff auf den Login-Status oder den *Access Token*. Falls Konfigurationen des *Admin Tool* fehlen, ist das *Repository* nicht mehr verfügbar.
 
 ### Implementierung der `lib.php`
 
@@ -56,7 +57,7 @@ Diese Funktion stellt eine Schnittstelle zum oauht2 Objekt des Admin tools berei
 
 #### `get_listing()`
 
-Diese Funktion wird aufgerufen um im File Picker die verfügbaren Dateien anzuzeigen. Als Rückgabe wird ein Array aller verfügbaren Dateien mit spezifischen Informationen über diese Dateien erwartet. Bis auf die Authentifizierung funktioniert diese Methode genauso wie die Methode des WebDAV Repository. Am Anfang werden noch grundlegende Einstellungen für die Ansicht definiert:
+Diese Funktion wird aufgerufen um im File Picker die verfügbaren Dateien anzuzeigen. Als Rückgabe wird ein Array aller verfügbaren Dateien mit spezifischen Informationen über diese Dateien erwartet. Bis auf die Authentifizierung funktioniert diese Methode genauso wie die Methode des *WebDAV Repository*. Am Anfang werden noch grundlegende Einstellungen für die Ansicht definiert:
 
 ``` php
 $ret['dynload'] = true;
