@@ -1,25 +1,35 @@
 <div><img alt="" align=right src="../../images/icon_mod_collaborativefolders.svg" width=20% position=right>
-<h1> Aktivität: <span class=code>collaborative folders</span></h1>
+<h1> Aktivität: <span class=code>collaborativefolders</span></h1>
 </div>
 
 
 ## Zweck
 
-Das Aktivitäts Modul *Collaborative Folders* soll Lehrenden die Möglichkeit geben, für Studierende oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten zu erstellen.
-Die Autorisierung und Authentifizierung erfolgt über das `oauth2sciebo admin_tool`. Diese Aktivität `collaborativefolders` implementiert das vierte Integrationsszenario:
+Das Aktivitäts Modul **Collaborative Folders** soll Lehrenden die Möglichkeit geben, für Studierende oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten zu erstellen.
+Sowohl die Autorisierung und Authentifizierung, als auch der Zugriff auf ownCloud Schnittstellen erfolgen über das `oauth2owncloud` [Admin Tool](admin-tool/). Somit implementiert dieses Plugin das folgende Integrationsszenario:
 
 > Als **Lehrender** möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.
 
-Im Folgenden wird erklärt wozu einzelne Beteiligte des Integrationsszenario in der Lage sein müssen.
-Zunächst ist es erforderlich einen neutralen Speicherort für die geteilten Ordner anzugeben. Falls der Lehrende keinen Zugriff auf die Ordner haben soll, dürfen sie nicht in seiner Instanz gespeichert sein. Um die Privatsphäre der Kursteilnehmer zu sichern darf ein Lehrender nicht unter ihrem Namen Ordner erstellen. Aus diesem Grund haben wir unsere Lösung so implementiert, dass der Moodle Administrator einen technischen Nutzer festlegen kann. In dessen Namen werden alle Ordner erstellt.
+Dabei soll der Lehrende beliebig viele Instanzen der Aktivität erstellen können bei denen er jeweils selbst entscheiden kann, ob er Ordner für einzelne Gruppen freigibt und ob er selbst auf die erstellten kollaborativen Ordner Zugriff haben möchte. Zusätzlich sollen die Teilnehmer der Aktivität jeweils selbst über den Namen des Ordners und dessen Freigabe für sie entscheiden können.
 
-Der Lehrende soll in der Lage sein einem Kurs beliebig viele Instanzen der Aktivität *Collaborative Folders* hinzuzufügen. In den Einstellungen kann der Lehrende nun festlegen wie der Ordner im Moodle Kurs benannt werden soll. Außerdem kann der Lehrende entscheiden ob er Zugriff auf die Ordner bekommt.
+Mit dieser Aktivität kann der Lehrende Kursteilnehmer ermutigen kollaborativ zu arbeiten. Zusätzlich hat er die Option die laufende Arbeit zu betreuen, indem er sich selbst Zugriff auf die Ordner gewährt. Somit haben kursteilnehmer insgesamt weniger Organisationsaufwand und werden bei ihrer Gruppenarbeit unterstützt.
 
-Kursteilnehmer sollen den Ordner in ihre eigene ownCloud Instanz kopieren können. Dabei sollen sie dem Ordner einen eigenen Namen geben können.
+## Speicherort und Zugriff
 
-Mit dieser Aktivität kann der Lehrende Kursteilnehmer ermutigen kollaborativ zu arbeiten. Zusätzlich hat er die Option die laufende Arbeit zu betreuen, indem er sich selbst Zugriff auf die Ordner gewährt. In diesem Fall werden die Kursteilnehmer darüber in Kenntnis gesetzt, dass der Ordner den Lehrenden zugänglich ist.
+Der zur Lagerung der erstellten kollaborativen Ordner genutzte Speicherplatz sollte neutral und unabhängig von einzelnen, Nutzer-spezifischen ownCloud Instanzen. Diese Vorüberlegung geht aus den folgenden Gründen hervor:
 
-Kursteilnehmer haben weniger Organisationsaufwand und werden bei ihrer Gruppenarbeit unterstützt. Zusätzlich muss kein Kursteilnehmer eigenen Speicherplatz zur Verfügung stellen.
+* Der **Lehrende** muss nicht zwingend Zugriff auf die Ordner haben
+	* Seine persönliche Instanz ist damit ungeeignet
+* Für den benötigten Speicherplatz könnte eine persönliche Instanz nicht ausreichen
+	* **Kapazitäten** sind häufig begrenzt
+* Die gespeicherten Daten sollen **langfristig** erhalten bleiben
+	* Dies ist besonders wichtig, da die Ordner, obgleich mit den Nutzern geteilt, von dem Zustand des **geteilten Ordners** abhängig sind
+
+Daraus ergibt sich, dass für die Speicherung der kollaborativen Ordner zunächst ein neutraler Speicherort angegeben muss. Dieser Speicherort muss sich auf dem selben ownCloud Server befinden um das Teilen von Inhalten zwischen diesem Speicherort und den Ordnernutzern zu gewährleisten. Dabei werden die nötigen Server-Angaben dem OAuth 2.0 ownCloud Client entnommen, welcher auch für Nutzer-seitige Zugriffe verantwortlich ist. 
+
+Bevor von einem Lehrenden ein kollaborativer Ordner erstellt werden kann, muss der Administrator zunächst für das Plugin global eben diesen neutralen Speicherort in Form eines Nutzer-Accounts hinterlegen. In dessen Namen werden anschließend alle kollaborativen Ordner erstellt und mit den entsprechenden Nutzern geteilt. Im Folgenden wird dieser Nutzer-Account als **technischer Nuter** bezeichnet.
+
+Um nun auf die erstellen Ordner zugreifen zu können, müssen diese von dem technischen Nutzer mit den Personen geteilt werden, welche zum Zugriff zuvor berechtigt worden sind. Dabei kann es sich um alle Kursteilnehmer oder nur spezifische Gruppen einschließlch oder ausschließlich dem Lehrenden handeln. Einerseits bringt dies den Vorteil, dass kein Speicherplatz in den persönlichen ownCloud Instanzen für die Gruppenordner gebraucht wird; andererseits birgt es aber auch den Nachteil, dass der geteilte Ordner gelöscht werden kann, ohne dass die Nutzer jeweils eine Kopie den gespeicherten Daten erhalten. Daher ist es notwendig, dass der technische Nutzer die Daten über einen längeren Zeitraum hinweg sichern kann.
 
 ## Vorgegebene Schnittstelle
 Um das Integrationsszenario zu realisieren haben wir ein Activity Plugin für Moodle entwickelt. Instanzen von Activity Plugins können Kursen beliebig oft hinzugefügt werden.
