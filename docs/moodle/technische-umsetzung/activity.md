@@ -55,7 +55,7 @@ Die Schnittstelle in Moodle für das Einstellungsformular ist sehr ausführlich.
 Außerdem benutzen wird den Moodle internen *group_mode*. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie für separate Gruppen Ordner erstellt werden  wird unter anderem im nächsten Abschnitt erklärt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der `mod_form.php` in Moodle benötigen besuchen sie [diese Seite](https://docs.moodle.org/dev/Activity_modules#mod_form.php).
 
 ### Erstellen von Ordnern
-Zum Erstellen von Ordnern haben wurde einen Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität `collaborativefolders` erstellt wird.
+Zum Erstellen von Ordnern wurde ein Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität `collaborativefolders` erstellt wird.
 In `collaborativefolders/db/events.php` können in einem Array alle Observer registriert werden und werden dann von Moodle verwaltet.
 ```php
 $observers = array(
