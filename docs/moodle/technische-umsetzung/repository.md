@@ -1,5 +1,5 @@
 # Repository: `owncloud`
-<img alt="Name Form" src="../images/icon_repository.svg" width=40% float=right>
+<img alt="" src="../../images/icon_repository.svg" width=40% float=right>
 
 ## Zweck
 
