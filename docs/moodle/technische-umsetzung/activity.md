@@ -163,52 +163,33 @@ if (groups_get_activity_groupmode($cm) != 0) {
 
 Falls ein Gruppenmodus für die betreffende Instanz der Aktivität aktiv ist, werden die teilnehmenden Gruppen ermittelt. Hierzu muss geprüft werden, ob ein [Grouping](https://docs.moodle.org/32/en/Groupings) in der Aktivität gewählt worden ist. Sollte dies der Fall sein, werden alle Gruppen aus dem Grouping einbezogen, ansonsten alle Gruppen des Kurses.
 
-Sobald alle teilnehmenden Gruppen ermittelt worden sind, wird ein Ad Hoc Taks mit der Erstellung der entsprechenden Ordner im ownCloud Verzeichnis des technischen Nutzers beauftragt.
+Sobald alle teilnehmenden Gruppen ermittelt worden sind, wird ein [Ad Hoc Taks](https://docs.moodle.org/dev/Task_API#Adhoc_tasks) mit der Erstellung der entsprechenden Ordner im ownCloud Verzeichnis des technischen Nutzers beauftragt.
 
 #### Ad Hoc Task
 
-Im ersten Szenario wird ein Ordner für alle Studierenden eines Kurses erstellt.
-Die Anforderung an das Modul ist es also einen Ordner in dem gespeicherten Account zu erstellen, der eindeutig identifizierbar ist. Dies ist gesichert indem die Ordner nach der `course_module_id` benannt werden. Diese ist einzigartig für jede Aktivität, die in Moodle erzeugt wird. So kann es, soweit manuell
-keine Ordner erstellt werden, zu keinen Synchronisationskonflikten kommen.
+Der aufgerufene Ad Hoc Task befindet sich in der Datei `classes/task/collaborativefolders_create.php`. Beim Aufruf erhält er bereits ein Array mit allen zu erstellenden Ordnernamen. Die Aufgabe des Tasks ist nun die Ordner einzeln zu erstellen. Zu diesem Zweck wird mit jedem Ordnernamen die Methode `handle_folder` der Klasse [`owncloud_access`](activity/#zugriff-auf-owncloud) aufgerufen. Das folgende Codebeispiel zeigt die Schleife, welche dazu benötigt wurde.
 
-``` php
-$paths = array();
-            $paths['cmid'] = $cmid;
-
-            list ($course, $cm) = get_course_and_cm_from_cmid($cmid, 'collaborativefolders');
-```
-
-Im zweiten Szenario sollen Ordner für Gruppen innerhalb eines Kurses erstellt werden.
-Auch hier müssen eindeutig identifizierbare Ordner erstellt werden. Deswegen wird ein Überordner erstellt mit der `course_module_id`. In diesem Ordner wird nun zu jeder Gruppe ein Unterordner erstellt.
-``` php
-if (groups_get_activity_groupmode($cm) != 0) {
-    $grid = $cm->groupingid;
-    $groups = groups_get_all_groups($course->id, 0, $grid);
-
-    foreach ($groups as $group) {
-        $path = $cmid . '/' . $group->id;
-        $paths[$group->id] = $path;
-    }
-}
-```
-Zu diesem Zweck wird in der Variable `$path` die einem Cronjob übergeben wird nicht nur die `course_module_id` gespeichert, sondern auch für jede `$groupid` ein Feld.
-Der Cronjob, der nun die Ordner erstellt, kann anhand der Einträge im Array erkennen wie viele und welche Ordner er erstellen muss.
-
-Der Cronjob findet sich in `collaborativefolders/classes/task/collaborativefolders_create.php`. Er erbt von der abstrakten Klasse `\core\task\adhoc_task`.
 Dieser liest aus den Daten, die er übergeben bekommt, alle Ordner aus, die erstellt werden müssen.
 ``` php
-foreach ($data as $key => $value) {
-            $code = $oc->handle_folder('make', $value);
-            if ($code == false) {
-                throw new \coding_exception('Folder ' . $value . ' not created.');
-            } else {
-                mtrace('Folder: ' . $value . ', Code: ' . $code);
-                if (($code != 201) && ($code != 405)) {
-                    throw new \coding_exception('Folder ' . $value . ' not created.');
-                }
+foreach ($folderpaths as $key => $path) {
+	$code = $oc->handle_folder('make', $path);
+        if ($code == false) {
+            throw new \coding_exception('Folder ' . $path . ' not created. 
+		The WebDAV socket could not be opened.');
+        } else {
+            mtrace('Folder: ' . $path . ', Code: ' . $code);
+            if (($code != 201) && ($code != 405)) {
+                throw new \coding_exception('Folder ' . $path . ' not created. 
+			An unexpected status code was received.');
             }
         }
+}
 ```
+
+Die Variable `$folderpath` stellt dabei das Array mit den Ordnernamen und `$oc` ein Objekt der Klasse `owncloud_access` dar.
+
+Falls der Zugriff auf ownCloud nicht erfolgreich durchgeführt werden kann, wird der Ad Hoc Task abgebrochen und eine entsprechende Fehlermeldung geworfen. Solange der Task fehlschlägt, wird er regelmäßig wiederholt bis jeder Ordner erstellt worden ist. Zusätzlich wird der Statuscode, welcher von ownCloud als Antwort ankommt angezeigt. Im Fall eines Erfolges wird ein Event geschaltet, welches dokumentiert, dass die Aktivität nun zur Benutzung zur Verfügung steht.
+
 ### Ansicht der bestehenden Instanzen
 
 Nun, da der Lehrende alle notwendigen Einstellungen tätigen konnte, musste die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementiert werden. Dies beinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das Hinzufügen dieser Ordner zur eigenen Instanz.
