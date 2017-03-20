@@ -234,11 +234,11 @@
                 <li class="third-level"><a href="#ad-hoc-task">Ad Hoc Task</a></li>
             
         
-            <li class="second-level"><a href="#ansicht-der-bestehenden-instanzen">Ansicht der bestehenden Instanzen</a></li>
+            <li class="second-level"><a href="#ansicht-der-bestehenden-instanz">Ansicht der bestehenden Instanz</a></li>
             
                 <li class="third-level"><a href="#sicht-der-studierenden">Sicht der Studierenden</a></li>
             
-                <li class="third-level"><a href="#sicht-der-lehrenden">Sicht der Lehrenden</a></li>
+                <li class="third-level"><a href="#besonderheiten-fur-lehrende">Besonderheiten für Lehrende</a></li>
             
         
     
@@ -309,7 +309,7 @@ Sowohl die Autorisierung und Authentifizierung, als auch der Zugriff auf ownClou
 <li><strong><code>rename</code>:</strong> Diese Methode benennt einen Ordner im ownCloud Verzeichnis des aktuellen Nutzers um.</li>
 <li><strong><code>share_and_rename</code>:</strong> Hier werden die Methoden <code>generate_share</code> und <code>rename</code> vereint.</li>
 </ul>
-<p>Die Methoden liefern bei Erfolg jeweils das gewünschte Ergebnis und im Fall eines Fehlschlags eine angemessene Fehlermeldung.</p>
+<p>Die Methoden greifen direkt auf den Client zu und liefern bei Erfolg jeweils das gewünschte Ergebnis und im Fall eines Fehlschlags eine angemessene Fehlermeldung.</p>
 <h3 id="anmelden-des-technischen-nutzers">Anmelden des technischen Nutzers</h3>
 <p>Der Administrator der Moodle Seite kann in der Seiten-Administration einen technischen Nutzer hinzufügen. Über <code>Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders</code> kommt er zu den entsprechenden Einstellungen. An dieser Stelle kann er mittels eines Login-Links einen technischen Nutzer authentifizieren und autorisieren. Damit wird der technische Nutzer mit allen Instanzen der <code>collaborativefolders</code> Aktivität <a href="../activity/#speicherort-und-zugriff">verknüpft</a>. Zwar sind spätere Änderungen des technischen Nutzers durch einen Logout möglich, jedoch ist dies nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Probleme mit bestehenden Instanzen entstehen würden. Für den Fall, dass im Moment des Logins zum Bespiel ein falscher Nutzer in ownCloud authentifiziert ist, wird der Logout des technischen Nutzer dennoch bereitgestellt. Das folgende Szenario begründet die Entscheidung:</p>
 <blockquote>
@@ -415,42 +415,40 @@ if (groups_get_activity_groupmode($cm) != 0) {
 </code></pre>
 
 <p>Die Variable <code>$folderpath</code> stellt dabei das Array mit den Ordnernamen und <code>$oc</code> ein Objekt der Klasse <code>owncloud_access</code> dar.</p>
-<p>Falls der Zugriff auf ownCloud nicht erfolgreich durchgeführt werden kann, wird der Ad Hoc Task abgebrochen und eine entsprechende Fehlermeldung geworfen. Solange der Task fehlschlägt, wird er regelmäßig wiederholt bis jeder Ordner erstellt worden ist. Zusätzlich wird der Statuscode, welcher von ownCloud als Antwort ankommt angezeigt. Im Fall eines Erfolges wird ein Event geschaltet, welches dokumentiert, dass die Aktivität nun zur Benutzung zur Verfügung steht.</p>
-<h3 id="ansicht-der-bestehenden-instanzen">Ansicht der bestehenden Instanzen</h3>
-<p>Nun, da der Lehrende alle notwendigen Einstellungen tätigen konnte, musste die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementiert werden. Dies beinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das Hinzufügen dieser Ordner zur eigenen Instanz.
-Lehrende sollen entweder eine Übersicht aller Ordner haben, oder keinen Zugriff auf die Ordner haben. Alle Funktionalitäten sind in der <code>view.php</code> implementiert.</p>
+<p>Falls der Zugriff auf ownCloud nicht erfolgreich durchgeführt werden kann, wird der Ad Hoc Task abgebrochen und eine entsprechende Fehlermeldung geworfen. Solange der Task fehlschlägt, wird er regelmäßig wiederholt bis jeder Ordner erstellt worden ist. Zusätzlich wird der Statuscode, der von ownCloud als Antwort ankommt, angezeigt. Im Fall eines Erfolges wird ein Event geschaltet, welches dokumentiert, dass die Aktivität nun zur Benutzung zur Verfügung steht.</p>
+<h3 id="ansicht-der-bestehenden-instanz">Ansicht der bestehenden Instanz</h3>
+<p>Nun, da der Lehrende alle notwendigen Einstellungen tätigen konnte, musste die Ansicht der Kursteilnehmer auf die Aktivität mit allen notwendigen Funktionalitäten implementiert werden. Dies beinhaltet die individuelle Namensvergabe für Ordner in ownCloud und das Hinzufügen dieser Ordner zum eigenen ownCloud Verzeichnis.
+Die Ansicht einer Instanz der <code>collaborativefolders</code> Aktivität ist nur dann möglich, falls der aktuelle Nutzer über die dafür benötigte Berechtigung verfügt. Im Folgenden werden diese Funktionalitäten, so wie sie in der <code>view.php</code> implementiert worden sind, erläutert.</p>
 <h4 id="sicht-der-studierenden">Sicht der Studierenden</h4>
-<p>Für Studierende wird zunächst überprüft, ob der <code>group_mode</code> aktiviert ist. Wenn dies der Fall ist, wird an den Pfad, über den später der Ordner gefunden werden soll, die GruppenID angefügt. Moodle hat hierfür intern eine Methode <code>groups_get_activity_group()</code> die zu einer Instanz der Aktivität angibt in welcher Gruppe der Studierende ist.
-Die <code>view.php</code> wird zu verschiedenen Zwecken aufgerufen die behandelt werden müssen.</p>
+<p>Befindet sich der Studierende, welcher nun die Aktivität aufruft, in einer der Gruppen, welche für diese Aktivität mittels Grouping ausgewählt worden sind, so müssen von dem Plugin folgende Szenarien behandelt werden, welche auf das jeweils vorhergehende aufbauen: </p>
 <ol>
 <li>
-<p><strong>Der Ordnername wird erstmals gespeichert</strong></p>
-<p>Der Ordnername wird in den moodle <code>user_preferences</code> gespeichert. Diese werden für jeden Nutzer einzeln gespeichert und können beliebig geändert oder gelöscht werden. Die Eingabemaske für einen Ordnernamen wird nur angezeigt wenn bis jetzt kein Name gesetzt wurde oder der Nutzer explizit ausgewählt hat, das der Name zurückgesetzt werden soll.</p>
+<p><strong>Nicht alle kollaborativen Ordner sind erstellt</strong></p>
+<p>Sollte der Ad Hoc Task, welcher für die Erstellung aller, gegebenenfalls einzelnen, Gruppenordner zuständig ist, nicht erfolgreich abgeschlossen worden sein, so kann niemand auf die kollaborativen Ordner zugreifen. Damit wird sichergestellt, dass keine fehlerhaften Zugriffe beim Teilen eines potenziell nicht vorhandenen Ordners getätigt werden können. Der Nutzer erhält einen Hinweis darauf und kann sich im Zweifelsfall bei dem Administrator melden, falls der Zugriff über einen längeren Zeitraum nich gestattet wird.</p>
 </li>
 <li>
-<p><strong>Der Name des Ordners wird geändert</strong></p>
-<p>Wenn der Name des Ordners zurückgesetzt wird, wird ein URL Parameter <em>reset=1</em> an die URL übergeben. In diesem Fall wird dem Kursteilnehmer eine Eingabemaske angezeigt. Diese ist als eigene Klasse in dem Ordner <code>collaborativefolders/classes</code> implementiert. Sie erbt von der abstrakten Klasse <code>moodleform</code>. Es muss nun sichergestellt werden das vergebene Namen kompatibel mit ownCloud sind. Moodle unterstützt die zugelassenen Eingaben durch Begrenzung nach <em>Form Element</em> Regeln.</p>
-<p><code>$mform-&gt;addRule('namefield', get_string('err_alphanumeric', 'form'), 'alphanumeric', null, 'client');</code></p>
-<p>Diese Regel verbietet andere Eingaben zu speichern, als Buchstaben und Zahlen.</p>
+<p><strong>Die Ordner sind erstellt und ein Name muss erfragt werden</strong></p>
+<p>Jedem Nutzer steht es frei, den kollaborativen Ordner nach belieben zu bennenen. Das wird dadurch ermöglicht, dass der Ordner seperat für jeden Nutzer geändert wird ohne den (technischen) Namen des geteilten Ordners beim technischen Nutzer zu ändern. Der gewünschte Name wird mittels eines kurzen Formulares abgefragt, falls nicht bereits ein Name zu dem betreffenden Nutzer und der aktuellen Instanz in der Datenbank hinterlegt worden ist.</p>
 </li>
 <li>
-<p><strong>Der Nutzer loggt sich aus seinem aktuell gespeichertem Account aus</strong>
-    Der Nutzer muss mit Hilfe des <code>oauth2owncloud</code> admin_tools ausgeloggt werden, und der <code>access token</code> wird auf null gesetzt.</p>
-<p><code>$ocs-&gt;owncloud-&gt;log_out();
-set_user_preference('oC_token', null);</code></p>
+<p><strong>Ein Name wurde hinterlegt</strong></p>
+<p>Hat der Nutzer bereits einen Namen für seinen Ordner angegeben, so wird ihm zunächst die Möglichkeit geboten den Namen zu ändern. Sollte er sich dafür entscheiden, wird der hinterlegte Name aus der Datenbank gelöscht und der Nutzer zum vorherigen Formular weitergeleitet (siehe Punkt 2).</p>
+<p>Zusätzlich wird mit Hilfe der Klasse <code>owncloud_access</code> geprüft, ob der Nutzer bereits über ein valides Access Token verfügt, welches er aus einem früheren ownCloud Zugriff erhalten hat. Sollte dies zutreffen wird ihm ein Logout-Link angezeigt, für den Fall, dass der Nutzer einen anderen, als den bereits eingeloggten ownCloud Account benutzen möchte. Weiterhin erhält der Nutzer einen Link, welcher den kollaborativen Ordner für ihn freigibt und umbenennt.</p>
+<p>Sollte der Nutzer allerdings nicht eingeloggt sein, so wird lediglich ein Login-Link angezeigt, welcher auf die Autorisierungs-Schnittstelle in ownCloud verweist.</p>
 </li>
 <li>
-<p><strong>Kursteilnehmer rufen die Seite auf, obwohl die Ordner noch nicht vom CronJob erstellt wurden.</strong></p>
-<p>Für jeden Ordner wird überprüft, ob der Ordner schon erstellt wurde: Zur Information wird dem Nutzer angezeigt, dass die Ordner noch nicht erstellt wurden.</p>
-<p><code>$content = json_decode($element-&gt;customdata);
-$cmidoftask = $content-&gt;cmid;
-if ($id == $cmidoftask) {
-    $created = false;
-}</code></p>
+<p><strong>Ein Link zum kollaborativen Ordner soll generiert werden</strong></p>
+<p>Hat der Nutzer zuvor den Link zur Freigabe des Ordners betätigt, so wird mittels der <code>share_and_rename</code> Funktion der <code>owncloud_access</code> Klasse versucht den betreffenden kollaborativen Ordner für den Nutzer freizugeben. Zu diesem Zweck wird zunächst dem Access Token des Benutzers das Attribut <code>user_id</code> entnommen, welches den Nutzernamen des Tokenbesitzers in ownCloud enthält. Mit dessen Hilfe kann ein privater Share über den technischen Nutzer, mit wiederum dessen Access Token, generiert werden, der den Ordner für den Studierenden oder Lehrenden freigibt. Anschließend wird der geteilte Ordner auf Seiten des aktuellen Nutzers in ownCloud umbenannt. </p>
+<p>Sind Operationen erfolgreich verlaufen, wird im OAuth 2.0 ownCloud Client ein Pfad zu dem privaten Ordner erstellt und, genau wie der gewählte Name, in der Datenbank gespeichert. Andernfalls wird eine entsprechende Fehlernachricht angezeigt.</p>
+</li>
+<li>
+<p><strong>Für den Nutzer ist ein Link hinterlegt</strong></p>
+<p>Falls zu dem aktuellen Nutzer und der Instanz der Aktivität bereits ein Link in der Datenbank vorhanden ist, so wird dieser dem Nutzer angezeigt. Er verweist direkt zu dem kollaborativen Ordner im ownCloud Verzeichnis des Nutzers.</p>
 </li>
 </ol>
-<h4 id="sicht-der-lehrenden">Sicht der Lehrenden</h4>
-<p>Falls der Lehrende sich selbst keinen Zugriff gewährt hat, sieht er den Ordner auch nicht wenn er in einer Gruppe eingeschrieben ist. Hat der Lehrende Zugriff auf die Ordner, so sieht er eine tabellarische Auflistung aller bestehenden Ordner. Zusätzlich kann er genau wie Studierende seinen ownCloud Account ändern, den Namen des Ordners ändern und Ordner per Klick der eigenen Instanz hinzufügen. In dem Fall, dass Gruppenordner erstellt wurden, wird dem Lehrenden der Überordner aller Gruppenordner hinzugefügt.</p>
+<h4 id="besonderheiten-fur-lehrende">Besonderheiten für Lehrende</h4>
+<p>Unabhängig davon, ob der Lehrende die kollaborativen Ordner für sich selbst und sein Kollegen freigegeben hat, wird ihm, vorausgesetzt der Gruppenmodus ist aktiv, eine tabellarische Auflistung aller teilnehmenden Gruppen, inklusive Gruppennamen, Gruppen ID und Teilnehmern angezeigt. Diese dient einerseits der Übersichtlichkeit und andererseits der Identifizierung der freigegebenen Gruppenordner. Denn in dem Überordner, welcher für den Lehrenden freigegeben wird, sind alle kollaborativen Gruppenordner nach der jeweiligen Gruppen ID benannt. 
+Falls der Lehrende sich selbst Zugriff auf den Überordner gewährt hat, so wird ihm im Anschluss die selbe Ansicht präsentiert, wie auch den Studierenden.</p>
 <h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
         
     </div>
