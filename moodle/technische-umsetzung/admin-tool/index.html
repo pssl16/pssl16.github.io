@@ -207,51 +207,75 @@
         <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
     <ul class="nav bs-sidenav">
     
-        <li class="first-level active"><a href="#admin-tool-oauth2owncloud">Admin Tool: oauth2owncloud</a></li>
+        <li class="first-level active"><a href="#zweck">Zweck</a></li>
         
-            <li class="second-level"><a href="#zweck">Zweck</a></li>
-            
+    
+        <li class="first-level "><a href="#vorgegebene-schnittstelle">Vorgegebene Schnittstelle</a></li>
         
-            <li class="second-level"><a href="#vorgegebene-schnittstelle">Vorgegebene Schnittstelle</a></li>
-            
+    
+        <li class="first-level "><a href="#implementierung">Implementierung</a></li>
         
-            <li class="second-level"><a href="#implementierung">Implementierung</a></li>
+            <li class="second-level"><a href="#eingabemaske">Eingabemaske</a></li>
             
-                <li class="third-level"><a href="#eingabemaske">Eingabemaske</a></li>
+                <li class="third-level"><a href="#benotigte-eingaben">Benötigte Eingaben</a></li>
             
-                <li class="third-level"><a href="#oauth-20-client">OAuth 2.0 Client</a></li>
-            
-        
-            <li class="second-level"><a href="#erweiterungen-der-schnittstellen">Erweiterungen der Schnittstellen</a></li>
-            
-                <li class="third-level"><a href="#oauth-20-client_1">OAuth 2.0 Client</a></li>
-            
-                <li class="third-level"><a href="#webdav-client">WebDAV Client</a></li>
-            
-                <li class="third-level"><a href="#ocs-share-api">OCS Share API</a></li>
+                <li class="third-level"><a href="#settings">Settings</a></li>
             
         
-            <li class="second-level"><a href="#integration-mit-owncloud">Integration mit ownCloud</a></li>
-            
-                <li class="third-level"><a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a></li>
-            
-                <li class="third-level"><a href="#anfrage-eines-access-tokens">Anfrage eines Access Tokens</a></li>
-            
-                <li class="third-level"><a href="#zugriff-auf-webdav">Zugriff auf WebDAV</a></li>
+            <li class="second-level"><a href="#oauth-20-client">OAuth 2.0 Client</a></li>
             
         
-            <li class="second-level"><a href="#tests-und-continuous-integration">Tests und Continuous Integration</a></li>
+    
+        <li class="first-level "><a href="#erweiterungen-der-schnittstellen">Erweiterungen der Schnittstellen</a></li>
+        
+            <li class="second-level"><a href="#oauth-20-client_1">OAuth 2.0 Client</a></li>
             
+                <li class="third-level"><a href="#anpassung-der-post-methode">Anpassung der post Methode</a></li>
+            
+                <li class="third-level"><a href="#erweiterung-des-access-tokens">Erweiterung des Access Tokens</a></li>
+            
+                <li class="third-level"><a href="#einfuhrung-des-refresh-tokens">Einführung des Refresh Tokens</a></li>
+            
+                <li class="third-level"><a href="#speicherung-nutzer-spezifischer-access-tokens">Speicherung Nutzer-spezifischer Access Tokens</a></li>
+            
+        
+            <li class="second-level"><a href="#webdav-client">WebDAV Client</a></li>
+            
+                <li class="third-level"><a href="#absicherung-mittels-oauth-20">Absicherung mittels OAuth 2.0</a></li>
+            
+                <li class="third-level"><a href="#weiterleitungen">Weiterleitungen</a></li>
+            
+        
+            <li class="second-level"><a href="#ocs-share-api">OCS Share API</a></li>
+            
+        
+    
+        <li class="first-level "><a href="#integration-mit-owncloud">Integration mit ownCloud</a></li>
+        
+            <li class="second-level"><a href="#authentifizierung-und-autorisierung">Authentifizierung und Autorisierung</a></li>
+            
+        
+            <li class="second-level"><a href="#anfrage-eines-access-tokens">Anfrage eines Access Tokens</a></li>
+            
+        
+            <li class="second-level"><a href="#zugriff-auf-webdav">Zugriff auf WebDAV</a></li>
+            
+        
+    
+        <li class="first-level "><a href="#tests-und-continuous-integration">Tests und Continuous Integration</a></li>
         
     
     </ul>
 </div></div>
         <div class="col-md-9" role="main">
 
-<h1 id="admin-tool-oauth2owncloud">Admin Tool: <code>oauth2owncloud</code></h1>
+<div><img alt="" align=right src="../../images/icon_admin_tool.svg" width=20% position=right>
+<h1> Admin Tool: <span class=code>oauth2owncloud</span></h1>
+</div>
+
 <h2 id="zweck">Zweck</h2>
 <p>Wie bereits im Kapitel <a href="../softwarearchitektur/">Software Architektur</a> angeschnitten, ist der Hauptzweck dieses Plugins
-die Schnittstelle zu ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud 
+die Schnittstelle zu ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud
 App <a href="../../../owncloud/technische-umsetzung/oauth2-app/">oauth2</a> mit Hilfe eines OAuth 2.0 Clients angesprochen. Zusätzlich werden
 sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert, in diesem Client umfasst.
 Zwar ist der Client auf einen OAuth 2.0 Protokollablauf in Zusammenarbeit mit der entsprechenden ownCloud App angepasst,
