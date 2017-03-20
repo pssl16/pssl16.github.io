@@ -1,5 +1,6 @@
+<img alt="" src="../../images/icon_repository.svg" width=20% float=right>
+
 # Repository: `owncloud`
-<img alt="" src="../../images/icon_repository.svg" width=40% float=right>
 
 ## Zweck
 
