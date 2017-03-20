@@ -19,19 +19,19 @@ ermöglicht werden können.
 ## Vorgegebene Schnittstelle
 
 Für Admin Tools ist in Moodle lediglich eine schwach definierte Schnittstelle gegeben. Wie in jedem anderen Moodle Plugin 
-auch, müssen zunächst einige Standartdateien implementiert werden: 
+auch, müssen zunächst einige Standarddateien implementiert werden: 
 
 * **`version.php`:** Beschreibt die Versionsnummer des Plugins, die benötigte Moodle Version und Abhängigkeiten des Plugins.
 * **`access.php`:** Legt die Berechtigungen für definierte Aktionen innerhalb des Plugins anhand von Nutzerrollen fest.
 * **`tool_oauth2sciebo.php`:** Beinhaltet Sprachstrings für unterschiedliche Regionen und Sprachen, sodass definierte Strings,
 abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können.
 
-Zusätzlich zu den allgemeinen Plugindateien, sollte unser Admin Tool auch mindestens noch eine Datei namens `settings.php`
+Zusätzlich zu den allgemeinen Plugindateien, sollte das Admin Tool auch mindestens noch eine Datei namens `settings.php`
 beinhalten. Diese umfasst alle Einstellungen, die für das Admin Tool geltend dem Administrator der Moodle Instanz zur 
 Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration Moodle-intern gespeichert und kann von dem
 Client, wenn nötig abgerufen werden.
 
-Insgesamt ergibt sich folgende Struktur von Ordnern und Dateien, die mindestens für die Implementierung des von uns gebrauchten
+Insgesamt ergibt sich folgende Struktur von Ordnern und Dateien, die mindestens für die Implementierung des benötigten
 Admin Tools notwendig ist:
                                     
 ```nohighlight                      
@@ -76,12 +76,12 @@ Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:
 
 Während die Wahl des Protokolls mittels einer Auswahl aus vorhandenen Optionen abgeboten werden kann, müssen die restlichen Werte
 in einem Textfeld erfragt werden. Auch in diesem Fall werden die Variablen nach den zu erwartenden Werten gesäubert. Darüber hinaus
-werden alle Eingaben, bis auf dem Port, als notwendig angesehen.
+werden alle Eingaben, bis auf den Port, als notwendig angesehen.
 
 #### Settings
  
 Die nun benötigten Eingabedaten müssen in Moodle auf der Einstellungsseite des Plugins erfragt und entprechend gespeichert werden.
-Um dies zu bewerkstelligen, wird in der settings.php jedes Eingabefeld einzeln definiert. In dem folgenden Beispiel wird das
+Um dies zu bewerkstelligen wird in der settings.php jedes Eingabefeld einzeln definiert. In dem folgenden Beispiel wird das
 Eingabfeld für die Client ID beschrieben:
 
 ```php
@@ -93,7 +93,7 @@ $settings->add($setting);
 
 Die Definition des Feldes beinhaltet den Ort, an dem die Eingabe gespeichert wird und dementsprechend wiedergefunden werden kann.
 In diesem Fall wird die Eingabe unter den Plugin-spezifischen Einstellungen hinterlegt. Weiterhin werden der Name des Feldes
-(so wie er dem Nutzer angezeigt wird), ein Beschreibungstext und Standartwert (in diesem Fall bleibt es leer)für das Feld angegeben.
+(so wie er dem Nutzer angezeigt wird), ein Beschreibungstext und Standardwert (in diesem Fall bleibt es leer) für das Feld angegeben.
 Zuletzt werden der Typ (in diesem Fall alphanumerisch) und die Länge der erwarteten Eingabe festgelegt.
 
 Die Einstellungsseite wird anschließend in die Kategorie der Admin Tools eingeordnet, wo sie von dem Seitenadministrator wiedergefunden
@@ -127,7 +127,7 @@ Namen aus den Einstellungen heraus den dazu gespeicherten Wert.
 Darüber hinaus muss eine `callback URL` angefügt werden, die den Pfad angibt, an den nach der Authentifizierung und Authorisierung
 der Nutzer weitergeleitet werden soll. Dieser wird allerdings extern in den Anwendungen erzeugt, die den `owncloud` Client benutzen.
 
-Zu beachten ist, dass für die Klasse `owncloud` ein namespace definiert wird, womit diese effizient in externen Plugins verwendet werden
+Zu beachten ist, dass für die Klasse `owncloud` ein *namespace* definiert wird, womit diese effizient in externen Plugins verwendet werden
 kann, die einen OAuth 2.0 ownCloud Client benötigen.
 
 Weiterhin müssen die Methoden `auth_url` und `token_url` der Elternklasse zwingend implementiert werden, um bei der Authentifizierung
@@ -149,7 +149,7 @@ ownCloud gleich bleibt. Die benötigten Eingabdaten werden, soweit angegeben, de
 
 ## Erweiterungen der Schnittstellen
 
-Du zur Umsetzung des Verfahrens Die vorgegebenen Schnittstellen nicht ausreichten, mussten in Anpassungen in Moodles Core 
+Da zur Umsetzung des Verfahrens die vorgegebenen Schnittstellen nicht ausreichten, mussten in Anpassungen in Moodle Core 
 Bibliotheken vorgenommen werden. Im Folgenden werden diese Änderungen beschrieben.
 
 ### OAuth 2.0 Client
@@ -204,9 +204,9 @@ $this->store_token($accesstoken);
 #### Einführung des Refresh Tokens
 
 Da nun das Access Token um die fehlende Eigenschaft `refresh_token` ergänzt worden ist, musste der Client ebenfalls um die
-Fähigkeit, ein Refresh Token zu einem Access Token aufzuwerten, erweitert werden. Hierzu, musste einerseits an der Stelle
+Fähigkeit, ein Refresh Token zu einem Access Token aufzuwerten, erweitert werden. Hierzu musste einerseits an der Stelle
 eingegriffen werden, an der das aktuelle Access Token geprüft wird. Ist das aktuelle Access Token abgelaufen und ein Refresh
-Token vorhanden. So muss versucht werden ein neues Access Token mit Hilfe des Refresh Tokens anzufordern. Dabei wird die selbe
+Token vorhanden, so muss versucht werden ein neues Access Token mit Hilfe des Refresh Tokens anzufordern. Dabei wird dieselbe
 Schnittstelle verwendet, die auch zum Aufwerten eines Authorization Codes zum Einsatz kommt. Daher muss bei der Ausführung der
 Methode `upgrade_token` zwischen Refresh Token und Authorization Code unterschieden werden:
 
@@ -236,18 +236,18 @@ ein Access Token zurückliefern.
 
 Um einen hohen Grad an Komfort und Sicherheit gewährleisten zu können, musste dem Nutzer die Möglichkeit eines einmaligen
 Logins gegeben werden. Durch die Einführung eines Refresh Tokens wurde der erste Schritt in diese Richtung getätigt, da nun
-das Access Token, im Normalfall, immer wieder aufgewertet werden kann, ohne sich erneut in ownCloud authentifizieren zu müssen.
-Weiterhin wurde der OAuth 2.0 ownCloud Client um eine Methode `check_login` ergänzt, welche nach Erhalt eines Access Tokens,
+das Access Token, im Normalfall, immer wieder aufgewertet werden kann, ohne dass man sich erneut in ownCloud authentifizieren muss.
+Weiterhin wurde der OAuth 2.0 ownCloud Client um eine Methode `check_login` ergänzt, welche nach Erhalt eines Access Tokens
 dieses innerhalb der persönlichen Einstellungen des aktuellen Nutzers hinterlegt und, falls vorhanden, bei der Prüfung des
 Login-Status auch daraus bezieht.
 
 Darüber hinaus bietet die Methode `check_login` auch die Möglichkeit ein Access Token für ein spezielles, angegebenes Plugin
-zu speichern um zum Beispiel einen technischen Nutzer in ownCloud zu verwenden.
+zu speichern, um zum Beispiel einen technischen Nutzer in ownCloud zu verwenden.
 
 ### WebDAV Client
 
 Da ownCloud Datentransfer lediglich über eine WebDAV Schnittstelle anbietet, musste auf diese in Moodle mittels eines dafür
-vorgesehenen Clients zugegriffen werden können. Moodle bietet bereits einen WebDAV Client an, welcher als Basis ownClouds
+vorgesehenen Clients zugegriffen werden können. Moodle bietet bereits einen WebDAV Client an, welcher als Basis für ownClouds
 WebDAV Schnittstelle verwendet werde konnte.
 
 #### Absicherung mittels OAuth 2.0
@@ -340,7 +340,7 @@ $returnurl = new moodle_url('/repository/repository_callback.php', [
 Falls die Anfrage erfolgreich verläuft, erhält der Client einen Authorization Code, welcher ihn zur Anfrage eines Access Tokens
 bemächtigt.
 
-Die Autorisierung durch den Nutzer stellt die einzige für den diesen sichtbare Schnittstelle dar.
+Die Autorisierung durch den Nutzer stellt die einzige für diesen sichtbare Schnittstelle dar.
 
 ### Anfrage eines Access Tokens
 
