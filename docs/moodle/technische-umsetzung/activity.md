@@ -18,12 +18,12 @@ Mit dieser Aktivität kann der Lehrende Kursteilnehmer ermutigen kollaborativ zu
 
 Der zur Lagerung der erstellten kollaborativen Ordner genutzte Speicherplatz sollte neutral und unabhängig von einzelnen, Nutzer-spezifischen ownCloud Instanzen. Diese Vorüberlegung geht aus den folgenden Gründen hervor:
 
-* Der **Lehrende** muss nicht zwingend Zugriff auf die Ordner haben
-	* Seine persönliche Instanz ist damit ungeeignet
-* Für den benötigten Speicherplatz könnte eine persönliche Instanz nicht ausreichen
-	* **Kapazitäten** sind häufig begrenzt
-* Die gespeicherten Daten sollen **langfristig** erhalten bleiben
-	* Dies ist besonders wichtig, da die Ordner, obgleich mit den Nutzern geteilt, von dem Zustand des **geteilten Ordners** abhängig sind
+* Der **Lehrende** muss nicht zwingend Zugriff auf die Ordner haben.
+	* Seine persönliche Instanz ist damit ungeeignet.
+* Für den benötigten Speicherplatz könnte eine persönliche Instanz nicht ausreichen.
+	* **Kapazitäten** sind häufig begrenzt.
+* Die gespeicherten Daten sollen **langfristig** erhalten bleiben.
+	* Dies ist besonders wichtig, da die Ordner, obgleich mit den Nutzern geteilt, von dem Zustand des **geteilten Ordners** abhängig sind.
 
 Daraus ergibt sich, dass für die Speicherung der kollaborativen Ordner zunächst ein neutraler Speicherort angegeben muss. Dieser Speicherort muss sich auf dem selben ownCloud Server befinden um das Teilen von Inhalten zwischen diesem Speicherort und den Ordnernutzern zu gewährleisten. Dabei werden die nötigen Server-Angaben dem OAuth 2.0 ownCloud Client entnommen, welcher auch für Nutzer-seitige Zugriffe verantwortlich ist. 
 
@@ -32,36 +32,68 @@ Bevor von einem Lehrenden ein kollaborativer Ordner erstellt werden kann, muss d
 Um nun auf die erstellen Ordner zugreifen zu können, müssen diese von dem technischen Nutzer mit den Personen geteilt werden, welche zum Zugriff zuvor berechtigt worden sind. Dabei kann es sich um alle Kursteilnehmer oder nur spezifische Gruppen einschließlch oder ausschließlich dem Lehrenden handeln. Einerseits bringt dies den Vorteil, dass kein Speicherplatz in den persönlichen ownCloud Instanzen für die Gruppenordner gebraucht wird; andererseits birgt es aber auch den Nachteil, dass der geteilte Ordner gelöscht werden kann, ohne dass die Nutzer jeweils eine Kopie den gespeicherten Daten erhalten. Daher ist es notwendig, dass der technische Nutzer die Daten über einen längeren Zeitraum hinweg sichern kann.
 
 ## Vorgegebene Schnittstelle
-Um das Integrationsszenario zu realisieren haben wir ein Activity Plugin für Moodle entwickelt. Instanzen von Activity Plugins können Kursen beliebig oft hinzugefügt werden.
-Für genauere Informationen besuchen sie die Moodle Dokumentation von [Activity modules](https://docs.moodle.org/dev/Activity_modules "Activity Modules")
-In der `collaborativefolders/mod_form.php` werden alle Einstellungen abgefragt, die vor dem Erstellen der Ordner bekannt sein müssen. Dies beinhaltet den Namen des Ordners in Moodle, Zugriff des Lehrenden auf die erstellten Ordner und ob für Gruppen separate Ordner erzeugt werden sollen.
-In der `collaborativefolders/settings.php` kann der Administrator den technischen Nutzer des Plugins festlegen. Dieser gilt für alle Instanzen, also global für das gesammte Plugin.
-Die `collaborativefolders/lib.php` bietet eine Schnittstelle um auf das Hinzufügen, Ändern und Löschen von Instanzen zu reagieren.
+
+Das Integrationsszenario wurde im Rahmen eines [Activity Modules](https://docs.moodle.org/dev/Activity_modules "Activity Modules") in Moodle umgesetzt. Instanzen solcher Plugins können in Kursen von einem Lehrenden beliebig oft hinzugefügt werden und stellen für die Studierenden eine Interaktion innerhalb eines Kurses dar.
+
+Ähnlich wie bei anderen Moodle Plugins, muss zunächst eine mindestens erforderliche Schnittstelle inerhalb der vorgegebenen Ordner und Dateien implementiert werden, welche das Plugin mit dem Moodle Core verbindet. Die für `collaborativefolders` relevantesten Dateien sind die folgenden:
+
+* **`mod_form.php`:** Definiert ein Formular, dessen Eingaben vor dem Erstellen eines Ordners bekannt sein müssen.
+	* Name der Aktivität, Zugriffberechtigungen (**Lehrender** und **Gruppen**), [Gruppenmodus](https://docs.moodle.org/32/en/Groups#Group_modes)
+* **`settings.php`:** Beinhaltet eine Einstellungsseite für globale Konfigurationen von `collaborativefolders`.
+	* Wird verwendet um den technischen Nutzer zu verwalten.
+* **`lib.php`:** Bietet eine Schnittstelle zum Erstellen, Ändern und Löschen von Instanzen der Aktivität.
+	* Definiert, was im Fall einer der Operationen getan werden muss.
+* **`view.php`:** Konstruiert die Ansichtsseite der Aktivität abhängig von dem Status der Aktivität und der Berechtigungen des aktuellen Nutzers.
+
+Sonstige Standarddateien werden auch in der Dokumentation zum [Admin Tool](admin-tool/#vorgegebene-schnittstelle) beschrieben.
 
 ## Implementierung
+
+Da die Implementierung der vorgegebenen Schnittstelle von Zugriffen auf ownCloud und zusätzlichen Hilfsklassen abhängt, umfasst sie vorgegebenen und nicht-vorgegebenen Schnittstellen und Inhalte gemeinsam. 
+
 ### Anmelden des technischen Nutzers
 
-Der Admin der Moodle Seite kann in der Seiten-Administration einen technischen Nutzer hinzufügen. Über `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` kommt er zu den passenden Einstellungen. Dort wird er durch einen Login-Button auf die ownCloud Seite zum Autorisieren der App weitergeleitet. Spätere Änderungen des technischen Nutzers sind durch einen Logout Button möglich. Dies ist nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Probleme mit bestehenden Instanzen entstehen würden. Wir haben uns dafür entschieden den Logout trotzdem bereitzustellen, für den Fall, dass ein falscher Account authentifiziert wurde. Hierbei sind wir insbesondere auf folgendes Szenario gestoßen:
+Der Administrator der Moodle Seite kann in der Seiten-Administration einen technischen Nutzer hinzufügen. Über `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` kommt er zu den entsprechenden Einstellungen. An dieser Stelle kann er mittels eines Login-Links einen technischen Nutzer authentifizieren und autorisieren. Damit wird der technische Nutzer mit allen Instanzen der `collaborativefolders` Aktivität [verknüpft](activity/#speicherort-und-zugriff). Zwar sind spätere Änderungen des technischen Nutzers durch einen Logout möglich, jedoch ist dies nicht empfohlen und mit einer Warnmeldung versehen, da Kompilierungs-Probleme mit bestehenden Instanzen entstehen würden. Für den Fall, dass im Moment des Logins zum Bespiel ein falscher Nutzer in ownCloud authentifiziert ist, wird der Logout des technischen Nutzer dennoch bereitgestellt. Das folgende Szenario begründet die Entscheidung:
 
-Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator Account der ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist und autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen.
+> Der Seiten Administrator will den technischen Nutzer einloggen, ist aber noch mit seinem eigenen ownCloud Account oder dem Administrator Account in ownCloud authentifiziert. Er bemerkt nicht, dass er mit dem falschen Account eingeloggt ist und autorisiert das Plugin. Als er seinen Fehler bemerkt, möchte er den technischen Nutzer so schnell wie möglich ändern, obwohl bestehende Instanzen neu erstellt werden müssen.
 
-Implementiert haben wir dies in der `collaborativefolders/settings.php`. Diese erstellt eine Seite in den Admin Settings der Moodle Instanz. Hier müssen drei verschiedene Fälle beachtet werden:
+Die Verwaltung des Login-Status übernimmt intern der OAuth 2.0 ownCloud Client, welcher innerhalb der `settings.php` in die Einstellungsseite des Plugins eingebettet ist. Abhängig von dem Login-Status des technischen Nutzers werden durch den Client verschiedene Operationen durchgeführt und dem Administrator dementsprechend verschiedene Möglichkeiten angeboten. Das folgende Codebeispiel zeigt abstrahiert, wie der Client agiert.
 
-1. **Der technische Nutzer ist bereits angemeldet, soll aber die Möglichkeit haben ausgeloggt zu werden.**
-    Die `check_login()` Methode des `oauth2_owncloud` Plugins überprüft ob ein technischer Nutzer registriert ist. Falls der Nutzer angemeldet ist, kann der Administrator den Nutzer mit einem Logout-Button ausloggen. Dieser leitet den Nutzer auf eine neue Seite. Diese enthält eine Warnung da alte Instanzen des Plugins nicht länger genutzt werden können wenn der technische Nutzer geändert wird.
+```php
+if ($logout === true) {
 
-2. **Der technische Nutzer wird erstmals registriert.**
+	set_config('token', null, 'mod_collaborativefolders');
+	print_login();
 
-    Das Token des technischen Nutzers wird für das Plugin in den `config` Einstellungen gespeichert, da es zu keinem Nutzer, aber zu dem Plugin, gehört. Zur Sicherheit wird ist dieses auf null gesetzt. Dem Admin wird ein Login-Button angezeigt. Die Speicherung des Tokens erfolgt durch den `callback` des OAuth 2.0 Protokolls.
+} else {
 
-3. **Der technische Nutzer soll ausgeloggt werden.**
+	if ($owncloud->check_login('mod_collaborativefolders')) {
 
-    Dem Administrator wird dasselbe Login Fenster angezeigt wie bei der erstmaligen Registrierung. Genauso wird der bisherige `access token` gelöscht. Zusätzlich wird jedoch ein `logoutevent` ausgelöst. Dieses Event wird geloggt, damit der Vorgang später nachverfolgt werden kann.
+    		print_logout();
 
-``` php
-    $logoutevent = \mod_collaborativefolders\event\technical_user_loggedout::create($params);
-    $logoutevent->trigger();
+
+	} else {
+
+    		set_config('token', null, 'mod_collaborativefolders');
+    		print_login();
+
+	}
+}
 ```
+
+Die Variable `$owncloud` stellt in dem Code den Client dar. Falls zuvor der Logout-Link betätigt worden ist, enthält die Variable `$logout` den Wert `true`. Die folgenden Szenarien stellt das Codebeispiel dar:
+
+1. **Der technische Nutzer ist nicht angemeldet.**
+
+    Falls der technische Nutzer noch nicht angemeldet worden ist, wurde für ihn auch noch kein [Plugin-spezifisches](admin-tool/#speicherung-nutzer-spezifischer-access-tokens) Access Token hinterlegt. Wenn nun also der Client prüft, ob das Access Token noch gültig, ist, wird er kein Token vorfinden und daher `false` zurückgeben. Folgerichtig wird ein Login-Link für den technischen Nutzer angezeigt.
+
+2. **Der technische Nutzer ist angemeldet.**
+
+    Das Token des technischen Nutzers wird in Plugin-spezifischen Einstellungen gespeichert, da es zu keinem persönlichen Nutzer, sondern zum Plugin gehört. Dieses Szenario wird sowohl in dem Fall, dass das bereits erhaltene Access Token gültig ist, als auch beim Erhalt eines gültigen Authorization Codes aufgerufen. Wenn der Client das aktuelle Access Token also für gültig erklärt, gilt der technische Nutzer als eingeloggt und der Administrator darf ihn bei Bedarf ausloggen.
+
+3. **Der technische Nutzer wird ausgeloggt.**
+
+    Es wird registriert, dass der Logout-Link betätigt wurde (`$logout === true`). Das aktuelle Access Token des technischen Nutzers wird daraufhin in den Einstellungen gelöscht und dem Administrator erneut ein Login-Link angezeigt. Zusätzlich wird ein Event ausgelöst, welches den Logout dokumentiert.
 
 ### Hinzufügen einer Instanz
 Die Schnittstelle in Moodle für das Einstellungsformular ist sehr ausführlich. Den Standardeinstellungen haben wurde nur eine Checkbox hinzugefügt die bestimmt, ob der Lehrende Zugriff auf die Ordner hat.
