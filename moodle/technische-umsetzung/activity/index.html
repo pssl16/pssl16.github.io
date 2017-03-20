@@ -280,7 +280,7 @@ Die <code>collaborativefolders/lib.php</code> bietet eine Schnittstelle um auf d
 <p>Die Schnittstelle in Moodle für das Einstellungsformular ist sehr ausführlich. Den Standardeinstellungen haben wurde nur eine Checkbox hinzugefügt die bestimmt, ob der Lehrende Zugriff auf die Ordner hat.
 Außerdem benutzen wird den Moodle internen <em>group_mode</em>. Dieser ermöglicht es Gruppen separat zu bearbeiten. Wie für separate Gruppen Ordner erstellt werden  wird unter anderem im nächsten Abschnitt erklärt, der sich mit dem Erstellen von Ordnern auseinander setzt. Falls sie mehr Informationen zu der <code>mod_form.php</code> in Moodle benötigen besuchen sie <a href="https://docs.moodle.org/dev/Activity_modules#mod_form.php">diese Seite</a>.</p>
 <h3 id="erstellen-von-ordnern">Erstellen von Ordnern</h3>
-<p>Zum Erstellen von Ordnern haben wurde einen Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
+<p>Zum Erstellen von Ordnern wurde ein Observer implementiert, der aufgerufen wird wenn eine Instanz der Aktivität <code>collaborativefolders</code> erstellt wird.
 In <code>collaborativefolders/db/events.php</code> können in einem Array alle Observer registriert werden und werden dann von Moodle verwaltet.</p>
 <pre><code class="php">$observers = array(
         array(
