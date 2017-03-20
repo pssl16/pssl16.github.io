@@ -395,7 +395,7 @@ if (groups_get_activity_groupmode($cm) != 0) {
 </code></pre>
 
 <p>Falls ein Gruppenmodus für die betreffende Instanz der Aktivität aktiv ist, werden die teilnehmenden Gruppen ermittelt. Hierzu muss geprüft werden, ob ein <a href="https://docs.moodle.org/32/en/Groupings">Grouping</a> in der Aktivität gewählt worden ist. Sollte dies der Fall sein, werden alle Gruppen aus dem Grouping einbezogen, ansonsten alle Gruppen des Kurses.</p>
-<p>Sobald alle teilnehmenden Gruppen ermittelt worden sind, wird ein <a href="https://docs.moodle.org/dev/Task_API#Adhoc_tasks">Ad Hoc Taks</a> mit der Erstellung der entsprechenden Ordner im ownCloud Verzeichnis des technischen Nutzers beauftragt.</p>
+<p>Sobald alle teilnehmenden Gruppen ermittelt worden sind, wird ein <a href="https://docs.moodle.org/dev/Task_API#Adhoc_tasks">Ad Hoc Task</a> mit der Erstellung der entsprechenden Ordner im ownCloud Verzeichnis des technischen Nutzers beauftragt.</p>
 <h4 id="ad-hoc-task">Ad Hoc Task</h4>
 <p>Der aufgerufene Ad Hoc Task befindet sich in der Datei <code>classes/task/collaborativefolders_create.php</code>. Beim Aufruf erhält er bereits ein Array mit allen zu erstellenden Ordnernamen. Die Aufgabe des Tasks ist nun die Ordner einzeln zu erstellen. Zu diesem Zweck wird mit jedem Ordnernamen die Methode <code>handle_folder</code> der Klasse <a href="../activity/#zugriff-auf-owncloud"><code>owncloud_access</code></a> aufgerufen. Das folgende Codebeispiel zeigt die Schleife, welche dazu benötigt wurde.</p>
 <p>Dieser liest aus den Daten, die er übergeben bekommt, alle Ordner aus, die erstellt werden müssen.</p>
