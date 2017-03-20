@@ -8,9 +8,11 @@ Die Plugins sind zurzeit in einem öffentlichen *GitHub repository* verfügbar.
 Von dort aus können die Plugins auf zwei Wegen heruntergeladen werden.
 
 1. Als Zip-Datei
+
     Am rechten Rand in dem Menü `clone or download` auf **Download ZIP** klicken. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
 
 2. Mit dem Befehl `git clone`
+
     In der Moodle Instanz in den zugehörigen Ordner navigieren. Bei Unsicherheiten können die richtigen Ordner in den Beschreibungen der einzelnen Plugins nachgelesen werden. Nun den folgenden Befehl ausführen:
     ```
     git clone git@github.com:pssl16/name_of_the_repository.github.git
