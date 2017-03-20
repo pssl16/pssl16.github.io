@@ -1,4 +1,4 @@
-<img alt="" src="../../images/icon_repository.svg" width=20% float=right>
+<img alt="" src="../../images/icon_repository.svg" width=20% position=right>
 
 # Repository: `owncloud`
 
