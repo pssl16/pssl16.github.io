@@ -9,7 +9,7 @@ Der Plugin Typ *Repository* wird in Moodle unter anderem verwendet um Nutzer die
 > Als **Nutzer** möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz **verlinken**.
 
 Unser Plugin soll dem Administrator der Seite ermöglichen das Repository zu aktivieren und zu deaktivieren.
-Alle Nutzer der Moodle Instanz sollen mit Hilfe des Plugins sind in ownCloud authentifizieren können. Danach sollen sie in Moodle im [File Picker](https://docs.moodle.org/32/en/File_picker) bequem zwischen Ihren Dateien wählen können und sich mit verschiedenen Accounts authentifizieren können. Besonders im Vordergrund steht das unser Plugin möglichst einfach zu bedienen ist, um die Benutzerfreundlichkeit zu erhöhen.
+Alle Nutzer der Moodle Instanz sollen mit Hilfe des Plugins sind in ownCloud authentifizieren können. Danach sollen sie in Moodle bequem zwischen Ihren Dateien wählen können und sich mit verschiedenen Accounts authentifizieren können. Besonders im Vordergrund steht das unser Plugin möglichst einfach zu bedienen ist, um die Benutzerfreundlichkeit zu erhöhen.
 
 ## Vorgegebene Schnittstelle
 
@@ -26,6 +26,8 @@ Für Repository-Plugins müssen außerdem folgende Dateien implementiert werden:
 * **`lib.php`:** Hier wird eine Klasse `repository_sciebo extends repository` deklariert, die als Hauptaufgabe die Integration in den File Picker verwaltet.
 
 ## Implementierung
+
+Die WebDAV Zugriffe und der Ablauf des OAuth2.0 Verfahrens wird vom [oauth2owncloud_admin_tool](/moodle/technische-umsetzung/admin-tool.md) geregelt. Somit hat das *Repository* niemals Zugriff auf den Login-Status oder den *Access Token*. Falls Konfihurationen des *Admin Tool* fehlen ist das *Repository* nicht mehr verfügbar. 
 
 ### Implementierung der `lib.php`
 
