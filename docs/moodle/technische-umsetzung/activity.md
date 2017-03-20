@@ -1,4 +1,7 @@
-# Aktivität: `collaborative folders`
+<div><img alt="" align=right src="../../images/icon_mod_collaborativefolders.svg" width=20% position=right>
+<h1> Aktivität: <span class=code>collaborative folders</span></h1>
+</div>
+
 
 ## Zweck
 
