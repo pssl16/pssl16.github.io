@@ -280,7 +280,7 @@ App <a href="../../../owncloud/technische-umsetzung/oauth2-app/">oauth2</a> mit 
 sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert, in diesem Client umfasst.
 Zwar ist der Client auf einen OAuth 2.0 Protokollablauf in Zusammenarbeit mit der entsprechenden ownCloud App angepasst,
 jedoch könnte er in Zukunft auch als Ausgangspunkt genutzt werden, um ähnliche Schnittstellen zu erreichen.</p>
-<p>Im Wesentlichen implementiert dieses Plugin das folgende <a href="../../../#realisierte-szenarien">Integrationsszenario</a>:</p>
+<p>Im Wesentlichen implementiert dieses Plugin das folgende <a href="../../../#integrationsszenarien">Integrationsszenario</a>:</p>
 <blockquote>
 <p>Als <strong>Nutzer</strong> möchte ich OAuth 2.0 benutzen können, um Moodle Zugriff auf ownCloud zu gewähren.</p>
 </blockquote>
@@ -292,7 +292,7 @@ auch, müssen zunächst einige Standarddateien implementiert werden: </p>
 <ul>
 <li><strong><code>version.php</code>:</strong> Beschreibt die Versionsnummer des Plugins, die benötigte Moodle Version und Abhängigkeiten des Plugins.</li>
 <li><strong><code>access.php</code>:</strong> Legt die Berechtigungen für definierte Aktionen innerhalb des Plugins anhand von Nutzerrollen fest.</li>
-<li><strong><code>tool_oauth2sciebo.php</code>:</strong> Beinhaltet Sprachstrings für unterschiedliche Regionen und Sprachen, sodass definierte Strings,
+<li><strong><code>tool_oauth2owncloud.php</code>:</strong> Beinhaltet Sprachstrings für unterschiedliche Regionen und Sprachen, sodass definierte Strings,
 abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können.</li>
 </ul>
 <p>Zusätzlich zu den allgemeinen Plugindateien, sollte das Admin Tool auch mindestens noch eine Datei namens <code>settings.php</code>
@@ -306,7 +306,7 @@ db
   └── access.php                    # Enthält alle definierten Capabilities
 lang
   └── en
-      └── tool_oauth2sciebo.php     # Enthält Sprach-Strings (englisch)                                         
+      └── tool_oauth2owncloud.php   # Enthält Sprach-Strings (englisch)                                         
 pix                                 # Bilder und Icons
 tests                               # Test-Dateien und Generatoren
 settings.php                        # Einstellungs-Seite                
@@ -356,7 +356,7 @@ werden kann.</p>
 <p>Der Administrator kann die Einstellungen jederzeit ändern und damit die gewünschte Schnittstelle konfigurieren und gegebenenfalls anpassen.</p>
 <h3 id="oauth-20-client">OAuth 2.0 Client</h3>
 <p>Den funktionalen Kern des Plugins stellt der OAuth 2.0 ownCloud Client dar. Dieser befindet sich in Form der Klasse <code>owncloud</code> in der
-Datei <code>sciebo.php</code> in dem <code>classes</code> Ordner des Plugins. Diese Klasse steuert sowohl den Moodle-seitigen Protokollablauf
+Datei <code>owncloud.php</code> in dem <code>classes</code> Ordner des Plugins. Diese Klasse steuert sowohl den Moodle-seitigen Protokollablauf
 von OAuth 2.0, als auch den Verbindungsaufbau zu ownCloud mittels WebDAV und OCS Share API. Dadurch, dass <code>owncloud</code> von der im Moodle Core
 enthaltenen Klasse <code>oauth2_client</code> erbt, ist ein Großteil des Protokollablaufs bereits abgedeckt.
 Der Konstruktor der Klasse <code>oauth2_client</code> muss mit den <code>Client ID</code> und <code>Secret</code> Daten aufgerufen werden.
