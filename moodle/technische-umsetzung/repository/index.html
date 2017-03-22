@@ -261,10 +261,10 @@
 </blockquote>
 <p>Das Plugin soll dem Seiten-Administrator in Moodle ermöglichen, das Repository zu aktivieren und zu deaktivieren. Die Authentifizierung der Nutzer und der direkte Zugriff auf ownCloud Schnittstellen erfolgen über das <a href="../admin-tool/">Admin Tool</a> und dessen OAuth 2.0 ownCloud Client. Nachdem die Authentifizierung erfolgt ist, sollen die Nutzer bequem zwischen ihren Dateien wählen können. Besonders im Vordergrund steht dabei, dass das Plugin möglichst einfach zu bedienen ist, um die Benutzerfreundlichkeit zu erhöhen.</p>
 <h2 id="vorgegebene-schnittstelle">Vorgegebene Schnittstelle</h2>
-<p>Wie auch im <a href="../admin-tool/#vorgegebene-schnittstelle">Admin Tool</a> müssen zunächst einige Standardschnittstellen implementiert werden. Für Repository Plugins muss darüber hinaus noch eine Funktionsbibliothek hinzugefügt werden, welche die Schnittstelle zum Moodle Core darstellt und mit Hilfe dessen der <a href="https://docs.moodle.org/32/en/File_picker">File Picker</a> bespielt werden kann. Die dafür benötigten Methoden werden in in einer Klasse erfasst, welche von der Moodle-internen Klasse <code>repository</code> erbt. Diese enthält bereits alle Schnittstellen-Methoden, welche von Respository-Plugins implementiert, überschrieben oder erweitert werden können um die Daten so aufbereiten zu können, damit sie Moodle-intern weiterverarbeitet werden können. </p>
-<p>Die Funktionsbibliothek basiert auf de des bereits in Moodle implementierten <a href="https://docs.moodle.org/32/de/WebDAV_Repository">WebDAV Repository Plugin</a>, da in ownCloud ebenfalls eine WebDAV Schnittstelle für den Datentransfer zur Verfügung gestellt wird. Zusätzlich mussten die Methoden auf das Zusammenspiel mit dem Admin Tool angepasst werden, da statt direkter Anfragen an den WebDAV Client, bei Zugriffen auf ownCloud zum Admin Tool weitergeleitet werden muss.</p>
+<p>Wie auch im <a href="../admin-tool/#vorgegebene-schnittstelle">Admin Tool</a> müssen zunächst einige Standardschnittstellen implementiert werden. Für Repository Plugins muss darüber hinaus noch eine Funktionsbibliothek hinzugefügt werden, welche die Schnittstelle zum Moodle Core darstellt und mit Hilfe dessen der <a href="https://docs.moodle.org/32/en/File_picker">File Picker</a> bespielt werden kann. Die dafür benötigten Methoden werden in in einer Klasse erfasst, welche von der Moodle-internen Klasse <code>repository</code> erbt. Diese enthält bereits alle Schnittstellen-Methoden, welche von Respository-Plugins implementiert, überschrieben oder erweitert werden können um die Daten so aufbereiten zu können, dass sie Moodle-intern weiterverarbeitet werden können. </p>
+<p>Die Funktionsbibliothek basiert auf dem bereits in Moodle implementierten <a href="https://docs.moodle.org/32/de/WebDAV_Repository">WebDAV Repository Plugin</a>, da in ownCloud ebenfalls eine WebDAV Schnittstelle für den Datentransfer zur Verfügung gestellt wird. Zusätzlich mussten die Methoden auf das Zusammenspiel mit dem Admin Tool angepasst werden, da, statt direkter Anfragen an den WebDAV Client, bei Zugriffen auf ownCloud zum Admin Tool weitergeleitet werden muss.</p>
 <h2 id="implementierung">Implementierung</h2>
-<p>Die Funktionsbibliothek ist in der <code>lib.php</code> Datei implementiert. Da von der <code>repository</code> Klasse bereits alle Schnittstellen zum Moodle Core vorgegeben sind, werden im Folgenden die wichtigsten Funktionen der Bibliothek erläutert. Dabei liegt der Fokus vor Allem an der Kommunikation mit dem Admin Tool und der Aufbereitung der Daten.</p>
+<p>Die Funktionsbibliothek ist in der <code>lib.php</code> Datei implementiert. Da von der <code>repository</code> Klasse bereits alle Schnittstellen zum Moodle Core vorgegeben sind, werden im Folgenden die wichtigsten Funktionen der Bibliothek erläutert. Dabei liegt der Fokus vor allem auf der Kommunikation mit dem Admin Tool und der Aufbereitung der Daten.</p>
 <h3 id="konstruktor">Konstruktor</h3>
 <h4 id="initialisierung-des-clients">Initialisierung des Clients</h4>
 <p>Die Hauptaufgabe des Konstruktors ist die Initialisierung eines OAuth 2.0 ownCloud Clients. Wie im Admin Tool <a href="../admin-tool/#oauth-20-client">beschrieben</a>, benötigt der Client zur Initialisierung von der Anwendung, welche ihn benutzt, eine <code>callback URL</code>. Diese gibt an, wohin der Client weiterleiten soll, nachdem der Nutzer sich in ownCloud authentifiziert hat. Für Repository Plugins bietet Moodle bereits eine <code>callback URL</code> in der Datei <code>repository_callback.php</code> an. Im folgenden Codebeispiel wird dargestellt, wie der Client initialisiert werden muss.</p>
@@ -277,22 +277,22 @@
 $this-&gt;owncloud = new owncloud($returnurl);
 </code></pre>
 
-<p>Neben der ID des aktuellen Repositories, muss der URL auch ein <code>session key</code> angefügt werden, welche zur Wiederherstellung der Sitzung in Moodle gebraucht wird.</p>
+<p>Neben der ID des aktuellen Repositories, muss der URL auch ein <code>session key</code> angefügt werden, welcher zur Wiederherstellung der Sitzung in Moodle gebraucht wird.</p>
 <h4 id="datenprufung">Datenprüfung</h4>
-<p>Nachdem der Client initialisiert worden ist, muss geprüft werden, ob alle benötigten Clientdaten auf der Einstellungsseite des Admin Tools angegeben worden sind. Zu diesem Zweck wird eine im Client implementierte Funktion namens <code>check_data</code> verwendet. Sollten die Daten tatsächlich unvollständig sein, so wird bei Aufruf einer Aktivität, welche das Repository verwendet (zum Beispiel Datei oder URL), eine Fehlermeldung angezeigt und das Repository aus der Auswahl im File Picker entfernt, solange die Daten nicht eingegangen sind. Das Entfernen aus dem File Picker erfolgt durch die Schnittstellenmethode
+<p>Nachdem der Client initialisiert worden ist, muss geprüft werden, ob alle benötigten Clientdaten auf der Einstellungsseite des Admin Tools angegeben worden sind. Zu diesem Zweck wird eine im Client implementierte Funktion namens <code>check_data</code> verwendet. Sollten die Daten tatsächlich unvollständig sein, so wird bei Aufruf einer Aktivität, welche das Repository verwendet (zum Beispiel Datei oder URL), eine Fehlermeldung angezeigt und das Repository aus der Auswahl im File Picker entfernt, solange die Daten nicht eingegangen sind. Das Entfernen aus dem File Picker erfolgt durch die Schnittstellenmethode.
 <code>is_visible</code>.</p>
 <h3 id="login-status">Login-Status</h3>
-<p>Nach dem Aufruf des Konstruktors und des File Pickers, aus dem Moodle Core heraus, wird zunächst geprüft, ob der aktuelle Nutzer in ownCloud authentifiziert ist. An dieser Stelle wird diese Frage im Client beantwortet. Er prüft, ob der aktuelle Nutzer über ein valides Access Token verfügt. Sollte das zutreffen, wird dem Nutzer der Zugriff auf sein ownCloud Verzeichnis gewährt. Andernfalls wird die Methode <code>print_login</code> aufgerufen, welche einen Login-Link erstellt, der auf die <code>authorize</code> Schnittstelle in ownCloud verweist. Bei Betätigung des Links wird ein Popup-Fenster angezeigt, das den Nutzer zur Authentifizierung auffordert.</p>
-<p>Hat sich der Nutzer Authentifiziert, so wird das erhaltene Access Token fest für ihn gespeichert. Im Optimalfall muss sich ein Nutzer daher nur ein Mal authentifizieren um anschließend durchgehend Zugriff auf seine ownCloud Daten zu haben.</p>
+<p>Nach dem Aufruf des Konstruktors und des File Pickers, aus dem Moodle Core heraus, wird zunächst geprüft, ob der aktuelle Nutzer in ownCloud authentifiziert ist. An dieser Stelle wird die entsprechende Frage im Client beantwortet. Er prüft, ob der aktuelle Nutzer über ein valides Access Token verfügt. Sollte das zutreffen, wird dem Nutzer der Zugriff auf sein ownCloud Verzeichnis gewährt. Andernfalls wird die Methode <code>print_login</code> aufgerufen, welche einen Login-Link erstellt, der auf die <code>authorize</code> Schnittstelle in ownCloud verweist. Bei Betätigung des Links wird ein Popup-Fenster angezeigt, das den Nutzer zur Authentifizierung auffordert.</p>
+<p>Hat sich der Nutzer authentifiziert, so wird das erhaltene Access Token fest für ihn gespeichert. Im Optimalfall muss sich ein Nutzer daher nur ein Mal authentifizieren um anschließend durchgehend Zugriff auf seine ownCloud Daten zu haben.</p>
 <h3 id="dateiauswahl">Dateiauswahl</h3>
 <p>Ist ein Nutzer zum Zugriff auf ownCloud autorisiert, so werden ihm im File Picker alle Dateien und Ordner, welche sich in seinem persönlichen Verzeichnis befinden, zur Auswahl angeboten. Diese Dateiauswahl wird in der Methode <code>get_listing</code> implementiert.</p>
-<p>Als Rückgabe dieser Methode wird ein Array erwartet, welches spezifische Informationen zu allen verfügbaren Dateien und Ordner und dessen Darstellung enthält. Bis auf die Weiterleitung zum OAuth 2.0 ownCloud Client ist der Kern der Funktion identisch zu der des WebDAV Repositories aufgabaut, da dort, der WebDAV Schnittstelle geschuldet, die Selben Daten verarbeitet werden müssen.</p>
+<p>Als Rückgabe dieser Methode wird ein Array erwartet, welches spezifische Informationen zu allen verfügbaren Dateien und Ordner und dessen Darstellung enthält. Bis auf die Weiterleitung zum OAuth 2.0 ownCloud Client ist der Kern der Funktion identisch zu der des WebDAV Repositories aufgabaut, da dort, der WebDAV Schnittstelle geschuldet, die selben Daten verarbeitet werden müssen.</p>
 <p>Zu Beginn werden ansichtsspezifische Einstellungen getätigt:</p>
 <pre><code class="php">$ret['dynload'] = true;
 </code></pre>
 
 <ul>
-<li>Dies bestätigt dem File Picker, dass Inhalte dynamisch geladen werden. Das heißt das wenn z.B. ein Ordner angeklickt wird der File Picker einen Ajax-Request versendet um den Inhalt des Ordners anzeigen zu können.</li>
+<li>Dies bestätigt dem File Picker, dass Inhalte dynamisch geladen werden. Das heißt, dass wenn z.B. ein Ordner angeklickt wird, der File Picker einen Ajax-Request versendet um den Inhalt des Ordners anzeigen zu können.</li>
 </ul>
 <pre><code class="php">$ret['nosearch'] = true;
 </code></pre>
@@ -344,7 +344,7 @@ $this-&gt;owncloud = new owncloud($returnurl);
 <ul>
 <li>Falls es sich um eine Datei handelt wird zusätzlich zu den oben genannten Informationen noch die Dateigröße gespeichert.</li>
 </ul>
-<p>Diese Informationen werden für jede im aktuellen Verzeichnis befindliche Datei und jeden Ordner festgehalten. Anschließend werden die Ordner und danach alphabetisch sortiert die Dateien in einem Array gespeichert. Diese Array wird von der Funktion zurückgegeben und Moodle platziert anschließend die entsprechenden Einträge im File Picker.</p>
+<p>Diese Informationen werden für jede im aktuellen Verzeichnis befindliche Datei und jeden Ordner festgehalten. Anschließend werden erst die Ordner und danach die Dateien alphabetisch sortiert in einem Array gespeichert. Dieses Array wird von der Funktion zurückgegeben und Moodle platziert anschließend die entsprechenden Einträge im File Picker.</p>
 <h3 id="dateidownload">Dateidownload</h3>
 <p>Wenn ein Nutzer eine Datei aus dem File Picker zum Download ausgewählt hat, so wird dessen relativer Dateipfad an die Bibliotheksfunktion <code>get_file</code> übergeben. Nachdem für die Datei ein entsprechender Speicherplatz im Moodle Verzeichnis alloziert worden ist, wird die Anfrage nach der Datei an den Client weitergeleitet. Dieser wiederum leitet an einen WebDAV Client weiter, welcher die entsprechende Anfrage an ownCloud stellt. Falls die Operation erfolgreich ist, wird die Datei daraufhin aus ownCloud nach Moodle hochgeladen.</p>
 <h3 id="links-und-referenzen">Links und Referenzen</h3>
@@ -371,7 +371,7 @@ $this-&gt;owncloud = new owncloud($returnurl);
 
 <h3 id="sonstige-einstellungen">Sonstige Einstellungen</h3>
 <h4 id="unveranderbare-eigenschaften">Unveränderbare Eigenschaften</h4>
-<p>Für Repository Plugins gibt es einige Einstellungen die hart kodiert sind und sich nicht auf der Website anpassen lassen. Dazu gehören Folgende:</p>
+<p>Für Repository Plugins gibt es einige Einstellungen die hart kodiert sind und sich nicht auf der Website anpassen lassen. Dazu gehören folgende Einstellungen:</p>
 <ul>
 <li><strong><code>supported_returntypes</code>:</strong> mögliche Rückgabetypen sind:<ul>
 <li><code>FILE_INTERNAL</code>: Dateien dürfen im Moodle Dateien System hoch und runtergeladen werden.</li>
@@ -384,13 +384,13 @@ $this-&gt;owncloud = new owncloud($returnurl);
 <p>Alle Rückgabetypen werden von diesem Plugin unterstützt.</p>
 </blockquote>
 <ul>
-<li><strong><code>supported_filetypes</code>:</strong> hier wird spezifiziert welche Arten von Dateitypen unterstützt werden</li>
+<li><strong><code>supported_filetypes</code>:</strong> hier wird spezifiziert welche Arten von Dateitypen unterstützt werden.</li>
 </ul>
 <blockquote>
 <p>Alle Dateitypen werden momentan von dem Plugin unterstützt.</p>
 </blockquote>
 <h4 id="abhangigkeiten-in-der-versionphp">Abhängigkeiten in der <code>version.php</code></h4>
-<p>Um sicherzustellen, dass das Admin Tool bereits installiert und die damit zusammenhängende Abhängigkeit gewährleistet ist, muss diese Abhängigkeit im <code>owncloud</code> Repository dafiniert werden. Dies wird sichergestellt indem in der <code>version.php</code> eine <code>dependency</code> gesetzt wird:</p>
+<p>Um sicherzustellen, dass das Admin Tool bereits installiert und die damit zusammenhängende Abhängigkeit gewährleistet ist, muss diese Abhängigkeit im <code>owncloud</code> Repository definiert werden. Dies wird sichergestellt, indem in der <code>version.php</code> eine <code>dependency</code> gesetzt wird:</p>
 <pre><code class="php">$plugin-&gt;dependencies = array(
     'tool_oauth2sciebo' =&gt; 2017030905);
 </code></pre>
