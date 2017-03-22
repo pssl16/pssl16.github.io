@@ -5,18 +5,18 @@
 
 ## Zweck
 
-Das Aktivitäts Modul **Collaborative Folders** soll Lehrenden die Möglichkeit geben, für Studierende oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten zu erstellen.
+Das Aktivitätsmodul **Collaborative Folders** soll Lehrenden die Möglichkeit geben, für Studierende oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten zu erstellen.
 Sowohl die Autorisierung und Authentifizierung, als auch der Zugriff auf ownCloud Schnittstellen erfolgen über das `oauth2owncloud` [Admin Tool](admin-tool/). Somit implementiert dieses Plugin das folgende Integrationsszenario:
 
 > Als **Lehrender** möchte ich Studierenden oder Gruppen von Studierenden Ordner für kollaboratives Arbeiten bereitstellen.
 
 Dabei soll der Lehrende beliebig viele Instanzen der Aktivität erstellen können bei denen er jeweils selbst entscheiden kann, ob er Ordner für einzelne Gruppen freigibt und ob er selbst auf die erstellten kollaborativen Ordner Zugriff haben möchte. Zusätzlich sollen die Teilnehmer der Aktivität jeweils selbst über den Namen des Ordners und dessen Freigabe für sie entscheiden können.
 
-Mit dieser Aktivität kann der Lehrende Kursteilnehmer ermutigen kollaborativ zu arbeiten. Zusätzlich hat er die Option die laufende Arbeit zu betreuen, indem er sich selbst Zugriff auf die Ordner gewährt. Somit haben kursteilnehmer insgesamt weniger Organisationsaufwand und werden bei ihrer Gruppenarbeit unterstützt.
+Mit dieser Aktivität kann der Lehrende Kursteilnehmer ermutigen kollaborativ zu arbeiten. Zusätzlich hat er die Option die laufende Arbeit zu betreuen, indem er sich selbst Zugriff auf die Ordner gewährt. Somit haben Kursteilnehmer insgesamt weniger Organisationsaufwand und werden bei ihrer Gruppenarbeit unterstützt.
 
 ## Speicherort und Zugriff
 
-Der zur Lagerung der erstellten kollaborativen Ordner genutzte Speicherplatz sollte neutral und unabhängig von einzelnen, Nutzer-spezifischen ownCloud Instanzen sein. Diese Vorüberlegung geht aus den folgenden Gründen hervor:
+Der zur Lagerung der erstellten kollaborativen Ordner genutzte Speicherplatz sollte neutral und unabhängig von einzelnen, nutzerspezifischen ownCloud Instanzen sein. Diese Vorüberlegung geht aus den folgenden Gründen hervor:
 
 * Der **Lehrende** muss nicht zwingend Zugriff auf die Ordner haben.
 	* Seine persönliche Instanz ist damit ungeeignet.
@@ -25,11 +25,11 @@ Der zur Lagerung der erstellten kollaborativen Ordner genutzte Speicherplatz sol
 * Die gespeicherten Daten sollen **langfristig** erhalten bleiben.
 	* Dies ist besonders wichtig, da die Ordner, obgleich mit den Nutzern geteilt, von dem Zustand des **geteilten Ordners** abhängig sind.
 
-Daraus ergibt sich, dass für die Speicherung der kollaborativen Ordner zunächst ein neutraler Speicherort angegeben werden muss. Dieser Speicherort muss sich auf dem selben ownCloud Server befinden um das Teilen von Inhalten zwischen diesem Speicherort und den Ordnernutzern zu gewährleisten. Dabei werden die nötigen [Server-Angaben](admin-tool/#eingabemaske) dem OAuth 2.0 ownCloud Client entnommen, welcher auch für Nutzer-seitige Zugriffe verantwortlich ist. 
+Daraus ergibt sich, dass für die Speicherung der kollaborativen Ordner zunächst ein neutraler Speicherort angegeben werden muss. Dieser Speicherort muss sich auf dem selben ownCloud Server befinden um das Teilen von Inhalten zwischen diesem Speicherort und den Ordnernutzern zu gewährleisten. Dabei werden die nötigen [Server-Angaben](admin-tool/#eingabemaske) dem OAuth 2.0 ownCloud Client entnommen, welcher auch für nutzerseitige Zugriffe verantwortlich ist. 
 
 Bevor von einem Lehrenden ein kollaborativer Ordner erstellt werden kann, muss der Administrator zunächst für das Plugin global eben diesen neutralen Speicherort in Form eines Nutzer-Accounts hinterlegen. In dessen Namen werden anschließend alle kollaborativen Ordner erstellt und mit den entsprechenden Nutzern geteilt. Im Folgenden wird dieser Nutzer-Account als **technischer Nuter** bezeichnet.
 
-Um nun auf die erstellen Ordner zugreifen zu können, müssen diese von dem technischen Nutzer mit den Personen geteilt werden, welche zum Zugriff zuvor berechtigt worden sind. Dabei kann es sich um alle Kursteilnehmer oder nur spezifische Gruppen, einschließlch oder ausschließlich dem Lehrenden, handeln. Einerseits bringt dies den Vorteil, dass kein Speicherplatz in den persönlichen ownCloud Instanzen für die Gruppenordner gebraucht wird; andererseits birgt es aber auch den Nachteil, dass der geteilte Ordner gelöscht werden kann, ohne dass die Nutzer jeweils eine Kopie der gespeicherten Daten erhalten. Daher ist es notwendig, dass der technische Nutzer die Daten über einen längeren Zeitraum hinweg sichern kann.
+Um nun auf die erstellten Ordner zugreifen zu können, müssen diese von dem technischen Nutzer mit den Personen geteilt werden, welche zum Zugriff zuvor berechtigt worden sind. Dabei kann es sich um alle Kursteilnehmer oder nur spezifische Gruppen, einschließlch oder ausschließlich dem Lehrenden, handeln. Einerseits bringt dies den Vorteil, dass kein Speicherplatz in den persönlichen ownCloud Instanzen für die Gruppenordner gebraucht wird; andererseits birgt es aber auch den Nachteil, dass der geteilte Ordner gelöscht werden kann, ohne dass die Nutzer jeweils eine Kopie der gespeicherten Daten erhalten. Daher ist es notwendig, dass der technische Nutzer die Daten über einen längeren Zeitraum hinweg sichern kann.
 
 ## Vorgegebene Schnittstelle
 
@@ -109,13 +109,13 @@ Die Variable `$owncloud` stellt in dem Code den Client dar. Falls zuvor der Logo
 ### Hinzufügen einer Instanz
 
 Die Schnittstelle in Moodle für das [Erstellungsformular](https://docs.moodle.org/dev/Activity_modules#mod_form.php) einer Aktivität ist sehr ausführlich. Den Standardeinstellungen wurden nur ein Textfeld zur Eingabe des gewünschten, angezeigten Namens der Aktivität und eine Checkbox hinzugefügt, die festlegt, ob der Lehrende Zugriff auf die Ordner haben soll. 
-Unter den bereits vorgegebenen Einstellungen für die Erstellung einer Instanz der Aktivität, wird vor allem von dem Moodle-internen [Gruppenmodus](https://docs.moodle.org/32/en/Groups#Group_modes) in der `collaborativefolders` Aktivität Gebrauch gemacht. Anhand des eingestellten Gruppenmodus wird in dem Plugin bestimmt, welche Ordner erstellt werden müssen und wer zum Zugriff zu der Aktivität und damit den kollaborativen Ordnern haben soll.
+Unter den bereits vorgegebenen Einstellungen für die Erstellung einer Instanz der Aktivität, wird vor allem von dem Moodle-internen [Gruppenmodus](https://docs.moodle.org/32/en/Groups#Group_modes) in der `collaborativefolders` Aktivität Gebrauch gemacht. Anhand des eingestellten Gruppenmodus wird in dem Plugin bestimmt, welche Ordner erstellt werden müssen und wer Zugriff zu der Aktivität und damit den kollaborativen Ordnern haben soll.
 
 Die vorgenommenen Einstellungen werden nach dem Hinzufügen der Instanz durch die Methode `add_instance` der `lib.php` in einer für die Aktivität vorgesehenen Datenbanktabelle hinterlegt.
 
 ### Erstellen von Ordnern
 
-Für jede Instanz von `collaborativefolders` muss zunächst ein Hauptordner erstellt werden. Dieser fasst alle, anschließend erstellten, Gruppenordner, falls der Gruppenmodus aktiviert worden ist. Sollte das nicht der Fall sein, ist dieser Hauptordner der einzige kollaborative Ordner, der erstellt wird und mit allen Kursteilnehmern geteilt werden muss. Unabhängig davon, ob der Gruppenmodus aktiv ist, wird dieser Ordner, falls vom Lehrenden gewünscht, für ihn freigegeben um die Arbeit in den/dem kollaborativen Ordner/-n zu beaufsichtigen.
+Für jede Instanz von `collaborativefolders` muss zunächst ein Hauptordner erstellt werden. Dieser beinhaltet alle, anschließend erstellten, Gruppenordner, falls der Gruppenmodus aktiviert worden ist. Sollte das nicht der Fall sein, ist dieser Hauptordner der einzige kollaborative Ordner, der erstellt wird und mit allen Kursteilnehmern geteilt werden muss. Unabhängig davon, ob der Gruppenmodus aktiv ist, wird dieser Ordner, falls vom Lehrenden gewünscht, für ihn freigegeben um die Arbeit in den/dem kollaborativen Ordner/-n zu beaufsichtigen.
 
 Zusätzlich wird für jede teilnehmende Gruppe ebenfalls ein Ordner erstellt, vorausgesetzt der Gruppenmodus ist aktiv. 
 
@@ -167,7 +167,7 @@ Sobald alle teilnehmenden Gruppen ermittelt worden sind, wird ein [Ad Hoc Task](
 
 #### Ad Hoc Task
 
-Der aufgerufene Ad Hoc Task befindet sich in der Datei `classes/task/collaborativefolders_create.php`. Beim Aufruf erhält er bereits ein Array mit allen zu erstellenden Ordnernamen. Die Aufgabe des Tasks ist nun die Ordner einzeln zu erstellen. Zu diesem Zweck wird mit jedem Ordnernamen die Methode `handle_folder` der Klasse [`owncloud_access`](activity/#zugriff-auf-owncloud) aufgerufen. Das folgende Codebeispiel zeigt die Schleife, welche dazu benötigt wurde.
+Der aufgerufene Ad Hoc Task befindet sich in der Datei `classes/task/collaborativefolders_create.php`. Beim Aufruf erhält er bereits ein Array mit allen zu erstellenden Ordnernamen. Die Aufgabe des Tasks ist es nun die Ordner einzeln zu erstellen. Zu diesem Zweck wird mit jedem Ordnernamen die Methode `handle_folder` der Klasse [`owncloud_access`](activity/#zugriff-auf-owncloud) aufgerufen. Das folgende Codebeispiel zeigt die Schleife, welche dazu benötigt wurde.
 
 Dieser liest aus den Daten, die er übergeben bekommt, alle Ordner aus, die erstellt werden müssen.
 ``` php
@@ -205,7 +205,7 @@ Befindet sich der Studierende, welcher die Aktivität aufruft, in einer der Grup
 
 2. **Die Ordner sind erstellt und ein Name muss erfragt werden**
 
-    Jedem Nutzer steht es frei, den kollaborativen Ordner nach belieben zu bennenen. Das wird dadurch ermöglicht, dass der Ordnername seperat für jeden Nutzer geändert wird ohne den (technischen) Namen des geteilten Ordners beim technischen Nutzer zu ändern. Der gewünschte Name wird mittels eines kurzen Formulares abgefragt, falls nicht bereits ein Name zu dem betreffenden Nutzer und der aktuellen Instanz in der Datenbank hinterlegt worden ist.
+    Jedem Nutzer steht es frei, den kollaborativen Ordner nach Belieben zu bennenen. Das wird dadurch ermöglicht, dass der Ordnername separat für jeden Nutzer geändert wird, ohne den (technischen) Namen des geteilten Ordners beim technischen Nutzer zu ändern. Der gewünschte Name wird mittels eines kurzen Formulares abgefragt, falls nicht bereits ein Name zu dem betreffenden Nutzer und der aktuellen Instanz in der Datenbank hinterlegt worden ist.
 
 3. **Ein Name wurde hinterlegt**
 
@@ -228,6 +228,6 @@ Befindet sich der Studierende, welcher die Aktivität aufruft, in einer der Grup
 #### Besonderheiten für Lehrende
 
 Unabhängig davon, ob der Lehrende die kollaborativen Ordner für sich selbst und seine Kollegen freigegeben hat, wird ihm, vorausgesetzt der Gruppenmodus ist aktiv, eine tabellarische Auflistung aller teilnehmenden Gruppen, inklusive Gruppennamen, Gruppen ID und Teilnehmern, angezeigt. Diese dient einerseits der Übersichtlichkeit und andererseits der Identifizierung der freigegebenen Gruppenordner. Denn in dem Überordner, welcher für den Lehrenden freigegeben wird, sind alle kollaborativen Gruppenordner nach der jeweiligen Gruppen ID benannt. 
-Falls der Lehrende sich selbst Zugriff auf den Überordner gewährt hat, so wird ihm im Anschluss die selbe Ansicht präsentiert, wie auch den Studierenden.
+Falls der Lehrende sich selbst Zugriff auf den Überordner gewährt hat, so wird ihm im Anschluss dieselbe Ansicht präsentiert, wie auch den Studierenden.
 
 ## Tests und Continuous Integration
