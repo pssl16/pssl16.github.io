@@ -4,7 +4,7 @@
 
 Da die Anpassungen durch den Pull Request [owncloud/core#26742](https://github.com/owncloud/core/pull/26742) erst kürzlich in den ownCloud Core aufgenommen wurden, sind sie noch in keiner Hauptversion enthalten. Erst die [in Kürze erscheinenden](https://github.com/owncloud/core/wiki/Maintenance-and-Release-Schedule) Versionen 9.1.5 und 10.0 werden die Änderungen enthalten.
 
-Um die OAuth 2.0 in ownCloud schon jetzt nutzen zu können, muss daher der aktuelle Stand aus dem [`core` Repository](https://github.com/owncloud/core) heruntergeladen werden:
+Um OAuth 2.0 in ownCloud schon jetzt nutzen zu können, muss daher der aktuelle Stand aus dem [`core` Repository](https://github.com/owncloud/core) heruntergeladen werden:
 
 ```nohighlight
 $ git clone https://github.com/owncloud/core.git

@@ -30,8 +30,8 @@ abhängig von der jeweiligen Sprache, dynamisch angezeigt werden können.
 
 Zusätzlich zu den allgemeinen Plugindateien, sollte das Admin Tool auch mindestens noch eine Datei namens `settings.php`
 beinhalten. Diese umfasst alle Einstellungen, die für das Admin Tool geltend dem Administrator der Moodle Instanz zur 
-Verfügung gestellt werden sollen. Nach der Eingabe, wird diese Konfiguration Moodle-intern gespeichert und kann von dem
-Client, wenn nötig abgerufen werden.
+Verfügung gestellt werden sollen. Nach der Eingabe wird diese Konfiguration Moodle-intern gespeichert und kann von dem
+Client, wenn nötig, abgerufen werden.
 
 Insgesamt ergibt sich folgende Struktur von Ordnern und Dateien, die mindestens für die Implementierung des benötigten
 Admin Tools notwendig ist:
@@ -63,8 +63,8 @@ gespeichert werden können, um sie anschließend von dem Client aus, und damit a
 
 Um den OAuth 2.0 Protokollablauf zu ermöglichen, müssen folgende Daten im Vorfeld erfasst werden:
 
-* **`Client ID`:** wird in ownCloud generiert und dient der Identifizierung eines regstrierten Clients.
-* **`Secret`:** wird ebenfalls in ownCloud generiert und zur Authentifizierung verwendet.
+* **`Client ID`:** Wird in ownCloud generiert und dient der Identifizierung eines regstrierten Clients.
+* **`Secret`:** Wird ebenfalls in ownCloud generiert und zur Authentifizierung verwendet.
 
 Beide Datensätze sind Strings bestehend aus Buchstaben und Zahlen. Daher eignet sich für beide ein Textfeld, welches ausschließlich
 alphanumerische Werte erwartet, zur Eingabe.
@@ -72,18 +72,18 @@ alphanumerische Werte erwartet, zur Eingabe.
 Zur Nutzung des WebDAV Clients werden darüber hinaus folgende Daten benötigt:
 
 * **`Server Addresse`:** Url über die der ownCloud Server erreicht werden kann.
-* **`Server Pfad`:** der angehangene Pfad, über den die WebDAV Schnittstelle erreicht werden kann.
+* **`Server Pfad`:** Der angehangene Pfad, über den die WebDAV Schnittstelle erreicht werden kann.
 * **`Port`:** Port des WebDAV-Servers.
 * **`Protokoll`:** Wahl zwischen HTTP und HTTPS.
 
-Während die Wahl des Protokolls mittels einer Auswahl aus vorhandenen Optionen abgeboten werden kann, müssen die restlichen Werte
+Während die Wahl des Protokolls mittels einer Auswahl aus vorhandenen Optionen angeboten werden kann, müssen die restlichen Werte
 in einem Textfeld erfragt werden. Auch in diesem Fall werden die Variablen nach den zu erwartenden Werten gesäubert. Darüber hinaus
 werden alle Eingaben, bis auf den Port, als notwendig angesehen.
 
 #### Settings
  
 Die nun benötigten Eingabedaten müssen in Moodle auf der Einstellungsseite des Plugins erfragt und entprechend gespeichert werden.
-Um dies zu bewerkstelligen wird in der settings.php jedes Eingabefeld einzeln definiert. In dem folgenden Beispiel wird das
+Um dies zu bewerkstelligen wird in der `settings.php` jedes Eingabefeld einzeln definiert. In dem folgenden Beispiel wird das
 Eingabfeld für die Client ID beschrieben:
 
 ```php
@@ -95,7 +95,7 @@ $settings->add($setting);
 
 Die Definition des Feldes beinhaltet den Ort, an dem die Eingabe gespeichert wird und dementsprechend wiedergefunden werden kann.
 In diesem Fall wird die Eingabe unter den Plugin-spezifischen Einstellungen hinterlegt. Weiterhin werden der Name des Feldes
-(so wie er dem Nutzer angezeigt wird), ein Beschreibungstext und Standardwert (in diesem Fall bleibt es leer) für das Feld angegeben.
+(so wie er dem Nutzer angezeigt wird), ein Beschreibungstext und ein Standardwert (in diesem Fall bleibt es leer) für das Feld angegeben.
 Zuletzt werden der Typ (in diesem Fall alphanumerisch) und die Länge der erwarteten Eingabe festgelegt.
 
 Die Einstellungsseite wird anschließend in die Kategorie der Admin Tools eingeordnet, wo sie von dem Seitenadministrator wiedergefunden
@@ -124,7 +124,7 @@ public function __construct($callback) {
     parent::__construct($clientid, $secret, $callback, '');
 ```
 
-Zu diesem Zweck wird die Methode `get_config` verwendet. Sie gibt den für ein Plugin und einen zuvor einzigartig definierten
+Zu diesem Zweck wird die Methode `get_config` verwendet. Sie gibt für ein Plugin und einen zuvor einzigartig definierten
 Namen aus den Einstellungen heraus den dazu gespeicherten Wert.
 Darüber hinaus muss eine `callback URL` angefügt werden, die den Pfad angibt, an den nach der Authentifizierung und Authorisierung
 der Nutzer weitergeleitet werden soll. Dieser wird allerdings extern in den Anwendungen erzeugt, die den `owncloud` Client benutzen.
@@ -146,7 +146,7 @@ protected function token_url() {
 }
 ```
 
-Hierfür werden die beiden Pfade aus der Serveraddresse, dem Port und dem Serverpfad berechnet, da der Endpunkt für die oauth2 App in
+Hierfür werden die beiden Pfade aus der Serveraddresse, dem Port und dem Serverpfad berechnet, da der Endpunkt für die `oauth2` App in
 ownCloud gleich bleibt. Die benötigten Eingabdaten werden, soweit angegeben, der Eingabemaske entnommen.
 
 ## Erweiterungen der Schnittstellen
@@ -257,7 +257,7 @@ WebDAV Schnittstelle verwendet werde konnte.
 Der Moodle-interne Client bietet eine große Auswahl an WebDAV Methoden, welche zum Großteil erfolgreichen Datentransfer mit
 ownCloud ermöglichen. Der Nachteil des Client besteht darin, dass er ausschließlich mit [Basic Auth](https://tools.ietf.org/html/rfc2617) ausgestattet ist und somit
 bei jedem Zugriff Nutzername und Passwort des ownCloud Accounts versandt werden muss. Um eine passwortlose Authentifizierung
-zu ermöglichen, musste der WebDAV Client mittles OAuth 2.0 abgesichert werden.
+zu ermöglichen, musste der WebDAV Client mittels OAuth 2.0 abgesichert werden.
 
 In der Umsetzung wurde der Client mit einem Access Token ausgestattet, welches bei jedem Zugriff, innerhalb eines Bearer
 Authentication Headers, an ownCloud mitversandt wird:
@@ -306,7 +306,7 @@ Headers nun auch ein von ownCloud erhaltenes Access Token. Somit ist auch diese 
 
 Nachdem die nötigen Schnittstellen individuell implementiert worden sind, können sie genutzt werden um den von OAuth 2.0 spezifizierten
 Protokollablauf Moodle-seitig durchzuführen. Um beispielsweise über eine WebDAV Anfrage Daten aus einer ownCloud Instanz 
-beschaffen zu können, müssen im Wesentlich folgende Schritte in Moodle unternommen werden, nachdem die Eingabemaske korrekt 
+beschaffen zu können, müssen im Wesentlichen folgende Schritte in Moodle unternommen werden, nachdem die Eingabemaske korrekt 
 ausgefüllt worden ist:
 
 1. Anfrage auf **Authentifizierung und Autorisierung**
@@ -328,7 +328,7 @@ welche zur Bearbeitung der Autorisierungsanfrage nötig sind, angefügt. Währen
 stets gleich bleiben, beziehungsweise von der vorgenommenen Konfiguration abhängig sind, wird der `state` Moodle-intern
 von der Anwendung gestellt, welche den Client benutzt. Der `state` Parameter gibt an, wohin in Moodle weitergeleitet werden
 soll, nachdem eine erfolgreiche Anfrage gestellt worden ist. Somit dient `state` in Moodle der Wiederherstellung des Standes,
-an dem der Nutzer sich vor der Anfrage befand. Im Fall des ownCloud Repository Plugins wird, wie im folgenden gezeigt,
+an dem der Nutzer sich vor der Anfrage befand. Im Fall des ownCloud Repository Plugins wird, wie im Folgenden gezeigt,
 auf eine Moodle-interne Adresse verwiesen, die den Status eines Repositories in dem File Picker wiederherstellt.
 
 ```php

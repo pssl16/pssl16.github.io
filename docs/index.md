@@ -29,7 +29,7 @@ Für das Projekt wurde das OAuth 2.0 Verfahren ausgewählt, da mit ihm ein stand
 Autorisierung vorliegt, das sich gut in bestehende Applikationen auf Basis vieler verschiedener Programmiersprachen einfügen lässt und damit keine weiteren Anforderungen an die Infrastruktur stellt.
 
 ## Integrationsszenarien
-Zu Beginn wurden verschiedene Integrationsszenarien zwischen den beiden Systemen entwickelt. Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementierungsaufwand priorisiert. Als Integrationsrichtung konzentrierte wir uns dabei auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.
+Zu Beginn wurden verschiedene Integrationsszenarien zwischen den beiden Systemen entwickelt. Diese haben wir nach Schwierigkeit, Interesse, Benutzbarkeit und Implementierungsaufwand priorisiert. Als Integrationsrichtung konzentrierten wir uns dabei auf die Richtung Learnweb <i class="fa fa-long-arrow-right" aria-hidden="true"></i> sciebo.
 
 Es wurden folgende Integrationsszenarien realisiert.
 

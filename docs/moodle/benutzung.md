@@ -1,10 +1,10 @@
 # Benutzung
 
-Plugins können in Moodle zusätzlich zum *moodle core* installiert werden. Im Folgenden wird beschrieben, wie die Plugins heruntergeladen werden können und anschließend in den einzelnen Plugins die richtigen Einstellungen getätigt können. 
+Plugins können in Moodle zusätzlich zum *moodle core* installiert werden. Im Folgenden wird beschrieben, wie die Plugins heruntergeladen werden können und anschließend in den einzelnen Plugins die richtigen Einstellungen getätigt werden können. 
 Zusätzlich werden verschiedene Ansichten der Plugins dargestellt um die Funktionalitäten der jeweiligen Plugins zu verdeutlichen.
 
 ## Download
-Die Plugins sind zurzeit in einem öffentlichen *GitHub repository* verfügbar.
+Die Plugins sind zurzeit in einem öffentlichen [GitHub Repository](https://github.com/pssl16/) verfügbar.
 Von dort aus können die Plugins auf zwei Wegen heruntergeladen werden.
 
 1. Als Zip-Datei
@@ -19,7 +19,7 @@ Von dort aus können die Plugins auf zwei Wegen heruntergeladen werden.
     ```
     Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nur noch umbenannt werden. Das letzte Wort des Ordners ist der Name des Plugins und muss auch der Name des Ordners sein.
 
-Der Vorteil des zweiten Weges ist, dass mittels `git pull` Änderung schnell nachgepflegt können. Bei Unerfahrenheit mit *git* sollte jedoch lieber der erste Weg gewählt werden.
+Der Vorteil des zweiten Weges ist, dass mittels `git pull` Änderungen schnell nachgepflegt können. Bei Unerfahrenheit mit *git* sollte jedoch lieber der erste Weg gewählt werden.
 
 Nach Herunterladen und richtiger Platzierung der Plugins werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
 Um die Plugins zu benutzen wird in jedem Fall das `oauth2owncloud_admin_tool`benötigt , alle anderen Plugins lassen sich nicht ohne dieses installieren. Dies ist bei der Reihenfolge der Installation bei Installation der Plugins als ZIP-Ordner zu beachten.
@@ -44,7 +44,7 @@ Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownClo
 
 Nun werden die Einstellungen für den WebDAV Zugriff festgelegt.
 Als erstes wird die Adresse des ownCloud Servers angegeben.
-Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben in ownCloud endet diese typischerweise mit `remote.php/webdav/`.
+Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben, in ownCloud endet diese typischerweise mit `remote.php/webdav/`.
 Als Protokolltyp kann *http* oder *https* angegeben werden. Wird keine Angabe gemacht, so wird von *https* ausgegangen.
 Als letztes kann der Port angegeben werden.
 
@@ -71,7 +71,7 @@ Im roten Kasten sieht der Nutzer Buttons um den Inhalt neu zu laden und sich aus
 
 ### Einstellungen
 #### Admin Einstellungen
-Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner, die erstellt werden, gespeichert. Um den Nutzer festzulegen muss in `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth 2.0 Protokolls authentifiziert werden. Über einen Login Button muss sich in ownCloud authentifiziert werden. Bei nicht erfolgter Weiterleitung sind die Einstellungen im Admin tool oauth2owncloud fehlerhaft und diese sind zu überprüfen. Es ist darauf zu achten, dass sich nicht mit dem regulären privaten Account, sondern mit dem des technischen Nutzers angemeldet wird.
+Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner, die erstellt werden, gespeichert. Um den Nutzer festzulegen muss in `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth 2.0 Protokolls authentifiziert werden. Über einen Login Button muss sich in ownCloud authentifiziert werden. Bei nicht erfolgter Weiterleitung sind die Einstellungen im Admin tool `oauth2owncloud` fehlerhaft und diese sind zu überprüfen. Es ist darauf zu achten, dass sich nicht mit dem regulären privaten Account, sondern mit dem des technischen Nutzers angemeldet wird.
 
 #### Sicht des Lehrenden
 Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden, ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen  von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.

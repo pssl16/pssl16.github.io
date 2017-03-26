@@ -358,8 +358,9 @@ Ein Beispiel für den Rückgabetyp `TemplateResponse` und gibt die Funktion `aut
  * @param string $redirect_uri The redirection URI.
  * @param string $state The state.
  *
- * @return TemplateResponse|RedirectResponse The authorize view or a
- * redirection to the ownCloud main page.
+ * @return TemplateResponse The authorize view or the
+ * authorize-error view with a redirection to the
+ * default page URL.
  *
  * @NoAdminRequired
  * @NoCSRFRequired
@@ -739,7 +740,7 @@ style('oauth2', 'settings-admin');
 </div>
 ```
 
-In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Zu Beginn werden mit den Funktionen `script` und `style` zusätzliche JavaScript- bzw. CSS-Dateien aus den Verzeichnissen `js` bzw. `css` geladen. Durch eine `for`-Schleife wird dann für jeden Client aus dem Parameter `clients` ein Tabelleneintrag angezeigt. Sollten noch keine Clients registriert worden sein, sorgt die `if`-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. Durch Nutzung der Funktion `t` der globalen Variable `$l` können die Strings auch [in andere Sprachen Übersetzt werden](https://doc.owncloud.org/server/9.1/developer_manual/app/l10n.html#templates). Im Zuge des Transfers der App in die ownCloud GitHub-Organisation wurde Transifex als Übersetzungsplattform integriert. Dies bedeutet, dass nun im `l1on`-Verzeichnis der OAuth 2.0 App Übersetzungen der originalen (von uns erstellten) englischen Strings aus den Templates von der Transifex-Community hinzugefügt und geändert werden können. Dadurch liegen bereits zum aktuellen Zeitpunkt über 15 Übersetzungen der App vor. Diese werden je nach Spracheinstellung der ownCloud-Instanz angezeigt. Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion `addClient` im `SettingsController` aus. Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion `deleteClient` im `SettingsController` auslöst.
+In diesem Template wird eine Tabelle mit den registrierten Clients angezeigt. Zu Beginn werden mit den Funktionen `script` und `style` zusätzliche JavaScript- bzw. CSS-Dateien aus den Verzeichnissen `js` bzw. `css` geladen. Durch eine `for`-Schleife wird dann für jeden Client aus dem Parameter `clients` ein Tabelleneintrag angezeigt. Sollten noch keine Clients registriert worden sein, sorgt die `if`-Anweisung dafür, dass die Meldung „No clients registered“ angezeigt wird. Durch Nutzung der Funktion `t` der globalen Variable `$l` können die Strings auch [in andere Sprachen übersetzt werden](https://doc.owncloud.org/server/9.1/developer_manual/app/l10n.html#templates). Im Zuge des Transfers der App in die ownCloud GitHub-Organisation wurde Transifex als Übersetzungsplattform integriert. Dies bedeutet, dass nun im `l1on`-Verzeichnis der OAuth 2.0 App Übersetzungen der originalen (von uns erstellten) englischen Strings aus den Templates von der Transifex-Community hinzugefügt und geändert werden können. Dadurch liegen bereits zum aktuellen Zeitpunkt über 15 Übersetzungen der App vor. Diese werden je nach Spracheinstellung der ownCloud-Instanz angezeigt. Des Weiteren gibt es unter der Tabelle ein Formular für das Hinzufügen von Clients. Die in dem Formular angegebene Aktion löst die Funktion `addClient` im `SettingsController` aus. Analog dazu gibt es für jeden Tabelleneintrag ein Formular zum Löschen des Eintrags, das die Funktion `deleteClient` im `SettingsController` auslöst.
 
 ### Hooks
 
@@ -818,7 +819,7 @@ Als Log-Level wurde `info` gewählt.
 
 ### Authentifizierungslogik
 
-Nach der Implementierung des OAuth 2.0 Protokolls musste die Authentifizierung von WebDAV und von ownCloud APIs (für die Nutzung der OCS Share API) Erweitert werden. Diese Erweiterung basiert auf den durchgeführten [Core Anpassungen](core-anpassungen).
+Nach der Implementierung des OAuth 2.0 Protokolls musste die Authentifizierung von WebDAV und von ownCloud APIs (für die Nutzung der OCS Share API) erweitert werden. Diese Erweiterung basiert auf den durchgeführten [Core Anpassungen](core-anpassungen).
 
 Zunächst sahen wir uns die Umsetzung der bestehenden Basic Authentication in der `dav` App an. Dabei stellten wir fest, dass sabre den [Austausch des Authentifizierungsmechanismus](http://sabre.io/dav/authentication/) durch Implementierung eines Interfaces bietet. Für unser Szenario war das Interface `AbstractBearer` relevant, da die Access Tokens aus dem Authorization Code Flow des OAuth 2.0 Protokolls für Bearer Authentication genutzt werden. Dazu haben wir die Funktion `validateBearerToken` in der Klasse `OAuth2` implementieren. Die Logik und das Session-Management lehnen sich stark an die bestehende Implementierung der Basic Authentication an. Für die Authentifizierung einer Anfrage wird hier jedoch auf `AuthModule`s zurückgegriffen.
 

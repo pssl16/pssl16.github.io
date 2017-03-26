@@ -5,7 +5,7 @@
 
 ## Zweck
 
-Der Plugintyp [Repository](https://docs.moodle.org/dev/Repository_plugins) wird in Moodle unter anderem verwendet, um Nutzern die Möglichkeit zu schaffen Zugang zu Dateien aus externen Quellen zu erhalten. Das Repository Plugin `ownCloud` kann somit folgende [Integrationsszenarien] realisieren:
+Der Plugintyp [Repository](https://docs.moodle.org/dev/Repository_plugins) wird in Moodle unter anderem verwendet, um Nutzern die Möglichkeit zu schaffen Zugang zu Dateien aus externen Quellen zu erhalten. Das Repository Plugin `ownCloud` kann somit folgende [Integrationsszenarien](https://pssl16.github.io/#integrationsszenarien) realisieren:
 
 > Als **Nutzer** möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz **hochladen**.
 
@@ -15,7 +15,7 @@ Das Plugin soll dem Seiten-Administrator in Moodle ermöglichen, das Repository 
 
 ## Vorgegebene Schnittstelle
 
-Wie auch im [Admin Tool](admin-tool/#vorgegebene-schnittstelle) müssen zunächst einige Standardschnittstellen implementiert werden. Für Repository Plugins muss darüber hinaus noch eine Funktionsbibliothek hinzugefügt werden, welche die Schnittstelle zum Moodle Core darstellt und mit Hilfe dessen der [File Picker](https://docs.moodle.org/32/en/File_picker) bespielt werden kann. Die dafür benötigten Methoden werden in in einer Klasse erfasst, welche von der Moodle-internen Klasse `repository` erbt. Diese enthält bereits alle Schnittstellen-Methoden, welche von Respository-Plugins implementiert, überschrieben oder erweitert werden können um die Daten so aufbereiten zu können, dass sie Moodle-intern weiterverarbeitet werden können. 
+Wie auch im [Admin Tool](admin-tool/#vorgegebene-schnittstelle) müssen zunächst einige Standardschnittstellen implementiert werden. Für Repository Plugins muss darüber hinaus noch eine Funktionsbibliothek hinzugefügt werden, welche die Schnittstelle zum Moodle Core darstellt und mit Hilfe dessen der [File Picker](https://docs.moodle.org/32/en/File_picker) bespielt werden kann. Die dafür benötigten Methoden werden in einer Klasse erfasst, welche von der Moodle-internen Klasse `repository` erbt. Diese enthält bereits alle Schnittstellen-Methoden, welche von Respository-Plugins implementiert, überschrieben oder erweitert werden können um die Daten so aufbereiten zu können, dass sie Moodle-intern weiterverarbeitet werden können. 
 
 Die Funktionsbibliothek basiert auf dem bereits in Moodle implementierten [WebDAV Repository Plugin](https://docs.moodle.org/32/de/WebDAV_Repository), da in ownCloud ebenfalls eine WebDAV Schnittstelle für den Datentransfer zur Verfügung gestellt wird. Zusätzlich mussten die Methoden auf das Zusammenspiel mit dem Admin Tool angepasst werden, da, statt direkter Anfragen an den WebDAV Client, bei Zugriffen auf ownCloud zum Admin Tool weitergeleitet werden muss.
 
@@ -126,7 +126,7 @@ Wenn ein Nutzer eine Datei aus dem File Picker zum Download ausgewählt hat, so 
 
 Anstelle einer Datei soll auch ein Downloadlink zu einer existierenden Datei bereitgestellt werden können. Um dies zu ermöglichen kann einerseits Moodles URL Aktivität genutzt werden. Nach der Auswahl einer Datei im File Picker wird die Methode `get_link` des Repositories mit dem relativen Pfad zu der gewählten Datei aufgerufen. Innerhalb der Methode wird die Anfrage an das Admin Tool weitergeleitet, welches die betreffende Datei öffentlich teilt. Nach einem erfolgreichen Zugriff auf die OCS Share API, generiert der Client einen öffentlichen Link zu der Datei und gibt diesen an das Repository zurück. Diesen übergibt das Repository anschließend an die Schnittstelle zu Moodle.
 
-Eine weitere Methode zur Bereitstellung eines Links, bietet die Datei Aktivität in Moodle. Neben dem direkten [Download](repository/#dateidownload) der ausgewählten Datei, wird auch die Möglichkeit geboten eine Referenz zu der Datei zu erstellen. Sobald eine Datei im File Picker ausgewählt worden ist, wird die folgende Funktion des Repositories aufgerufen:
+Eine weitere Methode zur Bereitstellung eines Links bietet die Datei-Aktivität in Moodle. Neben dem direkten [Download](repository/#dateidownload) der ausgewählten Datei, wird auch die Möglichkeit geboten eine Referenz zu der Datei zu erstellen. Sobald eine Datei im File Picker ausgewählt worden ist, wird die folgende Funktion des Repositories aufgerufen:
 
 ```php
 public function get_file_reference($source) {
@@ -156,14 +156,14 @@ public function send_file($storedfile, [...]) {
 
 Für Repository Plugins gibt es einige Einstellungen die hart kodiert sind und sich nicht auf der Website anpassen lassen. Dazu gehören folgende Einstellungen:
 
-* **`supported_returntypes`:** mögliche Rückgabetypen sind:
+* **`supported_returntypes`:** Mögliche Rückgabetypen sind:
     * `FILE_INTERNAL`: Dateien dürfen im Moodle Dateien System hoch und runtergeladen werden.
     * `FILE_EXTERNAL`: Dateien bleiben im externen Repository und werden von dort bezogen.
     * `FILE_REFERENCE`: Dateien werden lokal erstellt, aber werden extern synchronisiert wenn notwendig.
 
 > Alle Rückgabetypen werden von diesem Plugin unterstützt.
 
-* **`supported_filetypes`:** hier wird spezifiziert welche Arten von Dateitypen unterstützt werden.
+* **`supported_filetypes`:** Hier wird spezifiziert welche Arten von Dateitypen unterstützt werden.
 
 > Alle Dateitypen werden momentan von dem Plugin unterstützt.
 
