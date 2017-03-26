@@ -176,4 +176,12 @@ $plugin->dependencies = array(
     'tool_oauth2sciebo' => 2017030905);
 ```
 
-## Tests und Continuous Integration
+## Continuous Integration
+
+Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im [GitHub Repository](https://github.com/pssl16/moodle-repository_owncloud) wird ein Build angestoßen, in dem das Plugin gebaut und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:
+
+* **PHP Versionen**: 5.6, 7.0
+* **Datenbanken**: PostgreSQL, MySQL, SQLite
+* **Branches des Moodle Core**: `MOODLE_31_STABLE`, `MOODLE_32_STABLE`, `master`
+
+Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://travis-ci.org/pssl16/moodle-repository_owncloud.svg?branch=master)](https://travis-ci.org/pssl16/moodle-repository_owncloud)

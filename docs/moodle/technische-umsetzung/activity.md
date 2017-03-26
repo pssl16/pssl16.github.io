@@ -234,7 +234,7 @@ Falls der Lehrende sich selbst Zugriff auf den Überordner gewährt hat, so wird
 
 Zum Testen der PHP-Klassen wurde das Framework [PHPUnit](https://phpunit.de/) verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: [![codecov](https://codecov.io/gh/pssl16/moodle-mod_collaborativefolders/branch/master/graph/badge.svg)](https://codecov.io/gh/pssl16/moodle-mod_collaborativefolders).
 
-Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im [GitHub Repository](https://github.com/pssl16/moodle-tool_oauth2owncloud) wird ein Build angestoßen, in dem das Plugin gebaut und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:
+Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im [GitHub Repository](https://github.com/pssl16/moodle-mod_collaborativefolders) wird ein Build angestoßen, in dem das Plugin gebaut und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:
 
 * **PHP Versionen**: 5.6, 7.0
 * **Datenbanken**: PostgreSQL, MySQL, SQLite
