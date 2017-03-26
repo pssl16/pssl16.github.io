@@ -224,12 +224,12 @@
         <div class="col-md-9" role="main">
 
 <h1 id="softwarearchitektur">Softwarearchitektur</h1>
-<p>Zur Umsetzung des Projektziels, musste Moodle um nötige Funktionalitäten ergänzt werden. Im Folgenden kriegen sie eine strukturierte Übersicht zu den Plugins die in Moodle entwickelt wurden und welche Funktionalitäten sie bereit stellen.</p>
+<p>Zur Umsetzung des Projektziels musste Moodle um nötige Funktionalitäten ergänzt werden. Im Folgenden kriegen sie eine strukturierte Übersicht zu den Plugins die in Moodle entwickelt wurden und welche Funktionalitäten sie bereit stellen.</p>
 <h2 id="ubersicht-uber-die-plugin-struktur">Übersicht über die Plugin-Struktur</h2>
-<p>Moodle <a href="https://moodle.org/plugins/">Plugins</a> dienen dazu um im Core angebotene Funktionalitäten dahingehend zu erweitern, dass diese den
+<p>Moodle <a href="https://moodle.org/plugins/">Plugins</a> dienen dazu im Core angebotene Funktionalitäten dahingehend zu erweitern, dass diese den
 individuellen Bedürfnissen des Nutzers entsprechen. Daher eignete sich die Implementierung solcher Plugins ideal zur Umsetzung der definierten Integrationsszenarien.
 In Moodle wird ein Plugin einer <a href="https://docs.moodle.org/dev/Plugin_types">Kategorie</a> zugeordnet, welche eine bestimmte Art von Funktionalität repräsentiert.
-Da unsere Use Cases verschiedene Arten von Funktionalitäten benötigen haben wir uns für verschiedene Plugintypen entschieden.</p>
+Da unsere Integrationsszenarien verschiedene Arten von Funktionalitäten benötigen haben wir uns für verschiedene Plugintypen entschieden.</p>
 <table>
 <thead>
 <tr>
@@ -247,7 +247,7 @@ Da unsere Use Cases verschiedene Arten von Funktionalitäten benötigen haben wi
 <tr>
 <td><a href="https://docs.moodle.org/dev/Repository_plugins"><code>repository</code></a> owncloud</td>
 <td>Stellt die Verbindung zu einer externen Datenquelle her</td>
-<td>Datenbeschaffung aus Sciebo</td>
+<td>Datenbeschaffung aus ownCloud</td>
 </tr>
 <tr>
 <td><a href="https://docs.moodle.org/dev/Activity_modules"><code>activity</code></a> collaborativefolders</td>
@@ -287,8 +287,8 @@ dargestellt:</p>
 <p><img alt="Plugin-Struktur" src="../images/plugin-struktur.svg" /></p>
 <p>Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Softwarearchitektur erzielt
 werden sollte. Das führt zwar mit sich, dass funktionale Plugins (also das <code>repository</code> und das <code>activity</code> Plugin) nicht
-eigenständig ohne das <code>admin tool</code> existieren können, allerdings wird weiteren, in Zukunft entwickelten Plugins ebenfalls
-Zugriff auf die OAuth 2.0 Schnittstelle in Sciebo bzw. ownCloud ermöglicht,
+eigenständig ohne das <code>admin tool</code> existieren können, allerdings wird weiteren, in Zukunft entwickelten, Plugins ebenfalls
+Zugriff auf die OAuth 2.0 Schnittstelle in ownCloud bzw. sciebo ermöglicht,
 wodurch sich das Projektergebnis zu einer guten Wiederverwendbarkeit qualifiziert.</p></div>
         
     </div>
