@@ -449,7 +449,15 @@ Die Ansicht einer Instanz der <code>collaborativefolders</code> Aktivität ist n
 <h4 id="besonderheiten-fur-lehrende">Besonderheiten für Lehrende</h4>
 <p>Unabhängig davon, ob der Lehrende die kollaborativen Ordner für sich selbst und seine Kollegen freigegeben hat, wird ihm, vorausgesetzt der Gruppenmodus ist aktiv, eine tabellarische Auflistung aller teilnehmenden Gruppen, inklusive Gruppennamen, Gruppen ID und Teilnehmern, angezeigt. Diese dient einerseits der Übersichtlichkeit und andererseits der Identifizierung der freigegebenen Gruppenordner. Denn in dem Überordner, welcher für den Lehrenden freigegeben wird, sind alle kollaborativen Gruppenordner nach der jeweiligen Gruppen ID benannt. 
 Falls der Lehrende sich selbst Zugriff auf den Überordner gewährt hat, so wird ihm im Anschluss dieselbe Ansicht präsentiert, wie auch den Studierenden.</p>
-<h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2></div>
+<h2 id="tests-und-continuous-integration">Tests und Continuous Integration</h2>
+<p>Zum Testen der PHP-Klassen wurde das Framework <a href="https://phpunit.de/">PHPUnit</a> verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: <a href="https://codecov.io/gh/pssl16/moodle-mod_collaborativefolders"><img alt="codecov" src="https://codecov.io/gh/pssl16/moodle-mod_collaborativefolders/branch/master/graph/badge.svg" /></a>.</p>
+<p>Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im <a href="https://github.com/pssl16/moodle-mod_collaborativefolders">GitHub Repository</a> wird ein Build angestoßen, in dem das Plugin gebaut und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:</p>
+<ul>
+<li><strong>PHP Versionen</strong>: 5.6, 7.0</li>
+<li><strong>Datenbanken</strong>: PostgreSQL, MySQL, SQLite</li>
+<li><strong>Branches des Moodle Core</strong>: <code>MOODLE_32_STABLE</code>, <code>master</code></li>
+</ul>
+<p>Der aktuelle Build-Status ist bei Travis einsehbar: <a href="https://travis-ci.org/pssl16/moodle-mod_collaborativefolders"><img alt="Build Status" src="https://travis-ci.org/pssl16/moodle-mod_collaborativefolders.svg?branch=master" /></a></p></div>
         
     </div>
 
