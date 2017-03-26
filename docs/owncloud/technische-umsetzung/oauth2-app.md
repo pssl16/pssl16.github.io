@@ -906,7 +906,7 @@ Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung i
 
 * **PHP Versionen**: 5.6, 7.0, 7.1, nightly
 * **Datenbanken**: PostgreSQL, MySQL, SQLite
-* **Branches des ownCloud Core**: `master`
+* **Branches des ownCloud Cores**: `master`, `stable9.1`
 
 Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://travis-ci.org/owncloud/oauth2.svg?branch=master)](https://travis-ci.org/owncloud/oauth2).
 
