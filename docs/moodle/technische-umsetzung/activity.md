@@ -231,3 +231,13 @@ Unabhängig davon, ob der Lehrende die kollaborativen Ordner für sich selbst un
 Falls der Lehrende sich selbst Zugriff auf den Überordner gewährt hat, so wird ihm im Anschluss dieselbe Ansicht präsentiert, wie auch den Studierenden.
 
 ## Tests und Continuous Integration
+
+Zum Testen der PHP-Klassen wurde das Framework [PHPUnit](https://phpunit.de/) verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: [![codecov](https://codecov.io/gh/pssl16/moodle-mod_collaborativefolders/branch/master/graph/badge.svg)](https://codecov.io/gh/pssl16/moodle-mod_collaborativefolders).
+
+Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im [GitHub Repository](https://github.com/pssl16/moodle-tool_oauth2owncloud) wird ein Build angestoßen, in dem das Plugin gebaut und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:
+
+* **PHP Versionen**: 5.6, 7.0
+* **Datenbanken**: PostgreSQL, MySQL, SQLite
+* **Branches des Moodle Core**: `MOODLE_32_STABLE`, `master`
+
+Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://travis-ci.org/pssl16/moodle-mod_collaborativefolders.svg?branch=master)](https://travis-ci.org/pssl16/moodle-mod_collaborativefolders)
