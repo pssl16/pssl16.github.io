@@ -392,15 +392,16 @@ $this-&gt;owncloud = new owncloud($returnurl);
 <h4 id="abhangigkeiten-in-der-versionphp">Abhängigkeiten in der <code>version.php</code></h4>
 <p>Um sicherzustellen, dass das Admin Tool bereits installiert und die damit zusammenhängende Abhängigkeit gewährleistet ist, muss diese Abhängigkeit im <code>owncloud</code> Repository definiert werden. Dies wird sichergestellt, indem in der <code>version.php</code> eine <code>dependency</code> gesetzt wird:</p>
 <pre><code class="php">$plugin-&gt;dependencies = array(
-    'tool_oauth2sciebo' =&gt; 2017030905);
+    'tool_oauth2sciebo' =&gt; 2017032700);
 </code></pre>
 
 <h2 id="continuous-integration">Continuous Integration</h2>
+<p>Zum Testen der PHP-Klassen wurde das Framework <a href="https://phpunit.de/">PHPUnit</a> verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: <a href="https://codecov.io/gh/pssl16/moodle-repository_owncloud"><img alt="codecov" src="https://codecov.io/gh/pssl16/moodle-repository_owncloud/branch/master/graph/badge.svg" /></a>.</p>
 <p>Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im <a href="https://github.com/pssl16/moodle-repository_owncloud">GitHub Repository</a> wird ein Build angestoßen, in dem das Plugin gebaut und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:</p>
 <ul>
 <li><strong>PHP Versionen</strong>: 5.6, 7.0</li>
-<li><strong>Datenbanken</strong>: PostgreSQL, MySQL, SQLite</li>
-<li><strong>Branches des Moodle Core</strong>: <code>MOODLE_31_STABLE</code>, <code>MOODLE_32_STABLE</code>, <code>master</code></li>
+<li><strong>Datenbanken</strong>: PostgreSQL, MySQL</li>
+<li><strong>Branches des Moodle Cores</strong>: <code>MOODLE_32_STABLE</code>, <code>master</code></li>
 </ul>
 <p>Der aktuelle Build-Status ist bei Travis einsehbar: <a href="https://travis-ci.org/pssl16/moodle-repository_owncloud"><img alt="Build Status" src="https://travis-ci.org/pssl16/moodle-repository_owncloud.svg?branch=master" /></a></p></div>
         
