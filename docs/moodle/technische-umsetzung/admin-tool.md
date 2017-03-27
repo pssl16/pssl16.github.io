@@ -7,7 +7,7 @@
 Wie bereits im Kapitel [Software Architektur](softwarearchitektur/) angeschnitten, ist der Hauptzweck dieses Plugins
 die Schnittstelle zu ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud
 App [oauth2](../../owncloud/technische-umsetzung/oauth2-app/) mit Hilfe eines OAuth 2.0 Clients angesprochen. Zusätzlich werden
-sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert, in diesem Client umfasst.
+sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert und in diesem Client umfasst.
 Zwar ist der Client auf einen OAuth 2.0 Protokollablauf in Zusammenarbeit mit der entsprechenden ownCloud App angepasst,
 jedoch könnte er in Zukunft auch als Ausgangspunkt genutzt werden, um ähnliche Schnittstellen zu erreichen.
 
@@ -51,13 +51,13 @@ version.php
 
 ## Implementierung
 
-Im Folgenden wird zunächst ausgeführt, wie die vorgegebenen Schnitstellen implementiert worden sind.
+Im Folgenden wird zunächst ausgeführt, wie die vorgegebenen Schnittstellen implementiert worden sind.
 
 ### Eingabemaske
 
 Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende ownCloud Instanz zu befähigen,
 müssen diese zunächst mit Hilfe benötigter Eingabedaten konfiguriert werden. Diese sollen zentral im Admin Tool eingegeben und
-gespeichert werden können, um sie anschließend von dem Client aus, und damit auch in den ihn verwendenden Plugins, nutzen zu können.
+gespeichert werden können, um sie anschließend von dem Client aus und damit auch in den ihn verwendenden Plugins, nutzen zu können.
 
 #### Benötigte Eingaben
 
@@ -250,7 +250,7 @@ zu speichern, um zum Beispiel einen technischen Nutzer in ownCloud zu verwenden.
 
 Da ownCloud Datentransfer lediglich über eine WebDAV Schnittstelle anbietet, musste auf diese in Moodle mittels eines dafür
 vorgesehenen Clients zugegriffen werden können. Moodle bietet bereits einen WebDAV Client an, welcher als Basis für ownClouds
-WebDAV Schnittstelle verwendet werde konnte.
+WebDAV Schnittstelle verwendet werden konnte.
 
 #### Absicherung mittels OAuth 2.0
 
@@ -260,7 +260,7 @@ bei jedem Zugriff Nutzername und Passwort des ownCloud Accounts versandt werden 
 zu ermöglichen, musste der WebDAV Client mittels OAuth 2.0 abgesichert werden.
 
 In der Umsetzung wurde der Client mit einem Access Token ausgestattet, welches bei jedem Zugriff, innerhalb eines Bearer
-Authentication Headers, an ownCloud mitversandt wird:
+Authentication Headers, an ownCloud mitversendet wird:
 
 ```php
 private function create_basic_request($method) {
@@ -275,7 +275,7 @@ private function create_basic_request($method) {
 }
 ```
 
-ownCloud-seitig wird der Header erkannt und statt einer Kombintion aus Nutzernamen und Passwort, das übergebene Access Token
+ownCloud-seitig wird der Header erkannt und statt einer Kombination aus Nutzernamen und Passwort, das übergebene Access Token
 ausgewertet. Wenn das Access Token noch gültig ist, wird die Anfrage ganz normal behandelt.
 
 #### Weiterleitungen
@@ -324,7 +324,7 @@ Diese Schritte werden im Folgenden erläutert.
 Sobald ein Nutzer in Moodle zum ersten Mal mittels OAuth 2.0 auf ownCloud zugreifen möchte, müssen in ownCloud dessen
 Authentifizierung und Autorisierung erfragt werden. Zu diesem Zweck wird der Nutzer mittels eines Links an die `authorize`
 Schnittstelle der oauth2 App in ownCloud weitergeleitet. Dabei werden die im Authorization Code Flow aufgeführten Parameter,
-welche zur Bearbeitung der Autorisierungsanfrage nötig sind, angefügt. Während `respone_type`, `client_id` und `redirect_uri`
+welche zur Bearbeitung der Autorisierungsanfrage nötig sind, angefügt. Während `response_type`, `client_id` und `redirect_uri`
 stets gleich bleiben, beziehungsweise von der vorgenommenen Konfiguration abhängig sind, wird der `state` Moodle-intern
 von der Anwendung gestellt, welche den Client benutzt. Der `state` Parameter gibt an, wohin in Moodle weitergeleitet werden
 soll, nachdem eine erfolgreiche Anfrage gestellt worden ist. Somit dient `state` in Moodle der Wiederherstellung des Standes,
@@ -357,7 +357,7 @@ Ablaufen des Codes zu verhindern und dem Nutzer sofort Zugang zu ownCloud zu erm
 
 ### Zugriff auf WebDAV
 
-Nachdem erfolreich ein Access Token angefordert worden ist, kann dieses verwendet werden um die WebDAV Schnittstelle abzusichern.
+Nachdem erfolgreich ein Access Token angefordert worden ist, kann dieses verwendet werden um die WebDAV Schnittstelle abzusichern.
 Wenn der Nutzer eine WebDAV Anfrage anfordert, setzt der OAuth 2.0 Client zunächst das erhaltene Access Token im WebDAV Client.
 Anschließend leitet dieser die Anfrage an den WebDAV Client weiter, der den WebDAV Request, mitsamt eines Bearer Authentication
 Headers, an ownClouds WebDAV Schnittstelle äußert. Der Header ersetzt dabei den ansonsten versendeten Basic Authentication Header
