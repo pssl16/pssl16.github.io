@@ -5,7 +5,7 @@
 
 ## Zweck
 
-Der Plugintyp [Repository](https://docs.moodle.org/dev/Repository_plugins) wird in Moodle unter anderem verwendet, um Nutzern die Möglichkeit zu schaffen Zugang zu Dateien aus externen Quellen zu erhalten. Das Repository Plugin `ownCloud` kann somit folgende [Integrationsszenarien](https://pssl16.github.io/#integrationsszenarien) realisieren:
+Der Plugintyp [Repository](https://docs.moodle.org/dev/Repository_plugins) wird in Moodle unter anderem verwendet, um Nutzern die Möglichkeit zu schaffen, Zugang zu Dateien aus externen Quellen zu erhalten. Das Repository Plugin `ownCloud` kann somit folgende [Integrationsszenarien](https://pssl16.github.io/#integrationsszenarien) realisieren:
 
 > Als **Nutzer** möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz **hochladen**.
 
@@ -39,7 +39,7 @@ $returnurl = new moodle_url('/repository/repository_callback.php', [
 $this->owncloud = new owncloud($returnurl);
 ```
 
-Neben der ID des aktuellen Repositories, muss der URL auch ein `session key` angefügt werden, welcher zur Wiederherstellung der Sitzung in Moodle gebraucht wird.
+Neben der ID des aktuellen Repositories, muss der URL auch ein `session key` angefügt werden, welcher zur Wiederherstellung der Sitzung in Moodle benötigt wird.
 
 #### Datenprüfung
 
@@ -48,7 +48,7 @@ Nachdem der Client initialisiert worden ist, muss geprüft werden, ob alle benö
 
 ### Login-Status
 
-Nach dem Aufruf des Konstruktors und des File Pickers, aus dem Moodle Core heraus, wird zunächst geprüft, ob der aktuelle Nutzer in ownCloud authentifiziert ist. An dieser Stelle wird die entsprechende Frage im Client beantwortet. Er prüft, ob der aktuelle Nutzer über ein valides Access Token verfügt. Sollte das zutreffen, wird dem Nutzer der Zugriff auf sein ownCloud Verzeichnis gewährt. Andernfalls wird die Methode `print_login` aufgerufen, welche einen Login-Link erstellt, der auf die `authorize` Schnittstelle in ownCloud verweist. Bei Betätigung des Links wird ein Popup-Fenster angezeigt, das den Nutzer zur Authentifizierung auffordert.
+Nach dem Aufruf des Konstruktors und des File Pickers aus dem Moodle Core heraus, wird zunächst geprüft, ob der aktuelle Nutzer in ownCloud authentifiziert ist. An dieser Stelle wird die entsprechende Frage im Client beantwortet. Er prüft, ob der aktuelle Nutzer über ein valides Access Token verfügt. Sollte das zutreffen, wird dem Nutzer der Zugriff auf sein ownCloud Verzeichnis gewährt. Andernfalls wird die Methode `print_login` aufgerufen, welche einen Login-Link erstellt, der auf die `authorize` Schnittstelle in ownCloud verweist. Bei Betätigung des Links wird ein Popup-Fenster angezeigt, das den Nutzer zur Authentifizierung auffordert.
 
 Hat sich der Nutzer authentifiziert, so wird das erhaltene Access Token fest für ihn gespeichert. Im Optimalfall muss sich ein Nutzer daher nur ein Mal authentifizieren um anschließend durchgehend Zugriff auf seine ownCloud Daten zu haben.
 
@@ -114,7 +114,7 @@ if (!empty($v['resourcetype']) && $v['resourcetype'] == 'collection') {
 }
 ```
 
-* Falls es sich um eine Datei handelt wird zusätzlich zu den oben genannten Informationen noch die Dateigröße gespeichert.
+* Falls es sich um eine Datei handelt, wird zusätzlich zu den oben genannten Informationen noch die Dateigröße gespeichert.
 
 Diese Informationen werden für jede im aktuellen Verzeichnis befindliche Datei und jeden Ordner festgehalten. Anschließend werden erst die Ordner und danach die Dateien alphabetisch sortiert in einem Array gespeichert. Dieses Array wird von der Funktion zurückgegeben und Moodle platziert anschließend die entsprechenden Einträge im File Picker.
 
@@ -142,7 +142,7 @@ public function get_file_reference($source) {
 }
 ```
 
-Falls der Nutzer eine Referenz angefordert hat, so wird, wie in der URL Aktivität, ein Link zu der Datei generiert. Dieser wird anschließend über die Schnittstelle zu Moodle hintergründig gespeichert. Wenn der Nutzer dann die Referenz der Datei aufruft, dann wird der Nutzer an die die Adresse, welche der Link enthält, weitergeleitet. Das folgende Codebeispiel zeigt die Methode, welche aufgerufen wird, wenn der Nutzer eine Referenz betätigt:
+Falls der Nutzer eine Referenz angefordert hat, so wird, wie in der URL Aktivität, ein Link zu der Datei generiert. Dieser wird anschließend über die Schnittstelle zu Moodle hintergründig gespeichert. Wenn der Nutzer dann die Referenz der Datei aufruft, wird der Nutzer an die Adresse, welche der Link enthält, weitergeleitet. Das folgende Codebeispiel zeigt die Methode, welche aufgerufen wird, wenn der Nutzer eine Referenz betätigt:
 
 ```php
 public function send_file($storedfile, [...]) {
@@ -154,7 +154,7 @@ public function send_file($storedfile, [...]) {
 
 #### Unveränderbare Eigenschaften
 
-Für Repository Plugins gibt es einige Einstellungen die hart kodiert sind und sich nicht auf der Website anpassen lassen. Dazu gehören folgende Einstellungen:
+Für Repository Plugins gibt es einige Einstellungen, die hart kodiert sind und sich nicht auf der Website anpassen lassen. Dazu gehören folgende Einstellungen:
 
 * **`supported_returntypes`:** Mögliche Rückgabetypen sind:
     * `FILE_INTERNAL`: Dateien dürfen im Moodle Dateien System hoch und runtergeladen werden.
