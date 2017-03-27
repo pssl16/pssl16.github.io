@@ -9,7 +9,7 @@ Von dort aus können die Plugins auf zwei Wegen heruntergeladen werden.
 
 1. Als Zip-Datei
 
-    Am rechten Rand in dem Menü `clone or download` auf **Download ZIP** klicken. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration Plugins Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
+    Am rechten Rand in dem Menü `clone or download` auf **Download ZIP** klicken. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt `Website-Administration ► Plugins ► Plugin installieren` hochgeladen werden. Das Plugin wird automatisch richtig platziert.
 
 2. Mit dem Befehl `git clone`
 
@@ -22,7 +22,7 @@ Von dort aus können die Plugins auf zwei Wegen heruntergeladen werden.
 Der Vorteil des zweiten Weges ist, dass mittels `git pull` Änderungen schnell nachgepflegt können. Bei Unerfahrenheit mit *git* sollte jedoch lieber der erste Weg gewählt werden.
 
 Nach Herunterladen und richtiger Platzierung der Plugins werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
-Um die Plugins zu benutzen wird in jedem Fall das `oauth2owncloud_admin_tool`benötigt , alle anderen Plugins lassen sich nicht ohne dieses installieren. Dies ist bei der Reihenfolge der Installation bei Installation der Plugins als ZIP-Ordner zu beachten.
+Um die Plugins zu benutzen wird in jedem Fall das `oauth2owncloud_admin_tool` benötigt, alle anderen Plugins lassen sich nicht ohne dieses installieren. Dies ist bei der Reihenfolge der Installation bei Installation der Plugins als ZIP-Ordner zu beachten.
 
 
 ### Icons 
@@ -38,13 +38,13 @@ Hierfür muss der Administrator das Formular des Plugins, das unter `Website-Adm
 
 <img class='moodleimage' alt="OAuth 2.0 Formular" src="../images/OAuth2Form.png" width=70%>
 
-Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld, hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.
+Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld. Hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.
 
 <img class='moodleimage' alt="WebDAV Formular" src="../images/WebDAVForm.png" width=100%>
 
 Nun werden die Einstellungen für den WebDAV Zugriff festgelegt.
 Als erstes wird die Adresse des ownCloud Servers angegeben.
-Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben, in ownCloud endet diese typischerweise mit `remote.php/webdav/`.
+Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben. In ownCloud endet diese typischerweise mit `remote.php/webdav/`.
 Als Protokolltyp kann *http* oder *https* angegeben werden. Wird keine Angabe gemacht, so wird von *https* ausgegangen.
 Als letztes kann der Port angegeben werden.
 
@@ -52,7 +52,7 @@ Als letztes kann der Port angegeben werden.
 [*Downloadlink*](https://github.com/pssl16/moodle-repository_owncloud)
 
 ### Admin Einstellungen
-Sobald das Admin tool installiert wurde, kann das Repository installiert werden. Es ist zu beachten, dass die oben genannten Einträge getätigt wurden, da ansonsten die Authentifizierung des Repositorys nicht funktioniert. Repository Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt `Website-Administration ► Plugins ► Repositories ► Übersicht` aktiviert werden. Der Administrator kann dem Repository zusätzlich unter `Einstellungen` einen globalen Namen geben.
+Sobald das Admin Tool installiert wurde, kann das Repository installiert werden. Es ist zu beachten, dass die oben genannten Einträge getätigt wurden, da ansonsten die Authentifizierung des Repositorys nicht funktioniert. Repository Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt `Website-Administration ► Plugins ► Repositories ► Übersicht` aktiviert werden. Der Administrator kann dem Repository zusätzlich unter `Einstellungen` einen globalen Namen geben.
 
 ### Nutzer Sicht
 
@@ -74,7 +74,7 @@ Im roten Kasten sieht der Nutzer Buttons um den Inhalt neu zu laden und sich aus
 Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner, die erstellt werden, gespeichert. Um den Nutzer festzulegen muss in `Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders` ein technischer Nutzer mit Hilfe des OAuth 2.0 Protokolls authentifiziert werden. Über einen Login Button muss sich in ownCloud authentifiziert werden. Bei nicht erfolgter Weiterleitung sind die Einstellungen im Admin tool `oauth2owncloud` fehlerhaft und diese sind zu überprüfen. Es ist darauf zu achten, dass sich nicht mit dem regulären privaten Account, sondern mit dem des technischen Nutzers angemeldet wird.
 
 #### Sicht des Lehrenden
-Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden, ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen  von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.
+Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt, muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden, ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.
 
 
 #### Sicht der Studierenden
