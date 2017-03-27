@@ -254,7 +254,7 @@
 </div>
 
 <h2 id="zweck">Zweck</h2>
-<p>Der Plugintyp <a href="https://docs.moodle.org/dev/Repository_plugins">Repository</a> wird in Moodle unter anderem verwendet, um Nutzern die Möglichkeit zu schaffen Zugang zu Dateien aus externen Quellen zu erhalten. Das Repository Plugin <code>ownCloud</code> kann somit folgende <a href="https://pssl16.github.io/#integrationsszenarien">Integrationsszenarien</a> realisieren:</p>
+<p>Der Plugintyp <a href="https://docs.moodle.org/dev/Repository_plugins">Repository</a> wird in Moodle unter anderem verwendet, um Nutzern die Möglichkeit zu schaffen, Zugang zu Dateien aus externen Quellen zu erhalten. Das Repository Plugin <code>ownCloud</code> kann somit folgende <a href="https://pssl16.github.io/#integrationsszenarien">Integrationsszenarien</a> realisieren:</p>
 <blockquote>
 <p>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz <strong>hochladen</strong>.</p>
 <p>Als <strong>Nutzer</strong> möchte ich in der Dateiauswahl in Moodle eine Datei aus meiner ownCloud Instanz <strong>verlinken</strong>.</p>
@@ -277,12 +277,12 @@
 $this-&gt;owncloud = new owncloud($returnurl);
 </code></pre>
 
-<p>Neben der ID des aktuellen Repositories, muss der URL auch ein <code>session key</code> angefügt werden, welcher zur Wiederherstellung der Sitzung in Moodle gebraucht wird.</p>
+<p>Neben der ID des aktuellen Repositories, muss der URL auch ein <code>session key</code> angefügt werden, welcher zur Wiederherstellung der Sitzung in Moodle benötigt wird.</p>
 <h4 id="datenprufung">Datenprüfung</h4>
 <p>Nachdem der Client initialisiert worden ist, muss geprüft werden, ob alle benötigten Clientdaten auf der Einstellungsseite des Admin Tools angegeben worden sind. Zu diesem Zweck wird eine im Client implementierte Funktion namens <code>check_data</code> verwendet. Sollten die Daten tatsächlich unvollständig sein, so wird bei Aufruf einer Aktivität, welche das Repository verwendet (zum Beispiel Datei oder URL), eine Fehlermeldung angezeigt und das Repository aus der Auswahl im File Picker entfernt, solange die Daten nicht eingegangen sind. Das Entfernen aus dem File Picker erfolgt durch die Schnittstellenmethode.
 <code>is_visible</code>.</p>
 <h3 id="login-status">Login-Status</h3>
-<p>Nach dem Aufruf des Konstruktors und des File Pickers, aus dem Moodle Core heraus, wird zunächst geprüft, ob der aktuelle Nutzer in ownCloud authentifiziert ist. An dieser Stelle wird die entsprechende Frage im Client beantwortet. Er prüft, ob der aktuelle Nutzer über ein valides Access Token verfügt. Sollte das zutreffen, wird dem Nutzer der Zugriff auf sein ownCloud Verzeichnis gewährt. Andernfalls wird die Methode <code>print_login</code> aufgerufen, welche einen Login-Link erstellt, der auf die <code>authorize</code> Schnittstelle in ownCloud verweist. Bei Betätigung des Links wird ein Popup-Fenster angezeigt, das den Nutzer zur Authentifizierung auffordert.</p>
+<p>Nach dem Aufruf des Konstruktors und des File Pickers aus dem Moodle Core heraus, wird zunächst geprüft, ob der aktuelle Nutzer in ownCloud authentifiziert ist. An dieser Stelle wird die entsprechende Frage im Client beantwortet. Er prüft, ob der aktuelle Nutzer über ein valides Access Token verfügt. Sollte das zutreffen, wird dem Nutzer der Zugriff auf sein ownCloud Verzeichnis gewährt. Andernfalls wird die Methode <code>print_login</code> aufgerufen, welche einen Login-Link erstellt, der auf die <code>authorize</code> Schnittstelle in ownCloud verweist. Bei Betätigung des Links wird ein Popup-Fenster angezeigt, das den Nutzer zur Authentifizierung auffordert.</p>
 <p>Hat sich der Nutzer authentifiziert, so wird das erhaltene Access Token fest für ihn gespeichert. Im Optimalfall muss sich ein Nutzer daher nur ein Mal authentifizieren um anschließend durchgehend Zugriff auf seine ownCloud Daten zu haben.</p>
 <h3 id="dateiauswahl">Dateiauswahl</h3>
 <p>Ist ein Nutzer zum Zugriff auf ownCloud autorisiert, so werden ihm im File Picker alle Dateien und Ordner, welche sich in seinem persönlichen Verzeichnis befinden, zur Auswahl angeboten. Diese Dateiauswahl wird in der Methode <code>get_listing</code> implementiert.</p>
@@ -342,7 +342,7 @@ $this-&gt;owncloud = new owncloud($returnurl);
 </code></pre>
 
 <ul>
-<li>Falls es sich um eine Datei handelt wird zusätzlich zu den oben genannten Informationen noch die Dateigröße gespeichert.</li>
+<li>Falls es sich um eine Datei handelt, wird zusätzlich zu den oben genannten Informationen noch die Dateigröße gespeichert.</li>
 </ul>
 <p>Diese Informationen werden für jede im aktuellen Verzeichnis befindliche Datei und jeden Ordner festgehalten. Anschließend werden erst die Ordner und danach die Dateien alphabetisch sortiert in einem Array gespeichert. Dieses Array wird von der Funktion zurückgegeben und Moodle platziert anschließend die entsprechenden Einträge im File Picker.</p>
 <h3 id="dateidownload">Dateidownload</h3>
@@ -363,7 +363,7 @@ $this-&gt;owncloud = new owncloud($returnurl);
 }
 </code></pre>
 
-<p>Falls der Nutzer eine Referenz angefordert hat, so wird, wie in der URL Aktivität, ein Link zu der Datei generiert. Dieser wird anschließend über die Schnittstelle zu Moodle hintergründig gespeichert. Wenn der Nutzer dann die Referenz der Datei aufruft, dann wird der Nutzer an die die Adresse, welche der Link enthält, weitergeleitet. Das folgende Codebeispiel zeigt die Methode, welche aufgerufen wird, wenn der Nutzer eine Referenz betätigt:</p>
+<p>Falls der Nutzer eine Referenz angefordert hat, so wird, wie in der URL Aktivität, ein Link zu der Datei generiert. Dieser wird anschließend über die Schnittstelle zu Moodle hintergründig gespeichert. Wenn der Nutzer dann die Referenz der Datei aufruft, wird der Nutzer an die Adresse, welche der Link enthält, weitergeleitet. Das folgende Codebeispiel zeigt die Methode, welche aufgerufen wird, wenn der Nutzer eine Referenz betätigt:</p>
 <pre><code class="php">public function send_file($storedfile, [...]) {
     redirect($storedfile-&gt;get_reference());
 }
@@ -371,7 +371,7 @@ $this-&gt;owncloud = new owncloud($returnurl);
 
 <h3 id="sonstige-einstellungen">Sonstige Einstellungen</h3>
 <h4 id="unveranderbare-eigenschaften">Unveränderbare Eigenschaften</h4>
-<p>Für Repository Plugins gibt es einige Einstellungen die hart kodiert sind und sich nicht auf der Website anpassen lassen. Dazu gehören folgende Einstellungen:</p>
+<p>Für Repository Plugins gibt es einige Einstellungen, die hart kodiert sind und sich nicht auf der Website anpassen lassen. Dazu gehören folgende Einstellungen:</p>
 <ul>
 <li><strong><code>supported_returntypes</code>:</strong> Mögliche Rückgabetypen sind:<ul>
 <li><code>FILE_INTERNAL</code>: Dateien dürfen im Moodle Dateien System hoch und runtergeladen werden.</li>
