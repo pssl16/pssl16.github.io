@@ -277,7 +277,7 @@
 <p>Wie bereits im Kapitel <a href="../softwarearchitektur/">Software Architektur</a> angeschnitten, ist der Hauptzweck dieses Plugins
 die Schnittstelle zu ownCloud bereitzustellen. Zu diesem Zweck wird die im Projekt implementierte ownCloud
 App <a href="../../../owncloud/technische-umsetzung/oauth2-app/">oauth2</a> mit Hilfe eines OAuth 2.0 Clients angesprochen. Zusätzlich werden
-sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert, in diesem Client umfasst.
+sowohl die WebDAV, als auch die OCS Share Schnittstelle, über OAuth 2.0 abgesichert und in diesem Client umfasst.
 Zwar ist der Client auf einen OAuth 2.0 Protokollablauf in Zusammenarbeit mit der entsprechenden ownCloud App angepasst,
 jedoch könnte er in Zukunft auch als Ausgangspunkt genutzt werden, um ähnliche Schnittstellen zu erreichen.</p>
 <p>Im Wesentlichen implementiert dieses Plugin das folgende <a href="../../../#integrationsszenarien">Integrationsszenario</a>:</p>
@@ -314,11 +314,11 @@ version.php
 </code></pre>
 
 <h2 id="implementierung">Implementierung</h2>
-<p>Im Folgenden wird zunächst ausgeführt, wie die vorgegebenen Schnitstellen implementiert worden sind.</p>
+<p>Im Folgenden wird zunächst ausgeführt, wie die vorgegebenen Schnittstellen implementiert worden sind.</p>
 <h3 id="eingabemaske">Eingabemaske</h3>
 <p>Um die OAuth 2.0 und WebDAV Clients erfolgreich zum Zugriff auf eine entsprechende ownCloud Instanz zu befähigen,
 müssen diese zunächst mit Hilfe benötigter Eingabedaten konfiguriert werden. Diese sollen zentral im Admin Tool eingegeben und
-gespeichert werden können, um sie anschließend von dem Client aus, und damit auch in den ihn verwendenden Plugins, nutzen zu können.</p>
+gespeichert werden können, um sie anschließend von dem Client aus und damit auch in den ihn verwendenden Plugins, nutzen zu können.</p>
 <h4 id="benotigte-eingaben">Benötigte Eingaben</h4>
 <p>Um den OAuth 2.0 Protokollablauf zu ermöglichen, müssen folgende Daten im Vorfeld erfasst werden:</p>
 <ul>
@@ -475,14 +475,14 @@ zu speichern, um zum Beispiel einen technischen Nutzer in ownCloud zu verwenden.
 <h3 id="webdav-client">WebDAV Client</h3>
 <p>Da ownCloud Datentransfer lediglich über eine WebDAV Schnittstelle anbietet, musste auf diese in Moodle mittels eines dafür
 vorgesehenen Clients zugegriffen werden können. Moodle bietet bereits einen WebDAV Client an, welcher als Basis für ownClouds
-WebDAV Schnittstelle verwendet werde konnte.</p>
+WebDAV Schnittstelle verwendet werden konnte.</p>
 <h4 id="absicherung-mittels-oauth-20">Absicherung mittels OAuth 2.0</h4>
 <p>Der Moodle-interne Client bietet eine große Auswahl an WebDAV Methoden, welche zum Großteil erfolgreichen Datentransfer mit
 ownCloud ermöglichen. Der Nachteil des Client besteht darin, dass er ausschließlich mit <a href="https://tools.ietf.org/html/rfc2617">Basic Auth</a> ausgestattet ist und somit
 bei jedem Zugriff Nutzername und Passwort des ownCloud Accounts versandt werden muss. Um eine passwortlose Authentifizierung
 zu ermöglichen, musste der WebDAV Client mittels OAuth 2.0 abgesichert werden.</p>
 <p>In der Umsetzung wurde der Client mit einem Access Token ausgestattet, welches bei jedem Zugriff, innerhalb eines Bearer
-Authentication Headers, an ownCloud mitversandt wird:</p>
+Authentication Headers, an ownCloud mitversendet wird:</p>
 <pre><code class="php">private function create_basic_request($method) {
     // ...Füge die benötigten Header hinzu.
     if ($this-&gt;_auth == 'basic') {
@@ -495,7 +495,7 @@ Authentication Headers, an ownCloud mitversandt wird:</p>
 }
 </code></pre>
 
-<p>ownCloud-seitig wird der Header erkannt und statt einer Kombintion aus Nutzernamen und Passwort, das übergebene Access Token
+<p>ownCloud-seitig wird der Header erkannt und statt einer Kombination aus Nutzernamen und Passwort, das übergebene Access Token
 ausgewertet. Wenn das Access Token noch gültig ist, wird die Anfrage ganz normal behandelt.</p>
 <h4 id="weiterleitungen">Weiterleitungen</h4>
 <p>Um den OAuth 2.0 und den WebDAV Client miteinander zu kombinieren, wurden Weiterleitungs-Methoden implementiert, welche die
@@ -532,7 +532,7 @@ ausgefüllt worden ist:</p>
 <p>Sobald ein Nutzer in Moodle zum ersten Mal mittels OAuth 2.0 auf ownCloud zugreifen möchte, müssen in ownCloud dessen
 Authentifizierung und Autorisierung erfragt werden. Zu diesem Zweck wird der Nutzer mittels eines Links an die <code>authorize</code>
 Schnittstelle der oauth2 App in ownCloud weitergeleitet. Dabei werden die im Authorization Code Flow aufgeführten Parameter,
-welche zur Bearbeitung der Autorisierungsanfrage nötig sind, angefügt. Während <code>respone_type</code>, <code>client_id</code> und <code>redirect_uri</code>
+welche zur Bearbeitung der Autorisierungsanfrage nötig sind, angefügt. Während <code>response_type</code>, <code>client_id</code> und <code>redirect_uri</code>
 stets gleich bleiben, beziehungsweise von der vorgenommenen Konfiguration abhängig sind, wird der <code>state</code> Moodle-intern
 von der Anwendung gestellt, welche den Client benutzt. Der <code>state</code> Parameter gibt an, wohin in Moodle weitergeleitet werden
 soll, nachdem eine erfolgreiche Anfrage gestellt worden ist. Somit dient <code>state</code> in Moodle der Wiederherstellung des Standes,
@@ -557,7 +557,7 @@ Client Secret zur Authentifizierung erwartet wird, muss dieser zusätzlich bei d
 <p>Die Anfrage auf einen Access Token erfolgt Moodle-intern sobald ein Authorization Code erhalten worden ist, um ein
 Ablaufen des Codes zu verhindern und dem Nutzer sofort Zugang zu ownCloud zu ermöglichen.</p>
 <h3 id="zugriff-auf-webdav">Zugriff auf WebDAV</h3>
-<p>Nachdem erfolreich ein Access Token angefordert worden ist, kann dieses verwendet werden um die WebDAV Schnittstelle abzusichern.
+<p>Nachdem erfolgreich ein Access Token angefordert worden ist, kann dieses verwendet werden um die WebDAV Schnittstelle abzusichern.
 Wenn der Nutzer eine WebDAV Anfrage anfordert, setzt der OAuth 2.0 Client zunächst das erhaltene Access Token im WebDAV Client.
 Anschließend leitet dieser die Anfrage an den WebDAV Client weiter, der den WebDAV Request, mitsamt eines Bearer Authentication
 Headers, an ownClouds WebDAV Schnittstelle äußert. Der Header ersetzt dabei den ansonsten versendeten Basic Authentication Header
