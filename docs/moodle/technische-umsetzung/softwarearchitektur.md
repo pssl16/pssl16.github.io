@@ -1,6 +1,6 @@
 # Softwarearchitektur
 
-Zur Umsetzung des Projektziels musste Moodle um nötige Funktionalitäten ergänzt werden. Im Folgenden kriegen sie eine strukturierte Übersicht zu den Plugins die in Moodle entwickelt wurden und welche Funktionalitäten sie bereit stellen.
+Zur Umsetzung des Projektziels musste Moodle um nötige Funktionalitäten ergänzt werden. Im Folgenden erhalten Sie eine strukturierte Übersicht zu den Plugins, die in Moodle entwickelt wurden und welche Funktionalitäten sie bereit stellen.
 
 ## Übersicht über die Plugin-Struktur
 
@@ -45,6 +45,6 @@ dargestellt:
 
 Zu beachten ist, dass eine möglichst hohe Flexibilität und Modularität bei dem Entwurf der Softwarearchitektur erzielt
 werden sollte. Das führt zwar mit sich, dass funktionale Plugins (also das `repository` und das `activity` Plugin) nicht
-eigenständig ohne das `admin tool` existieren können, allerdings wird weiteren, in Zukunft entwickelten, Plugins ebenfalls
+eigenständig ohne das `admin tool` existieren können, allerdings wird weiteren, in Zukunft entwickelten Plugins ebenfalls
 Zugriff auf die OAuth 2.0 Schnittstelle in ownCloud bzw. sciebo ermöglicht,
 wodurch sich das Projektergebnis zu einer guten Wiederverwendbarkeit qualifiziert.
