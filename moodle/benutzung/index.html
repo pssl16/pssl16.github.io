@@ -245,7 +245,7 @@ Von dort aus können die Plugins auf zwei Wegen heruntergeladen werden.</p>
 <ol>
 <li>
 <p>Als Zip-Datei</p>
-<p>Am rechten Rand in dem Menü <code>clone or download</code> auf <strong>Download ZIP</strong> klicken. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt <code>Website-Administration Plugins Plugin installieren</code> hochgeladen werden. Das Plugin wird automatisch richtig platziert.</p>
+<p>Am rechten Rand in dem Menü <code>clone or download</code> auf <strong>Download ZIP</strong> klicken. In Moodle können ZIP-Ordner einfach installiert werden, indem sie vom Seiten-Administrator unter dem Menüpunkt <code>Website-Administration ► Plugins ► Plugin installieren</code> hochgeladen werden. Das Plugin wird automatisch richtig platziert.</p>
 </li>
 <li>
 <p>Mit dem Befehl <code>git clone</code></p>
@@ -256,7 +256,7 @@ Nun befindet sich der Inhalt an der richtigen Stelle, der Ordner muss nur noch u
 </ol>
 <p>Der Vorteil des zweiten Weges ist, dass mittels <code>git pull</code> Änderungen schnell nachgepflegt können. Bei Unerfahrenheit mit <em>git</em> sollte jedoch lieber der erste Weg gewählt werden.</p>
 <p>Nach Herunterladen und richtiger Platzierung der Plugins werden dem Administrator der Moodle-Website im Plugin Manager die neuen verfügbaren Updates angezeigt.
-Um die Plugins zu benutzen wird in jedem Fall das <code>oauth2owncloud_admin_tool</code>benötigt , alle anderen Plugins lassen sich nicht ohne dieses installieren. Dies ist bei der Reihenfolge der Installation bei Installation der Plugins als ZIP-Ordner zu beachten.</p>
+Um die Plugins zu benutzen wird in jedem Fall das <code>oauth2owncloud_admin_tool</code> benötigt, alle anderen Plugins lassen sich nicht ohne dieses installieren. Dies ist bei der Reihenfolge der Installation bei Installation der Plugins als ZIP-Ordner zu beachten.</p>
 <h3 id="icons">Icons</h3>
 <p>Die vorgegebenen Icons können einfach ersetzt werden, indem die in <code>plugin/pix/icon.svg</code> vorhandene Datei durch eine gleichnamige Datei ausgetauscht wird. Es können auch andere Formate als <em>.svg</em> verwendet werden. Das Bild darf jedoch nicht die Größe von 16x16 px überschreiten.</p>
 <h2 id="admin-tool-oauth2owncloud">Admin Tool oauth2owncloud</h2>
@@ -265,17 +265,17 @@ Um die Plugins zu benutzen wird in jedem Fall das <code>oauth2owncloud_admin_too
 <p>Damit das OAuth 2.0 Protokoll reibungslos ablaufen kann, muss zuerst der Client in den Einstellungen registriert werden.</p>
 <p>Hierfür muss der Administrator das Formular des Plugins, das unter <code>Website-Administration ► Plugins ► Authentifizierung ► Sciebo OAuth 2.0 Configuration</code> zu finden ist, ausfüllen.</p>
 <p><img class='moodleimage' alt="OAuth 2.0 Formular" src="../images/OAuth2Form.png" width=70%></p>
-<p>Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld, hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.</p>
+<p>Als erstes Feld muss die Client ID eingegeben werden. Diese findet man in ownCloud, sobald ein neuer Client registriert wurde. Dasselbe gilt für das nächste Feld. Hier wird das Secret angegeben, dass sich auch aus der ownCloud App kopieren lässt.</p>
 <p><img class='moodleimage' alt="WebDAV Formular" src="../images/WebDAVForm.png" width=100%></p>
 <p>Nun werden die Einstellungen für den WebDAV Zugriff festgelegt.
 Als erstes wird die Adresse des ownCloud Servers angegeben.
-Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben, in ownCloud endet diese typischerweise mit <code>remote.php/webdav/</code>.
+Im nächsten Feld wird der Pfad zur WebDAV Schnittstelle angegeben. In ownCloud endet diese typischerweise mit <code>remote.php/webdav/</code>.
 Als Protokolltyp kann <em>http</em> oder <em>https</em> angegeben werden. Wird keine Angabe gemacht, so wird von <em>https</em> ausgegangen.
 Als letztes kann der Port angegeben werden.</p>
 <h2 id="repository-sciebo">Repository sciebo</h2>
 <p><a href="https://github.com/pssl16/moodle-repository_owncloud"><em>Downloadlink</em></a></p>
 <h3 id="admin-einstellungen_1">Admin Einstellungen</h3>
-<p>Sobald das Admin tool installiert wurde, kann das Repository installiert werden. Es ist zu beachten, dass die oben genannten Einträge getätigt wurden, da ansonsten die Authentifizierung des Repositorys nicht funktioniert. Repository Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt <code>Website-Administration ► Plugins ► Repositories ► Übersicht</code> aktiviert werden. Der Administrator kann dem Repository zusätzlich unter <code>Einstellungen</code> einen globalen Namen geben.</p>
+<p>Sobald das Admin Tool installiert wurde, kann das Repository installiert werden. Es ist zu beachten, dass die oben genannten Einträge getätigt wurden, da ansonsten die Authentifizierung des Repositorys nicht funktioniert. Repository Plugins müssen in Moodle von einem Administrator unter dem Menüpunkt <code>Website-Administration ► Plugins ► Repositories ► Übersicht</code> aktiviert werden. Der Administrator kann dem Repository zusätzlich unter <code>Einstellungen</code> einen globalen Namen geben.</p>
 <h3 id="nutzer-sicht">Nutzer Sicht</h3>
 <p>Das Repository ist sowohl in den Kursen als auch für private Instanzen verfügbar und muss nicht mehr hinzugefügt werden. Kurs-Administratoren können das Repository jedoch unter <code>Speicherorte</code> löschen. Die Nutzung lässt sich nicht auf bestimmte Nutzer oder Aktivitäten im Kurs einschränken. Im File Picker muss man sich zunächst anmelden.</p>
 <p><img class='moodleimage' alt="FilePicker" src="../images/FilePickerlogin.png" width=70%></p>
@@ -288,7 +288,7 @@ Als letztes kann der Port angegeben werden.</p>
 <h4 id="admin-einstellungen_2">Admin Einstellungen</h4>
 <p>Für die Aktivität collaborative_folders wird ein technischer Nutzer der ownCloud Instanz benötigt. Bei diesem Nutzer werden alle Ordner, die erstellt werden, gespeichert. Um den Nutzer festzulegen muss in <code>Website-Administration ► Plugins ► Aktivitäten ► collaborativefolders</code> ein technischer Nutzer mit Hilfe des OAuth 2.0 Protokolls authentifiziert werden. Über einen Login Button muss sich in ownCloud authentifiziert werden. Bei nicht erfolgter Weiterleitung sind die Einstellungen im Admin tool <code>oauth2owncloud</code> fehlerhaft und diese sind zu überprüfen. Es ist darauf zu achten, dass sich nicht mit dem regulären privaten Account, sondern mit dem des technischen Nutzers angemeldet wird.</p>
 <h4 id="sicht-des-lehrenden">Sicht des Lehrenden</h4>
-<p>Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden, ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen  von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.</p>
+<p>Die Aktivität ist in jedem Moodle Kurs verfügbar. Wenn ein Lehrender die Aktivität dem Kurs hinzufügt, muss er dem Ordner einen Namen für die Moodle Instanz und einen für die ownCloud Instanz geben. Danach kann festlegt werden, ob Lehrende des Kurses Zugriff auf alle erstellten Ordner haben. Eins der wichtigsten Integrationsszenarien ist, dass nur für Gruppen von Studierenden ein Ordner erstellt wird. Dies ist möglich, wenn der Lehrende den Zugriff auf bestimmte Gruppen beschränkt. In diesem Fall werden nur für die gewählten Gruppen einzelne Ordner erstellt.</p>
 <h4 id="sicht-der-studierenden">Sicht der Studierenden</h4>
 <p>Wenn ein Ordner für einen Studierenden freigegeben wurde, sieht dieser die Aktivität in dem Kurs. Ordner werden von dem Plugin zeitverzögert erstellt um den Server nicht zu überlasten. Somit kann es passieren, dass der Nutzer, wenn er die Aktivität auswählt, eine Nachricht bekommt, dass die Ordner noch nicht erstellt wurden. Sobald die Ordner erstellt wurden, wird der Nutzer aufgefordert dem Ordner einen individuellen Namen
 zu geben, wenn er die Aktivität auswählt. Dieser Name wird nur für den derzeitigen Nutzer gespeichert.</p>
