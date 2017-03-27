@@ -173,15 +173,17 @@ Um sicherzustellen, dass das Admin Tool bereits installiert und die damit zusamm
 
 ``` php
 $plugin->dependencies = array(
-    'tool_oauth2sciebo' => 2017030905);
+    'tool_oauth2sciebo' => 2017032700);
 ```
 
 ## Continuous Integration
 
+Zum Testen der PHP-Klassen wurde das Framework [PHPUnit](https://phpunit.de/) verwendet. Die aktuelle Testabdeckung ist bei Codecov einsehbar: [![codecov](https://codecov.io/gh/pssl16/moodle-repository_owncloud/branch/master/graph/badge.svg)](https://codecov.io/gh/pssl16/moodle-repository_owncloud).
+
 Als Continuous Integration Tool wurde Travis CI verwendet. Bei jeder Änderung im [GitHub Repository](https://github.com/pssl16/moodle-repository_owncloud) wird ein Build angestoßen, in dem das Plugin gebaut und anschließend in verschiedenen Umgebungen installiert und getestet wird. Folgende Parameter werden variiert:
 
 * **PHP Versionen**: 5.6, 7.0
-* **Datenbanken**: PostgreSQL, MySQL, SQLite
-* **Branches des Moodle Core**: `MOODLE_31_STABLE`, `MOODLE_32_STABLE`, `master`
+* **Datenbanken**: PostgreSQL, MySQL
+* **Branches des Moodle Cores**: `MOODLE_32_STABLE`, `master`
 
 Der aktuelle Build-Status ist bei Travis einsehbar: [![Build Status](https://travis-ci.org/pssl16/moodle-repository_owncloud.svg?branch=master)](https://travis-ci.org/pssl16/moodle-repository_owncloud)
